@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "rootDir": "api",
+    "outDir": "dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+
+    "pretty": true,
+    "lib": ["es2018"],
+    "target": "es5",
+
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "noEmitOnError": true,
+
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "strict": true,
+    "alwaysStrict": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "skipLibCheck": true,
+    "suppressImplicitAnyIndexErrors": true,
+
+    "preserveConstEnums": true,
+    "newLine": "lf"
+  },
+  "exclude": ["dist", "node_modules", "mobile", "web"],
+  "typeAcquisition": {
+    "enable": true
+  }
+}
