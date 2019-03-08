@@ -1,0 +1,7 @@
+node_modules
+dist
+mobile
+web
+.vscode
+.idea
+.vs

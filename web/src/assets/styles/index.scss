@@ -1,0 +1,34 @@
+@import '../fonts/fonts';
+
+@import 'theme';
+@import '~gerami/src/styles/index';
+
+@import '~aos/dist/aos.css';
+@import '~animate.css/animate.min.css';
+
+body {
+  overflow-y: scroll; // todo: move this to gerami v0.1.3
+  line-height: 1.5; // todo: move this to gerami v0.1.3
+  background-image: linear-gradient(
+    to top right,
+    transparentize($primary, 0.9),
+    transparentize(white, 0.05)
+  );
+}
+
+.kelal-wordmark {
+  font-family: 'Kelal Wordmark', serif;
+  text-decoration: none !important;
+  text-transform: lowercase;
+  color: rgb(140, 140, 140) !important;
+
+  &::before {
+    content: 'kelal ';
+    color: rgb(0, 180, 120);
+  }
+
+  &::after {
+    content: '.';
+    color: rgb(255, 75, 135);
+  }
+}

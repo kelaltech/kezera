@@ -1,0 +1,127 @@
+@import '../../../../assets/styles/theme';
+
+@keyframes HeaderBlockClip {
+  0% {
+    clip-path: ellipse(140% 100% at 60% 0px);
+  }
+
+  100% {
+    clip-path: ellipse(140% 100% at 40% 0px);
+  }
+}
+
+.header {
+  z-index: 7;
+  position: sticky;
+  top: 0;
+}
+
+.header-shade-area {
+  filter: drop-shadow($shade-M);
+}
+
+.header-block {
+  padding: ($space / 1.4) $space !important;
+  background-image: linear-gradient(
+    to top right,
+    transparentize($accent, 0.97),
+    transparent
+  );
+  background-size: 100% 100%;
+  background-position: -100% 50%;
+  box-shadow: none;
+  transform: scale3d(1, 1, 1);
+  clip-path: ellipse(140% 100% at 50% 0px);
+  animation-name: HeaderBlockClip;
+  animation-duration: 7s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.header-logo {
+  margin-top: -4px;
+  margin-bottom: -8px;
+  width: $font-L * 1.5;
+  height: $font-L * 1.5;
+}
+
+.header-separator {
+  padding: 0 ($space / 1.4);
+  font-size: $font-L;
+  opacity: 0.07;
+
+  @media (max-width: $mobile) {
+    visibility: hidden;
+    padding: 0 $space / 2;
+  }
+}
+
+.header-wordmark {
+  font-size: $font-L;
+  text-decoration: none !important;
+}
+
+.header-nav-max-view {
+  display: block;
+}
+.header-nav-min-view {
+  display: none;
+}
+@media (max-width: $mobile * 1.5) {
+  .header-nav-max-view {
+    display: none;
+  }
+  .header-nav-min-view {
+    display: block;
+  }
+}
+
+.header-nav-links {
+  margin: (-$space * 1.5) 0;
+  padding-right: $space / 2;
+  height: $space * 3;
+  text-decoration: none !important;
+
+  .flex {
+    flex-direction: column;
+    height: inherit;
+
+    .center {
+      margin: auto;
+      padding: 0 ($space);
+    }
+  }
+}
+
+.header-nav-btn {
+  margin-top: -24px !important;
+  margin-bottom: -24px !important;
+  padding: 0 !important;
+  width: 48px !important;
+  height: 48px !important;
+  border: 0 !important;
+  background-image: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: $primary !important;
+}
+
+.header-nav-drop-vault {
+  position: absolute;
+  top: $space;
+  right: $space;
+  height: 0;
+  width: 0;
+}
+
+.header-nav-drop {
+  .gerami-menu {
+    max-height: 80vh;
+  }
+}
+
+.header-nav-drop-items {
+  padding: $space !important;
+  width: $space * 14 !important;
+}
