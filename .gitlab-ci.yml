@@ -13,21 +13,21 @@ services:
 cache:
   paths:
     - node_modules/
-    #- web/node_modules/ # todo: enable after the web project gets created (1)
+    - web/node_modules/
 
 build_api:
   script:
     - yarn install
     - yarn build
 
-#build_web: # todo: enable after the web project gets created (2)
-  #script:
-    #- cd web/
-    #- yarn install
-    #- yarn build
+build_web:
+  script:
+    - cd web/
+    - yarn install
+    - yarn build
 
-#test_web: # todo: enable after the web project gets created (3)
-  #script:
-    #- cd web/
-    #- yarn install
-    #- yarn test
+test_web:
+  script:
+    - cd web/
+    - yarn install
+    - yarn test

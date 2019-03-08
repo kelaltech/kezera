@@ -1,7 +1,7 @@
 {
   "name": "spva",
   "version": "0.0.0",
-  "description": "Social Platform for Voluntary Actions",
+  "description": "A social platform for voluntary actions.",
   "main": "dist/production",
   "typings": "dist",
   "repository": "git@gitlab.com:kelal/spva.git",
@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "all": "run-s build \"run-p web dev watch\"",
-    "web": "echo \"This script is a no-op, so far.\"",
+    "web": "cd web & run-s start",
     "build": "run-s clean tsc",
     "clean": "del-cli ./dist",
     "dev": "nodemon dist",

@@ -1,0 +1,37 @@
+@import '../../../../assets/styles/theme';
+
+.footer {
+  background-image: linear-gradient(
+    to bottom,
+    transparentize($fg, 0.95) 0%,
+    transparent 70%
+  );
+}
+
+.footer-left,
+.footer-right {
+  width: 60px;
+
+  a,
+  a:visited {
+    color: transparentize($fg, 0.42);
+    text-decoration: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: $primary;
+      text-decoration: underline;
+    }
+  }
+}
+
+.footer-left {
+}
+
+.footer-center {
+}
+
+.footer-right {
+  text-align: right;
+}
