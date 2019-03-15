@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Image } from 'gerami'
 
-import _ from '../../../app/lib/language'
+import _ from '../../../lib/language'
 import logo128 from '../../../assets/images/logo-128.png'
 import './default-promotion.scss'
 

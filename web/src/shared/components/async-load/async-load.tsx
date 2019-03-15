@@ -10,7 +10,7 @@ export default function AsyncLoad<Props, Exports extends object>(
     Object.assign(
       {
         loader,
-        loading: () => <Loading />,
+        loading: () => <Loading delay />,
         delay: 200,
         timeout: 30000
       } as OptionsWithoutRender<Props>,

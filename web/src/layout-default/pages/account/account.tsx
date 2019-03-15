@@ -1,9 +1,9 @@
 import React from 'react'
 import { Anchor, Button, Page } from 'gerami'
 
-import _ from '../../../app/lib/language'
-import { useUserReducer } from '../../../shared/stores/user/user-provider'
-import { logout } from '../../../shared/stores/user/user-actions'
+import _ from '../../../lib/language'
+import { useUserReducer } from '../../../app/stores/user/user-provider'
+import { logout } from '../../../app/stores/user/user-actions'
 
 export default function Account() {
   const [userState, userDispatch] = useUserReducer()

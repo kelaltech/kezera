@@ -1,4 +1,4 @@
-import { IUserResponse } from '../../../app/apiv/user-apiv'
+import { IUserResponse } from '../../../apiv/user-apiv'
 
 export type State = {
   readonly user?: IUserResponse | null

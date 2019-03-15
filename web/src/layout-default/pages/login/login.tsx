@@ -1,8 +1,8 @@
 import React from 'react'
 import { Anchor, Block, Button, Content, Flex, FlexSpacer, Input, Page } from 'gerami'
 
-import { useUserReducer } from '../../../shared/stores/user/user-provider'
-import { login, logout } from '../../../shared/stores/user/user-actions'
+import { useUserReducer } from '../../../app/stores/user/user-provider'
+import { login, logout } from '../../../app/stores/user/user-actions'
 
 export default function Login() {
   const [userState, userDispatch] = useUserReducer()
