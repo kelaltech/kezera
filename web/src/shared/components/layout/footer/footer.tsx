@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Anchor, Block, Flex, FlexSpacer } from 'gerami'
 
-import _, { setLanguage } from '../../../../app/lib/language'
+import _, { setLanguage } from '../../../../lib/language'
 import './footer.scss'
 
 export default class Footer extends Component<{}, {}> {

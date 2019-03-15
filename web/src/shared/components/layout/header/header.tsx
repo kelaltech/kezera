@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { INavigationItem } from './interfaces'
 import logo128 from '../../../../assets/images/logo-128.png'
-import _ from '../../../../app/lib/language'
+import _ from '../../../../lib/language'
 import './header.scss'
 
 export interface IHeaderProps {

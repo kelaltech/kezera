@@ -8,8 +8,8 @@ import {
   defaultNamespaces,
   loadNamespaces,
   setLanguage
-} from './lib/language'
-import fontawesomeLibrary from '../shared/configs/fontawesome-library'
+} from '../lib/language'
+import fontawesomeLibrary from '../assets/scripts/fontawesome-library'
 import App from './app'
 
 beforeAll(() => {

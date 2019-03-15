@@ -1,20 +1,21 @@
-import React, { StrictMode } from 'react'
+import React, { StrictMode, Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import AOS from 'aos'
+import initReactFastclick from 'react-fastclick'
+import { Loading } from 'gerami'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
-import fontawesomeLibrary from './shared/configs/fontawesome-library'
-import initReactFastclick from 'react-fastclick'
+import App from './app/app'
+import fontawesomeLibrary from './assets/scripts/fontawesome-library'
+import * as serviceWorker from './assets/scripts/service-worker'
+import './assets/styles/index.scss'
 import {
   defaultLanguage,
   defaultNamespaces,
   loadNamespaces,
   setLanguage
-} from './app/lib/language'
-import App from './app/app'
-import * as serviceWorker from './assets/scripts/service-worker'
-import './assets/styles/index.scss'
+} from './lib/language'
 
 AOS.init() // animation on scroll
 fontawesomeLibrary() // fontawesome icons
@@ -34,10 +35,13 @@ i18n
 
     ReactDOM.render(
       <StrictMode>
-        <App />
+        <Suspense fallback={<Loading delay />}>
+          <App />
+        </Suspense>
       </StrictMode>,
       document.getElementById('root')
     )
   })
+  .catch(console.error)
 
 serviceWorker.register()

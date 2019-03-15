@@ -3,8 +3,9 @@ import { BrowserRouter } from 'react-router-dom'
 import { Button, Warning } from 'gerami'
 import { withTranslation } from 'react-i18next'
 
-import AppRoutes from './app-routes'
-import { UserProvider } from '../shared/stores/user/user-provider'
+import { defaultNamespaces } from '../lib/language'
+import AppRoutes from './configs/app-routes'
+import AppProviders from './configs/app-providers'
 
 function App() {
   const [error, setError] = useState<any>(undefined)
@@ -13,9 +14,9 @@ function App() {
   // ...   create a generalized dialog (also with error type) at this level
   return (
     <BrowserRouter>
-      <UserProvider>
+      <AppProviders>
         <AppRoutes />
-        {error && (
+        {error && ( // todo: temp
           <div
             className="fixed padding-very-big bg-whitish"
             style={{ zIndex: 100, top: 0, right: 0, bottom: 0, left: 0 }}
@@ -28,9 +29,9 @@ function App() {
             </div>
           </div>
         )}
-      </UserProvider>
+      </AppProviders>
     </BrowserRouter>
   )
 }
 
-export default withTranslation('common')(App)
+export default withTranslation(defaultNamespaces)(App)
