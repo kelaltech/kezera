@@ -17,8 +17,8 @@ export default function layoutDefaultNavigation(isLoggedIn: boolean): INavigatio
     items = items.concat([
       {
         to: '/login',
-        icon: ['far', 'user-circle'],
-        name: _`Login or Register`,
+        icon: 'sign-in-alt',
+        name: _`Login`,
         shortName: _`Login`
       }
     ])
