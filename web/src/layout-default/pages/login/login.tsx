@@ -1,11 +1,12 @@
 import React from 'react'
 import { Anchor, Block, Button, Content, Flex, FlexSpacer, Input, Page } from 'gerami'
 
-import { useUserReducer } from '../../../app/stores/user/user-provider'
+import { useUserState, useUserDispatch } from '../../../app/stores/user/user-provider'
 import { login, logout } from '../../../app/stores/user/user-actions'
 
 export default function Login() {
-  const [userState, userDispatch] = useUserReducer()
+  const userState = useUserState()
+  const userDispatch = useUserDispatch()
 
   const handleLogin = async (event: any): Promise<void> => {
     event.preventDefault()

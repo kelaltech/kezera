@@ -11,6 +11,8 @@
   "scripts": {
     "all": "run-s build \"run-p web dev watch\"",
     "web": "cd web & run-s start",
+    "android": "cd mobile & run-s android",
+    "ios": "cd mobile & run-s ios",
     "build": "run-s clean tsc",
     "clean": "del-cli ./dist",
     "dev": "nodemon dist",

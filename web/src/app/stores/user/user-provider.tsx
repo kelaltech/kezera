@@ -2,16 +2,24 @@ import React, { createContext, Dispatch, ReactNode, useContext, useReducer } fro
 
 import { Action, initialState, reducer, State } from './user-reducer'
 
-const context = createContext<[State, Dispatch<Action>]>([initialState, () => {}])
+const contextForState = createContext<State>(initialState)
+const contextForDispatch = createContext<Dispatch<Action>>(() => {})
 
 export function UserProvider({ children }: { children: ReactNode }) {
+  const [state, dispatch] = useReducer(reducer, initialState)
   return (
-    <context.Provider value={useReducer(reducer, initialState)}>
-      {children}
-    </context.Provider>
+    <contextForState.Provider value={state}>
+      <contextForDispatch.Provider value={dispatch}>
+        {children}
+      </contextForDispatch.Provider>
+    </contextForState.Provider>
   )
 }
 
-export function useUserReducer() {
-  return useContext(context)
+export function useUserState() {
+  return useContext(contextForState)
+}
+
+export function useUserDispatch() {
+  return useContext(contextForDispatch)
 }
