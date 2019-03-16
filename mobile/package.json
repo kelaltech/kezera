@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "run-s": "run-s",
+    "run-p": "run-p",
+    "prod": "run-s format tsc",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -33,6 +36,7 @@
     "babel-jest": "^24.5.0",
     "jest": "^24.5.0",
     "metro-react-native-babel-preset": "^0.53.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.16.4",
     "react-test-renderer": "16.8.3",
     "typescript": "^3.3.3333"
