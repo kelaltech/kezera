@@ -1,13 +1,20 @@
 import { ModelFactory } from 'meseret'
-import { Document } from 'mongoose'
+import { Schema } from 'mongoose'
+
 import { keyPaths } from './key.paths'
 import { keyStatics } from './key.statics'
 
-export type KeyPurposeType = 'PASSWORD_RESET'
+export type IKeyPurpose = 'PASSWORD_RESET'
+export const keyPurposes: IKeyPurpose[] = ['PASSWORD_RESET']
 
-export interface IKey extends Document {
+type ObjectId = Schema.Types.ObjectId | string
+
+export interface IKey {
+  __v: number
+  _id: ObjectId
   _at: Date | number
-  purpose: KeyPurposeType
+
+  purpose: IKeyPurpose
   email?: string
   randomKey: string
   expiry?: Date
@@ -21,9 +28,9 @@ export const keyModelFactory = new ModelFactory<IKey, {}, typeof keyStatics>({
 
 export const KeySchema = keyModelFactory.schema
 KeySchema.index({
-  purpose: 1,
-  email: 1,
-  randomKey: 1
+  _at: -1,
+  purpose: true,
+  email: true
 })
 
 export const KeyModel = keyModelFactory.model
