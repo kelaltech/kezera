@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { useUserState } from '../app/stores/user/user-provider'
+import { useAccountState } from '../app/stores/account/account-provider'
 import DefaultPromotion from '../layout-default/components/default-promotion/default-promotion'
 import LayoutOrganizationProviders from './configs/layout-organization-providers'
 import Layout from '../shared/components/layout/layout'
@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps<{}> {
 export default function LayoutOrganization({ error, match }: Props) {
   const [promo, setPromo] = useState<React.ReactNode>(undefined)
 
-  const userState = useUserState()
+  const userState = useAccountState()
 
   const ls = window.location.search.toLowerCase() || ''
 
