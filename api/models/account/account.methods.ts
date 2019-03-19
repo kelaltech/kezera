@@ -22,14 +22,14 @@ export const accountMethods = {
       throw new KoaError(
         'Password cannot be longer than 72 characters.',
         400,
-        'PASSWORD_VALIDATION_FAILED'
+        'PASS_TOO_LONG'
       )
 
     if (!pass.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/))
       throw new KoaError(
         'Password needs to be at least 8 characters long and contain at least one of capital letters, small letters and numbers each.',
         400,
-        'PASSWORD_VALIDATION_FAILED'
+        'PASS_VALIDATION_FAILED'
       )
 
     const doc = accountModelFactory.documentify(this)
