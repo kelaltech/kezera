@@ -4,7 +4,6 @@ import './news-card.scss'
 import { Content } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NewsTemp from '../../../assets/images/news-temp.jpg'
-import { faHeart } from '@fortawesome/free-regular-svg-icons'
 
 export default class NewsCard extends Component<{}, {}> {
   render() {
