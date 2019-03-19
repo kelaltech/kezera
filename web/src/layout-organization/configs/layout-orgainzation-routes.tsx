@@ -17,14 +17,12 @@ const Login = AsyncLoad(() => import('../../layout-default/pages/login/login'))
 export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string }) {
   return (
     <Switch>
-      <Redirect exact path={`${p}home`} to={`${p}`} />
-
-      <Route exact path={`${p}`} component={Summary} />
-      <Route exact path={`${p}login`} component={Login} />
-      <Route exact path={`${p}news`} component={News} />
-      <Route exact path={`${p}event`} component={Event} />
-      <Route exact path={`${p}donation`} component={Donation} />
-      <Route exact path={`${p}account`} component={Account} />
+      <Route exact path={`${p}/`} component={Summary} />
+      <Route exact path={`${p}/login`} component={Login} />
+      <Route exact path={`${p}/news`} component={News} />
+      <Route exact path={`${p}/event`} component={Event} />
+      <Route exact path={`${p}/donation`} component={Donation} />
+      <Route exact path={`${p}/account`} component={Account} />
       {/*todo add te routes here */}
       <Route component={NotFound} />
     </Switch>

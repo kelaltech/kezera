@@ -13,8 +13,9 @@ export default function AppRoutes() {
     <Switch>
       <Redirect exact path={`/index.html`} to={`/`} />
 
-      <Route exact path={'/'} component={LayoutDefault} />
-      <Route exact path={'/organization'} component={LayoutOrganization} />
+      <Route path={'/organization'} component={LayoutOrganization} />
+      <Route path={'/'} component={LayoutDefault} />
+
       <Route component={NotFound} />
     </Switch>
   )
