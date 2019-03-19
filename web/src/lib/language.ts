@@ -1,4 +1,4 @@
-import i18n from 'i18next'
+import { getI18n } from 'react-i18next'
 
 let lngHasBeenSetAtLeastOnce = false
 
@@ -6,8 +6,9 @@ export type Language = 'am' | 'en'
 export const supportedLanguages = ['am', 'en']
 export const defaultLanguage: Language = 'en'
 
-export type Namespace = 'common'
-export const supportedNamespaces = ['common']
+export type Namespace = 'common' | 'account'
+export const supportedNamespaces = ['common', 'account']
+export const allNamespaces = ['common', 'account']
 export const defaultNamespaces: Namespace[] = ['common']
 
 export async function checkLanguage(lng: string): Promise<void> {
@@ -49,7 +50,7 @@ export async function loadNamespaces(
     namespaces.map(async namespace => {
       try {
         const resource = await import(`../locales/${lng}/${namespace}.json`)
-        i18n.addResourceBundle(lng, namespace, resource)
+        getI18n().addResources(lng, namespace, resource)
       } catch (e) {
         throw Error(
           `Unable to load or add "${lng}" translation resource using namespace: "${namespace}"`
@@ -69,7 +70,7 @@ export async function setLanguage(
   await loadNamespaces(namespaces, lng)
 
   window.localStorage.setItem('lng', lng)
-  await i18n.changeLanguage(lng)
+  await getI18n().changeLanguage(lng)
 
   lngHasBeenSetAtLeastOnce = false
 }
@@ -77,7 +78,7 @@ export async function setLanguage(
 export function _(key: TemplateStringsArray | string, namespaces?: Namespace[]) {
   if (namespaces) checkNamespaces(namespaces).catch(console.error)
 
-  return i18n.t(key.toString(), {
+  return getI18n().t(key.toString(), {
     defaultValue: ((): string => {
       if (lngHasBeenSetAtLeastOnce) console.warn(`missing translation for key "${key}"`)
 

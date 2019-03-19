@@ -24,24 +24,21 @@ initReactFastclick() // touch events
 i18n
   .use(initReactI18next)
   .init({
-    interpolation: { escapeValue: false },
-    fallbackLng: defaultLanguage,
-    fallbackNS: defaultNamespaces,
-    lng: defaultLanguage
+    interpolation: { escapeValue: false }
   })
   .then(async () => {
     await setLanguage()
-    loadNamespaces(defaultNamespaces, defaultLanguage).catch() // just a backup/fallback
-
-    ReactDOM.render(
-      <StrictMode>
-        <Suspense fallback={<Loading delay />}>
-          <App />
-        </Suspense>
-      </StrictMode>,
-      document.getElementById('root')
-    )
+    loadNamespaces(defaultNamespaces, defaultLanguage).catch(console.error) // just a backup/fallback
   })
   .catch(console.error)
+
+ReactDOM.render(
+  <StrictMode>
+    <Suspense fallback={<Loading delay />}>
+      <App />
+    </Suspense>
+  </StrictMode>,
+  document.getElementById('root')
+)
 
 serviceWorker.register()
