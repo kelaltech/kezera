@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 
-import { UserProvider } from '../stores/user/user-provider'
+import { AccountProvider } from '../stores/account/account-provider'
 
 export default function AppProviders({ children }: PropsWithChildren<{}>) {
-  return <UserProvider>{children}</UserProvider>
+  return <AccountProvider>{children}</AccountProvider>
 }
