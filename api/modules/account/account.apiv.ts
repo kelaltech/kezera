@@ -17,7 +17,6 @@ export type IAccountResponse = {
   status: IAccountStatus
 
   email: string
-  password: string
 
   displayName: string
   phoneNumber?: string
