@@ -2,9 +2,9 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { withTranslation } from 'react-i18next'
 
-import { defaultNamespaces } from '../lib/language'
 import AppRoutes from './configs/app-routes'
 import AppProviders from './configs/app-providers'
+import { allNamespaces } from '../lib/language'
 
 function App() {
   return (
@@ -16,4 +16,4 @@ function App() {
   )
 }
 
-export default withTranslation(defaultNamespaces)(App)
+export default withTranslation(allNamespaces)(App)

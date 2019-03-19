@@ -1,0 +1,19 @@
+@import '../assets/styles/theme';
+
+.layout-login-header {
+  .header-shade-area {
+    filter: none;
+
+    .header-block {
+      background: $primary !important;
+      color: transparentize($bg, 0.07) !important;
+
+      clip-path: none !important;
+      animation: none !important;
+
+      * {
+        color: inherit !important;
+      }
+    }
+  }
+}
