@@ -1,9 +1,10 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Page } from 'gerami'
 
-import _ from '../../../lib/language'
-
 export default function Home() {
+  const { t } = useTranslation()
+
   // todo
-  return <Page>{_`Homepage`}</Page>
+  return <Page>{t`Homepage`}</Page>
 }

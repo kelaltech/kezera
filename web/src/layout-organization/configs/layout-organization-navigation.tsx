@@ -1,5 +1,5 @@
 import { INavigationItem } from '../../shared/components/layout/header/interfaces'
-import _ from '../../lib/language'
+import { _ } from '../../lib/language'
 
 export default function layoutOrganizationNavigation(isLoggedIn: boolean) {
   let items: INavigationItem[] = []

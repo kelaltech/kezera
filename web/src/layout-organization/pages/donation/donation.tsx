@@ -1,9 +1,10 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Page } from 'gerami'
 
-import _ from '../../../lib/language'
+export default function AccountSettings() {
+  const { t } = useTranslation()
 
-export default function Donation() {
   // todo
-  return <Page>{_`Organization Donation Page`}</Page>
+  return <Page>{t`Organization Donation Page`}</Page>
 }

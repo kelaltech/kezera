@@ -6,5 +6,5 @@ export default function AccountSettings() {
   const { t } = useTranslation()
 
   // todo
-  return <Page>{t`Login`} Reset</Page>
+  return <Page>{t`Account Settings`}</Page>
 }

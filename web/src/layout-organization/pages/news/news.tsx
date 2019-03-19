@@ -1,7 +1,6 @@
 import React from 'react'
 import { Block, Content, Page } from 'gerami'
 
-import _ from '../../../lib/language'
 import NewsCard from '../../../shared/components/news-card/news-card'
 
 export default function News() {

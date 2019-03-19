@@ -1,6 +1,6 @@
 import { INavigationItem } from '../../shared/components/layout/header/interfaces'
 
-export default function layoutDefaultNavigation(isLoggedIn: boolean): INavigationItem[] {
+export default function layoutLoginNavigation(isLoggedIn: boolean): INavigationItem[] {
   let items: INavigationItem[] = []
 
   if (isLoggedIn) {

@@ -24,6 +24,9 @@ initReactFastclick() // touch events
 i18n
   .use(initReactI18next)
   .init({
+    lng: defaultLanguage,
+    fallbackLng: defaultLanguage,
+    fallbackNS: defaultNamespaces,
     interpolation: { escapeValue: false }
   })
   .then(async () => {

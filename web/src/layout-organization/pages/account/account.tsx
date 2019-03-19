@@ -1,9 +1,10 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Page } from 'gerami'
 
-import _ from '../../../lib/language'
-
 export default function Account() {
+  const { t } = useTranslation()
+
   // todo
-  return <Page>{_`Organization Account Page`}</Page>
+  return <Page>{t`Account Settings`}</Page>
 }

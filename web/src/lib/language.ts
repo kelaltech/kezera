@@ -1,7 +1,5 @@
 import { getI18n } from 'react-i18next'
 
-let lngHasBeenSetAtLeastOnce = false
-
 export type Language = 'am' | 'en'
 export const supportedLanguages = ['am', 'en']
 export const defaultLanguage: Language = 'en'
@@ -51,6 +49,7 @@ export async function loadNamespaces(
       try {
         const resource = await import(`../locales/${lng}/${namespace}.json`)
         getI18n().addResources(lng, namespace, resource)
+        return getI18n().loadNamespaces(namespace)
       } catch (e) {
         throw Error(
           `Unable to load or add "${lng}" translation resource using namespace: "${namespace}"`
@@ -71,21 +70,12 @@ export async function setLanguage(
 
   window.localStorage.setItem('lng', lng)
   await getI18n().changeLanguage(lng)
-
-  lngHasBeenSetAtLeastOnce = false
 }
 
 export function _(key: TemplateStringsArray | string, namespaces?: Namespace[]) {
   if (namespaces) checkNamespaces(namespaces).catch(console.error)
 
   return getI18n().t(key.toString(), {
-    defaultValue: ((): string => {
-      if (lngHasBeenSetAtLeastOnce) console.warn(`missing translation for key "${key}"`)
-
-      return key.toString()
-    })(),
     ns: namespaces || defaultNamespaces
   })
 }
-
-export default _
