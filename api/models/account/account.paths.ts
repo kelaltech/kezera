@@ -6,8 +6,8 @@ export const accountPaths: SchemaDefinition = {
   _at: { type: Date, default: Date.now, index: true },
   _last: { type: Date, index: true },
 
-  role: { type: Number, enum: accountRoles, index: true },
-  status: { type: Number, enum: accountStatuses, default: 1, index: true },
+  role: { type: String, enum: accountRoles, index: true },
+  status: { type: String, enum: accountStatuses, default: 1, index: true },
 
   email: {
     type: String,

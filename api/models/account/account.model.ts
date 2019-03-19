@@ -6,11 +6,16 @@ import { accountMethods } from './account.methods'
 
 type ObjectId = Schema.Types.ObjectId | string
 
-export type IAccountRole = 1 | 2
-export const accountRoles = [1, 2]
+export type IAccountRole = 'ADMIN' | 'VERIFIER' | 'ORGANIZATION' | 'VOLUNTEER'
+export const accountRoles: IAccountRole[] = [
+  'ADMIN',
+  'VERIFIER',
+  'ORGANIZATION',
+  'VOLUNTEER'
+]
 
-export type IAccountStatus = 1 | 2
-export const accountStatuses = [1, 2]
+export type IAccountStatus = 'ACTIVE' | 'BLOCKED' | 'DISABLED'
+export const accountStatuses: IAccountStatus[] = ['ACTIVE', 'BLOCKED', 'DISABLED']
 
 export interface IAccount {
   __v: number

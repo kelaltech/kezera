@@ -3,9 +3,9 @@ import * as Compose from 'koa-compose'
 
 import { authenticate } from './authenticate'
 import { KoaError } from '../koa-error'
-import { IAccount } from '../../models/account/account.model'
+import { IAccount, IAccountRole } from '../../models/account/account.model'
 
-export function authorize(...roles: number[]): Middleware {
+export function authorize(...roles: IAccountRole[]): Middleware {
   return Compose([
     authenticate(),
     async (ctx, next) => {
