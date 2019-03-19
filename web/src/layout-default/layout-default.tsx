@@ -5,7 +5,7 @@ import Layout from '../shared/components/layout/layout'
 import LayoutDefaultProviders from './configs/layout-default-providers'
 import layoutDefaultNavigation from './configs/layout-default-navigation'
 import LayoutDefaultRoutes from './configs/layout-default-routes'
-import { useUserState } from '../app/stores/user/user-provider'
+import { useAccountState } from '../app/stores/account/account-provider'
 import DefaultPromotion from './components/default-promotion/default-promotion'
 
 interface Props extends RouteComponentProps<{}> {
@@ -15,7 +15,7 @@ interface Props extends RouteComponentProps<{}> {
 export default function LayoutDefault({ error, match }: Props) {
   const [promo, setPromo] = useState<React.ReactNode>(undefined)
 
-  const userState = useUserState()
+  const accountState = useAccountState()
 
   const ls = window.location.search.toLowerCase() || ''
 
@@ -31,7 +31,7 @@ export default function LayoutDefault({ error, match }: Props) {
       <Layout
         noShell={ls.includes('no-shell=') ? ls.includes('no-shell=true') : undefined}
         preHeader={promo}
-        headerOptions={{ navigation: layoutDefaultNavigation(!!userState.user) }}
+        headerOptions={{ navigation: layoutDefaultNavigation(!!accountState.user) }}
         error={error}
         nonContentHeight={164}
       >

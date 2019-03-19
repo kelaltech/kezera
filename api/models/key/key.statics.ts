@@ -1,5 +1,5 @@
 import { randomBytes } from 'crypto'
-import { IKey, KeyModel, KeyPurposeType } from './key.model'
+import { IKey, KeyModel, IKeyPurpose } from './key.model'
 import { add } from '../../lib/crud'
 import { KoaError } from '../../lib/koa-error'
 import { ClientSession } from 'mongoose'
@@ -12,7 +12,7 @@ export const keyStatics = {
   },
 
   async add(
-    purpose: KeyPurposeType,
+    purpose: IKeyPurpose,
     email: string,
     length = 64,
     expiry?: Date,
@@ -30,7 +30,7 @@ export const keyStatics = {
   },
 
   async match(
-    purpose: KeyPurposeType,
+    purpose: IKeyPurpose,
     email: string,
     randomKey: string,
     { session }: { session?: ClientSession } = {}

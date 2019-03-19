@@ -1,5 +1,5 @@
 import { Context } from 'koa'
-// todo: import { IUser } from '../models/user/user.model'
+// todo: import { IUser } from '../models/account/account.model'
 type IUser = any // until it gets defined
 
 export class KoaController {
