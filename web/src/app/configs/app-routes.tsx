@@ -5,6 +5,7 @@ import AsyncLoad from '../../shared/components/async-load/async-load'
 
 // routes
 import LayoutDefault from '../../layout-default/layout-default'
+import LayoutOrganization from '../../layout-organization/layout-organization'
 const NotFound = AsyncLoad(() => import('../../shared/pages/not-found/not-found'))
 
 export default function AppRoutes() {
@@ -13,7 +14,7 @@ export default function AppRoutes() {
       <Redirect exact path={`/index.html`} to={`/`} />
 
       <Route path={'/'} component={LayoutDefault} />
-
+      <Route path={'/organization'} component={LayoutOrganization} />
       <Route component={NotFound} />
     </Switch>
   )
