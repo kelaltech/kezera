@@ -8,6 +8,8 @@ export async function reloadAccount(silentFail = false): Promise<Action> {
       withCredentials: true
     })).data
 
+    if (!account._id) throw Error('Received account data is malformed.')
+
     window.localStorage.setItem('account', JSON.stringify(account))
     return { type: 'set', account }
   } catch (e) {
@@ -16,9 +18,9 @@ export async function reloadAccount(silentFail = false): Promise<Action> {
   }
 }
 
-export async function login(emailOrUsername: string, password: string): Promise<Action> {
+export async function login(email: string, password: string): Promise<Action> {
   await Axios.post('/api/account/login', {
-    emailOrUsername,
+    email,
     password
   })
   return reloadAccount()
