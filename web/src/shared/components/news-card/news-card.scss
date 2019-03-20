@@ -57,15 +57,21 @@
   width: inherit;
   height: auto;
   display: flex;
+  margin-bottom: 5px;
   justify-content: space-evenly;
-
   span {
     width: 30%;
     padding: 3px;
-    //border: 1px solid;
-    //background-color: #717171;
+    text-align: center;
+    transition: 0.5s all;
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.1);
+
+      &:nth-child(1) {
+        color: #f0465a;
+        font-weight: 600;
+      }
+    }
   }
-  /*  span:nth-of-type(odd){
-    width: 50%;
-  }*/
 }

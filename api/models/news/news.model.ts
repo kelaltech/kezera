@@ -11,6 +11,8 @@ export interface INews extends Document {
   article: string
   likes: ObjectId[]
   comments: ObjectId[]
+  pictureId: string
+  _by: ObjectId
 }
 
 export const newsModelFactory = new ModelFactory<INews>({
@@ -18,4 +20,4 @@ export const newsModelFactory = new ModelFactory<INews>({
   paths: newPaths
 })
 
-export const newsModel = newsModelFactory.model
+export const NewsModel = newsModelFactory.model

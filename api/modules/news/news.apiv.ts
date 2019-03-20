@@ -1,3 +1,14 @@
-export type INewsRequest = any // todo
+export type INewsRequest = {
+  title: string
+  description: string
+  article: string
+}
 
-export type INewsResponse = any // todo
+export type INewsResponse = {
+  _at: Date | Number
+  title: string
+  description: string
+  article: string
+  likes: []
+  comments: []
+}
