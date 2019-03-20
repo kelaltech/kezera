@@ -1,4 +1,8 @@
 $primary: #3f51b5;
 $accent: #ff5722;
 
+$radius: 2px;
+$touch: scale3d(1.01, 1.01, 1.01);
+$poke: scale3d(1.07, 1.07, 1.07);
+
 @import '~gerami/src/styles/theme';

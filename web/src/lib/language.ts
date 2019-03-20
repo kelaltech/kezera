@@ -1,4 +1,5 @@
 import { getI18n } from 'react-i18next'
+import i18n from 'i18next'
 
 export type Language = 'am' | 'en'
 export const supportedLanguages = ['am', 'en']
@@ -37,8 +38,11 @@ export async function getLanguage(): Promise<Language> {
 
 export async function loadNamespaces(
   namespaces: Namespace[],
-  otherLng?: Language
+  otherLng?: Language,
+  i18nInstance?: i18n.i18n
 ): Promise<void> {
+  const i18n = i18nInstance || getI18n()
+
   await checkNamespaces(namespaces)
 
   const lng = otherLng || (await getLanguage())
@@ -48,8 +52,8 @@ export async function loadNamespaces(
     namespaces.map(async namespace => {
       try {
         const resource = await import(`../locales/${lng}/${namespace}.json`)
-        getI18n().addResources(lng, namespace, resource)
-        return getI18n().loadNamespaces(namespace)
+        i18n.addResources(lng, namespace, resource)
+        return i18n.loadNamespaces(namespace)
       } catch (e) {
         throw Error(
           `Unable to load or add "${lng}" translation resource using namespace: "${namespace}"`
@@ -61,21 +65,30 @@ export async function loadNamespaces(
 
 export async function setLanguage(
   lng?: Language,
-  namespaces = defaultNamespaces
+  namespaces = defaultNamespaces,
+  i18nInstance?: i18n.i18n
 ): Promise<void> {
+  const i18n = i18nInstance || getI18n()
+
   if (lng) await checkLanguage(lng)
   else lng = await getLanguage()
 
-  await loadNamespaces(namespaces, lng)
+  await loadNamespaces(namespaces, lng, i18n)
 
   window.localStorage.setItem('lng', lng)
-  await getI18n().changeLanguage(lng)
+  await i18n.changeLanguage(lng)
 }
 
-export function _(key: TemplateStringsArray | string, namespaces?: Namespace[]) {
+export function _(
+  key: TemplateStringsArray | string,
+  namespaces?: Namespace[],
+  i18nInstance?: i18n.i18n
+) {
+  const i18n = i18nInstance || getI18n()
+
   if (namespaces) checkNamespaces(namespaces).catch(console.error)
 
-  return getI18n().t(key.toString(), {
+  return i18n.t(key.toString(), {
     ns: namespaces || defaultNamespaces
   })
 }

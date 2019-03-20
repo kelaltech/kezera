@@ -1,1 +1,7 @@
-{}
+{
+  "login": "መግቢያ",
+  "email": "ኢሜይል",
+  "password": "የይለፍ ቃል",
+  "forgot-password": "የይለፍ ቃልዎን ረሱት?",
+  "create-new-account": "አዲስ መታወቂያ ማውጫ"
+}

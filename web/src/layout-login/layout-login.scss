@@ -5,8 +5,7 @@
     filter: none;
 
     .header-block {
-      background: $primary !important;
-      color: transparentize($bg, 0.07) !important;
+      background: transparent !important;
 
       clip-path: none !important;
       animation: none !important;

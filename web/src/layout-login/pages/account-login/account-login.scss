@@ -1,0 +1,49 @@
+@import '../../../assets/styles/theme';
+
+.account-login-image-container {
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  width: 50%;
+  height: 414px;
+
+  @media (max-width: $mobile) {
+    width: 100%;
+    height: $space * 2;
+  }
+
+  .account-login-image {
+    display: block;
+    height: inherit;
+    width: initial;
+    background-size: cover;
+    transition: all 7s ease-in-out;
+    filter: grayscale(1);
+    transform: scale3d(1, 1, 1);
+
+    &:hover {
+      filter: none;
+      transform: scale3d(1.07, 1.07, 1.07);
+    }
+  }
+
+  .account-login-image-drama {
+    filter: grayscale(0.75) blur($space / 4) !important;
+    transform: scale3d(1.14, 1.14, 1.14) !important;
+  }
+}
+
+.account-login-form-container {
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+
+  @media (max-width: $mobile) {
+    width: 100%;
+  }
+}
+
+.account-login-links {
+  padding: ($space / 2) 0;
+  text-decoration: none;
+}
