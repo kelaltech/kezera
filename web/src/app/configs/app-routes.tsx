@@ -2,7 +2,6 @@ import React, { lazy } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
 // routes
-const LayoutDefault = lazy(() => import('../../layout-default/layout-default'))
 const LayoutLogin = lazy(() => import('../../layout-login/layout-login'))
 const LayoutOrganization = lazy(() =>
   import('../../layout-organization/layout-organization')
@@ -16,7 +15,6 @@ export default function AppRoutes() {
 
       <Route path={'/login'} component={LayoutLogin} />
       <Route path={'/organization'} component={LayoutOrganization} />
-      <Route path={'/'} component={LayoutDefault} />
 
       <Route component={NotFound} />
     </Switch>
