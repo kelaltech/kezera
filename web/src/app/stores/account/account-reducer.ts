@@ -1,12 +1,12 @@
 import { IAccountResponse } from '../../../apiv/account.apiv'
 
 export type State = {
-  readonly user?: IAccountResponse | null
+  readonly account?: IAccountResponse | null
 }
 
 const userStringFromStorage = window.localStorage.getItem('account')
 export const initialState: State = {
-  user: userStringFromStorage ? JSON.parse(userStringFromStorage) : null
+  account: userStringFromStorage ? JSON.parse(userStringFromStorage) : null
 }
 
 export type Action =
@@ -16,9 +16,9 @@ export type Action =
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'set':
-      return { ...state, user: action.account }
+      return { ...state, account: action.account }
     case 'unset':
-      return { ...state, user: null }
+      return { ...state, account: null }
     default:
       throw Error('Unexpected action')
   }

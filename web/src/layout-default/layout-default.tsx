@@ -31,7 +31,7 @@ export default function LayoutDefault({ error, match }: Props) {
       <Layout
         noShell={ls.includes('no-shell=') ? ls.includes('no-shell=true') : undefined}
         preHeader={promo}
-        headerOptions={{ navigation: layoutDefaultNavigation(!!accountState.user) }}
+        headerOptions={{ navigation: layoutDefaultNavigation(!!accountState.account) }}
         error={error}
         nonContentHeight={164}
       >

@@ -24,7 +24,7 @@ export default function LayoutLogin({ error, match }: Props) {
           noShell={ls.includes('no-shell=') ? ls.includes('no-shell=true') : undefined}
           preHeader={null}
           headerOptions={{
-            navigation: layoutLoginNavigation(!!accountState.user),
+            navigation: layoutLoginNavigation(!!accountState.account),
             className: 'layout-login-header'
           }}
           error={error}

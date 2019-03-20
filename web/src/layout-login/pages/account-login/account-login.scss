@@ -1,0 +1,28 @@
+@import '../../../assets/styles/theme';
+
+.login-image {
+  height: 400px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: all 7s ease-in-out;
+  filter: grayscale(1);
+  transform: scale3d(1, 1, 1);
+
+  &:hover {
+    filter: none;
+    transform: scale3d(1.14, 1.14, 1.14);
+  }
+}
+
+.login-yoga {
+  > .gerami-yoga-2 {
+    padding: 0;
+  }
+}
+
+.login-links {
+  padding: ($space / 2) 0;
+  text-decoration: none;
+  color: $accent;
+}
