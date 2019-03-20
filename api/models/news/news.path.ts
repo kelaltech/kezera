@@ -8,5 +8,7 @@ export const newPaths: SchemaDefinition = {
   description: { type: String, max: 20, required: true },
   article: { type: String },
   likes: [{ type: ObjectId, ref: 'organization' }],
-  comments: [{ type: ObjectId, ref: 'comment' }]
+  comments: [{ type: ObjectId, ref: 'comment' }],
+  pictureId: { type: String },
+  _by: { type: ObjectId, ref: 'organization' }
 }

@@ -6,7 +6,7 @@ type ObjectId = Schema.Types.ObjectId
 
 export interface IComment extends Document {
   _at: Date | number
-  by: ObjectId
+  _by: ObjectId
   body: String
   replies: ObjectId[]
 }

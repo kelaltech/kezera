@@ -17,6 +17,10 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  @media screen and (max-width: 700px) {
+    width: 100%;
+    height: 200px;
+  }
 }
 .news-card-content {
   flex: 50%;
@@ -30,6 +34,9 @@
   letter-spacing: 0.3px;
   margin-top: 5px;
   margin-bottom: 5px;
+  @media screen and (max-width: 700px) {
+    font-size: 1.25em;
+  }
 }
 .news-card-content-desc {
   font-family: 'Helvetica Neue', serif;
@@ -50,12 +57,21 @@
   width: inherit;
   height: auto;
   display: flex;
+  margin-bottom: 5px;
   justify-content: space-evenly;
-
   span {
     width: 30%;
     padding: 3px;
-    //border: 1px solid;
-    //background-color: #717171;
+    text-align: center;
+    transition: 0.5s all;
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.1);
+
+      &:nth-child(1) {
+        color: #f0465a;
+        font-weight: 600;
+      }
+    }
   }
 }
