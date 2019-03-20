@@ -1,5 +1,10 @@
 @import '../../../assets/styles/theme';
 
+.login-image-drama {
+  filter: grayscale(0.75) blur($space / 4) !important;
+  transform: scale3d(1.14, 1.14, 1.14) !important;
+}
+
 .login-image {
   height: 400px;
   background-position: center center;
@@ -11,7 +16,7 @@
 
   &:hover {
     filter: none;
-    transform: scale3d(1.14, 1.14, 1.14);
+    transform: scale3d(1.07, 1.07, 1.07);
   }
 }
 
@@ -24,5 +29,4 @@
 .login-links {
   padding: ($space / 2) 0;
   text-decoration: none;
-  color: $accent;
 }

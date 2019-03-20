@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Anchor,
   Block,
@@ -16,10 +16,17 @@ import {
   useAccountDispatch,
   useAccountState
 } from '../../../app/stores/account/account-provider'
-import logo from '../../../assets/images/login/promo-1.jpg'
+import promo1 from '../../../assets/images/login/promo-1.jpg'
 import './account-login.scss'
 
 export default function AccountLogin() {
+  const [drama, setDrama] = useState(true)
+  const emailRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (emailRef.current) emailRef.current.focus()
+    setDrama(false)
+  }, [])
+
   const userState = useAccountState()
   const userDispatch = useAccountDispatch()
 
@@ -41,7 +48,7 @@ export default function AccountLogin() {
   }
 
   return (
-    <Page top bottom>
+    <Page bottom>
       <Block>
         {userState.account ? (
           <Content size={'L'}>
@@ -66,8 +73,8 @@ export default function AccountLogin() {
             <Yoga maxCol={2} className={'login-yoga'}>
               <div className="top" style={{ overflow: 'hidden' }}>
                 <div
-                  className="login-image"
-                  style={{ backgroundImage: `url(${logo})` }}
+                  className={`${(drama && 'login-image-drama') || ''} login-image`}
+                  style={{ backgroundImage: `url(${promo1})` }}
                 />
               </div>
 
@@ -79,8 +86,8 @@ export default function AccountLogin() {
                 <hr />
 
                 <Block first>
-                  {/* todo: focus on this input when the page opens, if this exists */}
                   <Input
+                    inputRef={emailRef}
                     className={'full-width'}
                     name="email"
                     type="text"
@@ -94,24 +101,20 @@ export default function AccountLogin() {
                     type="password"
                     label="Password"
                   />
-                  <div className={'right'}>
-                    <Anchor className="login-links font-S" to="/reset">
-                      Forgot password?
-                    </Anchor>
-                  </div>
+                  <Anchor className="login-links font-S fg-blackish" to="/reset">
+                    Forgot password?
+                  </Anchor>
                 </Block>
 
                 <Block last className={'padding-top-none'}>
                   <Flex>
+                    <Anchor className="login-links" to="/user/register">
+                      Create New Account
+                    </Anchor>
+                    <FlexSpacer />
                     <Button type="submit" primary>
                       Login
                     </Button>
-                    <FlexSpacer />
-                    <div className={'right'}>
-                      <Anchor className="login-links" to="/user/register">
-                        Create New Account
-                      </Anchor>
-                    </div>
                   </Flex>
                 </Block>
               </form>
