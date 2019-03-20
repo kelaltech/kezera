@@ -16,6 +16,7 @@ import {
   loadNamespaces,
   setLanguage
 } from './lib/language'
+import Translate from './shared/components/translate/translate'
 
 AOS.init() // animation on scroll
 fontawesomeLibrary() // fontawesome icons
@@ -29,10 +30,7 @@ i18n
     fallbackNS: defaultNamespaces,
     interpolation: { escapeValue: false }
   })
-  .then(async () => {
-    await setLanguage()
-    loadNamespaces(defaultNamespaces, defaultLanguage).catch(console.error) // just a backup/fallback
-  })
+  .then(() => setLanguage())
   .catch(console.error)
 
 ReactDOM.render(

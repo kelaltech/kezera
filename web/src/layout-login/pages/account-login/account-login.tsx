@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Anchor,
   Block,
@@ -21,6 +22,8 @@ import promo1 from '../../../assets/images/login/promo-1.jpg'
 import './account-login.scss'
 
 export default function AccountLogin() {
+  const { t } = useTranslation()
+
   const userState = useAccountState()
   const userDispatch = useAccountDispatch()
 
@@ -61,6 +64,7 @@ export default function AccountLogin() {
   return (
     <Page bottom>
       {userState.account ? (
+        // todo
         <Content size={'L'}>
           <Block first last>
             <Flex>
@@ -90,7 +94,7 @@ export default function AccountLogin() {
           <div className={'account-login-form-container'}>
             <form onSubmit={handleLogin}>
               <Block first>
-                <h1>Login</h1>
+                <h1>{t`account:login`}</h1>
               </Block>
               <hr />
 
@@ -98,36 +102,41 @@ export default function AccountLogin() {
                 <Input
                   inputRef={emailRef}
                   className={'full-width'}
-                  name="email"
-                  type="text"
-                  label="Email"
+                  name={'email'}
+                  type={'text'}
+                  label={t`account:email`}
                   disabled={loading}
                 />
               </Block>
               <Block>
                 <Input
                   className={'full-width'}
-                  name="password"
-                  type="password"
-                  label="Password"
+                  name={'password'}
+                  type={'password'}
+                  label={t`account:password`}
                   disabled={loading}
                 />
-                <Anchor className="account-login-links font-S fg-blackish" to="/reset">
-                  Forgot password?
+                <Anchor
+                  className={'account-login-links font-S fg-blackish'}
+                  to={`/login/reset?email=${(emailRef.current &&
+                    emailRef.current.value) ||
+                    ''}`}
+                >
+                  {t`account:forgot-password`}
                 </Anchor>
               </Block>
 
               <Block last className={'padding-top-none'}>
                 <Flex>
-                  <Anchor className="account-login-links" to="/user/register">
-                    Create New Account
+                  <Anchor className={'account-login-links'} to={'/volunteer/register'}>
+                    {t`account:create-new-account`}
                   </Anchor>
                   <FlexSpacer />
                   {loading ? (
                     <Loading className={'padding-none'} />
                   ) : (
-                    <Button type="submit" disabled={loading} primary>
-                      Login
+                    <Button type={'submit'} disabled={loading} primary>
+                      {t`account:login`}
                     </Button>
                   )}
                 </Flex>

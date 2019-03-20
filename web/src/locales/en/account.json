@@ -1,3 +1,7 @@
 {
-  "test": "success"
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "forgot-password": "Forgot Password?",
+  "create-new-account": "Create New Account"
 }

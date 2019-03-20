@@ -1,15 +1,13 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
-import AsyncLoad from '../../shared/components/async-load/async-load'
-
 // routes
-import LayoutDefault from '../../layout-default/layout-default'
-const LayoutLogin = AsyncLoad(() => import('../../layout-login/layout-login'))
-const LayoutOrganization = AsyncLoad(() =>
+const LayoutDefault = lazy(() => import('../../layout-default/layout-default'))
+const LayoutLogin = lazy(() => import('../../layout-login/layout-login'))
+const LayoutOrganization = lazy(() =>
   import('../../layout-organization/layout-organization')
 )
-const NotFound = AsyncLoad(() => import('../../shared/pages/not-found/not-found'))
+const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
 
 export default function AppRoutes() {
   return (
