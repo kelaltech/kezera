@@ -8,10 +8,10 @@ import {
   IAccountRole,
   IAccountStatus
 } from '../../models/account/account.model'
-import { add } from '../../lib/crud'
+import { add, get } from '../../lib/crud'
 
 export class AccountController extends KoaController {
-  async add(
+  async addNew(
     session: ClientSession | undefined,
     data = super.getRequestBody<IAccountRequest>(),
     role: IAccountRole = 'VOLUNTEER',
@@ -26,6 +26,15 @@ export class AccountController extends KoaController {
         return doc
       }
     })
+
+    return accountDocumentToResponse(document)
+  }
+
+  async getMe(
+    session: ClientSession | undefined,
+    user = super.getUser()
+  ): Promise<IAccountResponse> {
+    const document = await get(AccountModel, user._id, { session })
 
     return accountDocumentToResponse(document)
   }

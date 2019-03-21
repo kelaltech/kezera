@@ -41,6 +41,12 @@ function AccountLogin() {
     if (emailRef.current) emailRef.current.focus()
   }, [])
 
+  const handleLogin = async (e: any): Promise<void> => {
+    e.preventDefault()
+    setLoading(true)
+    e.target.submit()
+  }
+
   const handleLogout = async (): Promise<void> => {
     setLoading(true)
     userDispatch(await logout())
@@ -91,7 +97,7 @@ function AccountLogin() {
               <form
                 method={'POST'}
                 action={`/api/account/login?${qs.stringify(query)}`}
-                onSubmit={() => setLoading(true)}
+                onSubmit={handleLogin}
               >
                 <Block first>
                   <h1>{t`account:login`}</h1>
@@ -103,7 +109,7 @@ function AccountLogin() {
                     inputRef={emailRef}
                     className={'full-width'}
                     name={'email'}
-                    type={'text'}
+                    type={'email'}
                     label={t`account:email`}
                     disabled={loading}
                   />

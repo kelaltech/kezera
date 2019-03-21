@@ -9,8 +9,11 @@ export const accountRouter = new Router({ prefix: '/api/account' })
 
 /* GENERAL */
 
-// POST /api/account/add
-accountRouter.post('/add', handle(AccountController, (c, s) => c.add(s)))
+// POST /api/account/add // todo: temp: remove this later
+accountRouter.post('/new', handle(AccountController, (c, s) => c.addNew(s)))
+
+// GET /api/account/me
+accountRouter.get('/me', handle(AccountController, (c, s) => c.getMe(s)))
 
 /* ACCOUNT RESET */
 

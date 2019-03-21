@@ -7,7 +7,7 @@ const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
 const AccountLogin = lazy(() => import('../pages/account-login/account-login'))
 const AccountReset = lazy(() => import('../pages/account-reset/account-reset'))
 
-export default function LayoutDefaultRoutes({ prefix: p }: { prefix: string }) {
+export default function LayoutLoginRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
 
   return (
