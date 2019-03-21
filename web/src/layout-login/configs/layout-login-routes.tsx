@@ -1,6 +1,7 @@
 import React, { lazy } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { useAccountState } from '../../app/stores/account/account-provider'
+import * as qs from 'qs'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
@@ -13,11 +14,11 @@ export default function LayoutLoginRoutes({ prefix: p }: { prefix: string }) {
   return (
     <Switch>
       <Redirect
-        from={`${p}/account`}
+        from={`${p}/redirect/account`}
         to={
           account
             ? `/${account.role.toLowerCase()}/account`
-            : '/login?continue=/login/account'
+            : `/login?${qs.stringify({ continue: '/login/account' })}`
         }
       />
 

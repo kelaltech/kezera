@@ -13,7 +13,7 @@ import {
   Page,
   Warning
 } from 'gerami'
-import qs from 'qs'
+import * as qs from 'qs'
 
 import { logout } from '../../../app/stores/account/account-actions'
 import {
@@ -31,6 +31,7 @@ function AccountLogin() {
 
   const [drama, setDrama] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('')
 
   const emailRef = useRef<HTMLInputElement>(null)
 
@@ -62,7 +63,7 @@ function AccountLogin() {
               <span>
                 {t`account:logged-in-as`}
                 <br />
-                <Anchor to="/login/account">
+                <Anchor to="/login/redirect/account">
                   {userState.account.displayName} ({userState.account.phoneNumber})
                 </Anchor>
               </span>
@@ -112,6 +113,8 @@ function AccountLogin() {
                     type={'email'}
                     label={t`account:email`}
                     disabled={loading}
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                   />
                 </Block>
                 <Block>
@@ -124,9 +127,7 @@ function AccountLogin() {
                   />
                   <Anchor
                     className={'account-login-links font-S fg-blackish'}
-                    to={`/login/reset?email=${(emailRef.current &&
-                      emailRef.current.value) ||
-                      ''}`}
+                    to={`/login/reset?${qs.stringify({ email })}`}
                   >
                     {t`account:forgot-password`}
                   </Anchor>
@@ -134,7 +135,10 @@ function AccountLogin() {
 
                 <Block last className={'padding-top-none'}>
                   <Flex>
-                    <Anchor className={'account-login-links'} to={'/volunteer/register'}>
+                    <Anchor
+                      className={'account-login-links'}
+                      to={`/volunteer/register?${qs.stringify({ email })}`}
+                    >
                       {t`account:create-new-account`}
                     </Anchor>
                     <FlexSpacer />
