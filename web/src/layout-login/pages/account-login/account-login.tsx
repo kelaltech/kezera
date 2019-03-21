@@ -12,7 +12,7 @@ import {
   Page,
   Warning
 } from 'gerami'
-import qs from 'qs'
+import * as qs from 'qs'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { logout } from '../../../app/stores/account/account-actions'
