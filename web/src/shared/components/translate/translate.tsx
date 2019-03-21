@@ -7,15 +7,17 @@ import {
   defaultNamespaces,
   getLanguage,
   Language,
-  loadNamespaces,
   Namespace,
   setLanguage
 } from '../../../lib/language'
 
+// todo: turn these into the args for the new HOC
 interface Props extends PropsWithChildren<{}> {
   namespaces: Namespace[] // defaultNamespaces are always included by default
+  // todo: add an option to disable the default defaultNamespace inclusion
 }
 
+// todo: turn this into a HOC (to support translation namespaces per page, nicely)
 function Translate({ children, namespaces }: Props) {
   const { i18n } = useTranslation()
 
