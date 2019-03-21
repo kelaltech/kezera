@@ -5,9 +5,8 @@ export type Language = 'am' | 'en'
 export const supportedLanguages = ['am', 'en']
 export const defaultLanguage: Language = 'en'
 
-export type Namespace = 'common' | 'account'
-export const supportedNamespaces = ['common', 'account']
-export const allNamespaces = ['common', 'account']
+export type Namespace = 'common' | 'account' | 'not-found'
+export const supportedNamespaces = ['common', 'account', 'not-found']
 export const defaultNamespaces: Namespace[] = ['common']
 
 export async function checkLanguage(lng: string): Promise<void> {

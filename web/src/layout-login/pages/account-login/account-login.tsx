@@ -32,6 +32,7 @@ function AccountLogin() {
   const [drama, setDrama] = useState(true)
   const [submitting, setSubmitting] = useState(false)
 
+  const [email, setEmail] = useState('')
   const emailRef = useRef<HTMLInputElement>(null)
 
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true }) || {}
@@ -113,6 +114,8 @@ function AccountLogin() {
                       type={'email'}
                       label={t`account:email`}
                       disabled={submitting}
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
                     />
                   </Block>
                   <Block>
@@ -125,9 +128,7 @@ function AccountLogin() {
                     />
                     <Anchor
                       className={'account-login-links font-S fg-blackish'}
-                      to={`/login/reset?email=${(emailRef.current &&
-                        emailRef.current.value) ||
-                        ''}`}
+                      to={`/login/reset/start?${qs.stringify({ email })}`}
                     >
                       {t`account:forgot-password`}
                     </Anchor>
@@ -137,7 +138,7 @@ function AccountLogin() {
                     <Flex>
                       <Anchor
                         className={'account-login-links'}
-                        to={'/volunteer/register'}
+                        to={`/volunteer/register?${qs.stringify({ email })}`}
                       >
                         {t`account:create-new-account`}
                       </Anchor>

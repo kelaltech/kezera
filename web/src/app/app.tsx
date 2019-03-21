@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next'
 
 import AppRoutes from './configs/app-routes'
 import AppProviders from './configs/app-providers'
-import { allNamespaces } from '../lib/language'
+import { supportedNamespaces } from '../lib/language'
 
 function App() {
   return (
@@ -16,4 +16,4 @@ function App() {
   )
 }
 
-export default withTranslation(allNamespaces)(App)
+export default withTranslation(supportedNamespaces)(App) // for lib/languages' _
