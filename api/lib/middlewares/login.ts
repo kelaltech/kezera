@@ -7,7 +7,7 @@ export function login({
   successRedirectQueryName = 'continue',
   defaultSuccessRedirect = '/',
   failureRedirectPath = '/login',
-  failureRedirectQuery = { problem: { code: 'WRONG_CREDENTIALS' } }
+  failureRedirectQuery = { success: false, status: 401, code: 'WRONG_CREDENTIALS' }
 }: {
   strategyName?: string
   successRedirectQueryName?: string

@@ -18,14 +18,6 @@ export async function reloadAccount(silentFail = false): Promise<Action> {
   }
 }
 
-export async function login(email: string, password: string): Promise<Action> {
-  await Axios.post('/api/account/login', {
-    email,
-    password
-  })
-  return reloadAccount()
-}
-
 export async function logout(): Promise<Action> {
   await Axios.post('/api/account/logout')
 

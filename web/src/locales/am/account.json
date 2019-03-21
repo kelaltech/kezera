@@ -3,5 +3,8 @@
   "email": "ኢሜይል",
   "password": "የይለፍ ቃል",
   "forgot-password": "የይለፍ ቃልዎን ረሱት?",
-  "create-new-account": "አዲስ መታወቂያ ማውጫ"
+  "create-new-account": "አዲስ መታወቂያ ማውጫ",
+  "wrong-credentials": "ያስገቡት መለያ የተሳሳተ ነው።",
+  "logged-in-as": "የገቡበት መላያ፦",
+  "logout": "መውጫ"
 }

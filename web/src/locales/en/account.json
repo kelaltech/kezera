@@ -3,5 +3,8 @@
   "email": "Email",
   "password": "Password",
   "forgot-password": "Forgot Password?",
-  "create-new-account": "Create New Account"
+  "create-new-account": "Create New Account",
+  "wrong-credentials": "You've entered wrong credentials.",
+  "logged-in-as": "You are logged in as:",
+  "logout": "መውጫ"
 }
