@@ -1,8 +1,6 @@
 import { IAccountRole, IAccountStatus } from '../../models/account/account.model'
 
 export type IAccountRequest = {
-  status: IAccountStatus
-
   email: string
   password: string
 
