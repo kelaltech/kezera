@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Anchor, Block, Button, Card, Content, Input, Page, Yoga } from 'gerami'
 
+import './request-card.scss'
 import logo from '../../../assets/images/logo-128.png'
 
 export interface IRequestCardProps {
@@ -17,43 +18,59 @@ export default class requestCard extends Component<IRequestCardProps, {}> {
     const { className, title, startDate, endDate, description, image } = this.props
     return (
       <Page>
-        <Block>
-          <Card size={'M'} className={'top'}>
+        <Card size={'M'}>
+          <Yoga maxCol={2}>
             <Block first className={'request-title'}>
-              <h1>{title}</h1>
+              <h4>{title}</h4>
             </Block>
-            <hr />
-            <Block className={'request-image'}>
+            <Block>
               <div
-                className={'top donation-image'}
+                className={'top request-card-image'}
                 style={{ backgroundImage: `url(${image})` }}
               />
             </Block>
-            <Block className={'request-description'}>{description}</Block>
+          </Yoga>
+          <hr />
+          <Block className={'request-image'}>
+            <div
+              className={'top donation-image'}
+              style={{ backgroundImage: `url(${image})` }}
+            />
+          </Block>
+          <Block className={'request-description'}>{description}</Block>
 
-            <Yoga maxCol={3}>
-              <Block>
-                <label>{startDate}</label>
-              </Block>
-              <label>to</label>
-              <Block>
-                <label>{endDate}</label>
-              </Block>
-            </Yoga>
-
-            <br />
-            <Block className={'right'}>
-              <Button type="submit" primary>
-                Register
-              </Button>
+          <hr />
+          <Yoga maxCol={2}>
+            <Block>
+              <h5>Start Date/Time</h5>
             </Block>
-            <Block last className={'right'}>
-              <Anchor className={'full-width'} to="/login">
-                Login instead
+            <Block>
+              <h5>End Date/Time</h5>
+            </Block>
+          </Yoga>
+
+          <Yoga maxCol={2}>
+            <Block>
+              <label>{startDate}</label>
+            </Block>
+            <Block>
+              <label>{endDate}</label>
+            </Block>
+          </Yoga>
+          <hr />
+          <Yoga maxCol={2}>
+            <Block last className={'left'}>
+              <Anchor className={'full-width'} to={'/detail'}>
+                Details
               </Anchor>
             </Block>
-          </Card>
-        </Block>
+            <Block className={'right'}>
+              <Button type="submit" primary>
+                Donate
+              </Button>
+            </Block>
+          </Yoga>
+        </Card>
       </Page>
     )
   }

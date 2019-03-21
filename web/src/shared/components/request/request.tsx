@@ -2,19 +2,49 @@ import React from 'react'
 import { Block, Content, Page, Yoga } from 'gerami'
 
 import RequestCard from '../../../shared/components/request/request-card'
-import NewsTemp from '../../../assets/images/news-temp.jpg'
+import promo from '../../../assets/images/login/promo-1.jpg'
 
 export default function Request() {
   const data = [
     {
       title: 'Teaching of Disabled Children',
       description:
-        'The president has promised 3 percent growth for the next decade, but a new\n' +
-        '              report indicates that won’t happen without a big infrastructure bill, more\n' +
+        'The president has promise decade, but a new' +
+        '               without a big infrastructure bill, more' +
         '              tax cuts and additional deregulation, the House.',
-      image: `${NewsTemp}`,
-      startDate: 5 / 10 / 2019,
-      endDate: 5 / 30 / 2019
+      image: `${promo}`,
+      startDate: 2019,
+      endDate: 2021
+    },
+    {
+      title: 'Teaching of Disabled Children',
+      description:
+        'The president has promise decade, but a new' +
+        '               without a big infrastructure bill, more' +
+        '              tax cuts and additional deregulation, the House.',
+      image: `${promo}`,
+      startDate: 2019,
+      endDate: 2021
+    },
+    {
+      title: 'Teaching of Disabled Children',
+      description:
+        'The president has promise decade, but a new' +
+        '               without a big infrastructure bill, more' +
+        '              tax cuts and additional deregulation, the House.',
+      image: `${promo}`,
+      startDate: 2019,
+      endDate: 2021
+    },
+    {
+      title: 'Teaching of Disabled Children',
+      description:
+        'The president has promise decade, but a new' +
+        '               without a big infrastructure bill, more' +
+        '              tax cuts and additional deregulation, the House.',
+      image: promo,
+      startDate: 2019,
+      endDate: 2021
     }
   ]
   return (
