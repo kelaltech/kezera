@@ -14,13 +14,16 @@ export const accountPaths: SchemaDefinition = {
     required: true,
     maxlength: 50,
     validate: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-    index: true
+    index: true,
+    unique: true
   },
   password: { type: String, setOn: Date, required: true }, // the hash
 
   displayName: { type: String, required: true, maxlength: 50 },
   phoneNumber: {
     type: String,
-    validate: /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/
+    validate: /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/,
+    index: true,
+    unique: true
   }
 }

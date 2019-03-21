@@ -9,6 +9,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
+    "temp:create-account": "run-s prod && node dist/modules/account/create-account.temp.js",
     "all": "run-s build \"run-p web dev watch\"",
     "web": "cd web & run-s start",
     "android": "cd mobile & run-s android",
