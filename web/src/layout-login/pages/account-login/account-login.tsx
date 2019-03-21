@@ -64,7 +64,7 @@ function AccountLogin() {
                 <span>
                   {t`account:logged-in-as`}
                   <br />
-                  <Anchor to="/login/account">
+                  <Anchor to="/login/redirect/account">
                     {userState.account.displayName} ({userState.account.phoneNumber})
                   </Anchor>
                 </span>

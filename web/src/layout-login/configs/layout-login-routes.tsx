@@ -19,6 +19,7 @@ export default function LayoutLoginRoutes({ prefix: p }: { prefix: string }) {
   return (
     <Switch>
       <Redirect
+        exact
         from={`${p}/redirect/account`}
         to={
           account
