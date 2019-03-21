@@ -1,9 +1,14 @@
 import { Context } from 'koa'
-// todo: import { IUser } from '../models/account/account.model'
-type IUser = any // until it gets defined
+import { Document } from 'mongoose'
+
+import { IAccount } from '../models/account/account.model'
 
 export class KoaController {
-  constructor(protected readonly ctx?: Context) {}
+  constructor(private readonly ctx?: Context) {}
+
+  protected getContext(): Context | undefined {
+    return this.ctx
+  }
 
   protected getParams<Type extends { [param: string]: string }>(): Type {
     return (this.ctx && this.ctx.params) || {}
@@ -25,7 +30,7 @@ export class KoaController {
     return this.ctx && this.ctx.request.body
   }
 
-  protected getUser(): IUser | null {
+  protected getUser(): Document & IAccount | null {
     return this.ctx && this.ctx.state.user
   }
 }
