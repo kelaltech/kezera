@@ -34,7 +34,7 @@ export class AccountController extends KoaController {
     session: ClientSession | undefined,
     user = super.getUser()
   ): Promise<IAccountResponse> {
-    const document = await get(AccountModel, user._id, { session })
+    const document = await get(AccountModel, user!._id, { session })
 
     return accountDocumentToResponse(document)
   }
