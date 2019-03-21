@@ -13,10 +13,9 @@ import './assets/styles/index.scss'
 import {
   defaultLanguage,
   defaultNamespaces,
-  loadNamespaces,
+  getLanguage,
   setLanguage
 } from './lib/language'
-import Translate from './shared/components/translate/translate'
 
 AOS.init() // animation on scroll
 fontawesomeLibrary() // fontawesome icons
@@ -25,10 +24,11 @@ initReactFastclick() // touch events
 i18n
   .use(initReactI18next)
   .init({
-    lng: defaultLanguage,
+    lng: getLanguage(),
     fallbackLng: defaultLanguage,
     fallbackNS: defaultNamespaces,
-    interpolation: { escapeValue: false }
+    interpolation: { escapeValue: false },
+    parseMissingKeyHandler: () => ''
   })
   .then(() => setLanguage())
   .catch(console.error)
