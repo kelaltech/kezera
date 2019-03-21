@@ -37,7 +37,8 @@ export default function EventCard() {
         <p className={'EventDescription'}>
           {' '}
           {EventDescription.Description.substr(0, 90)}...
-          <Link to="/events/:_id">view</Link>{' '}
+          {/* //todo add id */}
+          <Link to="/organization/event/someId">view</Link>{' '}
         </p>
       </div>
       <div className="EventField ">

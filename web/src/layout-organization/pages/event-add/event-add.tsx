@@ -13,12 +13,12 @@ import {
 } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TextField from '@material-ui/core/TextField'
-import _ from '../../../lib/language'
+
 export default function EventAdd() {
   return (
     <Page>
       <Block className={'center'}>
-        <Title size="XXL"> {_`Create Event`} </Title>
+        <Title size="XXL"> Create Event </Title>
       </Block>
       <Content size={'L'}>
         <Block first>
@@ -93,8 +93,7 @@ export default function EventAdd() {
         </Yoga>
         <Block last className={'right'}>
           <Button primary={true} className={''}>
-            {' '}
-            Create{' '}
+            Create
           </Button>
         </Block>
       </Content>
