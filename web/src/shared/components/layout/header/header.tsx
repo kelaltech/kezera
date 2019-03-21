@@ -1,8 +1,8 @@
 import React, { CSSProperties, ReactNode, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Anchor, Block, Button, FlexSpacer, Image, MenuDrop, MenuItem } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import useLocale from '../../../hooks/use-locale/use-locale'
 import { INavigationItem } from './interfaces'
 import logo128 from '../../../../assets/images/logo-128.png'
 import './header.scss'
@@ -30,124 +30,126 @@ export default function Header({
   overrideRightNode,
   style
 }: IHeaderProps) {
-  const { t } = useTranslation()
+  const { loading, t } = useLocale([], { loading: null })
 
   const [isNavOpen, setIsNavOpen] = useState(false)
 
   return (
-    <header className={`header ${className || ''}`} style={style}>
-      <div className="header-shade-area">
-        <Block className="header-block bg-white flex">
-          {overrideLeftNode === null
-            ? undefined
-            : overrideLeftNode || (
-                <div>
-                  {leftImage === null
-                    ? undefined
-                    : leftImage || (
-                        <Image
-                          src={logo128}
-                          className="header-logo middle"
-                          to="/"
-                          title={t`app-name` + ' | ' + t`Homepage`}
-                        />
-                      )}
-                  {leftSpace === null
-                    ? undefined
-                    : leftSpace || (
-                        <span className="header-separator middle light">|</span>
-                      )}
-                  {leftTitle === null
-                    ? undefined
-                    : leftTitle || (
+    loading || (
+      <header className={`header ${className || ''}`} style={style}>
+        <div className="header-shade-area">
+          <Block className="header-block bg-white flex">
+            {overrideLeftNode === null
+              ? undefined
+              : overrideLeftNode || (
+                  <div>
+                    {leftImage === null
+                      ? undefined
+                      : leftImage || (
+                          <Image
+                            src={logo128}
+                            className="header-logo middle"
+                            to="/"
+                            title={t`app-name` + ' | ' + t`Homepage`}
+                          />
+                        )}
+                    {leftSpace === null
+                      ? undefined
+                      : leftSpace || (
+                          <span className="header-separator middle light">|</span>
+                        )}
+                    {leftTitle === null
+                      ? undefined
+                      : leftTitle || (
+                          <Anchor
+                            to="/"
+                            className="header-wordmark middle"
+                            title={t`app-name` + ' | ' + t`Homepage`}
+                          >
+                            <span className="fg-primary bold">{t`app-name`}</span>
+                          </Anchor>
+                        )}
+                  </div>
+                )}
+
+            {centerNode === null ? undefined : centerNode || <FlexSpacer />}
+
+            {overrideRightNode === null
+              ? undefined
+              : overrideRightNode || (
+                  <div className="header-nav-max-view">
+                    {navigation &&
+                      navigation.map((navRoute, i) => (
                         <Anchor
-                          to="/"
-                          className="header-wordmark middle"
-                          title={t`app-name` + ' | ' + t`Homepage`}
+                          key={i}
+                          to={navRoute.to}
+                          className="header-nav-links middle"
+                          title={navRoute.name}
                         >
-                          <span className="fg-primary bold">{t`app-name`}</span>
+                          <div className="flex">
+                            <span className="center">
+                              <FontAwesomeIcon icon={navRoute.icon} className="font-S" />
+                              <span className="padding-horizontal-normal" />
+                              {navRoute.shortName || navRoute.name}
+                            </span>
+                          </div>
                         </Anchor>
-                      )}
-                </div>
-              )}
+                      ))}
+                  </div>
+                )}
 
-          {centerNode === null ? undefined : centerNode || <FlexSpacer />}
-
-          {overrideRightNode === null
-            ? undefined
-            : overrideRightNode || (
-                <div className="header-nav-max-view">
-                  {navigation &&
-                    navigation.map((navRoute, i) => (
-                      <Anchor
-                        key={i}
-                        to={navRoute.to}
-                        className="header-nav-links middle"
-                        title={navRoute.name}
-                      >
-                        <div className="flex">
-                          <span className="center">
-                            <FontAwesomeIcon icon={navRoute.icon} className="font-S" />
-                            <span className="padding-horizontal-normal" />
-                            {navRoute.shortName || navRoute.name}
-                          </span>
-                        </div>
-                      </Anchor>
-                    ))}
-                </div>
-              )}
-
-          {overrideRightNode !== undefined || !navigation || !navigation.length ? (
-            undefined
-          ) : (
-            <div className="header-nav-min-view">
-              <Button
-                className="header-nav-btn middle"
-                onClick={() => setIsNavOpen(true)}
-              >
-                <FontAwesomeIcon icon="bars" />
-              </Button>
-            </div>
-          )}
-        </Block>
-      </div>
-
-      {overrideRightNode !== undefined || !navigation || !navigation.length ? (
-        undefined
-      ) : (
-        <div className="header-nav-drop-vault header-nav-min-view">
-          <MenuDrop
-            className="header-nav-drop"
-            open={isNavOpen}
-            onClose={() => setIsNavOpen(false)}
-            align="right"
-          >
-            <Block className="font-S">
-              <Anchor
-                to="/"
-                title={t`app-name` + ' | ' + t`Homepage`}
-                style={{ textDecoration: 'none' }}
-                onClick={() => setIsNavOpen(false)}
-              >
-                <span className="fg-primary bold">{t`app-name`}</span>
-              </Anchor>
-            </Block>
-            {navigation &&
-              navigation.map((navRoute, i) => (
-                <MenuItem
-                  key={i}
-                  to={navRoute.to}
-                  onClick={() => setIsNavOpen(false)}
-                  className="header-nav-drop-items"
+            {overrideRightNode !== undefined || !navigation || !navigation.length ? (
+              undefined
+            ) : (
+              <div className="header-nav-min-view">
+                <Button
+                  className="header-nav-btn middle"
+                  onClick={() => setIsNavOpen(true)}
                 >
-                  <FontAwesomeIcon icon={navRoute.icon} />
-                  <span className="padding-horizontal-normal" />
-                  {navRoute.name}
-                </MenuItem>
-              ))}
-          </MenuDrop>
+                  <FontAwesomeIcon icon="bars" />
+                </Button>
+              </div>
+            )}
+          </Block>
         </div>
-      )}
-    </header>
+
+        {overrideRightNode !== undefined || !navigation || !navigation.length ? (
+          undefined
+        ) : (
+          <div className="header-nav-drop-vault header-nav-min-view">
+            <MenuDrop
+              className="header-nav-drop"
+              open={isNavOpen}
+              onClose={() => setIsNavOpen(false)}
+              align="right"
+            >
+              <Block className="font-S">
+                <Anchor
+                  to="/"
+                  title={t`app-name` + ' | ' + t`Homepage`}
+                  style={{ textDecoration: 'none' }}
+                  onClick={() => setIsNavOpen(false)}
+                >
+                  <span className="fg-primary bold">{t`app-name`}</span>
+                </Anchor>
+              </Block>
+              {navigation &&
+                navigation.map((navRoute, i) => (
+                  <MenuItem
+                    key={i}
+                    to={navRoute.to}
+                    onClick={() => setIsNavOpen(false)}
+                    className="header-nav-drop-items"
+                  >
+                    <FontAwesomeIcon icon={navRoute.icon} />
+                    <span className="padding-horizontal-normal" />
+                    {navRoute.name}
+                  </MenuItem>
+                ))}
+            </MenuDrop>
+          </div>
+        )}
+      </header>
+    )
   )
 }

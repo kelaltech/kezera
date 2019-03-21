@@ -10,13 +10,7 @@ import App from './app/app'
 import fontawesomeLibrary from './assets/scripts/fontawesome-library'
 import * as serviceWorker from './assets/scripts/service-worker'
 import './assets/styles/index.scss'
-import {
-  defaultLanguage,
-  defaultNamespaces,
-  loadNamespaces,
-  setLanguage
-} from './lib/language'
-import Translate from './shared/components/translate/translate'
+import { defaultLanguage, defaultNamespaces, setLanguage } from './lib/language'
 
 AOS.init() // animation on scroll
 fontawesomeLibrary() // fontawesome icons
@@ -28,7 +22,8 @@ i18n
     lng: defaultLanguage,
     fallbackLng: defaultLanguage,
     fallbackNS: defaultNamespaces,
-    interpolation: { escapeValue: false }
+    interpolation: { escapeValue: false },
+    parseMissingKeyHandler: () => ''
   })
   .then(() => setLanguage())
   .catch(console.error)
