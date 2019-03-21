@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Anchor, Block, Button, Card, Content, Input, Page, Yoga } from 'gerami'
+import { Anchor, Block, Button, Card, Image, Page, Yoga } from 'gerami'
 
 import './request-card.scss'
-import logo from '../../../assets/images/logo-128.png'
 
 export interface IRequestCardProps {
+  _id: string
   className?: string
   title: string
   startDate: Number
@@ -13,9 +13,9 @@ export interface IRequestCardProps {
   image: string
 }
 
-export default class requestCard extends Component<IRequestCardProps, {}> {
+export default class RequestCard extends Component<IRequestCardProps, {}> {
   render() {
-    const { className, title, startDate, endDate, description, image } = this.props
+    const { _id, className, title, startDate, endDate, description, image } = this.props
     return (
       <Page>
         <Card size={'M'}>
@@ -24,19 +24,10 @@ export default class requestCard extends Component<IRequestCardProps, {}> {
               <h4>{title}</h4>
             </Block>
             <Block>
-              <div
-                className={'top request-card-image'}
-                style={{ backgroundImage: `url(${image})` }}
-              />
+              <Image src={image} className={'request-card-image'} />
             </Block>
           </Yoga>
           <hr />
-          <Block className={'request-image'}>
-            <div
-              className={'top donation-image'}
-              style={{ backgroundImage: `url(${image})` }}
-            />
-          </Block>
           <Block className={'request-description'}>{description}</Block>
 
           <hr />
@@ -60,7 +51,7 @@ export default class requestCard extends Component<IRequestCardProps, {}> {
           <hr />
           <Yoga maxCol={2}>
             <Block last className={'left'}>
-              <Anchor className={'full-width'} to={'/detail'}>
+              <Anchor className={'full-width'} to={'/organization/request/' + _id}>
                 Details
               </Anchor>
             </Block>

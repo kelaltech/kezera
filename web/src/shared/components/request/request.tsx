@@ -1,5 +1,5 @@
 import React from 'react'
-import { Block, Content, Page, Yoga } from 'gerami'
+import { Page, Yoga } from 'gerami'
 
 import RequestCard from '../../../shared/components/request/request-card'
 import promo from '../../../assets/images/login/promo-1.jpg'
@@ -7,6 +7,7 @@ import promo from '../../../assets/images/login/promo-1.jpg'
 export default function Request() {
   const data = [
     {
+      _id: '1',
       title: 'Teaching of Disabled Children',
       description:
         'The president has promise decade, but a new' +
@@ -17,6 +18,7 @@ export default function Request() {
       endDate: 2021
     },
     {
+      _id: '2',
       title: 'Teaching of Disabled Children',
       description:
         'The president has promise decade, but a new' +
@@ -27,6 +29,7 @@ export default function Request() {
       endDate: 2021
     },
     {
+      _id: '3',
       title: 'Teaching of Disabled Children',
       description:
         'The president has promise decade, but a new' +
@@ -37,6 +40,7 @@ export default function Request() {
       endDate: 2021
     },
     {
+      _id: '4',
       title: 'Teaching of Disabled Children',
       description:
         'The president has promise decade, but a new' +
@@ -51,13 +55,7 @@ export default function Request() {
     <Page>
       <Yoga maxCol={2}>
         {data.map(request => (
-          <RequestCard
-            image={request.image}
-            title={request.title}
-            description={request.description}
-            startDate={request.startDate}
-            endDate={request.endDate}
-          />
+          <RequestCard {...request} />
         ))}
       </Yoga>
     </Page>
