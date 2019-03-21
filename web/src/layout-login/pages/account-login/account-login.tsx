@@ -10,10 +10,12 @@ import {
   Image,
   Input,
   Loading,
-  Page
+  Page,
+  Warning
 } from 'gerami'
+import qs from 'qs'
 
-import { login, logout } from '../../../app/stores/account/account-actions'
+import { logout } from '../../../app/stores/account/account-actions'
 import {
   useAccountDispatch,
   useAccountState
@@ -21,7 +23,7 @@ import {
 import promo1 from '../../../assets/images/login/promo-1.jpg'
 import './account-login.scss'
 
-export default function AccountLogin() {
+function AccountLogin() {
   const { t } = useTranslation()
 
   const userState = useAccountState()
@@ -32,119 +34,126 @@ export default function AccountLogin() {
 
   const emailRef = useRef<HTMLInputElement>(null)
 
+  const query = qs.parse(window.location.search, { ignoreQueryPrefix: true }) || {}
+
   useEffect(() => {
     setDrama(false)
-
     if (emailRef.current) emailRef.current.focus()
   }, [])
 
-  const handleLogin = async (event: any): Promise<void> => {
-    event.preventDefault()
+  const handleLogin = async (e: any): Promise<void> => {
+    e.preventDefault()
     setLoading(true)
-
-    try {
-      const action = await login(
-        event.target['email'].value,
-        event.target['password'].value
-      )
-      userDispatch(action)
-    } catch (e) {
-      // todo: handle e
-      console.error(e)
-      setLoading(false)
-    }
+    e.target.submit()
   }
 
   const handleLogout = async (): Promise<void> => {
-    // todo: loading
+    setLoading(true)
     userDispatch(await logout())
-    // todo: then what? catch, error handling
+    setLoading(false)
   }
 
   return (
-    <Page bottom>
+    <Page bottom={'adaptive'}>
       {userState.account ? (
-        // todo
-        <Content size={'L'}>
+        <Content size={'XL'}>
           <Block first last>
             <Flex>
               <span>
-                You are already logged in as:
+                {t`account:logged-in-as`}
                 <br />
-                <Anchor to="/account">
-                  {userState.account!.displayName} ({userState.account!.email})
+                <Anchor to="/login/account">
+                  {userState.account.displayName} ({userState.account.phoneNumber})
                 </Anchor>
               </span>
               <FlexSpacer />
-              <Button onClick={handleLogout} primary>
-                Logout
-              </Button>
+              {loading ? (
+                <Loading className={'padding-none'} />
+              ) : (
+                <Button onClick={handleLogout} disabled={loading} primary>
+                  {t`account:logout`}
+                </Button>
+              )}
             </Flex>
           </Block>
         </Content>
       ) : (
-        <Content size={'XL'}>
-          <div className={'account-login-image-container'}>
-            <Image
-              src={promo1}
-              className={`${(drama && 'account-login-image-drama') ||
-                ''} account-login-image`}
-            />
-          </div>
-          <div className={'account-login-form-container'}>
-            <form onSubmit={handleLogin}>
-              <Block first>
-                <h1>{t`account:login`}</h1>
-              </Block>
-              <hr />
+        <>
+          {query.success == 'false' &&
+            (query.status == '401' || query.code == 'WRONG_CREDENTIALS') && (
+              <Content size={'XL'} className={'margin-bottom-big'}>
+                <Warning shy problem={t`account:wrong-credentials`} />
+              </Content>
+            )}
+          <Content size={'XL'}>
+            <div className={'account-login-image-container'}>
+              <Image
+                src={promo1}
+                className={`${(drama && 'account-login-image-drama') ||
+                  ''} account-login-image`}
+              />
+            </div>
+            <div className={'account-login-form-container'}>
+              <form
+                method={'POST'}
+                action={`/api/account/login?${qs.stringify(query)}`}
+                onSubmit={handleLogin}
+              >
+                <Block first>
+                  <h1>{t`account:login`}</h1>
+                </Block>
+                <hr />
 
-              <Block first>
-                <Input
-                  inputRef={emailRef}
-                  className={'full-width'}
-                  name={'email'}
-                  type={'text'}
-                  label={t`account:email`}
-                  disabled={loading}
-                />
-              </Block>
-              <Block>
-                <Input
-                  className={'full-width'}
-                  name={'password'}
-                  type={'password'}
-                  label={t`account:password`}
-                  disabled={loading}
-                />
-                <Anchor
-                  className={'account-login-links font-S fg-blackish'}
-                  to={`/login/reset?email=${(emailRef.current &&
-                    emailRef.current.value) ||
-                    ''}`}
-                >
-                  {t`account:forgot-password`}
-                </Anchor>
-              </Block>
-
-              <Block last className={'padding-top-none'}>
-                <Flex>
-                  <Anchor className={'account-login-links'} to={'/volunteer/register'}>
-                    {t`account:create-new-account`}
+                <Block first>
+                  <Input
+                    inputRef={emailRef}
+                    className={'full-width'}
+                    name={'email'}
+                    type={'email'}
+                    label={t`account:email`}
+                    disabled={loading}
+                  />
+                </Block>
+                <Block>
+                  <Input
+                    className={'full-width'}
+                    name={'password'}
+                    type={'password'}
+                    label={t`account:password`}
+                    disabled={loading}
+                  />
+                  <Anchor
+                    className={'account-login-links font-S fg-blackish'}
+                    to={`/login/reset?email=${(emailRef.current &&
+                      emailRef.current.value) ||
+                      ''}`}
+                  >
+                    {t`account:forgot-password`}
                   </Anchor>
-                  <FlexSpacer />
-                  {loading ? (
-                    <Loading className={'padding-none'} />
-                  ) : (
-                    <Button type={'submit'} disabled={loading} primary>
-                      {t`account:login`}
-                    </Button>
-                  )}
-                </Flex>
-              </Block>
-            </form>
-          </div>
-        </Content>
+                </Block>
+
+                <Block last className={'padding-top-none'}>
+                  <Flex>
+                    <Anchor className={'account-login-links'} to={'/volunteer/register'}>
+                      {t`account:create-new-account`}
+                    </Anchor>
+                    <FlexSpacer />
+                    {loading ? (
+                      <Loading className={'padding-none'} />
+                    ) : (
+                      <Button type={'submit'} disabled={loading} primary>
+                        {t`account:login`}
+                      </Button>
+                    )}
+                  </Flex>
+                </Block>
+              </form>
+            </div>
+          </Content>
+        </>
       )}
     </Page>
   )
 }
+
+export default AccountLogin

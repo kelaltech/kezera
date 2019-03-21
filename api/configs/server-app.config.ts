@@ -3,6 +3,7 @@ import * as KoaPassport from 'koa-passport'
 import * as path from 'path'
 
 import { KeyModel } from '../models/key/key.model'
+import { accountRouter } from '../modules/account/account.router'
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
@@ -17,7 +18,7 @@ export const serverAppConfig: IServerAppConfig = {
 
   models: [KeyModel],
 
-  routers: [],
+  routers: [accountRouter],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],
   spaFileRelativePath: path.join('web', 'build', 'index.html'),
