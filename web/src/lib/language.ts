@@ -20,7 +20,7 @@ export async function checkNamespaces(namespaces: string[]): Promise<void> {
       throw Error(`namespace "${namespace}" is not supported`)
 }
 
-export async function getLanguage(): Promise<Language> {
+export function getLanguage(): Language {
   let lng =
     window.localStorage.getItem('lng') ||
     (window.navigator.language && window.navigator.language)
@@ -45,7 +45,7 @@ export async function loadNamespaces(
 
   await checkNamespaces(namespaces)
 
-  const lng = otherLng || (await getLanguage())
+  const lng = otherLng || getLanguage()
   await checkLanguage(lng)
 
   await Promise.all(
@@ -64,15 +64,13 @@ export async function loadNamespaces(
 }
 
 export async function setLanguage(
-  lng?: Language,
+  lng: Language = getLanguage(),
   namespaces = defaultNamespaces,
   i18nInstance?: i18n.i18n
 ): Promise<void> {
   const i18n = i18nInstance || getI18n()
 
-  if (lng) await checkLanguage(lng)
-  else lng = await getLanguage()
-
+  await checkLanguage(lng)
   await loadNamespaces(namespaces, lng, i18n)
 
   window.localStorage.setItem('lng', lng)

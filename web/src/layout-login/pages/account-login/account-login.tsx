@@ -24,7 +24,7 @@ import promo1 from '../../../assets/images/login/promo-1.jpg'
 import './account-login.scss'
 
 function AccountLogin() {
-  const { loading, t } = useLocale(['common', 'account'])
+  const { loading, t } = useLocale(['account'])
 
   const userState = useAccountState()
   const userDispatch = useAccountDispatch()

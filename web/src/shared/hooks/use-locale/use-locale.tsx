@@ -34,10 +34,8 @@ function useLocale(
   const [loaded, setLoaded] = useState<true | null>(null)
 
   useEffect(() => {
-    getLanguage()
-      .then(lng => setLng(lng))
-      .catch(console.error)
-  })
+    setLng(getLanguage())
+  }, [ut.i18n.language])
 
   useEffect(() => {
     setLanguage(lng, defaultNamespaces.concat(namespaces), ut.i18n)
