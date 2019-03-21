@@ -38,8 +38,10 @@ function AccountLogin() {
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true }) || {}
 
   useEffect(() => {
-    setDrama(false)
+    const timeout = setTimeout(() => setDrama(false), 300)
     if (emailRef.current) emailRef.current.focus()
+
+    return () => clearTimeout(timeout)
   }, [])
 
   const handleLogin = async (e: any): Promise<void> => {
