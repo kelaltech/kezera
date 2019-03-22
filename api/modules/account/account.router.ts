@@ -1,6 +1,7 @@
 import * as Router from 'koa-router'
 
 import { handle } from '../../lib/middlewares/handle'
+import { authenticate } from '../../lib/middlewares/authenticate'
 import { AccountController } from './account.controller'
 
 export const accountRouter = new Router({ prefix: '/api/account' })
@@ -8,7 +9,7 @@ export const accountRouter = new Router({ prefix: '/api/account' })
 /* GENERAL */
 
 // GET /api/account/me
-accountRouter.get('/me', handle(AccountController, (c, s) => c.me(s)))
+accountRouter.get('/me', authenticate(), handle(AccountController, (c, s) => c.me(s)))
 
 /* ACCOUNT RESET */
 

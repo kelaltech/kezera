@@ -1,30 +1,41 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { RouteComponentProps } from 'react-router'
+import { Loading } from 'gerami'
+import * as qs from 'qs'
 
+import useLocale from '../shared/hooks/use-locale/use-locale'
 import { useAccountState } from '../app/stores/account/account-provider'
 import LayoutOrganizationProviders from './configs/layout-organization-providers'
 import Layout from '../shared/components/layout/layout'
-import LayoutOrganizationRoutes from './configs/layout-orgainzation-routes'
 import layoutOrganizationNavigation from './configs/layout-organization-navigation'
+import LayoutOrganizationRoutes from './configs/layout-organization-routes'
 
 interface Props extends RouteComponentProps<{}> {
   error?: any
 }
 
-export default function LayoutOrganization({ error, match }: Props) {
-  const userState = useAccountState()
+function LayoutOrganization({ error, match }: Props) {
+  const { t } = useLocale()
+  const { account } = useAccountState()
 
-  const ls = window.location.search.toLowerCase() || ''
+  const q = qs.parse(window.location.search, { ignoreQueryPrefix: true })['no-shell']
+  const noShell = q ? q == 'true' : undefined
+
   return (
     <LayoutOrganizationProviders>
       <Layout
-        noShell={ls.includes('no-shell=') ? ls.includes('no-shell=true') : undefined}
-        headerOptions={{ navigation: layoutOrganizationNavigation(!!userState.account) }}
+        noShell={noShell}
+        preHeader={null}
+        headerOptions={{ navigation: layoutOrganizationNavigation(t, account) }}
         error={error}
         nonContentHeight={164}
       >
-        <LayoutOrganizationRoutes prefix={match.url} />
+        <Suspense fallback={<Loading delay />}>
+          <LayoutOrganizationRoutes prefix={match.url.replace(/\/$/, '')} />
+        </Suspense>
       </Layout>
     </LayoutOrganizationProviders>
   )
 }
+
+export default LayoutOrganization

@@ -1,53 +1,60 @@
-import { INavigationItem } from '../../shared/components/layout/header/interfaces'
-import { _ } from '../../lib/language'
+import i18n from 'i18next'
+import * as qs from 'qs'
 
-export default function layoutOrganizationNavigation(isLoggedIn: boolean) {
+import { INavigationItem } from '../../shared/components/layout/header/interfaces'
+import { IAccountResponse } from '../../../../api/modules/account/account.apiv'
+
+function layoutOrganizationNavigation(
+  t: i18n.TFunction,
+  account?: IAccountResponse | null
+): INavigationItem[] {
   let items: INavigationItem[] = []
 
-  //Todo change icons for each nav item
-  if (isLoggedIn) {
+  if (account) {
     items = items.concat([
-      {
-        to: '/summary',
-        icon: ['far', 'user-circle'],
-        name: _`Account Setting`,
-        shortName: ' '
-      },
       {
         to: '/news',
         icon: ['far', 'user-circle'],
-        name: _`News`,
-        shortName: _`News`
+        name: `News`, // todo: translate
+        shortName: `News` // todo: translate
       },
       {
-        to: '/event',
+        to: '/events',
         icon: ['far', 'user-circle'],
-        name: _`Event`,
-        shortName: _`Event`
+        name: `Events`, // todo: translate
+        shortName: `Events` // todo: translate
       },
       {
-        to: '/donation',
+        to: '/requests',
         icon: ['far', 'user-circle'],
-        name: _`Donation`,
-        shortName: _`Donation`
+        name: `Requests`, // todo: translate
+        shortName: `Donation Requests` // todo: translate
       },
       {
         to: '/account',
         icon: ['far', 'user-circle'],
-        name: _`Account Settings`,
-        shortName: ' '
+        name: t`Account Settings`,
+        shortName: account.displayName
       }
     ])
   } else {
     items = items.concat([
       {
-        to: '/login',
+        to: `/register?${qs.stringify({ continue: window.location.pathname })}`,
+        icon: ['far', 'user-circle'],
+        name: t`register-as-volunteer`,
+        shortName: t`register`
+      },
+      {
+        to: `/login?${qs.stringify({ continue: window.location.pathname })}`,
         icon: 'sign-in-alt',
-        name: _`Login`,
-        shortName: _`Login`
+        name: t`login`,
+        shortName: t`login`
       }
     ])
   }
 
   return items
 }
+
+export default layoutOrganizationNavigation
