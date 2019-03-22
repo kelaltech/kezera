@@ -11,7 +11,6 @@ export interface INews extends Document {
   article: string
   likes: ObjectId[]
   comments: ObjectId[]
-  pictureId: string
   _by: ObjectId
 }
 

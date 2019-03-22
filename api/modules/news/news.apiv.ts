@@ -1,7 +1,12 @@
+import { Schema } from 'mongoose'
+
+type ObjectId = Schema.Types.ObjectId | string
+
 export type INewsRequest = {
   title: string
   description: string
   article: string
+  _by: ObjectId
 }
 
 export type INewsResponse = {
@@ -9,6 +14,6 @@ export type INewsResponse = {
   title: string
   description: string
   article: string
-  likes: []
+  likes: ObjectId[]
   comments: []
 }

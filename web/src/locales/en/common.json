@@ -9,7 +9,8 @@
   "Terms": "Terms",
   "Account Settings": "Account Settings",
   "Account": "Account",
-  "Login or Register": "Login or Register",
-  "Login": "Login",
+  "register": "Register",
+  "register-as-volunteer": "Register as Volunteer",
+  "login": "Login",
   "Homepage": "Homepage"
 }

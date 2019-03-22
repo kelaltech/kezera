@@ -32,14 +32,19 @@ function AccountLogin() {
   const [drama, setDrama] = useState(true)
   const [submitting, setSubmitting] = useState(false)
 
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
   const emailRef = useRef<HTMLInputElement>(null)
 
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true }) || {}
 
   useEffect(() => {
-    setDrama(false)
-    if (emailRef.current) emailRef.current.focus()
-  }, [])
+    if (!loading) {
+      setDrama(false)
+      if (emailRef.current) emailRef.current.focus()
+    }
+  }, [loading])
 
   const handleLogin = async (e: any): Promise<void> => {
     e.preventDefault()
@@ -55,7 +60,7 @@ function AccountLogin() {
 
   return (
     loading || (
-      <Page bottom={'adaptive'}>
+      <Page top={'adaptive'} bottom={'adaptive'}>
         {userState.account ? (
           <Content size={'XL'}>
             <Block first last>
@@ -63,7 +68,7 @@ function AccountLogin() {
                 <span>
                   {t`account:logged-in-as`}
                   <br />
-                  <Anchor to="/login/account">
+                  <Anchor to="/login/redirect/account">
                     {userState.account.displayName} ({userState.account.phoneNumber})
                   </Anchor>
                 </span>
@@ -113,6 +118,9 @@ function AccountLogin() {
                       type={'email'}
                       label={t`account:email`}
                       disabled={submitting}
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      tabIndex={1}
                     />
                   </Block>
                   <Block>
@@ -122,12 +130,14 @@ function AccountLogin() {
                       type={'password'}
                       label={t`account:password`}
                       disabled={submitting}
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      tabIndex={2}
                     />
                     <Anchor
                       className={'account-login-links font-S fg-blackish'}
-                      to={`/login/reset?email=${(emailRef.current &&
-                        emailRef.current.value) ||
-                        ''}`}
+                      to={`/login/reset/start?${qs.stringify({ email })}`}
+                      tabIndex={5}
                     >
                       {t`account:forgot-password`}
                     </Anchor>
@@ -137,7 +147,8 @@ function AccountLogin() {
                     <Flex>
                       <Anchor
                         className={'account-login-links'}
-                        to={'/volunteer/register'}
+                        to={`/volunteer/register?${qs.stringify({ email })}`}
+                        tabIndex={4}
                       >
                         {t`account:create-new-account`}
                       </Anchor>
@@ -145,7 +156,12 @@ function AccountLogin() {
                       {submitting ? (
                         <Loading className={'padding-none'} />
                       ) : (
-                        <Button type={'submit'} disabled={submitting} primary>
+                        <Button
+                          type={'submit'}
+                          disabled={!email || !password}
+                          tabIndex={3}
+                          primary
+                        >
                           {t`account:login`}
                         </Button>
                       )}
