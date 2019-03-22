@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import { Block } from 'gerami'
-import Likes from '../../../pages/event-detail/likes/likes'
-import Comments from '../../../pages/event-detail/comments/comments'
+import Likes from '../../../components/news-view/components/like-tab/like-tab'
+import Comments from '../../../components/news-view/components/comment-tab/comment-tab'
+
+import './news-view-tab.scss'
 
 export default function NewsTabs(props: any) {
   let [value, setValue] = useState(0)
@@ -16,7 +18,10 @@ export default function NewsTabs(props: any) {
         textColor="primary"
       >
         <Tab label="Comments"> One </Tab>
-        <Tab label=" Likes"> Two </Tab>
+        <Tab label=" Likes" className={'like-tab-style'}>
+          {' '}
+          Two{' '}
+        </Tab>
       </Tabs>
       {value === 0 && (
         <Block>
