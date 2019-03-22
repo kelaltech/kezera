@@ -9,10 +9,12 @@ export default function News() {
   // todo
   return (
     <Page>
-      <Content>
+      {/* <Content>
         <NewsAdd />
-      </Content>
-      <Yoga maxCol={2}>
+      </Content>*/}
+
+      <NewsAdd />
+      {/*<Yoga maxCol={2}>
         {data.map(news => (
           <NewsCard
             commentCount={news.commentCount}
@@ -22,7 +24,7 @@ export default function News() {
             description={news.description}
           />
         ))}
-      </Yoga>
+      </Yoga>*/}
     </Page>
   )
 }
