@@ -32,7 +32,7 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/account`} component={AccountDetail} />
 
       <Route exact path={`${p}/news`} component={News} />
-      <Route exact path={`${p}/news/creat`} component={NewsAddPage} />
+      <Route exact path={`${p}/news/create`} component={NewsAddPage} />
       <Route exact path={`${p}/news/:_id`} component={NewsDetailPage} />
       <Route exact path={`${p}/news/:_id/edit`} component={NewsEditPage} />
 
