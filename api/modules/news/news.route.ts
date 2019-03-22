@@ -7,21 +7,29 @@ import {
   editNews,
   searchNews,
   toggleLike,
-  getNews
+  addNewsWithPicture,
+  getNews,
+  addNews
 } from './news.controller'
+import * as fs from 'fs'
 
 export const newsRouter = new Route({
   prefix: '/api/news'
 })
 
-// POST /api/news/new
-/*newsRouter.post('/new', async ctx => {
+//POST /api/news/new
+newsRouter.post('/new', async ctx => {
+  ctx.body = await addNews(ctx.request.body, ctx.state.user)
+})
+
+// POST /api/news/new/withpic
+newsRouter.post('/new/withpic', async ctx => {
   ctx.body = await addNewsWithPicture(
     ctx.request.body,
     ctx.state.user,
     fs.createReadStream(ctx.request.files!.picture.path)
   )
-})*/
+})
 
 // GET /api/news/list?since&count
 newsRouter.get('/list', async ctx => {
@@ -45,7 +53,7 @@ newsRouter.get('/:newsId', async ctx => {
   ctx.body = await getNews(ctx.query._newsId)
 })
 
-//PUT /api/news/:_newsId   edit
+//PUT /api/news/:_newsId
 newsRouter.put('/:_newsId', async ctx => {
   ctx.body = await editNews(ctx.request.body, ctx.query._newsId)
 })
