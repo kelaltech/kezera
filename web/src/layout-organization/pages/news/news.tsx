@@ -9,11 +9,9 @@ export default function News() {
   // todo
   return (
     <Page>
-      {/* <Content>
-        <NewsAdd />
-      </Content>*/}
-
       <NewsAdd />
+
+      {/*<NewsAdd />*/}
       {/*<Yoga maxCol={2}>
         {data.map(news => (
           <NewsCard

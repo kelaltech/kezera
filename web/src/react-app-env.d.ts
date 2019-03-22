@@ -2,3 +2,4 @@
 
 declare module 'react-fastclick'
 declare module 'draft-js'
+declare module 'medium-draft'
