@@ -18,19 +18,26 @@ export default function LayoutLoginRoutes({ prefix: p }: { prefix: string }) {
 
   return (
     <Switch>
-      <Redirect
-        exact
-        from={`${p}/redirect/account`}
-        to={
-          account
-            ? `/${account.role.toLowerCase()}/account`
-            : `/login?${qs.stringify({ continue: '/login/account' })}`
-        }
-      />
-      <Redirect exact from={`${p}/reset`} to={`${p}/reset/start`} />
+      {(account && (
+        <Redirect
+          exact
+          from={`${p}/redirect/account`}
+          to={`/${account.role.toLowerCase()}/account`}
+        />
+      )) || (
+        <Redirect
+          exact
+          from={`${p}/redirect/account`}
+          to={`/login?${qs.stringify({ continue: '/login/account' })}`}
+        />
+      )}
 
       <Route exact path={`${p}/`} component={AccountLogin} />
-      <Route exact path={`${p}/reset/start`} component={AccountResetStart} />
+
+      <Redirect exact from={`${p}/reset`} to={`${p}/reset/start`} />
+      {(account && (
+        <Redirect exact from={`${p}/reset/start`} to={`${p}/redirect/account`} />
+      )) || <Route exact path={`${p}/reset/start`} component={AccountResetStart} />}
       <Route exact path={`${p}/reset/finish`} component={AccountResetFinish} />
 
       <Route component={NotFound} />

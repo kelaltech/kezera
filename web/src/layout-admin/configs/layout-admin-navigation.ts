@@ -4,7 +4,7 @@ import * as qs from 'qs'
 import { INavigationItem } from '../../shared/components/layout/header/interfaces'
 import { IAccountResponse } from '../../../../api/modules/account/account.apiv'
 
-function layoutLoginNavigation(
+function layoutAdminNavigation(
   t: i18n.TFunction,
   account?: IAccountResponse | null
 ): INavigationItem[] {
@@ -39,4 +39,4 @@ function layoutLoginNavigation(
   return items
 }
 
-export default layoutLoginNavigation
+export default layoutAdminNavigation
