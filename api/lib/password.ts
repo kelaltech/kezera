@@ -41,7 +41,7 @@ export async function startPasswordReset(
       'DOCUMENT_NOT_FOUND'
     )
 
-  const randomKey = await KeyModel.add('PASSWORD_RESET', emailTo, doc._id, undefined, {
+  const randomKey = await KeyModel.add('PASSWORD_RESET', emailTo, undefined, undefined, {
     session
   })
 

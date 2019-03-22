@@ -3,6 +3,8 @@ import * as Router from 'koa-router'
 import { handle } from '../../lib/middlewares/handle'
 import { authenticate } from '../../lib/middlewares/authenticate'
 import { AccountController } from './account.controller'
+import { login } from '../../lib/middlewares/login'
+import { logout } from '../../lib/middlewares/logout'
 
 export const accountRouter = new Router({ prefix: '/api/account' })
 
@@ -14,13 +16,13 @@ accountRouter.get('/me', authenticate(), handle(AccountController, (c, s) => c.m
 /* ACCOUNT RESET */
 
 // POST /api/account/reset/start
-accountRouter.get(
+accountRouter.post(
   '/reset/start',
   handle(AccountController, (c, s) => c.startPasswordReset(s))
 )
 
 // POST /api/account/reset/finish
-accountRouter.get(
+accountRouter.post(
   '/reset/finish',
   handle(AccountController, (c, s) => c.finishPasswordReset(s))
 )
@@ -28,7 +30,7 @@ accountRouter.get(
 /* BASIC AUTH */
 
 // POST /api/account/login
-accountRouter.post('/login', handle(AccountController, c => c.login()))
+accountRouter.post('/login', login({ strategyName: 'local' }))
 
 // all /api/account/logout
-accountRouter.post('/logout', handle(AccountController, c => c.logout()))
+accountRouter.all('/logout', logout({}))

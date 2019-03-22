@@ -19,3 +19,10 @@ export type IAccountResponse = {
   displayName: string
   phoneNumber?: string
 }
+
+import {
+  IPasswordResetStartRequest,
+  IPasswordResetFinishRequest
+} from '../../lib/password'
+export type IAccountResetStartRequest = IPasswordResetStartRequest
+export type IAccountResetFinishRequest = IPasswordResetFinishRequest

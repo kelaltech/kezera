@@ -1,6 +1,8 @@
 import { Context, Middleware, ParameterizedContext } from 'koa'
 import { ClientSession } from 'mongoose'
+
 import { transact } from '../transact'
+import { serverApp } from '../../index'
 
 type Constructor<T> = { new (...args: any[]): T }
 
@@ -19,6 +21,7 @@ export function handle<ControllerType>(
         handler(new controller(ctx), session, ctx, next)
       )
     } catch (e) {
+      if (serverApp.env !== 'production') console.error(e)
       ctx.status = e.status || e.statusCode || 500
       ctx.body = {
         success: false,

@@ -1,4 +1,3 @@
-import { Middleware } from 'koa'
 import { ClientSession } from 'mongoose'
 
 import { KoaController } from '../../lib/koa-controller'
@@ -16,8 +15,6 @@ import {
   IPasswordResetStartRequest,
   startPasswordReset
 } from '../../lib/password'
-import { login } from '../../lib/middlewares/login'
-import { logout } from '../../lib/middlewares/logout'
 
 export class AccountController extends KoaController {
   /* GENERAL */
@@ -57,7 +54,7 @@ export class AccountController extends KoaController {
     return startPasswordReset(
       AccountModel,
       Object.assign(data, { domain: ctx!.origin }),
-      { session, finishPath: '/api/account/reset/finish' }
+      { session, finishPath: '/account/reset/finish' }
     )
   }
 
@@ -66,15 +63,5 @@ export class AccountController extends KoaController {
     data = this.getRequestBody<IPasswordResetFinishRequest>()
   ): Promise<void> {
     return finishPasswordReset(AccountModel, data, { session })
-  }
-
-  /* BASIC AUTH */
-
-  async login(): Promise<Middleware> {
-    return (ctx, next) => login({ strategyName: 'local' })(ctx, next)
-  }
-
-  async logout(): Promise<Middleware> {
-    return (ctx, next) => logout({})(ctx, next)
   }
 }
