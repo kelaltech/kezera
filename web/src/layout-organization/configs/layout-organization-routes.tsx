@@ -10,7 +10,9 @@ const AccountDetail = lazy(() =>
 )
 
 const News = lazy(() => import('../pages/news/news'))
-
+const NewsEditPage = lazy(() => import('../pages/news/news-edit'))
+const NewsAddPage = lazy(() => import('../pages/news/news-add'))
+const NewsDetailPage = lazy(() => import('../../shared/pages/news-detail/news-detail'))
 const Event = lazy(() => import('../pages/event/event'))
 const EventDetail = lazy(() => import('../../shared/pages/event-detail/event-detail'))
 
@@ -30,6 +32,9 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/account`} component={AccountDetail} />
 
       <Route exact path={`${p}/news`} component={News} />
+      <Route exact path={`${p}/news/creat`} component={NewsAddPage} />
+      <Route exact path={`${p}/news/:_id`} component={NewsDetailPage} />
+      <Route exact path={`${p}/news/:_id/edit`} component={NewsEditPage} />
 
       <Route exact path={`${p}/event/:_id`} component={EventDetail} />
       <Route exact path={`${p}/event`} component={Event} />
