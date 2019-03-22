@@ -1,7 +1,7 @@
-import '../../index'
-import { IAccountRequest } from './account.apiv'
-import { transact } from '../../lib/transact'
-import { AccountController } from './account.controller'
+import '../../..'
+import { IAccountRequest } from '../account.apiv'
+import { transact } from '../../../lib/transact'
+import { AccountController } from '../account.controller'
 
 const data: IAccountRequest = {
   email: 'abebe@gmail.com',
@@ -15,7 +15,7 @@ setTimeout(() => {
   // db should be connected by now
 
   transact(session => {
-    return new AccountController().addNew(session, data, 'VOLUNTEER')
+    return new AccountController().add(session, data, 'VOLUNTEER')
   })
     .then(() => {
       console.log(`\nTransaction completed successfully.`)

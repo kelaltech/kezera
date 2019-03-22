@@ -19,7 +19,7 @@ export function handle<ControllerType>(
         handler(new controller(ctx), session, ctx, next)
       )
     } catch (e) {
-      ctx.status = e.status || 500
+      ctx.status = e.status || e.statusCode || 500
       ctx.body = {
         success: false,
         fullMessage: e.fullMessage,

@@ -1,3 +1,4 @@
+import { Middleware } from 'koa'
 import { ClientSession } from 'mongoose'
 
 import { KoaController } from '../../lib/koa-controller'
@@ -9,17 +10,27 @@ import {
   IAccountStatus
 } from '../../models/account/account.model'
 import { add, get } from '../../lib/crud'
+import {
+  finishPasswordReset,
+  IPasswordResetFinishRequest,
+  IPasswordResetStartRequest,
+  startPasswordReset
+} from '../../lib/password'
+import { login } from '../../lib/middlewares/login'
+import { logout } from '../../lib/middlewares/logout'
 
 export class AccountController extends KoaController {
-  async addNew(
-    session: ClientSession | undefined,
+  /* GENERAL */
+
+  async add(
+    session?: ClientSession,
     data = super.getRequestBody<IAccountRequest>(),
     role: IAccountRole = 'VOLUNTEER',
     status: IAccountStatus = 'ACTIVE'
   ): Promise<IAccountResponse> {
     let document = await accountRequestToDocument(data, role, status)
 
-    await add(AccountModel, document, {
+    document = await add(AccountModel, document, {
       session,
       preSave: async doc => {
         await doc.setPassword(data.password)
@@ -30,12 +41,40 @@ export class AccountController extends KoaController {
     return accountDocumentToResponse(document)
   }
 
-  async getMe(
-    session: ClientSession | undefined,
-    user = super.getUser()
-  ): Promise<IAccountResponse> {
+  async me(session?: ClientSession, user = super.getUser()): Promise<IAccountResponse> {
     const document = await get(AccountModel, user!._id, { session })
 
     return accountDocumentToResponse(document)
+  }
+
+  /* ACCOUNT RESET */
+
+  async startPasswordReset(
+    session?: ClientSession,
+    data = this.getRequestBody<IPasswordResetStartRequest>(),
+    ctx = this.getContext()
+  ): Promise<void> {
+    return startPasswordReset(
+      AccountModel,
+      Object.assign(data, { domain: ctx!.origin }),
+      { session, finishPath: '/api/account/reset/finish' }
+    )
+  }
+
+  async finishPasswordReset(
+    session?: ClientSession,
+    data = this.getRequestBody<IPasswordResetFinishRequest>()
+  ): Promise<void> {
+    return finishPasswordReset(AccountModel, data, { session })
+  }
+
+  /* BASIC AUTH */
+
+  async login(): Promise<Middleware> {
+    return (ctx, next) => login({ strategyName: 'local' })(ctx, next)
+  }
+
+  async logout(): Promise<Middleware> {
+    return (ctx, next) => logout({})(ctx, next)
   }
 }
