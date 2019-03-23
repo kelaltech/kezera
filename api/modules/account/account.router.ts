@@ -11,11 +11,21 @@ export const accountRouter = new Router({ prefix: '/api/account' })
 /* GENERAL */
 
 // GET /api/account/me
-accountRouter.get('/me', authenticate(), handle(AccountController, (c, s) => c.getMe(s)))
+accountRouter.get('/me', authenticate(), handle(AccountController, (c, s) => c.me(s)))
 
 /* ACCOUNT RESET */
 
-// todo
+// POST /api/account/reset/start
+accountRouter.post(
+  '/reset/start',
+  handle(AccountController, (c, s) => c.startPasswordReset(s))
+)
+
+// POST /api/account/reset/finish
+accountRouter.post(
+  '/reset/finish',
+  handle(AccountController, (c, s) => c.finishPasswordReset(s))
+)
 
 /* BASIC AUTH */
 

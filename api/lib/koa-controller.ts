@@ -4,10 +4,17 @@ import { Document } from 'mongoose'
 import { IAccount } from '../models/account/account.model'
 
 export class KoaController {
-  constructor(private readonly ctx?: Context) {}
+  constructor(
+    private readonly ctx?: Context,
+    private readonly next?: () => Promise<any>
+  ) {}
 
   protected getContext(): Context | undefined {
     return this.ctx
+  }
+
+  protected getNext(): (() => Promise<any>) | undefined {
+    return this.next
   }
 
   protected getParams<Type extends { [param: string]: string }>(): Type {

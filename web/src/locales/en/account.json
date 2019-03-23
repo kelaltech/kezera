@@ -6,5 +6,10 @@
   "create-new-account": "Create New Account",
   "wrong-credentials": "You've entered wrong credentials.",
   "logged-in-as": "You are logged in as:",
-  "logout": "Logout"
+  "logout": "Logout",
+
+  "reset-account-password": "Reset Account Password",
+  "reset-start-description": "If you've forgot your account's password, we can email a unique temporary link to your inbox. You can then follow that link to securely reset your password.",
+  "email-reset-link": "Email Reset Link",
+  "reset-email-sent-confirmation": "We've sent you the email successfully. Please check your inbox to proceed."
 }

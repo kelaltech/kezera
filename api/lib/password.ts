@@ -8,9 +8,23 @@ type ModelThatCanSetPassword = Model<
   Document & { email: string; setPassword: (password: string) => Promise<void> }
 >
 
+export type IPasswordResetStartRequest = {
+  emailTo: string
+}
+
+export type IPasswordResetStartParameters = IPasswordResetStartRequest & {
+  domain: string
+}
+
+export type IPasswordResetFinishRequest = {
+  emailTo: string
+  randomKey: string
+  password: string
+}
+
 export async function startPasswordReset(
   model: ModelThatCanSetPassword,
-  { emailTo, domain }: { emailTo: string; domain: string },
+  { emailTo, domain }: IPasswordResetStartParameters,
   { session, finishPath }: { session?: ClientSession; finishPath?: string } = {}
 ): Promise<void> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')
@@ -27,7 +41,7 @@ export async function startPasswordReset(
       'DOCUMENT_NOT_FOUND'
     )
 
-  const randomKey = await KeyModel.add('PASSWORD_RESET', emailTo, doc._id, undefined, {
+  const randomKey = await KeyModel.add('PASSWORD_RESET', emailTo, undefined, undefined, {
     session
   })
 
@@ -73,11 +87,7 @@ export async function startPasswordReset(
 
 export async function finishPasswordReset(
   model: ModelThatCanSetPassword,
-  {
-    emailTo,
-    randomKey,
-    password
-  }: { emailTo: string; randomKey: string; password: string },
+  { emailTo, randomKey, password }: IPasswordResetFinishRequest,
   { session }: { session?: ClientSession } = {}
 ): Promise<void> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')

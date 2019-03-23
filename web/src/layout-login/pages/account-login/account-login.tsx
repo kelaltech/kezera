@@ -146,7 +146,7 @@ function AccountLogin() {
                   <Block last className={'padding-top-none'}>
                     <Flex>
                       <Anchor
-                        className={'account-login-links'}
+                        className={'account-login-links margin-right-normal'}
                         to={`/volunteer/register?${qs.stringify({ email })}`}
                         tabIndex={4}
                       >
