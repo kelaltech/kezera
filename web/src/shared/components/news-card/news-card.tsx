@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 export interface INewsCardProps {
   className?: string
   title: string
-  likeCount: Number
-  commentCount: Number
+  likeCount: number
+  commentCount: number
   description: string
   imgSrc: string
 }

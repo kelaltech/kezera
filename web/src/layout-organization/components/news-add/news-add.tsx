@@ -16,7 +16,8 @@ const toolbarConfig = {
   block: ['unordered-list-item', 'header-one', 'header-three'],
   inline: ['BOLD', 'UNDERLINE', 'hyperlink']
 }
-export default class NewsAdd extends React.Component<{}, INewsAddState> {
+
+export class NewsAdd extends React.Component<{}, INewsAddState> {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -43,6 +44,9 @@ export default class NewsAdd extends React.Component<{}, INewsAddState> {
     })
   }
 
+  myBlockStyle = () => {
+    return 'myOwnClass'
+  }
   render() {
     const { description, title, article } = this.state
 
@@ -52,7 +56,6 @@ export default class NewsAdd extends React.Component<{}, INewsAddState> {
           <Editor
             placeholder={'Title'}
             className={'news-card-add-title'}
-            toolbarConfig={toolbarConfig}
             editorState={title}
             onChange={this.titleOnChange}
             sideButtons={[]}
@@ -60,17 +63,16 @@ export default class NewsAdd extends React.Component<{}, INewsAddState> {
           <Editor
             placeholder={'Description'}
             className={'news-card-add-title'}
-            toolbarConfig={toolbarConfig}
             editorState={description}
             onChange={this.descriptionOnChange}
           />
           <Editor
             placeholder={'Article'}
             className={'news-card-add-title'}
-            toolbarConfig={toolbarConfig}
             editorState={article}
             sideButtons={[]}
             onChange={this.articleOnChange}
+            blockStyleFn={this.myBlockStyle}
           />
         </div>
       </div>

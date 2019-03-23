@@ -1,18 +1,14 @@
 import React from 'react'
-import { Block, Content, Page, Yoga } from 'gerami'
+import { Yoga } from 'gerami'
 
 import NewsCard from '../../../shared/components/news-card/news-card'
 import NewsTemp from '../../../assets/images/news-temp.jpg'
-import NewsAdd from '../../components/news-add/news-add'
 
 export default function News() {
   // todo
   return (
-    <Page>
-      <NewsAdd />
-
-      {/*<NewsAdd />*/}
-      {/*<Yoga maxCol={2}>
+    <div>
+      <Yoga maxCol={2}>
         {data.map(news => (
           <NewsCard
             commentCount={news.commentCount}
@@ -22,8 +18,8 @@ export default function News() {
             description={news.description}
           />
         ))}
-      </Yoga>*/}
-    </Page>
+      </Yoga>
+    </div>
   )
 }
 
