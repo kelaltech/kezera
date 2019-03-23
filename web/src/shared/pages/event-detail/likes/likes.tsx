@@ -1,44 +1,37 @@
 import React from 'react'
 import { Content, Image } from 'gerami'
 import './likes.scss'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
+import Chip from '@material-ui/core/Chip'
+import { Avatar } from '@material-ui/core'
 
-const rows = [
-  { Name: 'Anteneh Ashenafi', Location: 'Addis Ababa' },
-  { Name: 'Pompidou', Location: 'AASTU' },
-  { Name: 'Natnael mesfin', Location: 'AASTU' }
+const users = [
+  {
+    Name: 'Anteneh Ashenafi',
+    Image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwVEXF33zeB0S-b9-BYeb14amnZW2GcCOOY3RlAqe6JC1-rjmw'
+  },
+  {
+    Name: 'Pompidou',
+    Image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwVEXF33zeB0S-b9-BYeb14amnZW2GcCOOY3RlAqe6JC1-rjmw'
+  },
+  {
+    Name: 'Natnael mesfin',
+    Image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwVEXF33zeB0S-b9-BYeb14amnZW2GcCOOY3RlAqe6JC1-rjmw'
+  }
 ]
 export default function Likes() {
   return (
     <Content className={'UserLike'}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Location</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <TableRow>
-              <TableCell component="th" scope="row">
-                <Image
-                  src={
-                    'http://portal.bilardo.gov.tr/assets/pages/media/profile/profile_user.jpg'
-                  }
-                  className="UserPic"
-                />
-                <span className={'UserName'}> {row.Name} </span>
-              </TableCell>
-              <TableCell align="right">{row.Location}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      {users.map(user => (
+        <Chip
+          className={'LikeChip'}
+          avatar={<Avatar alt="Natacha" src={user.Image} />}
+          label={user.Name}
+          variant={'outlined'}
+        />
+      ))}
     </Content>
   )
 }

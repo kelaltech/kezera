@@ -19,7 +19,7 @@ eventRouter.get('/:_id', async ctx => {
   ctx.body = await getEvent(ctx.params._id)
 })
 eventRouter.delete('/:_id', async ctx => {
-  ctx.body = await removeEvent(ctx.params._id)
+  ctx.body = await removeEvent(ctx.params._id, ctx.state.user)
 })
 eventRouter.get('/all', async ctx => {
   ctx.body = await listAllEvents()
