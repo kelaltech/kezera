@@ -7,7 +7,6 @@ import {
 import { Loading } from 'gerami'
 
 import {
-  defaultLanguage,
   defaultNamespaces,
   getLanguage,
   Language,
@@ -30,7 +29,7 @@ function useLocale(
 ): UseLocaleResponse {
   const ut = useTranslation(namespaces, options)
 
-  const [lng, setLng] = useState<Language>(defaultLanguage)
+  const [lng, setLng] = useState<Language>(getLanguage())
   const [loaded, setLoaded] = useState<true | null>(null)
 
   useEffect(() => {
