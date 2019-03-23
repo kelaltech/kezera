@@ -22,7 +22,7 @@ export const accountPaths: SchemaDefinition = {
   displayName: { type: String, required: true, maxlength: 50 },
   phoneNumber: {
     type: String,
-    maxlength: 15,
+    maxlength: 50,
     validate: /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/,
     index: true,
     unique: true

@@ -121,6 +121,7 @@ function AccountLogin() {
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       tabIndex={1}
+                      required={true}
                     />
                   </Block>
                   <Block>
@@ -133,6 +134,9 @@ function AccountLogin() {
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       tabIndex={2}
+                      minLength={8}
+                      maxLength={72}
+                      required={true}
                     />
                     <Anchor
                       className={'account-login-links font-S fg-blackish'}

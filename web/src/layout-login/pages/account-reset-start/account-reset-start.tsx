@@ -31,6 +31,8 @@ function AccountResetStart() {
       await axios.post('/api/account/reset/start', data)
     } catch (e) {
       setError(e.prettyMessage || e.message || 'Unknown error.')
+      setStatus('INITIAL')
+      return
     }
 
     setStatus('SENT')
@@ -54,18 +56,13 @@ function AccountResetStart() {
 
           {status === 'SENT' && !error ? (
             <>
-              <Block
-                last
-                className={'light font-L'}
-              >{t`reset-email-sent-confirmation`}</Block>
+              <Block last>{t`reset-email-sent-confirmation`}</Block>
             </>
           ) : (
             <>
-              <Block
-                className={'top fg-blackish font-S'}
-              >{t`reset-start-description`}</Block>
+              <Block className={'fg-blackish font-S'}>{t`reset-start-description`}</Block>
 
-              <form className={'top'} onSubmit={handleSend}>
+              <form onSubmit={handleSend}>
                 <Block>
                   <Input
                     inputRef={emailRef}
@@ -76,6 +73,7 @@ function AccountResetStart() {
                     disabled={status === 'SENDING'}
                     value={email}
                     onChange={e => setEmail(e.target.value)}
+                    required={true}
                   />
                 </Block>
 

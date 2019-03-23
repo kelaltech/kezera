@@ -54,7 +54,7 @@ export class AccountController extends KoaController {
     return startPasswordReset(
       AccountModel,
       Object.assign(data, { domain: ctx!.origin }),
-      { session, finishPath: '/account/reset/finish' }
+      { session, finishPath: '/login/reset/finish' }
     )
   }
 

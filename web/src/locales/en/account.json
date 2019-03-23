@@ -1,15 +1,22 @@
 {
+  "account": "Account",
   "login": "Login",
+  "logout": "Logout",
   "email": "Email",
   "password": "Password",
+
   "forgot-password": "Forgot Password?",
   "create-new-account": "Create New Account",
   "wrong-credentials": "You've entered wrong credentials.",
   "logged-in-as": "You are logged in as:",
-  "logout": "Logout",
 
   "reset-account-password": "Reset Account Password",
-  "reset-start-description": "If you've forgot your account's password, we can email a unique temporary link to your inbox. You can then follow that link to securely reset your password.",
+  "reset-start-description": "If you've forgotten your account's password, we can email a unique temporary link to your inbox. Then, you can follow that link to securely reset your account's password.",
   "email-reset-link": "Email Reset Link",
-  "reset-email-sent-confirmation": "We've sent you the email successfully. Please check your inbox to proceed."
+  "reset-email-sent-confirmation": "We've sent you the email successfully. Please check your inbox to proceed.",
+  "reset-finish-description": "Now, you can set a new password for your account.",
+
+  "repeat-password": "Repeat Password",
+  "reset-account-password-confirmation": "You have successfully reset your account's password.",
+  "proceed-to-login": "Proceed to Login"
 }
