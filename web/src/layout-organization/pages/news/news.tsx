@@ -48,6 +48,7 @@ export default function News() {
       <Yoga maxCol={2}>
         {news.map((n: any) => (
           <NewsCard
+            _id={n._id}
             commentCount={n.comments.length}
             imgSrc={NewsTemp}
             title={n.title}

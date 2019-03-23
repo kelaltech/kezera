@@ -4,7 +4,6 @@ import './news-card.scss'
 import { Content } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
-import { withRouter } from 'react-router'
 
 export interface INewsCardProps {
   title: string
@@ -12,23 +11,22 @@ export interface INewsCardProps {
   commentCount: number
   description: string
   imgSrc: string
+  _id: string
 }
 
 function NewsCard(props: INewsCardProps) {
-  const [likeClicked, setLikeCliked] = useState('')
-  const { description, commentCount, likeCount, title, imgSrc } = props
+  const [likeClicked, setLikeClicked] = useState(0)
+  let { description, commentCount, likeCount, title, imgSrc, _id } = props
 
-  const handleClick = () => {
-    /*  axios
-      .put(`/api/news/${h}/like`)
+  function handleClick() {
+    axios
+      .put(`/api/news/${_id}/like`)
       .then(data => {
-        this.setState({
-          likeCount: data.data.likes
-        })
+        setLikeClicked(data.data.likes)
       })
       .catch(e => {
         console.log(e)
-      })*/
+      })
   }
   return (
     <div className={'news-card-container'}>
@@ -44,15 +42,16 @@ function NewsCard(props: INewsCardProps) {
           <div className={'news-card-content-title'}>{title}</div>
           <div className={'news-card-content-desc'}>{description}</div>
           <div className={'news-card-content-stat'}>
-            <span onClick={handleClick}>
+            <span>
               <FontAwesomeIcon icon={['fas', 'heart']} />
               &nbsp; {likeCount == 0 ? '' : likeCount}
+              {likeClicked === 0 ? '' : ' you liked this'}
             </span>
             <span>{commentCount == 0 ? '' : commentCount} comments</span>
           </div>
           <div className={'news-card-content-actions'}>
             {/*action*/}
-            <span>
+            <span onClick={handleClick}>
               <FontAwesomeIcon className={'ico'} icon={['far', 'heart']} />
               &nbsp; Like
             </span>
@@ -69,21 +68,6 @@ function NewsCard(props: INewsCardProps) {
       </Content>
     </div>
   )
-
-  /* handleLike = () => {
-    const { match } = this.props
-    //send request to the back
-    axios
-      .put(`/api/news/${match.params._id}/like`)
-      .then(data => {
-        this.setState({
-          likeCount: data.data.likes
-        })
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }*/
 }
 
 export default NewsCard
