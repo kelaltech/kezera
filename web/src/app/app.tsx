@@ -1,3 +1,5 @@
+import './configs/axios-interceptors'
+
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { withTranslation } from 'react-i18next'

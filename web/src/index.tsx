@@ -21,6 +21,7 @@ AOS.init() // animation on scroll
 fontawesomeLibrary() // fontawesome icons
 initReactFastclick() // touch events
 
+// todo: bug: non-default languages stopped persisting after refresh.. investigate and fix
 i18n
   .use(initReactI18next)
   .init({
