@@ -24,9 +24,7 @@ export default class NewsCard extends Component<INewsCardProps, {}> {
             style={{
               backgroundImage: `url(${imgSrc})`
             }}
-          >
-            {/*image goes here*/}
-          </div>
+          />
           <div className={'news-card-content'}>
             {/*Content*/}
             <div className={'news-card-content-title'}>{title}</div>

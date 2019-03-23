@@ -1,12 +1,12 @@
 .news-card-container {
   width: 100%;
-  height: auto;
+  height: 30%;
 }
 .news-card-box {
   width: inherit;
   height: inherit;
   display: flex;
-
+  flex-wrap: wrap;
   @media screen and (max-width: 700px) {
     flex-direction: column;
   }
@@ -30,7 +30,7 @@
 .news-card-content-title {
   font-family: 'ZCOOL XiaoWei', serif;
   font-weight: 400;
-  font-size: 1.65em;
+  font-size: 1.2em;
   letter-spacing: 0.3px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -52,26 +52,38 @@
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.38);
   display: flex;
   justify-content: space-between;
+  color: #353535;
+  span {
+    &:nth-child(1) {
+      color: #f02139;
+    }
+  }
 }
 .news-card-content-actions {
   width: inherit;
-  height: auto;
   display: flex;
   margin-bottom: 5px;
   justify-content: space-evenly;
   span {
-    width: 30%;
-    padding: 3px;
+    padding: 5px;
+    border-radius: 7%;
     text-align: center;
     transition: 0.5s all;
+    font-weight: 400;
+    &:nth-child(1) {
+      color: #f0465a;
+    }
+    &:nth-child(2) {
+      color: #4558be;
+    }
+
+    &:nth-child(3) {
+      color: dodgerblue;
+      font-weight: 600;
+    }
     &:hover {
       cursor: pointer;
       background-color: rgba(0, 0, 0, 0.1);
-
-      &:nth-child(1) {
-        color: #f0465a;
-        font-weight: 600;
-      }
     }
   }
 }
