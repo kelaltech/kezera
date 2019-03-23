@@ -9,7 +9,8 @@ import {
   toggleLike,
   addNewsWithPicture,
   getNews,
-  addNews
+  addNews,
+  getLikes
 } from './news.controller'
 import * as fs from 'fs'
 
@@ -47,6 +48,12 @@ newsRouter.put('/:_newsId/like', async ctx => {
   //return a number
 
   ctx.body = await toggleLike(ctx.params._newsId, ctx.state.user)
+})
+
+newsRouter.get('/:_newsId/likes', async ctx => {
+  //return the users profile
+
+  ctx.body = await getLikes(ctx.params._newsId)
 })
 
 //DELETE /api/news/:_newsId

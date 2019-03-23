@@ -64,7 +64,9 @@ class NewsView extends React.Component<any, INewsAddState> {
     axios
       .put(`/api/news/${match.params._id}/like`)
       .then(data => {
-        console.log(data)
+        this.setState({
+          likeCount: data.data.likes
+        })
       })
       .catch(e => {
         console.log(e)
@@ -105,7 +107,7 @@ class NewsView extends React.Component<any, INewsAddState> {
             <div className={'new-view-action-container'}>
               <span onClick={this.handleLike}>
                 <FontAwesomeIcon className={'ico'} icon={['far', 'heart']} />
-                &nbsp; Like&nbsp; ({likeCount == 0 ? '' : likeCount})
+                &nbsp; Like&nbsp; {likeCount == 0 ? '' : likeCount}
               </span>
               <span>
                 <FontAwesomeIcon icon={['far', 'comment-alt']} />

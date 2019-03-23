@@ -37,6 +37,14 @@ export async function addNewsWithPicture(
   return news
 }
 
+export async function getLikes(_newsId: ObjectId): Promise<any> {
+  // const docs = (await get(NewsModel,_newsId)).populate('likes')
+  const docs = await get(NewsModel, _newsId, {
+    postQuery: q => q.populate('likes')
+  })
+
+  return docs.likes
+}
 export async function toggleLike(
   _newsId: ObjectId,
   account: IAccount

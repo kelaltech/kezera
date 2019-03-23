@@ -7,7 +7,7 @@ export const newPaths: SchemaDefinition = {
   title: { type: String, required: true },
   description: { type: String, required: true },
   article: { type: String },
-  likes: [{ type: ObjectId, ref: 'organization' }],
+  likes: [{ type: ObjectId, ref: 'account' }],
   comments: [{ type: ObjectId, ref: 'comment' }],
   _by: { type: ObjectId, ref: 'organization' }
 }
