@@ -19,6 +19,8 @@ export const newsRouter = new Route({
 
 //POST /api/news/new
 newsRouter.post('/new', async ctx => {
+  console.log('hello from terminal============>')
+  console.log(ctx.request.body)
   ctx.body = await addNews(ctx.request.body, ctx.state.user)
 })
 
