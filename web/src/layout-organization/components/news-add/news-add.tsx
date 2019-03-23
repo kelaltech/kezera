@@ -1,16 +1,15 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Editor, createEditorState } from 'medium-draft'
 import axios from 'axios'
 import { convertToRaw, convertFromRaw, EditorState, AtomicBlockUtils } from 'draft-js'
-
 import './news-add.scss'
-import { Button } from 'gerami'
+import { Button, ImageInput } from 'gerami'
 
 interface INewsAddState {
   title: any
   description: any
   article: any
+  error: any
 }
 
 const toolbarConfig = {
@@ -24,7 +23,8 @@ export class NewsAdd extends React.Component<{}, INewsAddState> {
     this.state = {
       title: createEditorState(),
       description: createEditorState(),
-      article: createEditorState()
+      article: createEditorState(),
+      error: ''
     }
   }
 
@@ -34,8 +34,9 @@ export class NewsAdd extends React.Component<{}, INewsAddState> {
     })
   }
   descriptionOnChange = (description: any) => {
-    const base64 = 'aValidBase64String'
-    this.setState({ description: this.insertImage(description, base64) })
+    this.setState({
+      description: description
+    })
   }
 
   articleOnChange = (article: any) => {
@@ -48,17 +49,11 @@ export class NewsAdd extends React.Component<{}, INewsAddState> {
     return 'myOwnClass'
   }
   publishClicked = () => {
-    /*    console.log('Before JSON\n')
-    console.log(convertToRaw(this.state.description.getCurrentContent()))
-    console.log('\nAfter JSON\n')
-    console.log(JSON.stringify(convertToRaw(this.state.description.getCurrentContent())))*/
-    // this.getNews()
     this.addNews()
   }
 
   addNews = () => {
     const { title, description, article } = this.state
-
     const publication = {
       title: JSON.stringify(convertToRaw(title.getCurrentContent())),
       description: JSON.stringify(convertToRaw(description.getCurrentContent())),
@@ -74,21 +69,10 @@ export class NewsAdd extends React.Component<{}, INewsAddState> {
         console.log(e)
       })
   }
-  insertImage = (editorState: any, base64: any) => {
-    const contentState = editorState.getCurrentContent()
-    const contentStateWithEntity = contentState.createEntity('image', 'IMMUTABLE', {
-      src: base64
-    })
-    const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
-    const newEditorState = EditorState.set(editorState, {
-      currentContent: contentStateWithEntity
-    })
-    return AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, ' ')
-  }
 
   getNews = () => {
     axios
-      .get('/api/news/5c95ec21a953423a90da0348')
+      .get('/api/news/5c9611a41d48953f50c9356c')
       .then((data: any) => {
         this.setState({
           title: EditorState.createWithContent(
@@ -106,24 +90,22 @@ export class NewsAdd extends React.Component<{}, INewsAddState> {
   }
 
   render() {
-    const { description, title, article } = this.state
+    const { description, title, article, error } = this.state
 
     return (
       <div className={'news-card-add-top-container'}>
+        {error !== '' ? (
+          <div>
+            <h1>{error}</h1>
+          </div>
+        ) : (
+          ''
+        )}
         <div>
-          {/*   <img
-            src={`${
-              convertToRaw(description.getCurrentContent()).blocks[0].data.src
-                ? convertToRaw(description.getCurrentContent()).blocks[0].data.src
-                : ''
-            }`}
-            alt="img"
-            width={'100%'}
-            height={'200px'}
-          />*/}
           <Button onClick={this.publishClicked}>Publish</Button>
         </div>
         <div className={'news-card-add-container'}>
+          <ImageInput />
           <Editor
             placeholder={'Title'}
             className={'news-card-add-title'}

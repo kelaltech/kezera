@@ -46,7 +46,7 @@ newsRouter.get('/list', async ctx => {
 newsRouter.put('/:_newsId/like', async ctx => {
   //return a number
 
-  ctx.body = await toggleLike(ctx.query._newsId, ctx.state.user)
+  ctx.body = await toggleLike(ctx.params._newsId, ctx.state.user)
 })
 
 //DELETE /api/news/:_newsId

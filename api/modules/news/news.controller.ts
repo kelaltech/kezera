@@ -10,10 +10,11 @@ import { Stream } from 'stream'
 type ObjectId = Schema.Types.ObjectId | string
 
 export async function addNews(data: any, account: IAccount): Promise<any> {
-  data._by = account._id
-  const doc = await add(NewsModel, data)
-
-  return doc
+  /*  if(account.role !== 'ORGANIZATION'){
+    return "you dont have permission to publish this contente"
+  }*/
+  data._by = await account._id
+  return await add(NewsModel, data)
 }
 
 export async function getAllNews(since: number, count: number): Promise<any> {
@@ -46,6 +47,7 @@ export async function toggleLike(
 
   if (doc.likes.length == 0) {
     doc.likes.push(account._id)
+    await doc.save()
     return {
       likes: doc.likes.length
     }
@@ -58,6 +60,7 @@ export async function toggleLike(
       doc.likes.push(account._id)
     }
   }
+  await doc.save()
 
   return { likes: doc.likes.length }
 }

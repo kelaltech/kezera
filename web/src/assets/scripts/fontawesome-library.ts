@@ -1,6 +1,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 
-import { faBars,
+import {
+  faBars,
   faSignInAlt,
   faImage,
   faLocationArrow,
@@ -10,14 +11,10 @@ import { faBars,
   faHeart,
   faSmile,
   faPhone,
-  faEnvelope,
-  faPlus,
-  faPencilAlt,
-  faTrash,
-  faCheckCircle,
-  faSearch} from '@fortawesome/free-solid-svg-icons'
+  faEnvelope
+} from '@fortawesome/free-solid-svg-icons'
 // import { } from '@fortawesome/free-brands-svg-icons'
-import { faUserCircle,  faCommentAlt } from '@fortawesome/free-regular-svg-icons'
+import { faUserCircle, faCommentAlt } from '@fortawesome/free-regular-svg-icons'
 
 export default function fontawesomeLibrary() {
   library.reset()
@@ -31,16 +28,10 @@ export default function fontawesomeLibrary() {
     faCalendar,
     faMapMarker,
     faSmile,
-    faPencilAlt,
     faEnvelope,
-    faSearch,
-    faCheckCircle,
     faComment,
-    faCommentAlt,
     faHeart,
-    faPhone,
-    faPlus,
-    faTrash
+    faPhone
   )
 
   // brands
