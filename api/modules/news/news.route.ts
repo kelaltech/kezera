@@ -10,7 +10,8 @@ import {
   addNewsWithPicture,
   getNews,
   addNews,
-  getLikes
+  getLikes,
+  listAllNews
 } from './news.controller'
 import * as fs from 'fs'
 
@@ -21,6 +22,10 @@ export const newsRouter = new Route({
 //POST /api/news/new
 newsRouter.post('/new', async ctx => {
   ctx.body = await addNews(ctx.request.body, ctx.state.user)
+})
+
+newsRouter.get('/allnews', async ctx => {
+  ctx.body = await listAllNews()
 })
 
 //GET /api/news/:_newsId

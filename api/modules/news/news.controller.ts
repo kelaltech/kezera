@@ -22,6 +22,12 @@ export async function getAllNews(since: number, count: number): Promise<any> {
 
   return docs
 }
+
+export async function listAllNews() {
+  const docs = await list(NewsModel)
+
+  return docs
+}
 export async function addNewsWithPicture(
   data: any,
   account: IAccount,
