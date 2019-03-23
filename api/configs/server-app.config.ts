@@ -4,6 +4,7 @@ import * as path from 'path'
 
 import { KeyModel } from '../models/key/key.model'
 import { accountRouter } from '../modules/account/account.router'
+import { newsRouter } from '../modules/news/news.route'
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
@@ -18,7 +19,7 @@ export const serverAppConfig: IServerAppConfig = {
 
   models: [KeyModel],
 
-  routers: [accountRouter],
+  routers: [accountRouter, newsRouter],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],
   spaFileRelativePath: path.join('web', 'build', 'index.html'),

@@ -19,9 +19,13 @@ export const newsRouter = new Route({
 
 //POST /api/news/new
 newsRouter.post('/new', async ctx => {
-  console.log('hello from terminal============>')
-  console.log(ctx.request.body)
   ctx.body = await addNews(ctx.request.body, ctx.state.user)
+})
+
+//GET /api/news/:_newsId
+newsRouter.get('/:_newsId', async ctx => {
+  console.log(ctx.params._newsId, 'from news')
+  ctx.body = await getNews(ctx.params._newsId)
 })
 
 // POST /api/news/new/withpic
@@ -46,13 +50,8 @@ newsRouter.put('/:_newsId/like', async ctx => {
 })
 
 //DELETE /api/news/:_newsId
-newsRouter.delete('/:newsId', async ctx => {
+newsRouter.delete('/:_newsId', async ctx => {
   ctx.body = await removeNews(ctx.query._newsId)
-})
-
-//GET /api/news/:_newsId
-newsRouter.get('/:newsId', async ctx => {
-  ctx.body = await getNews(ctx.query._newsId)
 })
 
 //PUT /api/news/:_newsId
