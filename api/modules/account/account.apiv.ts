@@ -2,7 +2,7 @@ import { IAccountRole, IAccountStatus } from '../../models/account/account.model
 
 export type IAccountRequest = {
   email: string
-  password: string
+  password?: string // not required for updates
 
   displayName: string
   phoneNumber?: string

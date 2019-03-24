@@ -15,6 +15,7 @@ import {
   IPasswordResetStartRequest,
   startPasswordReset
 } from '../../lib/password'
+import { KoaError } from '../../lib/koa-error'
 
 export class AccountController extends KoaController {
   /* GENERAL */
@@ -30,6 +31,13 @@ export class AccountController extends KoaController {
     document = await add(AccountModel, document, {
       session,
       preSave: async doc => {
+        if (!data.password)
+          throw new KoaError(
+            'Password is required to create a new account.',
+            400,
+            'NO_PASSWORD'
+          )
+
         await doc.setPassword(data.password)
         return doc
       }

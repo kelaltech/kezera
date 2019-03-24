@@ -1,7 +1,57 @@
 import React from 'react'
+import { Content, Flex, Input } from 'gerami'
 
-function AccountHead() {
-  return <></>
+import './account-head.scss'
+import useLocale from '../../hooks/use-locale/use-locale'
+import AccountPhoto from '../account-photo/account-photo'
+import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
+
+interface Props {
+  account: IAccountResponse
+  onChange?: (account: IAccountResponse) => any
+  /**
+   * @default false
+   */
+  readonly?: boolean
 }
 
-export default AccountHead
+function AccountGeneral({ account, onChange, readonly }: Props) {
+  const { loading, t } = useLocale(['account'])
+
+  const emitChange = (accountChanges: any): void => {
+    if (!readonly && onChange) onChange(Object.assign(account, accountChanges))
+  }
+
+  return (
+    loading || (
+      <Content transparent style={{ overflow: 'visible' }}>
+        <Flex>
+          <AccountPhoto
+            account={account}
+            onChange={() =>
+              emitChange({
+                /* todo */
+              })
+            }
+            readonly={readonly}
+          />
+
+          <div className={'account-head-display-name'}>
+            <Input
+              className={'account-head-display-name-input full-width'}
+              label={readonly ? '' : 'Full Name'}
+              value={account.displayName}
+              onChange={e => emitChange({ displayName: e.target.value })}
+              readOnly={readonly}
+              minLength={1}
+              maxLength={50}
+              required
+            />
+          </div>
+        </Flex>
+      </Content>
+    )
+  )
+}
+
+export default AccountGeneral

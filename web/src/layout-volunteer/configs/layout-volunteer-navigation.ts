@@ -15,7 +15,7 @@ function layoutVolunteerNavigation(
       {
         to: '/account',
         icon: ['far', 'user-circle'],
-        name: t`Account Settings`,
+        name: account.displayName,
         shortName: account.displayName
       }
     ])

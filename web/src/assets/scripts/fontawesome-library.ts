@@ -11,7 +11,13 @@ import {
   faHeart,
   faSmile,
   faPhone,
-  faEnvelope
+  faEnvelope,
+  faPlus,
+  faPencilAlt,
+  faTrash,
+  faCheckCircle,
+  faSearch,
+  faCameraRetro
 } from '@fortawesome/free-solid-svg-icons'
 // import { } from '@fortawesome/free-brands-svg-icons'
 import { faUserCircle, faCommentAlt } from '@fortawesome/free-regular-svg-icons'
@@ -28,10 +34,17 @@ export default function fontawesomeLibrary() {
     faCalendar,
     faMapMarker,
     faSmile,
+    faPencilAlt,
     faEnvelope,
+    faSearch,
+    faCheckCircle,
     faComment,
+    faCommentAlt,
     faHeart,
-    faPhone
+    faPhone,
+    faPlus,
+    faTrash,
+    faCameraRetro
   )
 
   // brands
