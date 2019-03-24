@@ -10,14 +10,14 @@ import { IAccountRequest, IAccountResponse } from './account.apiv'
 
 type ObjectId = Schema.Types.ObjectId | string
 
-export async function accountRequestToDocument(
+export async function accountRequestToLeanDocument(
   request: IAccountRequest,
   status: IAccountStatus,
   role: IAccountRole,
   _id?: ObjectId,
   _last: Date | number = Date.now()
-): Promise<Document & IAccount> {
-  const account = new AccountModel({
+): Promise<any> {
+  return {
     _id,
     _last,
 
@@ -29,10 +29,19 @@ export async function accountRequestToDocument(
 
     displayName: request.displayName,
     phoneNumber: request.phoneNumber === null ? undefined : request.phoneNumber
-  })
-  console.log(request.phoneNumber)
-  account.markModified('phoneNumber')
-  return account
+  }
+}
+
+export async function accountRequestToDocument(
+  request: IAccountRequest,
+  status: IAccountStatus,
+  role: IAccountRole,
+  _id?: ObjectId,
+  _last: Date | number = Date.now()
+): Promise<Document & IAccount> {
+  return new AccountModel(
+    await accountRequestToLeanDocument(request, status, role, _id, _last)
+  )
 }
 
 export async function accountDocumentToResponse(

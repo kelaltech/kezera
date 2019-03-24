@@ -2,7 +2,11 @@ import { ClientSession } from 'mongoose'
 
 import { KoaController } from '../../lib/koa-controller'
 import { IAccountRequest, IAccountResponse } from './account.apiv'
-import { accountDocumentToResponse, accountRequestToDocument } from './account.filter'
+import {
+  accountDocumentToResponse,
+  accountRequestToDocument,
+  accountRequestToLeanDocument
+} from './account.filter'
 import {
   AccountModel,
   IAccountRole,
@@ -64,11 +68,14 @@ export class AccountController extends KoaController {
     await edit(
       AccountModel,
       user!._id,
-      await accountRequestToDocument(
-        data,
-        status || document.status,
-        role || document.role,
-        user!._id
+      Object.assign(
+        document,
+        await accountRequestToLeanDocument(
+          data,
+          status || document.status,
+          role || document.role,
+          user!._id
+        )
       ),
       {
         session,
@@ -77,7 +84,8 @@ export class AccountController extends KoaController {
             await doc.changePassword(data.currentPassword, data.newPassword)
           return doc
         }
-      }
+      },
+      { overwrite: true }
     )
     document = await get(AccountModel, user!._id, { session })
 

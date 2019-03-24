@@ -262,7 +262,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
                 ) : (
                   <div className={'full-width'}>
                     <span className={'fg-blackish'}>{t`account:phone-number`}: </span>
-                    <span>{account.phoneNumber}</span>
+                    <span>{account.phoneNumber || t`account:n-a`}</span>
                   </div>
                 )}
                 <Button

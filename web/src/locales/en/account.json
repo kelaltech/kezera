@@ -26,5 +26,6 @@
   "current-password": "Current Password",
   "new-password": "New Password",
   "repeat-new-password": "Repeat New Password",
-  "phone-number": "Phone Number"
+  "phone-number": "Phone Number",
+  "n-a": "n/a"
 }
