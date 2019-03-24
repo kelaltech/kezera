@@ -5,7 +5,7 @@
   flex-grow: 1;
   font-size: $space * 2.4;
   font-weight: bold;
-  line-height: $space * 2.4;
+  line-height: 1;
 
   @media (max-width: $mobile) {
     margin: auto ($space / 2);
@@ -18,40 +18,21 @@
   }
 
   .gerami-input {
+    font-weight: bold;
     background-color: transparent;
     color: $fg;
   }
-}
 
-.account-head-pencil {
-  margin: auto 0;
-  padding: 0;
-
-  $size: $space * 2;
-  width: $size;
-  max-width: $size;
-  min-width: $size;
-  height: $size;
-  max-height: $size;
-  min-height: $size;
-
-  border: 0;
-  border-radius: 50%;
-  outline: 0;
-
-  background-color: transparentize($fg, 0.945) !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  color: $primary !important;
-
-  &:focus,
-  &:hover {
-    background-color: $primary !important;
-    color: $bg !important;
+  .gerami-input-label {
+    font-weight: normal;
   }
 
-  &:active {
-    background-color: $accent !important;
-    color: $bg !important;
+  .account-head-display-name-footnote {
+    margin-top: $space / 4;
+    font-size: $font-S;
+    font-style: italic;
+    font-weight: 300;
+    text-align: right;
+    color: transparentize($fg, 0.42);
   }
 }

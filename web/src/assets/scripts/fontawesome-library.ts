@@ -17,7 +17,8 @@ import {
   faTrash,
   faCheckCircle,
   faSearch,
-  faCameraRetro
+  faCameraRetro,
+  faCheck
 } from '@fortawesome/free-solid-svg-icons'
 // import { } from '@fortawesome/free-brands-svg-icons'
 import { faUserCircle, faCommentAlt } from '@fortawesome/free-regular-svg-icons'
@@ -44,7 +45,8 @@ export default function fontawesomeLibrary() {
     faPhone,
     faPlus,
     faTrash,
-    faCameraRetro
+    faCameraRetro,
+    faCheck
   )
 
   // brands

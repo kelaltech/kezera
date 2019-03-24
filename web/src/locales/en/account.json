@@ -18,5 +18,9 @@
 
   "repeat-password": "Repeat Password",
   "reset-account-password-confirmation": "You have successfully reset your account's password.",
-  "proceed-to-login": "Proceed to Login"
+  "proceed-to-login": "Proceed to Login",
+
+  "go-to-portfolio": "Go to Portfolio",
+  "phone-number": "Phone Number",
+  "optional": "Optional"
 }

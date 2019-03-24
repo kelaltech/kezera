@@ -36,7 +36,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
             readonly={readonly}
           />
 
-          <div className={'account-head-display-name'}>
+          <label className={'account-head-display-name'}>
             <Input
               className={'account-head-display-name-input full-width'}
               label={readonly ? '' : 'Full Name'}
@@ -47,7 +47,11 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
               maxLength={50}
               required
             />
-          </div>
+            <div className={'account-head-display-name-footnote'}>
+              All changes are saved automatically. {/* todo: translate */}{' '}
+              {/* todo: use this as saved/error notification */}
+            </div>
+          </label>
         </Flex>
       </Content>
     )

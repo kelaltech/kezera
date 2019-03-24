@@ -14,6 +14,7 @@ import {
 } from 'gerami'
 import * as qs from 'qs'
 
+import './account-login.scss'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { logout } from '../../../app/stores/account/account-actions'
 import {
@@ -21,7 +22,6 @@ import {
   useAccountState
 } from '../../../app/stores/account/account-provider'
 import promo1 from '../../../assets/images/login/promo-1.jpg'
-import './account-login.scss'
 
 function AccountLogin() {
   const { loading, t } = useLocale(['account'])
