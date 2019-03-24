@@ -12,17 +12,20 @@ export const accountPaths: SchemaDefinition = {
   email: {
     type: String,
     required: true,
+    minlength: 3,
     maxlength: 50,
     validate: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     index: true,
     unique: true
   },
-  password: { type: String, setOn: Date, required: true }, // the hash
+  password: { type: String, required: true }, // the hash
+  passwordSetOn: { type: Date, required: true },
 
-  displayName: { type: String, required: true, maxlength: 50 },
+  displayName: { type: String, required: true, minlength: 1, maxlength: 50 },
   phoneNumber: {
     type: String,
-    maxlength: 15,
+    minlength: 3,
+    maxlength: 50,
     validate: /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/,
     index: true,
     unique: true

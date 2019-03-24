@@ -14,6 +14,7 @@ import {
 } from 'gerami'
 import * as qs from 'qs'
 
+import './account-login.scss'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { logout } from '../../../app/stores/account/account-actions'
 import {
@@ -21,13 +22,13 @@ import {
   useAccountState
 } from '../../../app/stores/account/account-provider'
 import promo1 from '../../../assets/images/login/promo-1.jpg'
-import './account-login.scss'
+import { RouteComponentProps, withRouter } from 'react-router'
 
-function AccountLogin() {
+function AccountLogin({ history }: RouteComponentProps<{}>) {
   const { loading, t } = useLocale(['account'])
 
-  const userState = useAccountState()
-  const userDispatch = useAccountDispatch()
+  const { account } = useAccountState()
+  const accountDispatch = useAccountDispatch()
 
   const [drama, setDrama] = useState(true)
   const [submitting, setSubmitting] = useState(false)
@@ -38,6 +39,10 @@ function AccountLogin() {
   const emailRef = useRef<HTMLInputElement>(null)
 
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true }) || {}
+
+  useEffect(() => {
+    if (account && query['continue']) history.replace(query['continue'])
+  }, [])
 
   useEffect(() => {
     if (!loading) {
@@ -54,14 +59,14 @@ function AccountLogin() {
 
   const handleLogout = async (): Promise<void> => {
     setSubmitting(true)
-    userDispatch(await logout())
+    accountDispatch(await logout())
     setSubmitting(false)
   }
 
   return (
     loading || (
       <Page top={'adaptive'} bottom={'adaptive'}>
-        {userState.account ? (
+        {account ? (
           <Content size={'XL'}>
             <Block first last>
               <Flex>
@@ -69,7 +74,7 @@ function AccountLogin() {
                   {t`account:logged-in-as`}
                   <br />
                   <Anchor to="/login/redirect/account">
-                    {userState.account.displayName} ({userState.account.phoneNumber})
+                    {account.displayName} ({account.email})
                   </Anchor>
                 </span>
                 <FlexSpacer />
@@ -121,6 +126,7 @@ function AccountLogin() {
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       tabIndex={1}
+                      required={true}
                     />
                   </Block>
                   <Block>
@@ -133,6 +139,9 @@ function AccountLogin() {
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       tabIndex={2}
+                      minLength={8}
+                      maxLength={72}
+                      required={true}
                     />
                     <Anchor
                       className={'account-login-links font-S fg-blackish'}
@@ -177,4 +186,4 @@ function AccountLogin() {
   )
 }
 
-export default AccountLogin
+export default withRouter(AccountLogin)

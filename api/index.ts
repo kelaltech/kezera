@@ -6,6 +6,9 @@ import { sslRedirect } from './lib/middlewares/ssl-redirect'
 
 export const serverApp = new ServerApp(serverAppConfig)
 
+// todo: temp
+import './configs/collections-patch.temp'
+
 // here, to make sure it is the the first middleware that runs
 serverApp.app.use(sslRedirect())
 

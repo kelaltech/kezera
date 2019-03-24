@@ -10,26 +10,38 @@ import { IAccountRequest, IAccountResponse } from './account.apiv'
 
 type ObjectId = Schema.Types.ObjectId | string
 
-export async function accountRequestToDocument(
+export async function accountRequestToLeanDocument(
   request: IAccountRequest,
-  role: IAccountRole,
   status: IAccountStatus,
+  role: IAccountRole,
   _id?: ObjectId,
   _last: Date | number = Date.now()
-): Promise<Document & IAccount> {
-  return new AccountModel({
+): Promise<any> {
+  return {
     _id,
     _last,
 
-    role,
     status,
+    role,
 
     email: request.email,
-    // set password manually (using preSave, or preUpdate)
+    // set/change password manually (using postSave/preUpdate)
 
     displayName: request.displayName,
-    phoneNumber: request.phoneNumber
-  })
+    phoneNumber: request.phoneNumber === null ? undefined : request.phoneNumber
+  }
+}
+
+export async function accountRequestToDocument(
+  request: IAccountRequest,
+  status: IAccountStatus,
+  role: IAccountRole,
+  _id?: ObjectId,
+  _last: Date | number = Date.now()
+): Promise<Document & IAccount> {
+  return new AccountModel(
+    await accountRequestToLeanDocument(request, status, role, _id, _last)
+  )
 }
 
 export async function accountDocumentToResponse(
@@ -42,6 +54,7 @@ export async function accountDocumentToResponse(
     status: document.status,
 
     email: document.email,
+    passwordSetOn: new Date(document.passwordSetOn).getTime(),
 
     displayName: document.displayName,
     phoneNumber: document.phoneNumber

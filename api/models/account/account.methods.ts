@@ -4,28 +4,28 @@ import { accountModelFactory } from './account.model'
 import { KoaError } from '../../lib/koa-error'
 
 export const accountMethods = {
-  async isPasswordCorrect(pass: string): Promise<boolean> {
-    if (!pass) throw new KoaError('"pass" parameter not found', 400, 'NO_PASS')
+  async isPasswordCorrect(password: string): Promise<boolean> {
+    if (!password) throw new KoaError('"password" parameter not found', 400, 'NO_PASS')
 
     const doc = accountModelFactory.documentify(this)
     if (!doc) throw new KoaError(`No document.`, 404, 'DOCUMENT_NOT_FOUND')
 
     if (!doc.password) throw new KoaError('Password not set.', 500, 'PASSWORD_NOT_SET')
 
-    return compare(pass, doc.password)
+    return compare(password, doc.password)
   },
 
-  async setPassword(pass: string): Promise<void> {
-    if (!pass) throw new KoaError('"pass" parameter not found', 400, 'NO_PASS')
+  async setPassword(password: string): Promise<void> {
+    if (!password) throw new KoaError('"password" parameter not found', 400, 'NO_PASS')
 
-    if (pass.length > 72)
+    if (password.length > 72)
       throw new KoaError(
         'Password cannot be longer than 72 characters.',
         400,
         'PASS_TOO_LONG'
       )
 
-    if (!pass.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/))
+    if (!password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/))
       throw new KoaError(
         'Password needs to be at least 8 characters long and contain at least one of capital letters, small letters and numbers each.',
         400,
@@ -35,21 +35,24 @@ export const accountMethods = {
     const doc = accountModelFactory.documentify(this)
     if (!doc) throw new KoaError(`No document.`, 404, 'DOCUMENT_NOT_FOUND')
 
-    doc.password = await hash(pass, 14)
+    doc.password = await hash(password, 14)
+    doc.passwordSetOn = Date.now()
 
     await doc.save()
   },
 
-  async changePassword(oldPass: string, newPass: string): Promise<void> {
-    if (!oldPass) throw new KoaError('"oldPass" parameter not found', 400, 'NO_OLD_PASS')
-    if (!newPass) throw new KoaError('"newPass" parameter not found', 400, 'NO_NEW_PASS')
+  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    if (!currentPassword)
+      throw new KoaError('"currentPassword" parameter not found', 400, 'NO_CURRENT_PASS')
+    if (!newPassword)
+      throw new KoaError('"newPassword" parameter not found', 400, 'NO_NEW_PASS')
 
     const doc = accountModelFactory.documentify(this)
     if (!doc) throw new KoaError(`No document.`, 404, 'DOCUMENT_NOT_FOUND')
 
-    if (!(await doc.isPasswordCorrect(oldPass)))
+    if (!(await doc.isPasswordCorrect(currentPassword)))
       throw new KoaError('Incorrect password.', 401, 'INCORRECT_PASSWORD')
 
-    return doc.setPassword(newPass)
+    return doc.setPassword(newPassword)
   }
 }

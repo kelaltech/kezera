@@ -15,7 +15,7 @@ setTimeout(() => {
   // db should be connected by now
 
   transact(session => {
-    return new AccountController().add(session, data, 'VOLUNTEER')
+    return new AccountController().add(session, data, 'ACTIVE', 'VOLUNTEER')
   })
     .then(() => {
       console.log(`\nTransaction completed successfully.`)

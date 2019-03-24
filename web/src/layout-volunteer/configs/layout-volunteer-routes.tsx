@@ -1,5 +1,6 @@
 import React, { lazy } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+import * as qs from 'qs'
 
 import { useAccountState } from '../../app/stores/account/account-provider'
 
@@ -19,7 +20,16 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
     <Switch>
       {account && <Redirect from={`${p}/register`} to={`/login/redirect/account`} />}
 
-      <Route exact path={`${p}/account`} component={AccountDetail} />
+      {account ? (
+        <Route exact path={`${p}/account`} component={AccountDetail} />
+      ) : (
+        <Redirect
+          exact
+          from={`${p}/account`}
+          to={`/login?${qs.stringify({ continue: `${p}/account` })}`}
+        />
+      )}
+
       <Route exact path={`${p}/register`} component={AccountVolunteerRegister} />
 
       <Route component={NotFound} />
