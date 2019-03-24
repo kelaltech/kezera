@@ -1,8 +1,10 @@
-import React from 'react'
-import { Content, Title, Image } from 'gerami'
+import React, { useState } from 'react'
+import { Content, Title, Image, Flex, Button, Block } from 'gerami'
 import './event-card.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
+import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
+
 const EventDescription = {
   imageSrc: 'https://d2g8igdw686xgo.cloudfront.net/31848636_1533268089320317_r.jpeg',
   Title: 'Some Title',
@@ -16,8 +18,10 @@ const EventDescription = {
   Interested: '2221'
 }
 export default function EventCard() {
+  let [open, setOpen] = useState(false)
   return (
     <Content className={'EventCard'}>
+      <EventEdit open={open} onClose={() => setOpen(false)} event={EventDescription} />
       <div className={'EventCardImage'}>
         <div className={'BlurryImage'}>
           <Image className={'EventImage'} src={EventDescription.imageSrc} />
@@ -28,9 +32,11 @@ export default function EventCard() {
         </div>
       </div>
       <div className={'padding-horizontal-big'}>
-        <Title size={'M'}>
+        <Title className="EventTitle" size={'M'}>
           {' '}
-          <b>{EventDescription.Title}</b>{' '}
+          <Link className="EventTitle" to={'/organization/event/someId'}>
+            {EventDescription.Title}
+          </Link>{' '}
         </Title>
       </div>
       <div className={'EventDescriptionContainer'}>
@@ -49,16 +55,38 @@ export default function EventCard() {
         <span> Kotebe,Addis Ababa </span>
       </div>
       <div className="EventField flex">
-        <span className={'full-width'}>
-          <FontAwesomeIcon icon={'smile'} size={'1x'} /> 1.2 K &emsp;&emsp;
+        <span className={'full-width flex'}>
+          <FontAwesomeIcon icon={'smile'} size={'1x'} /> 1.2 K
         </span>
-        <span className={'full-width'}>
-          <FontAwesomeIcon icon={'heart'} size={'1x'} /> 2 K &emsp;&emsp;
+        <span className={'full-width flex'}>
+          <FontAwesomeIcon icon={'heart'} size={'1x'} /> 2 K
         </span>
-        <span className={'full-width'}>
-          <FontAwesomeIcon icon={'comment'} size={'1x'} /> &emsp;&emsp;
+        <span className={'full-width flex'}>
+          <Link to={'/organization/event/someId'}>
+            {' '}
+            <FontAwesomeIcon icon={['far', 'comment-alt']} />
+          </Link>
         </span>
       </div>
+      <Block last className={'ActionContainer flex'}>
+        <Flex className={'full-width '} />
+        <Flex className={'full-width '} />
+        <span className={'full-width flex '}>
+          <Button onClick={() => setOpen(true)} className={'ActionButton'}>
+            <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
+          </Button>
+        </span>
+        <span className={'full-width flex'}>
+          <Button onClick={() => DeleteEvent(12)} className={'ActionButton '}>
+            <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />
+          </Button>
+        </span>
+      </Block>
     </Content>
   )
+}
+function DeleteEvent(id: any) {
+  if (window.confirm('Are you sure you want to delete this event?')) {
+    alert('deleted')
+  }
 }

@@ -25,6 +25,8 @@
     "aos": "^2.3.4",
     "axios": "^0.18.0",
     "draft-js": "^0.10.5",
+    "draft-js-image-plugin": "^2.0.6",
+    "draft-js-plugins-editor": "^2.1.1",
     "gerami": "^0.1.2",
     "i18next": "^15.0.6",
     "medium-draft": "^0.5.12",

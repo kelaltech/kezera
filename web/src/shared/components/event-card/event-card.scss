@@ -53,3 +53,26 @@
   margin-bottom: 8px;
   font-style: italic;
 }
+.EditIcon {
+  color: $primary;
+}
+.TrashIcon {
+  color: $accent;
+}
+.ActionButton {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
+.ActionContainer {
+  margin: 0;
+  padding: 0 !important;
+}
+.EventTitle {
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}

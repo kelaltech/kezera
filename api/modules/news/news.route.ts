@@ -9,7 +9,11 @@ import {
   toggleLike,
   addNewsWithPicture,
   getNews,
-  addNews
+  addNews,
+  getLikes,
+  listAllNews,
+  getPictureFromNews,
+  addPictureForNews
 } from './news.controller'
 import * as fs from 'fs'
 
@@ -22,6 +26,16 @@ newsRouter.post('/new', async ctx => {
   ctx.body = await addNews(ctx.request.body, ctx.state.user)
 })
 
+newsRouter.get('/allnews', async ctx => {
+  ctx.body = await listAllNews()
+})
+
+//GET /api/news/:_newsId
+newsRouter.get('/:_newsId', async ctx => {
+  console.log(ctx.params._newsId, 'from news')
+  ctx.body = await getNews(ctx.params._newsId)
+})
+
 // POST /api/news/new/withpic
 newsRouter.post('/new/withpic', async ctx => {
   ctx.body = await addNewsWithPicture(
@@ -29,6 +43,18 @@ newsRouter.post('/new/withpic', async ctx => {
     ctx.state.user,
     fs.createReadStream(ctx.request.files!.picture.path)
   )
+})
+
+//POST /api/news/:_newsId/addpic
+newsRouter.post('/:_newsId/addpic', async ctx => {
+  const files = ctx.request.files!.file
+
+  ctx.body = await addPictureForNews(fs.createReadStream(files.path), ctx.params._newsId)
+})
+
+//GET /api/news/:_newsId/pic?pictureId=default
+newsRouter.get('/:_newsId/pic', async ctx => {
+  ctx.body = await getPictureFromNews(ctx.params._newsId, ctx.query.pictureId)
 })
 
 // GET /api/news/list?since&count
@@ -40,22 +66,23 @@ newsRouter.get('/list', async ctx => {
 newsRouter.put('/:_newsId/like', async ctx => {
   //return a number
 
-  ctx.body = await toggleLike(ctx.query._newsId, ctx.state.user)
+  ctx.body = await toggleLike(ctx.params._newsId, ctx.state.user)
+})
+
+newsRouter.get('/:_newsId/likes', async ctx => {
+  //return the users profile
+
+  ctx.body = await getLikes(ctx.params._newsId)
 })
 
 //DELETE /api/news/:_newsId
-newsRouter.delete('/:newsId', async ctx => {
+newsRouter.delete('/:_newsId', async ctx => {
   ctx.body = await removeNews(ctx.query._newsId)
-})
-
-//GET /api/news/:_newsId
-newsRouter.get('/:newsId', async ctx => {
-  ctx.body = await getNews(ctx.query._newsId)
 })
 
 //PUT /api/news/:_newsId
 newsRouter.put('/:_newsId', async ctx => {
-  ctx.body = await editNews(ctx.request.body, ctx.query._newsId)
+  ctx.body = await editNews(ctx.request.body, ctx.params._newsId)
 })
 
 //GET /api/news/search?term=:term

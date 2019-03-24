@@ -15,25 +15,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TextField from '@material-ui/core/TextField'
 import { Dialog } from '@material-ui/core'
 
-export default function EventAdd(props: any) {
+export default function EventEdit(props: any) {
   return (
     <Dialog onClose={props.onClose} open={props.open}>
       <Block className={'center'}>
-        <Title size="XXL"> Create Event </Title>
+        <Title size="XXL"> Edit Event </Title>
       </Block>
       <Content size={'L'}>
         <Block first>
           <Flex>
-            <ImageInput />
+            <ImageInput src={props.event.imageSrc} />
             <Input
               name="Title"
               className={'margin-big full-width'}
               placeholder={'Title'}
+              defaultValue={props.event.Title}
             />
           </Flex>
         </Block>
         <Block>
-          <TextArea name="Purpose" className={'full-width'} placeholder={'Purpose...'} />
+          <TextArea
+            name="Purpose"
+            className={'full-width'}
+            placeholder={'Purpose...'}
+            defaultValue={props.event.Description}
+          />
         </Block>
         <Yoga maxCol={2}>
           <Block>
@@ -88,6 +94,7 @@ export default function EventAdd(props: any) {
                 className="full-width"
                 type={'text'}
                 placeholder={'Total people'}
+                defaultValue={props.event.PeopleInvited}
               />
             </label>
           </Block>

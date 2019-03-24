@@ -7,7 +7,7 @@ import Comments from '../../../components/news-view/components/comment-tab/comme
 
 import './news-view-tab.scss'
 
-export default function NewsTabs(props: any) {
+export default function NewsTabs() {
   let [value, setValue] = useState(0)
   return (
     <div>
@@ -19,8 +19,7 @@ export default function NewsTabs(props: any) {
       >
         <Tab label="Comments"> One </Tab>
         <Tab label=" Likes" className={'like-tab-style'}>
-          {' '}
-          Two{' '}
+          Two
         </Tab>
       </Tabs>
       {value === 0 && (

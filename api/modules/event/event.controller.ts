@@ -6,9 +6,15 @@ import { Stream } from 'stream'
 import { serverApp } from '../../index'
 import { OrganizationModel } from '../../models/organization/organization.model'
 import { commentModel } from '../../models/comment/comment.model'
+import { KoaError } from '../../lib/koa-error'
 
-export async function removeEvent(id: Schema.Types.ObjectId): Promise<void> {
-  await remove(EventModel, id)
+export async function removeEvent(
+  id: Schema.Types.ObjectId,
+  orgId: Schema.Types.ObjectId
+): Promise<void> {
+  let event = await get(EventModel, id)
+  if (event.organizationId == orgId) await remove(EventModel, id)
+  else throw new KoaError('Not authorized', 401)
 }
 
 export async function getEvent(id: Schema.Types.ObjectId): Promise<any> {

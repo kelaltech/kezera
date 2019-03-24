@@ -1,15 +1,21 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { Editor, createEditorState } from 'medium-draft'
-
-import { convertToRaw } from 'draft-js'
-
+import React, { useState, useEffect } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { Editor, createEditorState, ImageSideButton } from 'medium-draft'
+import axios from 'axios'
+import { convertToRaw, convertFromRaw, EditorState, addNewBlock, Block } from 'draft-js'
 import './news-add.scss'
+import { Button, ImageInput } from 'gerami'
+import { withRouter } from 'react-router'
 
 interface INewsAddState {
   title: any
   description: any
   article: any
+  error: any
+}
+
+interface INewsAddProps {
+  edit: boolean
 }
 
 const toolbarConfig = {
@@ -17,65 +23,165 @@ const toolbarConfig = {
   inline: ['BOLD', 'UNDERLINE', 'hyperlink']
 }
 
-export class NewsAdd extends React.Component<{}, INewsAddState> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      title: createEditorState(),
-      description: createEditorState(),
-      article: createEditorState()
+function NewsAdd({
+  match,
+  edit,
+  ...rest
+}: INewsAddProps & RouteComponentProps<{ _id: string }>) {
+  const [title, setTitle] = useState(createEditorState())
+  const [description, setDescription] = useState(createEditorState())
+  const [article, setArticle] = useState(createEditorState())
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (edit) {
+      getNews()
     }
+  }, [])
+
+  const sideButtons = [
+    {
+      title: 'Add Your Cover Image',
+      component: CustomImageSideButton
+    }
+  ]
+
+  const publishClicked = () => {
+    addNews()
   }
 
-  titleOnChange = (title: any) => {
-    this.setState({
-      title: title
-    })
+  const titleOnChange = (title: any) => {
+    setTitle(title)
   }
-  descriptionOnChange = (description: any) => {
-    this.setState({
-      description: description
-    })
+  const descriptionOnChange = (description: any) => {
+    setDescription(description)
   }
 
-  articleOnChange = (article: any) => {
-    this.setState({
-      article: article
-    })
+  const articleOnChange = (article: any) => {
+    setArticle(article)
   }
 
-  myBlockStyle = () => {
+  const addNews = () => {
+    const publication = {
+      title: JSON.stringify(convertToRaw(title.getCurrentContent())),
+      description: JSON.stringify(convertToRaw(description.getCurrentContent())),
+      article: JSON.stringify(convertToRaw(article.getCurrentContent()))
+    }
+
+    axios
+      .post('/api/news/new', publication)
+      .then(data => {
+        console.log('successfully added')
+        console.log(data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+
+  const getNews = () => {
+    axios
+      .get(`/api/news/${match.params._id}`)
+      .then((data: any) => {
+        console.log('successfully fetched!!')
+        setTitle(
+          EditorState.createWithContent(convertFromRaw(JSON.parse(data.data.title)))
+        )
+        setDescription(
+          EditorState.createWithContent(convertFromRaw(JSON.parse(data.data.description)))
+        )
+        setArticle(
+          EditorState.createWithContent(convertFromRaw(JSON.parse(data.data.article)))
+        )
+      })
+      .catch(e => console.log(e))
+  }
+
+  const updateNews = () => {
+    const publication = {
+      title: JSON.stringify(convertToRaw(title.getCurrentContent())),
+      description: JSON.stringify(convertToRaw(description.getCurrentContent())),
+      article: JSON.stringify(convertToRaw(article.getCurrentContent()))
+    }
+    axios
+      .put(`/api/news/${match.params._id}`, publication)
+      .then(data => {
+        console.log('successfully edited')
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+
+  const myBlockStyle = () => {
     return 'myOwnClass'
   }
-  render() {
-    const { description, title, article } = this.state
-
-    return (
-      <div className={'news-card-add-top-container'}>
-        <div className={'news-card-add-container'}>
-          <Editor
-            placeholder={'Title'}
-            className={'news-card-add-title'}
-            editorState={title}
-            onChange={this.titleOnChange}
-            sideButtons={[]}
-          />
-          <Editor
-            placeholder={'Description'}
-            className={'news-card-add-title'}
-            editorState={description}
-            onChange={this.descriptionOnChange}
-          />
-          <Editor
-            placeholder={'Article'}
-            className={'news-card-add-title'}
-            editorState={article}
-            sideButtons={[]}
-            onChange={this.articleOnChange}
-            blockStyleFn={this.myBlockStyle}
-          />
-        </div>
+  return (
+    <div className={'news-card-add-top-container'}>
+      <div>
+        {edit ? (
+          <Button onClick={updateNews}>Save changes</Button>
+        ) : (
+          <Button onClick={publishClicked}>Publish</Button>
+        )}
       </div>
-    )
+      <div className={'news-card-add-container'}>
+        <ImageInput />
+        <Editor
+          placeholder={'Title'}
+          editorState={title}
+          onChange={titleOnChange}
+          sideButtons={[]}
+        />
+        <Editor
+          placeholder={'Description'}
+          className={'news-card-add-title'}
+          editorState={description}
+          onChange={descriptionOnChange}
+          sideButtons={sideButtons}
+        />
+        <Editor
+          placeholder={'Article'}
+          className={'news-card-add-title'}
+          editorState={article}
+          sideButtons={[]}
+          onChange={articleOnChange}
+          blockStyleFn={myBlockStyle}
+        />
+      </div>
+    </div>
+  )
+}
+
+export default withRouter(NewsAdd)
+
+class CustomImageSideButton extends ImageSideButton<any, any> {
+  onChange(e: any) {
+    const newsid = window.location.pathname.split('/')[3]
+
+    const file = e.target.files[0]
+    if (file.type.indexOf('image/') === 0) {
+      // This is a post request to server endpoint with image as `image`
+      const formData = new FormData()
+      formData.append('file', file)
+
+      axios
+        .post(`/api/news/${newsid}/addpic`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          withCredentials: true
+        })
+        .then((data: any) => {
+          console.log(data)
+          if (data.url) {
+            this.props.setEditorState(
+              addNewBlock(this.props.getEditorState(), Block.IMAGE, {
+                src: data.url
+              })
+            )
+          }
+        })
+        .catch(() => {})
+    }
+    this.props.close()
   }
 }

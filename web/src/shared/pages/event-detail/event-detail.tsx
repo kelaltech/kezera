@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Title, Block, Yoga, Content } from 'gerami'
+import { Image, Title, Block, Yoga, Content, Anchor } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import EventTabs from './event-tabs/event-tabs'
 
@@ -25,7 +25,19 @@ export default function EventDetail() {
       />
       <Content transparent size={'3XL'}>
         <Block className="">
-          <Title size={'XXL'}>{EventDescription.Title}</Title>
+          <Title size={'XXL'} className="inline-block">
+            {EventDescription.Title}
+          </Title>
+          <div className="inline-block" style={{ float: 'right' }}>
+            <Anchor to="/organization/event/:_id/attendance/verify" button>
+              <FontAwesomeIcon icon={['far', 'user-circle']} />
+              &nbsp; Attendance{' '}
+            </Anchor>
+            &emsp;
+            <Anchor to="/organization/event/:_id/attended" button>
+              <FontAwesomeIcon icon={'check-circle'} /> &nbsp;Attended{' '}
+            </Anchor>
+          </div>
         </Block>
         <Block>
           <p>{EventDescription.Description}</p>
