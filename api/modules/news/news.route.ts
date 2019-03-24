@@ -11,7 +11,9 @@ import {
   getNews,
   addNews,
   getLikes,
-  listAllNews
+  listAllNews,
+  getPictureFromNews,
+  addPictureForNews
 } from './news.controller'
 import * as fs from 'fs'
 
@@ -43,6 +45,18 @@ newsRouter.post('/new/withpic', async ctx => {
   )
 })
 
+//POST /api/news/:_newsId/addpic
+newsRouter.post('/:_newsId/addpic', async ctx => {
+  const files = ctx.request.files!.file
+
+  ctx.body = await addPictureForNews(fs.createReadStream(files.path), ctx.params._newsId)
+})
+
+//GET /api/news/:_newsId/pic?pictureId=default
+newsRouter.get('/:_newsId/pic', async ctx => {
+  ctx.body = await getPictureFromNews(ctx.params._newsId, ctx.query.pictureId)
+})
+
 // GET /api/news/list?since&count
 newsRouter.get('/list', async ctx => {
   ctx.body = await getAllNews(Number(ctx.query.since), Number(ctx.query.conunt))
@@ -68,7 +82,7 @@ newsRouter.delete('/:_newsId', async ctx => {
 
 //PUT /api/news/:_newsId
 newsRouter.put('/:_newsId', async ctx => {
-  ctx.body = await editNews(ctx.request.body, ctx.query._newsId)
+  ctx.body = await editNews(ctx.request.body, ctx.params._newsId)
 })
 
 //GET /api/news/search?term=:term

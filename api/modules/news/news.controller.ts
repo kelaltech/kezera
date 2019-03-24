@@ -43,6 +43,21 @@ export async function addNewsWithPicture(
   return news
 }
 
+export async function addPictureForNews(pic: Stream, _newsId: ObjectId): Promise<any> {
+  const grid = new Grid(serverApp, NewsModel, _newsId)
+
+  return await grid.set(pic)
+}
+
+export async function getPictureFromNews(
+  _newsId: ObjectId,
+  pictureID = 'default'
+): Promise<any> {
+  const grid = new Grid(serverApp, NewsModel, _newsId)
+
+  return await grid.get(pictureID)
+}
+
 export async function getLikes(_newsId: ObjectId): Promise<any> {
   // const docs = (await get(NewsModel,_newsId)).populate('likes')
   const docs = await get(NewsModel, _newsId, {
@@ -90,9 +105,7 @@ export async function getNews(_newsId: ObjectId): Promise<any> {
 }
 
 export async function editNews(data: any, _newsId: ObjectId): Promise<any> {
-  const doc = await edit(NewsModel, _newsId, data)
-
-  return doc
+  return await edit(NewsModel, _newsId, data)
 }
 
 export async function searchNews(term: string): Promise<any> {

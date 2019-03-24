@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Editor, createEditorState, ImageSideButton } from 'medium-draft'
 import axios from 'axios'
-import { convertToRaw, convertFromRaw, EditorState } from 'draft-js'
+import { convertToRaw, convertFromRaw, EditorState, addNewBlock, Block } from 'draft-js'
 import './news-add.scss'
 import { Button, ImageInput } from 'gerami'
 import { withRouter } from 'react-router'
-import { async } from 'q'
 
 interface INewsAddState {
   title: any
@@ -39,6 +38,13 @@ function NewsAdd({
       getNews()
     }
   }, [])
+
+  const sideButtons = [
+    {
+      title: 'Add Your Cover Image',
+      component: CustomImageSideButton
+    }
+  ]
 
   const publishClicked = () => {
     addNews()
@@ -92,19 +98,15 @@ function NewsAdd({
   }
 
   const updateNews = () => {
+    const publication = {
+      title: JSON.stringify(convertToRaw(title.getCurrentContent())),
+      description: JSON.stringify(convertToRaw(description.getCurrentContent())),
+      article: JSON.stringify(convertToRaw(article.getCurrentContent()))
+    }
     axios
-      .put(`/api/news/${match.params._id}/edit`)
+      .put(`/api/news/${match.params._id}`, publication)
       .then(data => {
         console.log('successfully edited')
-        setTitle(
-          EditorState.createWithContent(convertFromRaw(JSON.parse(data.data.title)))
-        )
-        setDescription(
-          EditorState.createWithContent(convertFromRaw(JSON.parse(data.data.description)))
-        )
-        setArticle(
-          EditorState.createWithContent(convertFromRaw(JSON.parse(data.data.article)))
-        )
       })
       .catch(e => {
         console.log(e)
@@ -136,6 +138,7 @@ function NewsAdd({
           className={'news-card-add-title'}
           editorState={description}
           onChange={descriptionOnChange}
+          sideButtons={sideButtons}
         />
         <Editor
           placeholder={'Article'}
@@ -151,3 +154,34 @@ function NewsAdd({
 }
 
 export default withRouter(NewsAdd)
+
+class CustomImageSideButton extends ImageSideButton<any, any> {
+  onChange(e: any) {
+    const newsid = window.location.pathname.split('/')[3]
+
+    const file = e.target.files[0]
+    if (file.type.indexOf('image/') === 0) {
+      // This is a post request to server endpoint with image as `image`
+      const formData = new FormData()
+      formData.append('file', file)
+
+      axios
+        .post(`/api/news/${newsid}/addpic`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          withCredentials: true
+        })
+        .then((data: any) => {
+          console.log(data)
+          if (data.url) {
+            this.props.setEditorState(
+              addNewBlock(this.props.getEditorState(), Block.IMAGE, {
+                src: data.url
+              })
+            )
+          }
+        })
+        .catch(() => {})
+    }
+    this.props.close()
+  }
+}
