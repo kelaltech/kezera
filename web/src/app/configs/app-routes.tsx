@@ -1,5 +1,6 @@
 import React, { lazy } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+import { useAccountState } from '../stores/account/account-provider'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
@@ -12,6 +13,8 @@ const LayoutVerifier = lazy(() => import('../../layout-verifier/layout-verifier'
 const LayoutVolunteer = lazy(() => import('../../layout-volunteer/layout-volunteer'))
 
 export default function AppRoutes() {
+  const { account } = useAccountState()
+
   return (
     <Switch>
       <Redirect exact path={`/index.html`} to={`/`} />

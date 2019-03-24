@@ -17,8 +17,10 @@ function AccountDetail() {
   const { account } = useAccountState()
   const dispatch = useAccountDispatch()
 
-  const handleAccountChange = async (account: IAccountResponse, timeout = 0) => {
-    dispatch(await updateAccount(account, dispatch, timeout))
+  const handleAccountChange = async (data: any, timeout = 0) => {
+    dispatch(
+      await updateAccount(data, dispatch, timeout, data.currentPassword, data.newPassword)
+    )
   }
 
   return (

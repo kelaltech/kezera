@@ -26,7 +26,7 @@ export class AccountController extends KoaController {
     status: IAccountStatus = 'ACTIVE',
     role: IAccountRole = 'VOLUNTEER'
   ): Promise<IAccountResponse> {
-    let document = await accountRequestToDocument(data, role, status)
+    let document = await accountRequestToDocument(data, status, role)
 
     document = await add(AccountModel, document, {
       session,
@@ -55,20 +55,30 @@ export class AccountController extends KoaController {
   async editMe(
     session?: ClientSession,
     data = super.getRequestBody<IAccountRequest>(),
-    password?: string,
     status?: IAccountStatus,
     role?: IAccountRole,
     user = super.getUser()
   ): Promise<IAccountResponse> {
     let document = await get(AccountModel, user!._id, { session })
 
-    document.status = status || document.status
-    document.role = role || document.role
-
-    await edit(AccountModel, user!._id, data, {
-      session,
-      postUpdate: q => (password ? q.setPassword(password) : q)
-    })
+    await edit(
+      AccountModel,
+      user!._id,
+      await accountRequestToDocument(
+        data,
+        status || document.status,
+        role || document.role,
+        user!._id
+      ),
+      {
+        session,
+        preUpdate: async doc => {
+          if (data.currentPassword && data.newPassword)
+            await doc.changePassword(data.currentPassword, data.newPassword)
+          return doc
+        }
+      }
+    )
     document = await get(AccountModel, user!._id, { session })
 
     return accountDocumentToResponse(document)

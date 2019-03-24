@@ -18,7 +18,8 @@ export const accountPaths: SchemaDefinition = {
     index: true,
     unique: true
   },
-  password: { type: String, setOn: Date, required: true }, // the hash
+  password: { type: String, required: true }, // the hash
+  passwordSetOn: { type: Date, required: true },
 
   displayName: { type: String, required: true, minlength: 1, maxlength: 50 },
   phoneNumber: {

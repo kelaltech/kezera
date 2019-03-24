@@ -28,6 +28,7 @@ export interface IAccount {
 
   email: string
   password: string
+  passwordSetOn: Date | number
 
   displayName: string
   phoneNumber?: string

@@ -12,24 +12,27 @@ type ObjectId = Schema.Types.ObjectId | string
 
 export async function accountRequestToDocument(
   request: IAccountRequest,
-  role: IAccountRole,
   status: IAccountStatus,
+  role: IAccountRole,
   _id?: ObjectId,
   _last: Date | number = Date.now()
 ): Promise<Document & IAccount> {
-  return new AccountModel({
+  const account = new AccountModel({
     _id,
     _last,
 
-    role,
     status,
+    role,
 
     email: request.email,
-    // set password manually (using preSave, or preUpdate)
+    // set/change password manually (using postSave/preUpdate)
 
     displayName: request.displayName,
-    phoneNumber: request.phoneNumber
+    phoneNumber: request.phoneNumber === null ? undefined : request.phoneNumber
   })
+  console.log(request.phoneNumber)
+  account.markModified('phoneNumber')
+  return account
 }
 
 export async function accountDocumentToResponse(
@@ -42,6 +45,7 @@ export async function accountDocumentToResponse(
     status: document.status,
 
     email: document.email,
+    passwordSetOn: new Date(document.passwordSetOn).getTime(),
 
     displayName: document.displayName,
     phoneNumber: document.phoneNumber

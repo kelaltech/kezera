@@ -30,7 +30,9 @@ let updateCancellation: CancelTokenSource | null = null
 export async function updateAccount(
   account: IAccountResponse,
   dispatch: (action: Action) => void,
-  timeout = 0
+  timeout = 0,
+  currentPassword?: string,
+  newPassword?: string
 ): Promise<Action> {
   if (updateTimeout !== null) clearTimeout(updateTimeout)
   if (updateCancellation !== null) updateCancellation.cancel()
@@ -38,10 +40,11 @@ export async function updateAccount(
   updateTimeout = setTimeout(async () => {
     updateCancellation = Axios.CancelToken.source()
 
-    Axios.put('/api/account/edit-me', await accountResponseToRequest(account), {
-      withCredentials: true,
-      cancelToken: updateCancellation.token
-    })
+    Axios.put(
+      '/api/account/edit-me',
+      await accountResponseToRequest(account, undefined, currentPassword, newPassword),
+      { withCredentials: true, cancelToken: updateCancellation.token }
+    )
       .then(response => response.data)
       .then(data => reloadAccount(false, data))
       .then(action => dispatch(action))

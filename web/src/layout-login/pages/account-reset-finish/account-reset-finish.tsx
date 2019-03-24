@@ -59,7 +59,7 @@ function AccountResetFinish() {
       <Page>
         {error && (
           <Content size={'S'} className={'margin-bottom-big'}>
-            <Warning shy problem={error} />
+            <Warning shy={() => setError(null)} problem={error} />
           </Content>
         )}
 
