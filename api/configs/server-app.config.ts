@@ -2,7 +2,9 @@ import { IServerAppConfig } from 'meseret'
 import * as KoaPassport from 'koa-passport'
 import * as path from 'path'
 
+import { AccountModel } from '../models/account/account.model'
 import { KeyModel } from '../models/key/key.model'
+
 import { accountRouter } from '../modules/account/account.router'
 
 export const serverAppConfig: IServerAppConfig = {
@@ -16,7 +18,7 @@ export const serverAppConfig: IServerAppConfig = {
     }
   ],
 
-  models: [KeyModel],
+  models: [AccountModel, KeyModel],
 
   routers: [accountRouter],
 

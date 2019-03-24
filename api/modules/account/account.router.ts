@@ -13,6 +13,13 @@ export const accountRouter = new Router({ prefix: '/api/account' })
 // GET /api/account/me
 accountRouter.get('/me', authenticate(), handle(AccountController, (c, s) => c.me(s)))
 
+// PUT /api/account/edit-me
+accountRouter.put(
+  '/edit-me',
+  authenticate(),
+  handle(AccountController, (c, s) => c.editMe(s))
+)
+
 /* ACCOUNT RESET */
 
 // POST /api/account/reset/start

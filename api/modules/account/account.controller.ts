@@ -8,7 +8,7 @@ import {
   IAccountRole,
   IAccountStatus
 } from '../../models/account/account.model'
-import { add, get } from '../../lib/crud'
+import { add, edit, get } from '../../lib/crud'
 import {
   finishPasswordReset,
   IPasswordResetFinishRequest,
@@ -23,8 +23,8 @@ export class AccountController extends KoaController {
   async add(
     session?: ClientSession,
     data = super.getRequestBody<IAccountRequest>(),
-    role: IAccountRole = 'VOLUNTEER',
-    status: IAccountStatus = 'ACTIVE'
+    status: IAccountStatus = 'ACTIVE',
+    role: IAccountRole = 'VOLUNTEER'
   ): Promise<IAccountResponse> {
     let document = await accountRequestToDocument(data, role, status)
 
@@ -48,6 +48,28 @@ export class AccountController extends KoaController {
 
   async me(session?: ClientSession, user = super.getUser()): Promise<IAccountResponse> {
     const document = await get(AccountModel, user!._id, { session })
+
+    return accountDocumentToResponse(document)
+  }
+
+  async editMe(
+    session?: ClientSession,
+    data = super.getRequestBody<IAccountRequest>(),
+    password?: string,
+    status?: IAccountStatus,
+    role?: IAccountRole,
+    user = super.getUser()
+  ): Promise<IAccountResponse> {
+    let document = await get(AccountModel, user!._id, { session })
+
+    document.status = status || document.status
+    document.role = role || document.role
+
+    await edit(AccountModel, user!._id, data, {
+      session,
+      postUpdate: q => (password ? q.setPassword(password) : q)
+    })
+    document = await get(AccountModel, user!._id, { session })
 
     return accountDocumentToResponse(document)
   }

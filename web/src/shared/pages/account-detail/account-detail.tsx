@@ -18,7 +18,7 @@ function AccountDetail() {
   const dispatch = useAccountDispatch()
 
   const handleAccountChange = async (account: IAccountResponse) => {
-    dispatch(await updateAccount(account))
+    dispatch(await updateAccount(account, dispatch))
   }
 
   return (

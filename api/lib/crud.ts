@@ -21,7 +21,7 @@ export async function add<T extends Document>(
   let doc = data instanceof model ? data : new model(data)
 
   if (preSave) doc = await preSave(doc, session || null)
-  doc = await doc.save({ session })
+  doc = await doc.save({ session, validateBeforeSave: true })
   if (postSave) doc = await postSave(doc, session || null)
 
   return doc
@@ -189,7 +189,7 @@ export async function edit<T extends Document>(
         'DOCUMENT_NOT_FOUND'
       )
   }
-  let ret = await doc.update(data, { session })
+  let ret = await doc.update(data, { session, runValidators: true, strict: true })
   if (postUpdate) ret = await postUpdate(ret, session || null)
 
   return ret

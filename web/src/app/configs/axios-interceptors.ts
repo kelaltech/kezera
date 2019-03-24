@@ -1,11 +1,13 @@
-import axios from 'axios'
+import Axios from 'axios'
 import * as qs from 'qs'
 
-axios.interceptors.response.use(
+Axios.interceptors.response.use(
   response => {
     return response
   },
   error => {
+    if (Axios.isCancel(error)) return Promise.reject(error)
+
     if (error.response.status == 401) {
       window.location.replace(
         `/login?${qs.stringify(

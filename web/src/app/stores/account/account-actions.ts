@@ -25,23 +25,36 @@ export async function reloadAccount(
   }
 }
 
+let updateTimeout: NodeJS.Timeout | null = null
 let updateCancellation: CancelTokenSource | null = null
-export async function updateAccount(account: IAccountResponse): Promise<Action> {
-  if (updateCancellation !== null) {
-    updateCancellation.cancel()
-  }
+export async function updateAccount(
+  account: IAccountResponse,
+  dispatch: (action: Action) => void
+): Promise<Action> {
+  if (updateTimeout !== null) clearTimeout(updateTimeout)
+  if (updateCancellation !== null) updateCancellation.cancel()
 
-  updateCancellation = Axios.CancelToken.source()
+  updateTimeout = setTimeout(async () => {
+    updateCancellation = Axios.CancelToken.source()
 
-  Axios.put('/api/account/edit-me', await accountResponseToRequest(account), {
-    withCredentials: true,
-    cancelToken: updateCancellation.token
-  })
-    .then(response => response.data)
-    .then(data => reloadAccount(false, data))
-    .catch(err => {
-      if (!Axios.isCancel(err)) console.error(err)
+    Axios.put('/api/account/edit-me', await accountResponseToRequest(account), {
+      withCredentials: true,
+      cancelToken: updateCancellation.token
     })
+      .then(response => response.data)
+      .then(data => reloadAccount(false, data))
+      .then(action => dispatch(action))
+      .catch(err => {
+        if (!Axios.isCancel(err)) {
+          console.error(err)
+          reloadAccount()
+            .then(action => dispatch(action))
+            .catch(console.error)
+        }
+      })
+
+    updateTimeout = null
+  }, 1000)
 
   return { type: 'set', account }
 }
