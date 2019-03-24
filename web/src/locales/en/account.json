@@ -21,6 +21,10 @@
   "proceed-to-login": "Proceed to Login",
 
   "go-to-portfolio": "Go to Portfolio",
-  "phone-number": "Phone Number",
-  "optional": "Optional"
+  "account-settings": "Account Settings",
+  "optional": "Optional",
+  "current-password": "Current Password",
+  "new-password": "New Password",
+  "repeat-new-password": "Repeat New Password",
+  "phone-number": "Phone Number"
 }

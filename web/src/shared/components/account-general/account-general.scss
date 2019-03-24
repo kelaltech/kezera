@@ -33,3 +33,26 @@
     color: $bg !important;
   }
 }
+
+.account-general-field {
+  display: flex;
+  border-radius: 0;
+  transition: all 300ms;
+
+  > * {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: darken($bg, 3%);
+  }
+}
+
+.account-general-field-editing {
+  background-color: $bg !important;
+  border-left: $space / 4 solid $accent;
+  box-shadow: $shade-M;
+}

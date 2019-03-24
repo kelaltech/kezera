@@ -8,7 +8,7 @@ import { IAccountResponse } from '../../../../../api/modules/account/account.api
 
 interface Props {
   account: IAccountResponse
-  onChange?: (account: IAccountResponse) => any
+  onChange?: (account: IAccountResponse, timeout?: number) => any
   /**
    * @default false
    */
@@ -19,7 +19,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
   const { loading, t } = useLocale(['account'])
 
   const emitChange = (accountChanges: any): void => {
-    if (!readonly && onChange) onChange(Object.assign(account, accountChanges))
+    if (!readonly && onChange) onChange(Object.assign(account, accountChanges), 1000)
   }
 
   return (
@@ -28,18 +28,14 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
         <Flex>
           <AccountPhoto
             account={account}
-            onChange={() =>
-              emitChange({
-                /* todo */
-              })
-            }
+            onChange={emitChange /* todo */}
             readonly={readonly}
           />
 
           <label className={'account-head-display-name'}>
             <Input
               className={'account-head-display-name-input full-width'}
-              label={readonly ? '' : 'Full Name'}
+              label={readonly ? '' : 'Display Name' /* todo: translate */}
               value={account.displayName}
               onChange={e => emitChange({ displayName: e.target.value })}
               readOnly={readonly}
@@ -48,7 +44,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
               required
             />
             <div className={'account-head-display-name-footnote'}>
-              All changes are saved automatically. {/* todo: translate */}{' '}
+              Changes are saved automatically. {/* todo: translate */}{' '}
               {/* todo: use this as saved/error notification */}
             </div>
           </label>

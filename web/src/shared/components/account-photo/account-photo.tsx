@@ -9,7 +9,7 @@ import defaultPhoto from '../../../assets/images/login/promo-1.jpg'
 
 interface Props {
   account: IAccountResponse
-  onChange?: (account: IAccountResponse) => any // todo: ???
+  onChange: (account: IAccountResponse, timeout: number) => any // todo: ???
   /**
    * @default false
    */

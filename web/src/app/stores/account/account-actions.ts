@@ -29,7 +29,8 @@ let updateTimeout: NodeJS.Timeout | null = null
 let updateCancellation: CancelTokenSource | null = null
 export async function updateAccount(
   account: IAccountResponse,
-  dispatch: (action: Action) => void
+  dispatch: (action: Action) => void,
+  timeout = 0
 ): Promise<Action> {
   if (updateTimeout !== null) clearTimeout(updateTimeout)
   if (updateCancellation !== null) updateCancellation.cancel()
@@ -54,7 +55,7 @@ export async function updateAccount(
       })
 
     updateTimeout = null
-  }, 1000)
+  }, timeout)
 
   return { type: 'set', account }
 }
