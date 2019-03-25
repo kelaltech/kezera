@@ -1,22 +1,20 @@
 import React, { useState } from 'react'
-import {
-  Anchor,
-  Block,
-  Button,
-  Content,
-  Flex,
-  FlexSpacer,
-  Input,
-  Page,
-  Warning
-} from 'gerami'
+import { Anchor, Block, Button, Content, Flex, FlexSpacer, Input, Warning } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  FormControl,
+  Input as MatInput,
+  InputLabel,
+  MenuItem,
+  Select
+} from '@material-ui/core'
 
 import './account-general.scss'
 import useLocale from '../../hooks/use-locale/use-locale'
 import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 import { useAccountDispatch } from '../../../app/stores/account/account-provider'
 import { logout } from '../../../app/stores/account/account-actions'
+import { IAccountStatus } from '../../../../../api/models/account/account.model'
 
 interface Props {
   account: IAccountResponse
@@ -223,10 +221,33 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
                   className={'margin-right-big'}
                   icon={'question-circle'}
                 />
-                {editingStatus ? null /* todo */ : (
+                {editingStatus && account.status !== 'BLOCKED' ? (
+                  <FormControl className={'full-width'}>
+                    <InputLabel htmlFor={'account-status-label-placeholder'} shrink>
+                      Status
+                    </InputLabel>
+                    <Select
+                      value={status}
+                      onChange={e => setStatus(e.target.value as IAccountStatus)}
+                      input={
+                        <MatInput
+                          name="account-status"
+                          id="account-status-label-placeholder"
+                        />
+                      }
+                    >
+                      <MenuItem value={'ACTIVE'}>ACTIVE</MenuItem>
+                      <MenuItem value={'DISABLED'}>DISABLED</MenuItem>
+                    </Select>
+                  </FormControl>
+                ) : (
                   <div className={'full-width'}>
                     <span className={'fg-blackish'}>Account Status: </span>
-                    <span>{account.status}</span>
+                    <span>
+                      {account.status}
+                      {account.status === 'BLOCKED' &&
+                        ' (Contact the system administrator for more information).'}
+                    </span>
                   </div>
                 )}
                 <Button

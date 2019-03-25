@@ -65,18 +65,20 @@ export class AccountController extends KoaController {
   ): Promise<IAccountResponse> {
     let document = await get(AccountModel, user!._id, { session })
 
+    const request = await accountRequestToLeanDocument(
+      data,
+      status ||
+        (document.status === 'BLOCKED' && 'BLOCKED') ||
+        data.status ||
+        document.status,
+      role || document.role,
+      user!._id
+    )
+
     await edit(
       AccountModel,
       user!._id,
-      Object.assign(
-        document,
-        await accountRequestToLeanDocument(
-          data,
-          status || document.status,
-          role || document.role,
-          user!._id
-        )
-      ),
+      Object.assign(document, request),
       {
         session,
         preUpdate: async doc => {

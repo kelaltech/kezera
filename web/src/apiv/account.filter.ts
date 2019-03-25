@@ -7,6 +7,8 @@ export async function accountResponseToRequest(
   newPassword?: string
 ): Promise<IAccountRequest> {
   return {
+    status: response.status,
+
     email: response.email,
     password,
 
