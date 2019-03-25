@@ -1,83 +1,109 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './event-verification.scss'
-import { CheckBox, Page, Block, Title } from 'gerami'
+import { CheckBox, Page, Block, Title, Button } from 'gerami'
 import Table, {
   TableHeader,
   TableCell,
   TableBody,
   TableRow
 } from '../../../../shared/components/Table/Table'
+import axios from 'axios'
 
-const rows = [
-  { Name: 'Antisha', Location: 'Addis Ababa', phone: '+25191351551' },
-  { Name: 'Pompidou', Location: 'Borena', phone: '+25191351551' },
-  { Name: 'Nati', Location: 'Mekele', phone: '+25191351551' }
-]
-
-export default function EventVerification() {
+export default function EventVerification(props: any) {
   let [all, setAll] = useState(false)
   let user: any = []
-  let include = function(obj: any) {
-    return user.find((i: any) => i === obj)
-  }
-
-  let handleSelect = function(index: any) {
-    if (!include(index)) user.push(index)
-    else user.splice(index, 1)
-
+  let [volunteer, setVolunteer] = useState([])
+  let handleSelect = function(id: any) {
+    if (!user.includes(id)) user.push(id)
+    else user.splice(user.indexOf(id), 1)
     console.log(user)
   }
+  let verify = function(id: any) {
+    axios
+      .put(`/api/event/${id}/attended`, user)
+      .then()
+      .catch(console.error)
+  }
+  //axios.get(`/api/event/${props.match.params._id}/attendance/verify`,user).then((resp:any)=>{console.log(resp.data());}).catch(console.error)
+
+  useEffect(() => {
+    axios
+      .get(`/api/event/${props.match.params._id}/attendance/verify`, user)
+      .then((resp: any) => {
+        setVolunteer(resp.data)
+      })
+      .catch(console.error)
+  }, [])
+
   return (
     <Page>
       <Block>
         <Title size="3XL"> Verifiy volunteers attendance </Title>
       </Block>
-      <Table>
-        <TableHeader>
-          <TableCell color={'white'}>
-            {' '}
-            <label> No. </label>{' '}
-          </TableCell>
-          <TableCell color={'white'}>
-            {' '}
-            <label> Name </label>{' '}
-          </TableCell>
-          <TableCell color={'white'}>
-            {' '}
-            <label> Locaion </label>{' '}
-          </TableCell>
-          <TableCell color={'white'}>
-            {' '}
-            <label> Phone no. </label>{' '}
-          </TableCell>
-          <TableCell color={'white'}>
-            {' '}
-            <CheckBox onSelect={() => setAll(!all)} className={'CheckBox'} />{' '}
-          </TableCell>
-        </TableHeader>
-        <TableBody>
-          {rows.map((field, index) => (
-            <TableRow>
-              <TableCell>
-                <label>&emsp;{index + 1}</label>
-              </TableCell>
-              <TableCell>
-                <label>{field.Name}</label>
-              </TableCell>
-              <TableCell>
-                <label>{field.Location}</label>
-              </TableCell>
-              <TableCell>
-                <label>{field.phone}</label>
-              </TableCell>
-              <TableCell>
+      {volunteer.length >= 0 ? (
+        <>
+          <Table>
+            <TableHeader>
+              <TableCell color={'white'}>
                 {' '}
-                <CheckBox onChange={() => handleSelect(index)} className={''} />{' '}
+                <label> No. </label>{' '}
               </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+              <TableCell color={'white'}>
+                {' '}
+                <label> Name </label>{' '}
+              </TableCell>
+              <TableCell color={'white'}>
+                {' '}
+                <label> Email </label>{' '}
+              </TableCell>
+              <TableCell color={'white'}>
+                {' '}
+                <label> Phone no. </label>{' '}
+              </TableCell>
+              <TableCell color={'white'}>
+                {' '}
+                <label> Attended </label>{' '}
+              </TableCell>
+            </TableHeader>
+            <TableBody>
+              {volunteer.map((field: any, index: any) => (
+                <TableRow>
+                  <TableCell>
+                    <label>&emsp;{index + 1}</label>
+                  </TableCell>
+                  <TableCell>
+                    <label>{field.displayName}</label>
+                  </TableCell>
+                  <TableCell>
+                    <label>{field.email} </label>
+                  </TableCell>
+                  <TableCell>
+                    <label> {field.phoneNumber}</label>
+                  </TableCell>
+                  <TableCell>
+                    {' '}
+                    <input
+                      type="checkbox"
+                      onChange={() => {
+                        handleSelect(field._id)
+                      }}
+                      className={''}
+                    />{' '}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Block className={'right'}>
+            <Button primary onClick={() => verify(props.match.params._id)}>
+              {' '}
+              Verify{' '}
+            </Button>
+          </Block>
+        </>
+      ) : (
+        <Title size="3XL"> No volunteers found </Title>
+      )}
     </Page>
   )
 }

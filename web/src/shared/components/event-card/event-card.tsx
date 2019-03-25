@@ -4,27 +4,16 @@ import './event-card.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
+import axios from 'axios'
 
-const EventDescription = {
-  imageSrc: 'https://d2g8igdw686xgo.cloudfront.net/31848636_1533268089320317_r.jpeg',
-  Title: 'Some Title',
-  Description:
-    'Here goes some description. Here goes some description. Here goes some description.' +
-    'Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description. ',
-  StartDate: '2/12/2018',
-  EndDate: '28/12/2018',
-  location: 'Kotebe, Addis Ababa',
-  PeopleInvited: '25842',
-  Interested: '2221'
-}
-export default function EventCard() {
+export default function EventCard(props: any) {
   let [open, setOpen] = useState(false)
   return (
     <Content className={'EventCard'}>
-      <EventEdit open={open} onClose={() => setOpen(false)} event={EventDescription} />
+      <EventEdit open={open} onClose={() => setOpen(false)} event={props.event} />
       <div className={'EventCardImage'}>
         <div className={'BlurryImage'}>
-          <Image className={'EventImage'} src={EventDescription.imageSrc} />
+          <Image className={'EventImage'} src={`/api/event/${props.event._id}/picture`} />
         </div>
         <div className={'EventDateContainer'}>
           Dec.
@@ -34,17 +23,17 @@ export default function EventCard() {
       <div className={'padding-horizontal-big'}>
         <Title className="EventTitle" size={'M'}>
           {' '}
-          <Link className="EventTitle" to={'/organization/event/someId'}>
-            {EventDescription.Title}
+          <Link className="EventTitle" to={`/organization/event/${props.event._id}`}>
+            {props.event.title}
           </Link>{' '}
         </Title>
       </div>
       <div className={'EventDescriptionContainer'}>
         <p className={'EventDescription'}>
           {' '}
-          {EventDescription.Description.substr(0, 90)}...
+          {props.event.description.substr(0, 90)}...
           {/* //todo add id */}
-          <Link to="/organization/event/someId">view</Link>{' '}
+          <Link to={`/organization/event/${props.event._id}`}>view</Link>{' '}
         </p>
       </div>
       <div className="EventField ">
@@ -52,7 +41,7 @@ export default function EventCard() {
       </div>
       <div className="EventField">
         <FontAwesomeIcon icon={'map-marker'} size={'sm'} /> &nbsp;{' '}
-        <span> Kotebe,Addis Ababa </span>
+        <span> {props.event.location} </span>
       </div>
       <div className="EventField flex">
         <span className={'full-width flex'}>
@@ -62,7 +51,7 @@ export default function EventCard() {
           <FontAwesomeIcon icon={'heart'} size={'1x'} /> 2 K
         </span>
         <span className={'full-width flex'}>
-          <Link to={'/organization/event/someId'}>
+          <Link to={`/organization/event/${props.event._id}`}>
             {' '}
             <FontAwesomeIcon icon={['far', 'comment-alt']} />
           </Link>
@@ -77,7 +66,10 @@ export default function EventCard() {
           </Button>
         </span>
         <span className={'full-width flex'}>
-          <Button onClick={() => DeleteEvent(12)} className={'ActionButton '}>
+          <Button
+            onClick={() => DeleteEvent(props.event._id)}
+            className={'ActionButton '}
+          >
             <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />
           </Button>
         </span>
@@ -87,6 +79,9 @@ export default function EventCard() {
 }
 function DeleteEvent(id: any) {
   if (window.confirm('Are you sure you want to delete this event?')) {
-    alert('deleted')
+    axios
+      .delete(`/api/event/${id}`)
+      .then()
+      .catch(console.error)
   }
 }
