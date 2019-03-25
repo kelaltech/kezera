@@ -10,7 +10,7 @@ const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
 )
 const AccountVolunteerRegister = lazy(() =>
-  import('../pages/account-volunteer-register/account-volunteer-register')
+  import('../pages/volunteer-register/volunteer-register')
 )
 
 export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string }) {
