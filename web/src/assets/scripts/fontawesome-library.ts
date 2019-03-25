@@ -23,7 +23,7 @@ import {
   faUserSecret,
   faShareAlt
 } from '@fortawesome/free-solid-svg-icons'
-// import { } from '@fortawesome/free-brands-svg-icons'
+import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import {
   faUserCircle,
   faCommentAlt,
@@ -59,7 +59,7 @@ export default function fontawesomeLibrary() {
   )
 
   // brands
-  library.add()
+  library.add(faFacebook)
 
   // regular (free)
   library.add(faUserCircle, faCommentAlt, Heart)

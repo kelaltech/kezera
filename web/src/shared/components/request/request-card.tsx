@@ -1,11 +1,21 @@
 import React, { Component } from 'react'
-import { Anchor, Block, Button, Card, Image, Page, Yoga } from 'gerami'
+import {
+  Anchor,
+  Block,
+  Button,
+  Card,
+  Image,
+  Loading,
+  Page,
+  SlideShow,
+  Yoga
+} from 'gerami'
+import axios from 'axios'
 
 import './request-card.scss'
 
 export interface IRequestCardProps {
   _id: string
-  className?: string
   title: string
   startDate: Number
   endDate: Number
@@ -13,55 +23,70 @@ export interface IRequestCardProps {
   image: string
 }
 
-export default class RequestCard extends Component<IRequestCardProps, {}> {
+export interface IRequestState {
+  loading: boolean
+  requests: any[]
+}
+import img3 from '../../../assets/images/login/promo-1.jpg'
+import img1 from '../../../../assets/images/news-temp.jpg'
+import { any } from 'prop-types'
+
+export default class RequestCard extends Component<IRequestCardProps, IRequestState> {
+  state: IRequestState = {
+    loading: true,
+    requests: []
+  }
+  props: IRequestCardProps = {
+    _id: '',
+    title: '',
+    startDate: 1,
+    endDate: 2,
+    description: '',
+    image: ''
+  }
+
   render() {
-    const { _id, className, title, startDate, endDate, description, image } = this.props
+    const { _id, title, startDate, endDate, description, image } = this.props
     return (
       <Page>
-        <Card size={'M'}>
-          <Yoga maxCol={2}>
-            <Block first className={'request-title'}>
-              <h4>{title}</h4>
-            </Block>
-            <Block>
-              <Image src={image} className={'request-card-image'} />
-            </Block>
-          </Yoga>
-          <hr />
-          <Block className={'request-description'}>{description}</Block>
+        {this.state.loading ? (
+          <Loading />
+        ) : this.state.requests.length === 0 ? (
+          <Block first last className={'center'}>
+            There are no Requests.
+          </Block>
+        ) : (
+          this.state.requests.map((r, i) => {
+            return (
+              <Card size={'S'}>
+                <Image src={`${r.image}`} placeholder={`${r.title}`} />
+                <hr />
+                {r.description}
 
-          <hr />
-          <Yoga maxCol={2}>
-            <Block>
-              <h5>Start Date/Time</h5>
-            </Block>
-            <Block>
-              <h5>End Date/Time</h5>
-            </Block>
-          </Yoga>
+                <Yoga maxCol={2}>
+                  <h5>Start Date/Time</h5>
+                  <h5>End Date/Time</h5>
+                </Yoga>
 
-          <Yoga maxCol={2}>
-            <Block>
-              <label>{startDate}</label>
-            </Block>
-            <Block>
-              <label>{endDate}</label>
-            </Block>
-          </Yoga>
-          <hr />
-          <Yoga maxCol={2}>
-            <Block last className={'left'}>
-              <Anchor className={'full-width'} to={'/organization/request/' + _id}>
-                Details
-              </Anchor>
-            </Block>
-            <Block className={'right'}>
-              <Button type="submit" primary>
-                Donate
-              </Button>
-            </Block>
-          </Yoga>
-        </Card>
+                <Yoga maxCol={2}>
+                  <label>{r.startDate}</label>
+                  <label>{r.endDate}</label>
+                </Yoga>
+                <hr />
+                <Yoga maxCol={2}>
+                  <Block last className={'left'}>
+                    <Anchor className={'full-width'} to={'/organization/request/' + _id}>
+                      Details
+                    </Anchor>
+                  </Block>
+                  <Button className={'right'} type="submit" primary>
+                    Support the Cause
+                  </Button>
+                </Yoga>
+              </Card>
+            )
+          })
+        )}
       </Page>
     )
   }

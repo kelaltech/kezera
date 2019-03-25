@@ -12,6 +12,7 @@ export interface IOrganization extends Document {
   type: Number
   news: ObjectId[]
   events: ObjectId[]
+  requests: ObjectId[]
 }
 
 export const organizationModelFactory = new ModelFactory<IOrganization>({

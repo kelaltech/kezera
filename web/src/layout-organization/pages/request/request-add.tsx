@@ -1,17 +1,23 @@
 import React, { useState } from 'react'
-import { Block, Button, Content, Input, Page, TextArea, Yoga } from 'gerami'
-
-import { Radio, RadioGroup } from '@material-ui/core'
+import {
+  Block,
+  Button,
+  Content,
+  ImageInput,
+  Input,
+  Page,
+  TextArea,
+  Title,
+  Yoga
+} from 'gerami'
 
 export default function requestAdd() {
-  const [typeOfRequest, setTypeOfRequest] = useState('1')
-
   return (
     <Page>
       <Content size={'L'}>
-        <form>
+        <form action="/api/request/add" method={'POST'}>
           <Block>
-            <h1>Make A Request</h1>
+            <Title size={'XXL'}>Make A Request</Title>
           </Block>
           <hr />
           <Block>
@@ -21,6 +27,9 @@ export default function requestAdd() {
               type={'text'}
               label={'Title of Request'}
             />
+          </Block>
+          <Block>
+            <ImageInput />
           </Block>
 
           <Block>
@@ -33,10 +42,10 @@ export default function requestAdd() {
 
           <Yoga maxCol={2}>
             <Block>
-              <h6>Start Date</h6>
+              <Title>Start Date</Title>
             </Block>
             <Block>
-              <h6>End Date</h6>
+              <Title>End Date</Title>
             </Block>
           </Yoga>
 
@@ -49,21 +58,8 @@ export default function requestAdd() {
             </Block>
           </Yoga>
           <hr />
-          <Block>Type of Request</Block>
-
-          <Block>
-            <RadioGroup value={typeOfRequest} onChange={(e, v) => setTypeOfRequest(v)}>
-              <Radio type={'radio'} value={'1'} />
-              <Radio type={'radio'} value={'2'} />
-              <Radio name={'Task'} type={'radio'} value={'3'} />
-            </RadioGroup>
-          </Block>
-
-          <hr />
           <Block last className={'right'}>
-            <Button type={'submit'} primary>
-              Finish
-            </Button>
+            <Button>Finish</Button>
           </Block>
         </form>
       </Content>

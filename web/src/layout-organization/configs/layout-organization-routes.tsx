@@ -26,12 +26,12 @@ const EventVerification = lazy(() =>
   import('../pages/event-attendance/event-verification/event-verification')
 )
 
-const RequestList = lazy(() => import('../../shared/components/request/request'))
+const RequestList = lazy(() => import('../../shared/components/request/request-list'))
 const RequestAdd = lazy(() =>
   import('../../layout-organization/pages/request/request-add')
 )
-const RequestDetail = lazy(() =>
-  import('../../shared/pages/request-detail/request-detail')
+const RequestInformation = lazy(() =>
+  import('../../shared/pages/request-detail/request-information')
 )
 
 export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string }) {
@@ -58,7 +58,7 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
 
       <Route exact path={`${p}/request/list`} component={RequestList} />
       <Route exact path={`${p}/request/add`} component={RequestAdd} />
-      <Route exact path={`${p}/request/:_id`} component={RequestDetail} />
+      <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
 
       <Route component={NotFound} />
     </Switch>
