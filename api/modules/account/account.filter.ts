@@ -7,6 +7,8 @@ import {
   IAccountStatus
 } from '../../models/account/account.model'
 import { IAccountRequest, IAccountResponse } from './account.apiv'
+import { Grid } from '../../lib/grid'
+import { serverApp } from '../../index'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -45,9 +47,10 @@ export async function accountRequestToDocument(
 }
 
 export async function accountDocumentToResponse(
-  document: Document & IAccount
+  document: Document & IAccount,
+  photoUri?: string | null
 ): Promise<IAccountResponse> {
-  return {
+  const response: IAccountResponse = {
     _id: document._id,
 
     role: document.role,
@@ -59,4 +62,21 @@ export async function accountDocumentToResponse(
     displayName: document.displayName,
     phoneNumber: document.phoneNumber
   }
+  if (photoUri !== null) {
+    if (photoUri !== undefined) {
+      response.photoUri = photoUri
+    } else if (response._id) {
+      const has = await new Grid(
+        serverApp,
+        AccountModel,
+        response._id,
+        'photo',
+        false
+      ).has()
+
+      if (has) response.photoUri = `/api/account/get-photo/${response._id}`
+      // i.e. all account photos are public
+    }
+  }
+  return response
 }

@@ -24,6 +24,8 @@ export type IAccountResponse = {
 
   displayName: string
   phoneNumber?: string
+
+  photoUri?: string
 }
 
 import {

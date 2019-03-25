@@ -13,14 +13,29 @@ export const accountRouter = new Router({ prefix: '/api/account' })
 // GET /api/account/me
 accountRouter.get('/me', authenticate(), handle(AccountController, (c, s) => c.me(s)))
 
-// PUT /api/account/edit-me
+// PUT /api/account/edit-me *
 accountRouter.put(
   '/edit-me',
   authenticate(),
   handle(AccountController, (c, s) => c.editMe(s))
 )
 
-/* ACCOUNT RESET */
+/* PHOTO */
+
+// POST /api/account/add-photo *
+accountRouter.post(
+  '/add-photo',
+  authenticate(),
+  handle(AccountController, (c, s) => c.addPhoto(s))
+)
+
+// GET /api/account/get-photo/:account_id
+accountRouter.get('/get-photo/:account_id', handle(AccountController, c => c.getPhoto()))
+
+// GET /api/account/remove-photo *
+accountRouter.get('/remove-photo', handle(AccountController, (c, s) => c.removePhoto(s)))
+
+/* PASSWORD RESET */
 
 // POST /api/account/reset/start
 accountRouter.post(
