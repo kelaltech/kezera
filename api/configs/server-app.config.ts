@@ -2,8 +2,11 @@ import { IServerAppConfig } from 'meseret'
 import * as KoaPassport from 'koa-passport'
 import * as path from 'path'
 
+import { AccountModel } from '../models/account/account.model'
 import { KeyModel } from '../models/key/key.model'
+
 import { accountRouter } from '../modules/account/account.router'
+import { newsRouter } from '../modules/news/news.route'
 import { eventRouter } from '../modules/event/event.router'
 
 export const serverAppConfig: IServerAppConfig = {
@@ -17,9 +20,9 @@ export const serverAppConfig: IServerAppConfig = {
     }
   ],
 
-  models: [KeyModel],
+  models: [AccountModel, KeyModel],
 
-  routers: [accountRouter, eventRouter],
+  routers: [accountRouter, eventRouter, newsRouter],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],
   spaFileRelativePath: path.join('web', 'build', 'index.html'),

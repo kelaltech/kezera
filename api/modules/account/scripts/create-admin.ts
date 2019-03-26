@@ -16,7 +16,7 @@ setTimeout(() => {
 
   transact(session => {
     // todo: switch to the admin module, when ready
-    return new AccountController().add(session, data, 'ADMIN')
+    return new AccountController().add(session, data, 'ACTIVE', 'ADMIN')
   })
     .then(() => {
       console.log(`\nTransaction completed successfully.`)

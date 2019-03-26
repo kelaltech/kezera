@@ -10,14 +10,21 @@ import { Stream } from 'stream'
 type ObjectId = Schema.Types.ObjectId | string
 
 export async function addNews(data: any, account: IAccount): Promise<any> {
-  data._by = account._id
-  const doc = await add(NewsModel, data)
-
-  return doc
+  /*  if(account.role !== 'ORGANIZATION'){
+    return "you dont have permission to publish this contente"
+  }*/
+  data._by = await account._id
+  return await add(NewsModel, data)
 }
 
 export async function getAllNews(since: number, count: number): Promise<any> {
   const docs = await list(NewsModel, { since: since, count: count })
+
+  return docs
+}
+
+export async function listAllNews() {
+  const docs = await list(NewsModel)
 
   return docs
 }
@@ -36,6 +43,29 @@ export async function addNewsWithPicture(
   return news
 }
 
+export async function addPictureForNews(pic: Stream, _newsId: ObjectId): Promise<any> {
+  const grid = new Grid(serverApp, NewsModel, _newsId)
+
+  return await grid.set(pic)
+}
+
+export async function getPictureFromNews(
+  _newsId: ObjectId,
+  pictureID = 'default'
+): Promise<any> {
+  const grid = new Grid(serverApp, NewsModel, _newsId)
+
+  return await grid.get(pictureID)
+}
+
+export async function getLikes(_newsId: ObjectId): Promise<any> {
+  // const docs = (await get(NewsModel,_newsId)).populate('likes')
+  const docs = await get(NewsModel, _newsId, {
+    postQuery: q => q.populate('likes')
+  })
+
+  return docs.likes
+}
 export async function toggleLike(
   _newsId: ObjectId,
   account: IAccount
@@ -46,6 +76,7 @@ export async function toggleLike(
 
   if (doc.likes.length == 0) {
     doc.likes.push(account._id)
+    await doc.save()
     return {
       likes: doc.likes.length
     }
@@ -58,6 +89,7 @@ export async function toggleLike(
       doc.likes.push(account._id)
     }
   }
+  await doc.save()
 
   return { likes: doc.likes.length }
 }
@@ -73,9 +105,7 @@ export async function getNews(_newsId: ObjectId): Promise<any> {
 }
 
 export async function editNews(data: any, _newsId: ObjectId): Promise<any> {
-  const doc = await edit(NewsModel, _newsId, data)
-
-  return doc
+  return await edit(NewsModel, _newsId, data)
 }
 
 export async function searchNews(term: string): Promise<any> {

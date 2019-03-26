@@ -1,4 +1,12 @@
-import { ClientSession, Document, DocumentQuery, Model, Schema } from 'mongoose'
+import {
+  ClientSession,
+  Document,
+  DocumentQuery,
+  Model,
+  ModelUpdateOptions,
+  SaveOptions,
+  Schema
+} from 'mongoose'
 import { KoaError } from './koa-error'
 
 type ObjectId = Schema.Types.ObjectId | string
@@ -14,14 +22,15 @@ export async function add<T extends Document>(
     session?: ClientSession
     preSave?: (doc: T, session: ClientSession | null) => Promise<T>
     postSave?: (doc: T, session: ClientSession | null) => Promise<T>
-  } = {}
+  } = {},
+  options: SaveOptions = { session, validateBeforeSave: true }
 ): Promise<T> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')
 
   let doc = data instanceof model ? data : new model(data)
 
   if (preSave) doc = await preSave(doc, session || null)
-  doc = await doc.save({ session })
+  doc = await doc.save(Object.assign({ session, validateBeforeSave: true }, options))
   if (postSave) doc = await postSave(doc, session || null)
 
   return doc
@@ -171,7 +180,8 @@ export async function edit<T extends Document>(
     session?: ClientSession
     preUpdate?: (doc: T, session: ClientSession | null) => Promise<T>
     postUpdate?: (raw: any, session: ClientSession | null) => Promise<any>
-  } = {}
+  } = {},
+  options: ModelUpdateOptions = { session, runValidators: true }
 ): Promise<T> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')
   if (!_id) throw new KoaError('"_id" parameter not found.', 400, 'NO_ID')
@@ -189,7 +199,10 @@ export async function edit<T extends Document>(
         'DOCUMENT_NOT_FOUND'
       )
   }
-  let ret = await doc.update(data, { session })
+  let ret = await doc.update(
+    data,
+    Object.assign({ session, runValidators: true }, options)
+  )
   if (postUpdate) ret = await postUpdate(ret, session || null)
 
   return ret

@@ -16,6 +16,16 @@ body {
   );
 }
 
+a {
+  text-decoration: none !important;
+
+  &:active,
+  &:focus,
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+
 .kelal-wordmark {
   font-family: 'Kelal Wordmark', serif;
   text-decoration: none !important;

@@ -5,7 +5,10 @@ import { email } from './email'
 import { KoaError } from './koa-error'
 
 type ModelThatCanSetPassword = Model<
-  Document & { email: string; setPassword: (password: string) => Promise<void> }
+  Document & {
+    email: string
+    setPassword: (password: string, session?: ClientSession) => Promise<void>
+  }
 >
 
 export type IPasswordResetStartRequest = {
@@ -55,13 +58,13 @@ export async function startPasswordReset(
           <style>
             body {
               margin: 0;
+              padding: 40px;
               background-color: rgb(230,230,230);
             }
             p {
               display: block;
-              padding: 40px;
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-              font-size: 24px;
+              font-size: 16px;
               font-weight: 100;
               color: rgb(45,45,45)
             }
@@ -71,6 +74,7 @@ export async function startPasswordReset(
           </style>
         </head>
         <body>
+          <h3>Account Password Reset Verification</h3>
           <p>
             Within one hour from the time this email was sent, you can
             reset your  account password by following 
@@ -113,7 +117,7 @@ export async function finishPasswordReset(
       'DOCUMENT_NOT_FOUND'
     )
 
-  await doc.setPassword(password)
+  await doc.setPassword(password, session)
 
   return KeyModel.delete(randomKey, { session })
 }
