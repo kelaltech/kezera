@@ -30,6 +30,7 @@ requestRouter.post('/add', async ctx => {
     ctx.state.user,
     fs.createReadStream(ctx.request.files!.picture.path)
   )
+  ctx.redirect('organization/request/list')
 })
 
 requestRouter.get('/:_id/attended', async ctx => {

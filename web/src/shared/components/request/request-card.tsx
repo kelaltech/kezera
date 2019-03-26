@@ -14,79 +14,65 @@ import axios from 'axios'
 
 import './request-card.scss'
 
-export interface IRequestCardProps {
-  _id: string
-  title: string
-  startDate: Number
-  endDate: Number
-  description: string
-  image: string
+export interface IRequestState {
+  requests: any[]
 }
 
 export interface IRequestState {
-  loading: boolean
   requests: any[]
 }
 import img3 from '../../../assets/images/login/promo-1.jpg'
 import img1 from '../../../../assets/images/news-temp.jpg'
 import { any } from 'prop-types'
 
-export default class RequestCard extends Component<IRequestCardProps, IRequestState> {
-  state: IRequestState = {
-    loading: true,
-    requests: []
+export default class RequestCard extends Component<any, IRequestState> {
+  getRequest = () => {
+    axios
+      .get('/api/request/list')
+      .then(data => this.setState({ requests: data.data }))
+      .catch(console.error)
   }
-  props: IRequestCardProps = {
-    _id: '',
-    title: '',
-    startDate: 1,
-    endDate: 2,
-    description: '',
-    image: ''
+
+  componentDidMount() {
+    this.getRequest()
   }
 
   render() {
-    const { _id, title, startDate, endDate, description, image } = this.props
     return (
       <Page>
-        {this.state.loading ? (
-          <Loading />
-        ) : this.state.requests.length === 0 ? (
-          <Block first last className={'center'}>
-            There are no Requests.
-          </Block>
-        ) : (
-          this.state.requests.map((r, i) => {
-            return (
-              <Card size={'S'}>
-                <Image src={`${r.image}`} placeholder={`${r.title}`} />
-                <hr />
-                {r.description}
+        {this.state.requests.map((request, i) => {
+          return (
+            <Card size={'S'}>
+              <Image
+                src={`/api/request/${request._id}/picture`}
+                placeholder={`${request.title}`}
+              />
+              <hr />
+              {request.description}
 
-                <Yoga maxCol={2}>
-                  <h5>Start Date/Time</h5>
-                  <h5>End Date/Time</h5>
-                </Yoga>
+              <Yoga maxCol={2}>
+                <h5>Start Date/Time</h5>
+                <h5>End Date/Time</h5>
+              </Yoga>
 
-                <Yoga maxCol={2}>
-                  <label>{r.startDate}</label>
-                  <label>{r.endDate}</label>
-                </Yoga>
-                <hr />
-                <Yoga maxCol={2}>
-                  <Block last className={'left'}>
-                    <Anchor className={'full-width'} to={'/organization/request/' + _id}>
-                      Details
-                    </Anchor>
-                  </Block>
-                  <Button className={'right'} type="submit" primary>
-                    Support the Cause
-                  </Button>
-                </Yoga>
-              </Card>
-            )
-          })
-        )}
+              <Yoga maxCol={2}>
+                <label>{request.startDate}</label>
+                <label>{request.endDate}</label>
+              </Yoga>
+              <hr />
+              <Yoga maxCol={2}>
+                <Block last className={'left'}>
+                  <Anchor className={'full-width'} to={'/api/request/' + request._id}>
+                    Details
+                  </Anchor>
+                </Block>
+                <Button className={'right'} type="submit" primary>
+                  Support the Cause
+                </Button>
+              </Yoga>
+            </Card>
+          )
+        })}
       </Page>
     )
   }
