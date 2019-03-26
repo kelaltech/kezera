@@ -1,7 +1,6 @@
 import React from 'react'
 
-function SearchResult () {
-
+function SearchResult() {
   return <div> Search Result Page</div>
 }
 

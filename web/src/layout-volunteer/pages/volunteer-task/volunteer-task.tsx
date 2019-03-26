@@ -1,8 +1,6 @@
 import React from 'react'
 
-
-function VolunteerTask(){
-
+function VolunteerTask() {
   return <div>Volunteer Task page</div>
 }
 

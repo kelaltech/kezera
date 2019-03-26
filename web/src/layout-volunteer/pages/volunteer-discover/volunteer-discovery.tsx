@@ -1,6 +1,6 @@
 import React from 'react'
 
-function DiscoveryPage (){
+function DiscoveryPage() {
   return <div>Discovery page</div>
 }
 

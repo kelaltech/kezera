@@ -1,7 +1,6 @@
 import React from 'react'
 
-function VolunteerRequest(){
-
+function VolunteerRequest() {
   return <div>Volunteer Request Page</div>
 }
 

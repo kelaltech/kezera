@@ -1,6 +1,6 @@
 import React from 'react'
 
-function VolunteerNews(){
+function VolunteerNews() {
   return <div>Volunteer News Page</div>
 }
 
