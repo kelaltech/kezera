@@ -2,10 +2,10 @@ import React from 'react'
 
 import useLocale from '../../hooks/use-locale/use-locale'
 
-function OrganizationCard() {
+function OrganizationCertificate() {
   const { loading, t } = useLocale(['organization'])
 
   return loading || <>{t`organization`}</>
 }
 
-export default OrganizationCard
+export default OrganizationCertificate
