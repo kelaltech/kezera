@@ -8,7 +8,6 @@ import {
   useAccountDispatch,
   useAccountState
 } from '../../../app/stores/account/account-provider'
-import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 import { updateAccount } from '../../../app/stores/account/account-actions'
 
 function AccountDetail() {

@@ -1,4 +1,5 @@
 import { compare, hash } from 'bcrypt'
+import { ClientSession } from 'mongoose'
 
 import { accountModelFactory } from './account.model'
 import { KoaError } from '../../lib/koa-error'
@@ -15,7 +16,7 @@ export const accountMethods = {
     return compare(password, doc.password)
   },
 
-  async setPassword(password: string): Promise<void> {
+  async setPassword(password: string, session?: ClientSession): Promise<void> {
     if (!password) throw new KoaError('"password" parameter not found', 400, 'NO_PASS')
 
     if (password.length > 72)
@@ -38,10 +39,14 @@ export const accountMethods = {
     doc.password = await hash(password, 14)
     doc.passwordSetOn = Date.now()
 
-    await doc.save()
+    await doc.save({ session, validateBeforeSave: true })
   },
 
-  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+  async changePassword(
+    currentPassword: string,
+    newPassword: string,
+    session?: ClientSession
+  ): Promise<void> {
     if (!currentPassword)
       throw new KoaError('"currentPassword" parameter not found', 400, 'NO_CURRENT_PASS')
     if (!newPassword)
@@ -53,6 +58,6 @@ export const accountMethods = {
     if (!(await doc.isPasswordCorrect(currentPassword)))
       throw new KoaError('Incorrect password.', 401, 'INCORRECT_PASSWORD')
 
-    return doc.setPassword(newPassword)
+    return doc.setPassword(newPassword, session)
   }
 }

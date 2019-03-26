@@ -46,7 +46,7 @@ export class AccountController extends KoaController {
             'NO_PASSWORD'
           )
 
-        await doc.setPassword(data.password)
+        await doc.setPassword(data.password, session)
         return doc
       }
     })
@@ -85,15 +85,18 @@ export class AccountController extends KoaController {
       Object.assign(document, request),
       {
         session,
-        preUpdate: async doc => {
-          if (data.currentPassword && data.newPassword)
-            await doc.changePassword(data.currentPassword, data.newPassword)
-          return doc
+        postUpdate: async () => {
+          document = await get(AccountModel, user!._id, { session })
+
+          if (data.currentPassword && data.newPassword) {
+            console.log(document.passwordSetOn)
+            await document.changePassword(data.currentPassword, data.newPassword, session)
+          }
+          return document
         }
       },
       { overwrite: true }
     )
-    document = await get(AccountModel, user!._id, { session })
 
     return accountDocumentToResponse(document)
   }
