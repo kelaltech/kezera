@@ -9,7 +9,7 @@ const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
 )
 
-const News = lazy(() => import('../pages/news/news'))
+const News = lazy(() => import('../pages/news/news/news'))
 const NewsEditPage = lazy(() => import('../pages/news/news-edit'))
 const NewsAddPage = lazy(() => import('../pages/news/news-add'))
 const NewsDetailPage = lazy(() => import('../../shared/pages/news-detail/news-detail'))
