@@ -1,34 +1,42 @@
 import React from 'react'
-import { Yoga } from 'gerami'
+import { Yoga, Block } from 'gerami'
 import EventCard from '../../../shared/components/event-card/event-card'
 import ProductSlider from '../../components/volunteer-product-slider/volunteer-product-slider'
+
+import './volunteer-event.scss'
+
 function VolunteerEvents() {
   return (
-    <div
-      style={{
-        margin: '0 auto',
-        width: '50%'
-      }}
-    >
-      <ProductSlider>
+    <div className={'events-container'}>
+      <div className={'events-around-you'}>
+        <h4>Events Near you</h4>
         <EventCard />
+        <Block />
         <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-      </ProductSlider>
-      <Yoga maxCol={1}>
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-      </Yoga>
+      </div>
+      <div className={'events-list-container'}>
+        <h4>Upcoming </h4>
+        <ProductSlider>
+          <EventCard />
+          <EventCard />
+          <EventCard />
+          <EventCard />
+          <EventCard />
+          <EventCard />
+          <EventCard />
+        </ProductSlider>
+        <div>
+          <h4>Upcoming </h4>
+          <EventCard />
+          <EventCard />
+          <EventCard />
+          <EventCard />
+          <EventCard />
+          <EventCard />
+          <EventCard />
+          <EventCard />
+        </div>
+      </div>
     </div>
   )
 }
