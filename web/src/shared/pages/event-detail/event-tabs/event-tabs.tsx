@@ -17,23 +17,23 @@ export default function EventTabs(props: any) {
         indicatorColor="primary"
         textColor="primary"
       >
-        <Tab label="Likes"> One </Tab>
-        <Tab label=" Comments"> Two </Tab>
+        <Tab label="Comments"> One </Tab>
+        <Tab label="Likes"> Two </Tab>
         <Tab label="Interested people"> Three </Tab>
       </Tabs>
       {value === 0 && (
         <Block>
-          <Likes />
+          <Comments />
         </Block>
       )}
       {value === 1 && (
         <Block>
-          <Comments />
+          <Likes id={props.id} />
         </Block>
       )}
       {value === 2 && (
         <Block>
-          <Interested />
+          <Interested id={props.id} />
         </Block>
       )}
     </div>

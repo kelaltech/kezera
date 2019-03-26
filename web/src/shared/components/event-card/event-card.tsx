@@ -4,89 +4,141 @@ import './event-card.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
+import axios from 'axios'
 
-const EventDescription = {
-  imageSrc: 'https://d2g8igdw686xgo.cloudfront.net/31848636_1533268089320317_r.jpeg',
-  Title: 'Some Title',
-  Description:
-    'Here goes some description. Here goes some description. Here goes some description.' +
-    'Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description.Here goes some description. ',
-  StartDate: '2/12/2018',
-  EndDate: '28/12/2018',
-  location: 'Kotebe, Addis Ababa',
-  PeopleInvited: '25842',
-  Interested: '2221'
-}
-export default function EventCard() {
+export default function EventCard(props: any) {
   let [open, setOpen] = useState(false)
+  let months = [
+    'Jan.',
+    'Feb.',
+    'Mar.',
+    'Apr.',
+    'May.',
+    'Jun.',
+    'Jul.',
+    'Aug.',
+    'Sep.',
+    'Oct.',
+    'Nov.',
+    'Dec.'
+  ]
+
+  let handleLike = function(id: any) {
+    axios
+      .put('/api/event/' + id + '/like')
+      .then()
+      .catch()
+  }
+  let handleInterested = function(id: any) {
+    axios
+      .put(`/api/event/${id}/interest`)
+      .then()
+      .catch()
+  }
+
+  let DeleteEvent = function(id: any) {
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      axios
+        .delete(`/api/event/${id}`)
+        .then(res => props.fetch())
+        .catch(console.error)
+    }
+  }
+
   return (
     <Content className={'EventCard'}>
-      <EventEdit open={open} onClose={() => setOpen(false)} event={EventDescription} />
+      <EventEdit
+        open={open}
+        onClose={() => setOpen(false)}
+        event={props.event}
+        fetch={props.fetch()}
+      />
       <div className={'EventCardImage'}>
         <div className={'BlurryImage'}>
-          <Image className={'EventImage'} src={EventDescription.imageSrc} />
+          <Image className={'EventImage'} src={`/api/event/${props.event._id}/picture`} />
         </div>
         <div className={'EventDateContainer'}>
-          Dec.
-          <br /> 15
+          {months[new Date(`${props.event.startDate}`).getMonth()]}
+          <br /> {new Date(`${props.event.startDate}`).getDay()}
         </div>
       </div>
       <div className={'padding-horizontal-big'}>
         <Title className="EventTitle" size={'M'}>
           {' '}
-          <Link className="EventTitle" to={'/organization/event/someId'}>
-            {EventDescription.Title}
+          <Link className="EventTitle" to={`/organization/event/${props.event._id}`}>
+            {props.event.title}
           </Link>{' '}
         </Title>
       </div>
       <div className={'EventDescriptionContainer'}>
         <p className={'EventDescription'}>
           {' '}
-          {EventDescription.Description.substr(0, 90)}...
+          {props.event.description.substr(0, 90)}...
           {/* //todo add id */}
-          <Link to="/organization/event/someId">view</Link>{' '}
+          <Link to={`/organization/event/${props.event._id}`}>view</Link>{' '}
         </p>
       </div>
       <div className="EventField ">
-        <FontAwesomeIcon icon={'calendar'} size={'sm'} /> &nbsp; <span> 2/12/2019 </span>
+        <FontAwesomeIcon icon={'calendar'} size={'sm'} /> &nbsp;
+        <span>
+          {months[new Date(`${props.event.startDate}`).getMonth()]}{' '}
+          {new Date(`${props.event.startDate}`).getDay()}
+          &nbsp; to &nbsp; {
+            months[new Date(`${props.event.endDate}`).getMonth()]
+          } &nbsp; {new Date(`${props.event.endDate}`).getDay()} &nbsp;{' '}
+          {new Date(`${props.event.endDate}`).getFullYear()}
+        </span>
       </div>
       <div className="EventField">
         <FontAwesomeIcon icon={'map-marker'} size={'sm'} /> &nbsp;{' '}
-        <span> Kotebe,Addis Ababa </span>
+        <span> {props.event.location} </span>
       </div>
       <div className="EventField flex">
         <span className={'full-width flex'}>
-          <FontAwesomeIcon icon={'smile'} size={'1x'} /> 1.2 K
+          <Button
+            onClick={() => handleInterested(props.event._id)}
+            className={'ActionButton'}
+          >
+            <FontAwesomeIcon icon={'smile'} size={'1x'} className={'InterestedIcon'} />{' '}
+            {props.event.interestedVolunteers.length == 0
+              ? ''
+              : props.event.interestedVolunteers.length}
+          </Button>
         </span>
         <span className={'full-width flex'}>
-          <FontAwesomeIcon icon={'heart'} size={'1x'} /> 2 K
+          <Button onClick={() => handleLike(props.event._id)} className={'ActionButton'}>
+            <FontAwesomeIcon icon={'heart'} size={'1x'} className="LikeIcon" />{' '}
+            {props.event.likes.length == 0 ? '' : props.event.likes.length}
+          </Button>
         </span>
         <span className={'full-width flex'}>
-          <Link to={'/organization/event/someId'}>
+          <Link to={`/organization/event/${props.event._id}`}>
             {' '}
             <FontAwesomeIcon icon={['far', 'comment-alt']} />
           </Link>
         </span>
       </div>
-      <Block last className={'ActionContainer flex'}>
-        <Flex className={'full-width '} />
-        <Flex className={'full-width '} />
-        <span className={'full-width flex '}>
-          <Button onClick={() => setOpen(true)} className={'ActionButton'}>
-            <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
-          </Button>
-        </span>
-        <span className={'full-width flex'}>
-          <Button onClick={() => DeleteEvent(12)} className={'ActionButton '}>
-            <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />
-          </Button>
-        </span>
-      </Block>
+      {props.role == 'ORGANIZATION' ? (
+        <Block last className={'ActionContainer flex'}>
+          <Flex className={'full-width '} />
+          <Flex className={'full-width '} />
+          <span className={'full-width flex '}>
+            <Button onClick={() => setOpen(true)} className={'ActionButton'}>
+              <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
+            </Button>
+          </span>
+          <span className={'full-width flex'}>
+            <Button
+              onClick={() => DeleteEvent(props.event._id)}
+              className={'ActionButton '}
+            >
+              <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />
+            </Button>
+          </span>
+        </Block>
+      ) : (
+        ''
+      )}
     </Content>
   )
-}
-function DeleteEvent(id: any) {
-  if (window.confirm('Are you sure you want to delete this event?')) {
-    alert('deleted')
-  }
 }
