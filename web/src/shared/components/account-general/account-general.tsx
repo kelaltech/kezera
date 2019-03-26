@@ -35,15 +35,15 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
 
   const [editingEmail, setEditingEmail] = useState(false)
   const [editingPassword, setEditingPassword] = useState(false)
-  const [editingStatus, setEditingStatus] = useState(false)
   const [editingPhoneNumber, setEditingPhoneNumber] = useState(false)
+  const [editingStatus, setEditingStatus] = useState(false)
 
   const [email, setEmail] = useState(account.email)
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewtPassword] = useState('')
   const [repeatNewPassword, setRepeatNewPassword] = useState('')
-  const [status, setStatus] = useState(account.status)
   const [phoneNumber, setPhoneNumber] = useState(account.phoneNumber)
+  const [status, setStatus] = useState(account.status)
 
   const emitChange = (accountChanges: any, timeout = 0): void => {
     if (!readonly && onChange) onChange(Object.assign(account, accountChanges), timeout)
@@ -69,16 +69,16 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
     emitChange({ currentPassword, newPassword })
     setEditingPassword(false)
   }
+  const handlePhoneNumberChange = (e: any) => {
+    e.preventDefault()
+    emitChange({ phoneNumber })
+    setEditingPhoneNumber(false)
+  }
   const handleStatusChange = (e: any) => {
     e.preventDefault()
     if (!status) return
     emitChange({ status })
     setEditingStatus(false)
-  }
-  const handlePhoneNumberChange = (e: any) => {
-    e.preventDefault()
-    emitChange({ phoneNumber })
-    setEditingPhoneNumber(false)
   }
 
   return (
@@ -211,6 +211,42 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
               <hr style={{ opacity: 0.5 }} />
             </div>
 
+            <form method={'POST'} onSubmit={handlePhoneNumberChange}>
+              <Block
+                className={`${
+                  editingPhoneNumber ? 'account-general-field-editing' : ''
+                } account-general-field`}
+              >
+                <FontAwesomeIcon className={'margin-right-big'} icon={'phone'} />
+                {editingPhoneNumber ? (
+                  <Input
+                    className={'full-width'}
+                    type={'phone'}
+                    label={t`account:phone-number` + ' (' + t`account:optional` + ')'}
+                    maxLength={50}
+                    value={phoneNumber}
+                    onChange={e => setPhoneNumber(e.target.value)}
+                  />
+                ) : (
+                  <div className={'full-width'}>
+                    <span className={'fg-blackish'}>{t`account:phone-number`}: </span>
+                    <span>{account.phoneNumber || t`account:n-a`}</span>
+                  </div>
+                )}
+                <Button
+                  type={!editingPhoneNumber ? 'submit' : 'button'}
+                  className={'small-circle-button margin-left-big'}
+                  onClick={() => setEditingPhoneNumber(!editingPhoneNumber)}
+                >
+                  <FontAwesomeIcon icon={editingPhoneNumber ? 'check' : 'pencil-alt'} />
+                </Button>
+              </Block>
+            </form>
+
+            <div className={'padding-horizontal-very-big padding-vertical-normal'}>
+              <hr style={{ opacity: 0.5 }} />
+            </div>
+
             <form method={'POST'} onSubmit={handleStatusChange}>
               <Block
                 className={`${
@@ -256,42 +292,6 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
                   onClick={() => setEditingStatus(!editingStatus)}
                 >
                   <FontAwesomeIcon icon={editingStatus ? 'check' : 'pencil-alt'} />
-                </Button>
-              </Block>
-            </form>
-
-            <div className={'padding-horizontal-very-big padding-vertical-normal'}>
-              <hr style={{ opacity: 0.5 }} />
-            </div>
-
-            <form method={'POST'} onSubmit={handlePhoneNumberChange}>
-              <Block
-                className={`${
-                  editingPhoneNumber ? 'account-general-field-editing' : ''
-                } account-general-field`}
-              >
-                <FontAwesomeIcon className={'margin-right-big'} icon={'phone'} />
-                {editingPhoneNumber ? (
-                  <Input
-                    className={'full-width'}
-                    type={'phone'}
-                    label={t`account:phone-number` + ' (' + t`account:optional` + ')'}
-                    maxLength={50}
-                    value={phoneNumber}
-                    onChange={e => setPhoneNumber(e.target.value)}
-                  />
-                ) : (
-                  <div className={'full-width'}>
-                    <span className={'fg-blackish'}>{t`account:phone-number`}: </span>
-                    <span>{account.phoneNumber || t`account:n-a`}</span>
-                  </div>
-                )}
-                <Button
-                  type={!editingPhoneNumber ? 'submit' : 'button'}
-                  className={'small-circle-button margin-left-big'}
-                  onClick={() => setEditingPhoneNumber(!editingPhoneNumber)}
-                >
-                  <FontAwesomeIcon icon={editingPhoneNumber ? 'check' : 'pencil-alt'} />
                 </Button>
               </Block>
             </form>
