@@ -64,14 +64,18 @@
     padding: 3px;
     text-align: center;
     transition: 0.5s all;
+  }
+
+  .name-view-like-icon {
+    color: #f02139;
+  }
+  .news-view-share-icon {
+  }
+
+  .name-view-like-list {
     &:hover {
       cursor: pointer;
-      background-color: rgba(0, 0, 0, 0.1);
-
-      &:nth-child(1) {
-        color: #f0465a;
-        font-weight: 600;
-      }
+      text-decoration: underline;
     }
   }
 }
