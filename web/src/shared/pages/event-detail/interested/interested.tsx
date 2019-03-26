@@ -1,42 +1,64 @@
-import React from 'react'
-import { Content, Image } from 'gerami'
+import React, { useState, useEffect } from 'react'
+import { Content, Image, Title } from 'gerami'
 import './interested.scss'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import axios from 'axios'
 
-const rows = [
-  { Name: 'Anteneh Ashenafi', Location: 'Addis Ababa' },
-  { Name: 'Pompidou', Location: 'AASTU' },
-  { Name: 'Natnael mesfin', Location: 'AASTU' }
-]
-export default function Interested() {
+export default function Interested(props: any) {
+  let [user, setUser] = useState([])
+  let FetchInterested = function() {
+    axios
+      .get(`/api/event/${props.id}/interested`)
+      .then((resp: any) => setUser(resp.data))
+      .catch(console.error)
+  }
+  useEffect(() => {
+    FetchInterested()
+  }, [])
   return (
     <Content className={'UserInterested'}>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell align="right">Location</TableCell>
+            <TableCell align="right">Phone no.</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
+          {user.length >= 0 ? (
+            <>
+              {user.map((user: any) => (
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    <label>
+                      <Image
+                        src={
+                          'http://portal.bilardo.gov.tr/assets/pages/media/profile/profile_user.jpg'
+                        }
+                        className="UserPic inline-block middle"
+                      />
+                      &emsp;
+                      <span className={'UserName'}>
+                        {' '}
+                        <span className="inline-block middle">
+                          {user.displayName}
+                        </span>{' '}
+                      </span>
+                    </label>
+                  </TableCell>
+                  <TableCell align="right">{user.phoneNumber}</TableCell>
+                </TableRow>
+              ))}
+            </>
+          ) : (
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Image
-                  src={
-                    'http://portal.bilardo.gov.tr/assets/pages/media/profile/profile_user.jpg'
-                  }
-                  className="UserPic"
-                />
-                <span className={'UserName'}> {row.Name} </span>
-              </TableCell>
-              <TableCell align="right">{row.Location}</TableCell>
+              <TableCell>nobody's interested</TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </Content>

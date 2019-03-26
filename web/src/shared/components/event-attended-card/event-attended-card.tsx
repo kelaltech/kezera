@@ -11,7 +11,7 @@ const users = [
     Phone: '+251913055885'
   }
 ]
-export default function EventAttendedCard() {
+export default function EventAttendedCard(props: any) {
   return (
     <>
       {users.map(user => (
@@ -21,14 +21,16 @@ export default function EventAttendedCard() {
           </Block>
           <Content className={'UserAttended'}>
             <Block className={'center'}>
-              <Title size={'L'}>{user.Name}</Title>
+              <Title size={'L'}>{props.user.displayName}</Title>
             </Block>
             <Block className={'flex'}>
               <span className={' flex'}>
                 <FontAwesomeIcon icon="phone" />
               </span>
               &emsp;
-              <span className={'full-width flex UserField'}>{user.Phone}</span>
+              <span className={'full-width flex UserField'}>
+                {props.user.phoneNumber}
+              </span>
             </Block>
             <Block last className={'flex'}>
               <span className={'flex'}>
@@ -36,7 +38,7 @@ export default function EventAttendedCard() {
               </span>
               &emsp;
               <span className="flex full-width">
-                <span className="full-width flex UserField">{user.Email}</span>
+                <span className="full-width flex UserField">{props.user.email}</span>
               </span>
             </Block>
           </Content>

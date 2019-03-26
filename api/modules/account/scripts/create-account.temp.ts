@@ -4,11 +4,11 @@ import { transact } from '../../../lib/transact'
 import { AccountController } from '../account.controller'
 
 const data: IAccountRequest = {
-  email: 'abebe@gmail.com',
-  password: 'Abebe1234',
+  email: 'Kaleab@gmail.com',
+  password: 'Kaleab1234',
 
-  displayName: 'Abebe Balcha',
-  phoneNumber: '+251 911 123 456'
+  displayName: 'Kaleab Sereke',
+  phoneNumber: '+251 924 322 656'
 }
 
 setTimeout(() => {
