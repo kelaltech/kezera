@@ -6,7 +6,6 @@ import {
   removeEvent,
   searchEvent,
   attendedUsers,
-  interestedUsers,
   usersLikedAnEvent,
   getComments,
   addComment,
@@ -14,7 +13,12 @@ import {
   attendanceVerifivation,
   getEventPicture,
   editEvent,
-  getAttendedUsers
+  getAttendedUsers,
+  toggleLike,
+  toggleAttend,
+  going,
+  isGoing,
+  getInterested
 } from './event.controller'
 import * as fs from 'fs'
 
@@ -54,8 +58,6 @@ eventRouter.put('/:_id/attended', async ctx => {
 })
 
 eventRouter.get('/:_id/attended', async ctx => {
-  console.log('/:_id/attended people')
-  console.log('_id:', ctx.params._id)
   ctx.body = await getAttendedUsers(ctx.params._id)
 })
 
@@ -86,11 +88,6 @@ eventRouter.delete('/:_id', async ctx => {
   ctx.body = await removeEvent(ctx.params._id, ctx.state.user._id)
 })
 
-eventRouter.get('/:_id/interested', async ctx => {
-  console.log('/:_id/interested')
-  ctx.body = await interestedUsers(ctx.params._id)
-})
-
 eventRouter.get('/:_id/comments', async ctx => {
   console.log('/:_id/comments')
   ctx.body = await getComments(ctx.params._id)
@@ -101,6 +98,27 @@ eventRouter.get('/:_id/likes', async ctx => {
   ctx.body = await usersLikedAnEvent(ctx.params._id)
 })
 
+eventRouter.get('/:_id/interested', async ctx => {
+  console.log('/:_id/interested')
+  ctx.body = await getInterested(ctx.params._id)
+})
+
 eventRouter.post('/:_id/comment/new', async ctx => {
   ctx.body = await addComment(ctx.state.user, ctx.params._id, ctx.request.body)
+})
+
+eventRouter.put('/:_id/like', async ctx => {
+  ctx.body = await toggleLike(ctx.params._id, ctx.state.user)
+})
+
+eventRouter.put('/:_id/interest', async ctx => {
+  ctx.body = await toggleAttend(ctx.params._id, ctx.state.user)
+})
+
+eventRouter.put('/:_id/going', async ctx => {
+  ctx.body = await going(ctx.params._id, ctx.state.user._id)
+})
+
+eventRouter.get('/:_id/isGoing', async ctx => {
+  ctx.body = await isGoing(ctx.params._id, ctx.state.user._id)
 })

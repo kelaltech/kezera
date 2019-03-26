@@ -24,15 +24,16 @@ export default function EventVerification(props: any) {
       .then()
       .catch(console.error)
   }
-  //axios.get(`/api/event/${props.match.params._id}/attendance/verify`,user).then((resp:any)=>{console.log(resp.data());}).catch(console.error)
-
-  useEffect(() => {
+  let FetchUsers = function() {
     axios
       .get(`/api/event/${props.match.params._id}/attendance/verify`, user)
       .then((resp: any) => {
         setVolunteer(resp.data)
       })
       .catch(console.error)
+  }
+  useEffect(() => {
+    FetchUsers()
   }, [])
 
   return (

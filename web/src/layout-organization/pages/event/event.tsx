@@ -5,6 +5,7 @@ import EventCard from '../../../shared/components/event-card/event-card'
 import EventAdd from '../event-add/event-add'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './event.scss'
+import { IOrganizationEventRequest } from '../../../apiv/event.apiv'
 import axios from 'axios'
 
 export default function AccountSettings() {
@@ -14,14 +15,16 @@ export default function AccountSettings() {
   const num = 12
   // todo
 
-  useEffect(() => {
+  let fetchEvents = function() {
     axios
       .get('/api/event/all')
-      .then((response: any) => {
-        setEvent(response.data)
-      })
+      .then(resp => setEvent(resp.data))
       .catch(console.error)
-  }, [event])
+  }
+
+  useEffect(() => {
+    fetchEvents()
+  }, [])
 
   return (
     <Page>
@@ -31,15 +34,15 @@ export default function AccountSettings() {
           <Title size={'3XL'}> Events and Activities</Title>
         </Block>
       </Block>
-      <Block className={'inline-block right-search-input'}>
+      {/* <Block className={'inline-block right-search-input'}>
         <form action={'/organization/event/search'} method={'GET'}>
           <Input type="search" name={'term'} placeholder={'Search event...'} required />
           <Button className={'SearchButton'} type={'submit'}>
             <FontAwesomeIcon icon={'search'} className={'SearchIcon'} />
           </Button>
         </form>
-      </Block>
-      <Block className="right">
+      </Block> */}
+      <Block className="right right-search-input">
         <Button primary onClick={() => setOpen(true)}>
           {' '}
           <FontAwesomeIcon icon="plus" /> &nbsp;Create event{' '}
@@ -48,7 +51,7 @@ export default function AccountSettings() {
       {event.length > 0 ? (
         <Yoga maxCol={5}>
           {event.map(e => (
-            <EventCard event={e} />
+            <EventCard event={e} role={'ORGANIZATION'} fetch={() => fetchEvents()} />
           ))}
         </Yoga>
       ) : (

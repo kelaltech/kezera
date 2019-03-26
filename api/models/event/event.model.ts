@@ -10,7 +10,7 @@ export interface IEvent extends Document {
   description: string
   interestedVolunteers: ObjectId[]
   attendedVolunteers: ObjectId[]
-  goinngVolunteers: ObjectId[]
+  goingVolunteers: ObjectId[]
   startDate: Date
   endDate: Date
   location: string
