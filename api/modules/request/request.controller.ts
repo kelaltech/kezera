@@ -1,17 +1,20 @@
 import { RequestModel } from '../../models/request/request.model'
 import { add, get, list, remove, search } from '../../lib/crud'
 import { Schema } from 'mongoose'
-import { Grid } from '../../lib/grid'
+import { IAccount } from '../../models/account/account.model'
 import { Stream } from 'stream'
+import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
-import { OrganizationModel } from '../../models/organization/organization.model'
+
+type ObjectId = Schema.Types.ObjectId | string
 
 export async function removeRequest(id: Schema.Types.ObjectId): Promise<void> {
   await remove(RequestModel, id)
 }
 
-export async function getRequest(id: Schema.Types.ObjectId): Promise<any> {
-  return await get(RequestModel, id)
+export async function getRequest(_Id: ObjectId): Promise<any> {
+  const docs = await get(RequestModel, _Id)
+  return docs
 }
 
 export async function searchRequest(term: any): Promise<any> {
@@ -30,18 +33,22 @@ export async function goingVolunteers(requestId: Schema.Types.ObjectId): Promise
   return volunteers
 }
 
+export async function addRequest(data: any, account: IAccount): Promise<any> {
+  data._by = await account._id
+  return await add(RequestModel, data)
+}
+
 export async function addRequestWithPicture(
-  body: any,
-  orgId: Schema.Types.ObjectId,
+  data: any,
+  account: IAccount,
   pic: Stream
-) {
-  const organization = await get(OrganizationModel, orgId)
-  const request = await add(RequestModel, body)
+): Promise<any> {
+  data._by = await account._id
+  const request = await add(RequestModel, data)
+
   const grid = new Grid(serverApp, RequestModel, request._id)
-  organization.requests.push({
-    //@ts-ignore
-    requestId: request._id
-  })
-  //@ts-ignore
-  await Promise.all([grid.add(pic, pictureId), doc.save(), organization.save()])
+
+  await grid.set(pic)
+
+  return request
 }

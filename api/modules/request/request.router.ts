@@ -7,12 +7,15 @@ import {
   goingVolunteers,
   addRequestWithPicture
 } from './request.controller'
+
 import * as fs from 'fs'
 
 export const requestRouter = new Router({ prefix: '/api/request' })
 
-requestRouter.get('/:_id', async ctx => {
-  ctx.body = await getRequest(ctx.params._id)
+//GET /api/request/:_Id
+requestRouter.get('/:_Id', async ctx => {
+  console.log(ctx.params._Id, '')
+  ctx.body = await getRequest(ctx.params._Id)
 })
 requestRouter.delete('/:_id', async ctx => {
   ctx.body = await removeRequest(ctx.params._id)
@@ -24,13 +27,13 @@ requestRouter.get('/search?term=:term', async ctx => {
   ctx.body = await searchRequest(ctx.params.term)
 })
 
+// POST /api/request/add
 requestRouter.post('/add', async ctx => {
   ctx.body = await addRequestWithPicture(
     ctx.request.body,
     ctx.state.user,
     fs.createReadStream(ctx.request.files!.picture.path)
   )
-  ctx.redirect('organization/request/list')
 })
 
 requestRouter.get('/:_id/attended', async ctx => {
