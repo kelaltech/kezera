@@ -16,6 +16,17 @@ type UseFieldConfig = {
     | [RegExp, string?]
     | ((value: string) => Promise<boolean | string | void>)
 
+  setValueHook?: (value: string) => Promise<void | string>
+  validateHook?: (
+    value: string,
+    passed: boolean,
+    error: string,
+    validation?:
+      | RegExp
+      | [RegExp, string?]
+      | ((value: string) => Promise<boolean | string | void>)
+  ) => Promise<void | [boolean, string]>
+
   /**
    * @default true
    */
@@ -83,7 +94,7 @@ function useField<T>(
 
   const ref = useRef<T | null>(null)
 
-  const [value, setValue] = useState(config.initialValue || '')
+  const [value, setValueOnState] = useState(config.initialValue || '')
   const [error, setError] = useState<string | null>(null)
   const [active, setActive] = useState(config.active || true)
 
@@ -94,27 +105,35 @@ function useField<T>(
     if (
       config.maxLength &&
       value.length >
-        (Array.isArray(config.maxLength) && config.maxLength.length === 2
+        (Array.isArray(config.maxLength) &&
+        config.maxLength.length === 2 &&
+        config.maxLength[0] != undefined
           ? config.maxLength[0]
           : config.maxLength)
     ) {
       error =
-        Array.isArray(config.maxLength) && config.maxLength.length === 2
-          ? config.maxLength[1]
-          : error || defaultError
+        (Array.isArray(config.maxLength) &&
+          config.maxLength.length === 2 &&
+          config.maxLength[1]) ||
+        error ||
+        defaultError
     }
 
     if (
       config.minLength &&
       value.length <
-        (Array.isArray(config.minLength) && config.minLength.length === 2
+        (Array.isArray(config.minLength) &&
+        config.minLength.length === 2 &&
+        config.minLength[0] !== undefined
           ? config.minLength[0]
           : config.minLength)
     ) {
       error =
-        Array.isArray(config.minLength) && config.minLength.length === 2
-          ? config.minLength[1]
-          : error || defaultError
+        (Array.isArray(config.minLength) &&
+          config.minLength.length === 2 &&
+          config.minLength[1]) ||
+        error ||
+        defaultError
     }
 
     if (!config.validation || (config.optional === true && !value)) {
@@ -135,12 +154,21 @@ function useField<T>(
         error = response == undefined ? error || defaultError : response
       }
     } else if (Array.isArray(config.validation) && config.validation.length === 2) {
-      passed = !!value.match(config.validation[0])
+      passed =
+        config.validation[0] !== undefined ? !!value.match(config.validation[0]) : passed
       error =
-        config.validation[1] == undefined ? error || defaultError : config.validation[1]
+        config.validation[1] !== undefined ? config.validation[1] : error || defaultError
     } else {
       passed = !!value.match(config.validation as RegExp)
       error = error || defaultError
+    }
+
+    if (config.validateHook) {
+      const response = await config.validateHook(value, passed, error, config.validation)
+      if (Array.isArray(response) && response.length === 2) {
+        passed = response[0] !== undefined ? response[0] : passed
+        error = response[1] !== undefined ? response[1] : error || defaultError
+      }
     }
 
     setError(passed ? null : error)
@@ -152,7 +180,13 @@ function useField<T>(
     runValidation?: boolean
   ): Promise<void> => {
     if (newValue == undefined) return
-    setValue(newValue)
+
+    if (config.setValueHook) {
+      const response = await config.setValueHook(newValue)
+      if (typeof response === 'string') newValue = response
+    }
+
+    setValueOnState(newValue)
     if (runValidation) await validate(newValue)
   }
 

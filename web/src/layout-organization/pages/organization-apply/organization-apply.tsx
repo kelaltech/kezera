@@ -1,50 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
-import { Block, Content, Flex, Input, Page, Yoga } from 'gerami'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import useField from '../../../shared/hooks/use-field/use-field'
+import { Block, Content, Page, Yoga } from 'gerami'
+import AccountRegister from '../../../shared/components/account-register/account-register'
+import { IAccountRequest } from '../../../../../api/modules/account/account.apiv'
 
 function OrganizationApply() {
-  const { loading, t } = useLocale(['organization', 'account'])
+  const { loading, t } = useLocale(['organization'])
 
-  const email = useField<HTMLInputElement>({
-    validation: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-    validateOnChange: true
+  const [account, setAccount] = useState<IAccountRequest>({
+    displayName: '',
+    email: '',
+    password: '',
+    phoneNumber: null
   })
-  const password = useField<HTMLInputElement>({
-    validation: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
-    validateOnChange: true,
-    minLength: [8, 'Passwords need to be at least 8 characters long.'],
-    maxLength: [72, 'Passwords cannot be more than 72 characters long.']
-  })
-  const repeatPassword = useField<HTMLInputElement>(
-    {
-      validation: async value => value === password.value,
-      validateOnChange: true
-    },
-    [password.value]
-  )
-  const phoneNumber = useField<HTMLInputElement>({
-    validation: /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/,
-    validateOnChange: true,
-    optional: true
-  })
-
-  const validationError = (error: string | null) =>
-    error === null ? null : (
-      <div
-        className={'font-L bold fg-accent margin-left-normal margin-auto'}
-        title={error}
-        style={{ color: 'red', cursor: 'default' }}
-      >
-        !
-      </div>
-    )
-
-  useEffect(() => {
-    email.ref.current && email.ref.current.focus()
-  }, [loading])
 
   return (
     loading || (
@@ -64,79 +33,7 @@ function OrganizationApply() {
           </Block>
 
           <Yoga maxCol={2}>
-            {/* todo: refactor into a new shared/components/account-register */}
-            <Content className={'top margin-bottom-normal'}>
-              <Block first className={'bold'}>
-                {t`account:account`}
-              </Block>
-
-              <hr />
-
-              <Block>
-                <Flex>
-                  <FontAwesomeIcon
-                    className={'margin-right-big margin-auto'}
-                    icon={'envelope'}
-                  />
-                  <Input
-                    className={'margin-vertical-normal margin-auto full-width'}
-                    type={'email'}
-                    {...email.inputProps}
-                    inputRef={email.ref}
-                    label={t`account:email`}
-                  />
-                  {validationError(email.error)}
-                </Flex>
-              </Block>
-
-              <Block>
-                <Flex>
-                  <FontAwesomeIcon
-                    className={'margin-right-big margin-auto'}
-                    icon={'user-secret'}
-                  />
-                  <Input
-                    className={'margin-vertical-normal margin-auto full-width'}
-                    type={'password'}
-                    {...password.inputProps}
-                    label={t`account:password`}
-                  />
-                  {validationError(password.error)}
-                </Flex>
-              </Block>
-
-              <Block>
-                <Flex>
-                  <FontAwesomeIcon
-                    className={'margin-right-big margin-auto'}
-                    icon={'user-secret'}
-                  />
-                  <Input
-                    className={'margin-vertical-normal margin-auto full-width'}
-                    type={'password'}
-                    {...repeatPassword.inputProps}
-                    label={t`account:repeat-password`}
-                  />
-                  {validationError(repeatPassword.error)}
-                </Flex>
-              </Block>
-
-              <Block last>
-                <Flex>
-                  <FontAwesomeIcon
-                    className={'margin-right-big margin-auto'}
-                    icon={'phone'}
-                  />
-                  <Input
-                    className={'margin-vertical-normal margin-auto full-width'}
-                    type={'phone'}
-                    {...phoneNumber.inputProps}
-                    label={t`account:phone-number` + ' (' + t`account:optional` + ')'}
-                  />
-                  {validationError(phoneNumber.error)}
-                </Flex>
-              </Block>
-            </Content>
+            <AccountRegister account={account} setAccount={setAccount} />
 
             <Content className={'top'}>todo</Content>
           </Yoga>

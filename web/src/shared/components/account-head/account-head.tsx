@@ -35,7 +35,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
           <label className={'account-head-display-name'}>
             <Input
               className={'account-head-display-name-input full-width'}
-              label={readonly ? '' : 'Display Name' /* todo: translate */}
+              label={readonly ? '' : t`account:display-name`}
               value={account.displayName}
               onChange={e => emitChange({ displayName: e.target.value })}
               readOnly={readonly}
@@ -44,7 +44,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
               required
             />
             <div className={'account-head-display-name-footnote'}>
-              Changes are saved automatically. {/* todo: translate */}{' '}
+              {t`account:changes-are-saved-automatically`}
               {/* todo: use this as saved/error notification */}
             </div>
           </label>
