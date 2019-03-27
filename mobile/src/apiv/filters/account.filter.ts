@@ -1,4 +1,4 @@
-import { IAccountRequest, IAccountResponse } from './account.apiv'
+import { IAccountRequest, IAccountResponse } from '../account.apiv'
 
 export async function accountResponseToRequest(
   response: IAccountResponse,

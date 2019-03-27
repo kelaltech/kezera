@@ -2,7 +2,7 @@ import Axios, { CancelTokenSource } from 'axios'
 
 import { Action } from './account-reducer'
 import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
-import { accountResponseToRequest } from '../../../apiv/account.filter'
+import { accountResponseToRequest } from '../../../apiv/filters/account.filter'
 
 export async function reloadAccount(
   silentFail = false,

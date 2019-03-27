@@ -4,10 +4,12 @@ import * as path from 'path'
 
 import { AccountModel } from '../models/account/account.model'
 import { KeyModel } from '../models/key/key.model'
+import { OrganizationModel } from '../models/organization/organization.model'
 
 import { accountRouter } from '../modules/account/account.router'
 import { newsRouter } from '../modules/news/news.route'
 import { eventRouter } from '../modules/event/event.router'
+import { organizationRouter } from '../modules/organization/organization.router'
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
@@ -20,9 +22,9 @@ export const serverAppConfig: IServerAppConfig = {
     }
   ],
 
-  models: [AccountModel, KeyModel],
+  models: [AccountModel, KeyModel, OrganizationModel],
 
-  routers: [accountRouter, eventRouter, newsRouter],
+  routers: [accountRouter, eventRouter, newsRouter, organizationRouter],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],
   spaFileRelativePath: path.join('web', 'build', 'index.html'),

@@ -4,9 +4,9 @@ export type State = {
   readonly account?: IAccountResponse | null
 }
 
-const userStringFromStorage = window.localStorage.getItem('account')
+const accountStringFromStorage = window.localStorage.getItem('account')
 export const initialState: State = {
-  account: userStringFromStorage ? JSON.parse(userStringFromStorage) : null
+  account: accountStringFromStorage ? JSON.parse(accountStringFromStorage) : null
 }
 
 export type Action =
