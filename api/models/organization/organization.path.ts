@@ -8,6 +8,8 @@ export const organizationPaths: SchemaDefinition = {
   _at: { type: Date, default: Date.now, index: true },
   _last: { type: Date, index: true },
 
+  account: { type: ObjectId, required: true, ref: 'account', index: true, unique: true },
+
   type: { type: String, enum: organizationTypes, index: true },
 
   motto: { type: String, minlength: 1, maxlength: 50 },
@@ -27,7 +29,9 @@ export const organizationPaths: SchemaDefinition = {
   ],
   website: { type: String, maxlength: 100, validate: /\w+:(\/?\/?)[^\s]+/ },
 
-  members: [{ type: ObjectId, required: true, ref: 'account' }],
+  subscribers: [
+    { type: ObjectId, required: true, ref: 'account', index: true, unique: true }
+  ],
 
   licensedNames: [{ type: String, required: true }],
   registrations: [

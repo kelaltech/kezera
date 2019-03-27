@@ -18,6 +18,8 @@ export interface IOrganization extends Document {
   _at: Date | number
   _last: Date | number
 
+  account: ObjectId // account
+
   type: IOrganizationType
 
   motto?: string
@@ -29,7 +31,7 @@ export interface IOrganization extends Document {
   }[]
   website?: string
 
-  members?: ObjectId[] // account
+  subscribers?: ObjectId[] // account
 
   licensedNames?: string[]
   registrations?: {
@@ -45,10 +47,5 @@ export const organizationModelFactory = new ModelFactory<IOrganization>({
 })
 
 export const organizationSchema = organizationModelFactory.schema
-
-organizationSchema.index({
-  name: 'text',
-  description: 'text'
-})
 
 export const OrganizationModel = organizationModelFactory.model
