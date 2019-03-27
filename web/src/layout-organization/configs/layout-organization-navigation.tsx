@@ -13,25 +13,25 @@ function layoutOrganizationNavigation(
   if (account) {
     items = items.concat([
       {
-        to: '/news',
+        to: '/organization/news',
         icon: ['far', 'user-circle'],
         name: `News`, // todo: translate
         shortName: `News` // todo: translate
       },
       {
-        to: '/events',
+        to: '/organization/event',
         icon: ['far', 'user-circle'],
         name: `Events`, // todo: translate
         shortName: `Events` // todo: translate
       },
       {
-        to: '/requests',
+        to: '/organization/request/list',
         icon: ['far', 'user-circle'],
         name: `Requests`, // todo: translate
-        shortName: `Donation Requests` // todo: translate
+        shortName: `Requests` // todo: translate
       },
       {
-        to: '/account',
+        to: '/organization/account',
         icon: ['far', 'user-circle'],
         name: account.displayName,
         shortName: account.displayName

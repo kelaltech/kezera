@@ -19,7 +19,7 @@ export default function AppRoutes() {
     <Switch>
       <Redirect exact path={`/index.html`} to={`/`} />
 
-      <Route path={'/admin'} component={LayoutAdmin} />
+      <Route path={'/admin'} render={LayoutAdmin} />
       <Route path={'/login'} component={LayoutLogin} />
       <Route path={'/organization'} component={LayoutOrganization} />
       <Route path={'/verifier'} component={LayoutVerifier} />

@@ -4,14 +4,41 @@ import { organizationPaths } from './organization.path'
 
 type ObjectId = Schema.Types.ObjectId | string | number
 
+export type IOrganizationType = 'NGO' | 'HOSPITAL' | 'GOVERNMENTAL' | 'PRIVATE'
+export const organizationTypes: IOrganizationType[] = [
+  'NGO',
+  'HOSPITAL',
+  'GOVERNMENTAL',
+  'PRIVATE'
+]
+
 export interface IOrganization extends Document {
+  __v: number
+  _id: ObjectId
   _at: Date | number
-  organzationId: string
+  _last: Date | number
+
+  account: ObjectId // account
+
+  type: IOrganizationType
+
+  motto?: string
   description: string
-  address: string
-  type: Number
-  news: ObjectId[]
-  events: ObjectId[]
+  locations: {
+    latitude?: number
+    longitude?: number
+    address: string
+  }[]
+  website?: string
+
+  subscribers?: ObjectId[] // account
+
+  licensedNames?: string[]
+  registrations?: {
+    issuer: string
+    type: string
+    id: string
+  }[]
 }
 
 export const organizationModelFactory = new ModelFactory<IOrganization>({
@@ -19,9 +46,6 @@ export const organizationModelFactory = new ModelFactory<IOrganization>({
   paths: organizationPaths
 })
 
-organizationModelFactory.schema.index({
-  name: 'text',
-  description: 'text'
-})
+export const organizationSchema = organizationModelFactory.schema
 
 export const OrganizationModel = organizationModelFactory.model

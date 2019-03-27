@@ -20,6 +20,8 @@
   "reset-account-password-confirmation": "You have successfully reset your account's password.",
   "proceed-to-login": "Proceed to Login",
 
+  "display-name": "Display Name",
+  "changes-are-saved-automatically": "Changes are saved automatically.",
   "go-to-portfolio": "Go to Portfolio",
   "account-settings": "Account Settings",
   "optional": "Optional",
