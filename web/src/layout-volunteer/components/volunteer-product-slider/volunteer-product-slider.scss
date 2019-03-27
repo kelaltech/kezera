@@ -16,9 +16,9 @@
 }
 .gerami-product-slider-scroll {
   width: inherit;
-  height: initial;
+  height: auto;
   overflow-x: scroll;
-  overflow-y: hidden;
+  //overflow-y: hidden;
   transition: 5s all;
   scroll-behavior: smooth;
   position: relative;
@@ -34,6 +34,10 @@
   height: inherit;
   display: flex;
   justify-content: space-around;
+
+  @media screen and (max-width: 500px) {
+    width: 500%;
+  }
 }
 
 .product-previous-arrow {

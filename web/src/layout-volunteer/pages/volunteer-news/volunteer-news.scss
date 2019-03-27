@@ -1,0 +1,14 @@
+.volunteer-news-container {
+  width: 50%;
+  margin: 0 auto;
+  //background-color: #3f51b5;
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    //margin: 0 3px;
+  }
+  @media screen and (max-width: 650px) {
+    width: 70%;
+    //margin: 0 3px;
+  }
+}

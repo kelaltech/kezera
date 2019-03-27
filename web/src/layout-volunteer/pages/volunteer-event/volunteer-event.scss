@@ -1,0 +1,26 @@
+.events-container {
+}
+
+.events-around-you {
+  width: 20%;
+  margin: 0 15px;
+  padding: 5px;
+  float: right;
+  height: auto;
+  background-color: #00b478;
+
+  @media screen and (max-width: 500px) {
+    float: none;
+    width: 100%;
+  }
+}
+
+.events-list-container {
+  width: 50%;
+  margin: 0 auto;
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    margin: 0 15px;
+  }
+}
