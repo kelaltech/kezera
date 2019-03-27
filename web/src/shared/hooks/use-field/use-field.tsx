@@ -1,29 +1,59 @@
-import React, { Ref, useRef, useState } from 'react'
+import React, {
+  DependencyList,
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+
 import useLocale from '../use-locale/use-locale'
 
 type UseFieldConfig = {
   initialValue?: string
-  validation?: RegExp | [RegExp, string?] | (() => Promise<boolean | string | void>)
+  validation?:
+    | RegExp
+    | [RegExp, string?]
+    | ((value: string) => Promise<boolean | string | void>)
 
   /**
-   * @default: true
+   * @default true
    */
   validateOnBlur?: boolean
   /**
-   * @default: false
+   * @default false
    */
   validateOnChange?: boolean
+  /**
+   * @default false
+   */
+  validateOnInit?: boolean
+  /**
+   * @default config.validateOnInit || deps.length
+   */
+  validateOnUpdate?: boolean
 
+  /**
+   * @default false
+   */
+  optional?: boolean
+
+  maxLength?: number | [number, string]
+  minLength?: number | [number, string]
+
+  /**
+   * @default true
+   */
   active?: boolean
 }
 
 type UseFieldResponse<T> = {
-  ref: Ref<T | undefined>
+  ref: MutableRefObject<T> | RefObject<T>
 
   value: string
   setValue: (value: string, runValidation?: boolean) => Promise<void>
-  onBlur: (e: React.FormEvent<T>, runValidation?: boolean) => Promise<void>
-  onChange: (e: React.FormEvent<T>, runValidation?: boolean) => Promise<void>
+  onBlur: (event: any, runValidation?: boolean) => Promise<void>
+  onChange: (event: any, runValidation?: boolean) => Promise<void>
 
   validate: (value: string) => Promise<boolean>
 
@@ -34,16 +64,24 @@ type UseFieldResponse<T> = {
   setActive: (active: boolean) => void
 
   config: UseFieldConfig
+
+  inputProps: {
+    value: string
+    onBlur: (event: any, runValidation?: boolean) => Promise<void>
+    onChange: (event: any, runValidation?: boolean) => Promise<void>
+    readOnly: boolean
+  }
 }
 
-function useField<T = HTMLInputElement>(
-  config: UseFieldConfig = {}
+function useField<T>(
+  config: UseFieldConfig = {},
+  deps: DependencyList = []
 ): UseFieldResponse<T> {
   const { t } = useLocale()
 
   const defaultError = t`validation-failed`
 
-  const ref = useRef<T>()
+  const ref = useRef<T | null>(null)
 
   const [value, setValue] = useState(config.initialValue || '')
   const [error, setError] = useState<string | null>(null)
@@ -53,28 +91,56 @@ function useField<T = HTMLInputElement>(
     let passed = true
     let error: string | null = null
 
-    if (!config.validation) {
+    if (
+      config.maxLength &&
+      value.length >
+        (Array.isArray(config.maxLength) && config.maxLength.length === 2
+          ? config.maxLength[0]
+          : config.maxLength)
+    ) {
+      error =
+        Array.isArray(config.maxLength) && config.maxLength.length === 2
+          ? config.maxLength[1]
+          : error || defaultError
+    }
+
+    if (
+      config.minLength &&
+      value.length <
+        (Array.isArray(config.minLength) && config.minLength.length === 2
+          ? config.minLength[0]
+          : config.minLength)
+    ) {
+      error =
+        Array.isArray(config.minLength) && config.minLength.length === 2
+          ? config.minLength[1]
+          : error || defaultError
+    }
+
+    if (!config.validation || (config.optional === true && !value)) {
       return passed
     } else if (typeof config.validation === 'function') {
       let response: boolean | string | void
       try {
-        response = await config.validation()
+        response = await config.validation(value)
       } catch (e) {
         passed = false
-        error = (e && e.message) || defaultError
+        error = (e && e.message) || error || defaultError
       }
       if (typeof response === 'boolean') {
-        passed = true
+        passed = response
+        error = error || defaultError
       } else {
         passed = false
-        error = response == undefined ? defaultError : response
+        error = response == undefined ? error || defaultError : response
       }
     } else if (Array.isArray(config.validation) && config.validation.length === 2) {
       passed = !!value.match(config.validation[0])
-      error = config.validation[1] == undefined ? defaultError : config.validation[1]
+      error =
+        config.validation[1] == undefined ? error || defaultError : config.validation[1]
     } else {
       passed = !!value.match(config.validation as RegExp)
-      error = defaultError
+      error = error || defaultError
     }
 
     setError(passed ? null : error)
@@ -90,19 +156,31 @@ function useField<T = HTMLInputElement>(
     if (runValidation) await validate(newValue)
   }
 
+  const onBlur = async (event: any, runValidation = config.validateOnBlur || true) =>
+    setValueWithValidation(event.target.value, runValidation)
+  const onChange = async (event: any, runValidation = config.validateOnChange || false) =>
+    setValueWithValidation(event.target.value, runValidation)
+
+  useEffect(() => {
+    if (config.validateOnInit) validate(value).catch(console.error)
+  }, [])
+
+  useEffect(() => {
+    if (
+      config.validateOnUpdate ||
+      (config.validateOnUpdate !== false && (config.validateOnInit || deps.length))
+    )
+      validate(value).catch(console.error)
+    else if (config.validateOnInit || deps.length) config.validateOnUpdate = true
+  }, deps)
+
   return {
     ref,
 
-    value: value,
+    value,
     setValue: setValueWithValidation,
-    onBlur: async (
-      e: React.FormEvent<T>,
-      runValidation = config.validateOnBlur || true
-    ) => setValueWithValidation((e.target as any).value, runValidation),
-    onChange: async (
-      e: React.FormEvent<T>,
-      runValidation = config.validateOnChange || false
-    ) => setValueWithValidation((e.target as any).value, runValidation),
+    onBlur,
+    onChange,
 
     validate,
 
@@ -112,7 +190,15 @@ function useField<T = HTMLInputElement>(
     active,
     setActive,
 
-    config
+    config,
+
+    // shortcut
+    inputProps: {
+      value,
+      onBlur,
+      onChange,
+      readOnly: !active
+    }
   }
 }
 
