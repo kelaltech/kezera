@@ -1,5 +1,5 @@
 import React from 'react'
-import { Yoga, Block } from 'gerami'
+import { Block } from 'gerami'
 import EventCard from '../../../shared/components/event-card/event-card'
 import ProductSlider from '../../components/volunteer-product-slider/volunteer-product-slider'
 
