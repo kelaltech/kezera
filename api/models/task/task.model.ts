@@ -1,12 +1,13 @@
 import { ModelFactory } from 'meseret'
-import { Document } from 'mongoose'
+import { Document, Schema } from 'mongoose'
 import { taskPaths } from './task.path'
 
-//type ObjectId = Schema.Types.ObjectId
+type ObjectId = Schema.Types.ObjectId
 
 export interface ITask extends Document {
   numberNeeded: number
   location: []
+  type: ObjectId
 }
 
 export const taskModelFactory = new ModelFactory<ITask>({

@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useRef, useState } from 'react'
 import {
   Block,
   Button,
@@ -19,19 +19,21 @@ export default function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
 
   const addRequest = (form: any) => {
+    const data = new FormData()
+    data.append('name', form.name.value)
+    data.append('description', form.description.value)
+    data.append('startDate', form.startDate.value)
+    data.append('endDate', form.endDate.value)
+
+    if (uploadRef.current && uploadRef.current.files && uploadRef.current.files.length)
+      data.append('picture', uploadRef.current.files[0])
+
     axios
-      .post('/api/request/add', {
-        name: form.name.value,
-        description: form.description.value,
-        picture: form.picture.value,
-        startDate: form.startDate.value,
-        endDate: form.endDate.value
-        // todo
-      })
-      .then((data: any) => {
+      .post('/api/request/add', data, { withCredentials: true })
+      .then(res => {
         console.log('successfully added')
-        console.log(data)
-        history.push('/organization/request/' + data._id)
+        console.log(res.data)
+        history.push('/organization/request/' + res.data._id)
       })
       .catch(e => {
         console.log(e)
@@ -42,6 +44,8 @@ export default function RequestAdd({ history }: RouteComponentProps<{}>) {
     e.preventDefault()
     addRequest(e.target)
   }
+
+  const uploadRef = useRef<HTMLInputElement>(null)
 
   return (
     <Page>
@@ -60,7 +64,7 @@ export default function RequestAdd({ history }: RouteComponentProps<{}>) {
             />
           </Block>
           <Block>
-            <ImageInput name={'picture'} />
+            <ImageInput name={'picture'} innerRef={uploadRef} />
           </Block>
 
           <Block>

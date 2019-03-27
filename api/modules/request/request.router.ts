@@ -12,17 +12,20 @@ import * as fs from 'fs'
 
 export const requestRouter = new Router({ prefix: '/api/request' })
 
-//GET /api/request/:_Id
-requestRouter.get('/:_Id', async ctx => {
-  console.log(ctx.params._Id, '')
-  ctx.body = await getRequest(ctx.params._Id)
-})
-requestRouter.delete('/:_id', async ctx => {
-  ctx.body = await removeRequest(ctx.params._id)
-})
 requestRouter.get('/list', async ctx => {
   ctx.body = await listRequests()
 })
+
+//GET /api/request/:_id
+requestRouter.get('/:_id', async ctx => {
+  console.log(ctx.params._id, '')
+  ctx.body = await getRequest(ctx.params._id)
+})
+
+requestRouter.delete('/:_id', async ctx => {
+  ctx.body = await removeRequest(ctx.params._id)
+})
+
 requestRouter.get('/search?term=:term', async ctx => {
   ctx.body = await searchRequest(ctx.params.term)
 })
