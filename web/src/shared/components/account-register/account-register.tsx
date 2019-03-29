@@ -98,7 +98,7 @@ function AccountRegister({ account, setAccount }: Props) {
               inputRef={displayName.ref}
               label={t`account:display-name`}
             />
-            {validationError(email.error)}
+            {validationError(displayName.error)}
           </Flex>
         </Block>
 
