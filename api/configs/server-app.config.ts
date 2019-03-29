@@ -10,6 +10,7 @@ import { accountRouter } from '../modules/account/account.router'
 import { newsRouter } from '../modules/news/news.route'
 import { eventRouter } from '../modules/event/event.router'
 import { organizationRouter } from '../modules/organization/organization.router'
+import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
@@ -22,7 +23,7 @@ export const serverAppConfig: IServerAppConfig = {
     }
   ],
 
-  models: [AccountModel, KeyModel, OrganizationModel],
+  models: [AccountModel, KeyModel, OrganizationModel, OrganizationApplicationModel],
 
   routers: [accountRouter, eventRouter, newsRouter, organizationRouter],
 

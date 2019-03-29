@@ -1,5 +1,6 @@
 import { ModelFactory } from 'meseret'
-import { Document, Schema } from 'mongoose'
+import { Schema } from 'mongoose'
+
 import { organizationPaths } from './organization.path'
 
 type ObjectId = Schema.Types.ObjectId | string | number
@@ -12,7 +13,7 @@ export const organizationTypes: IOrganizationType[] = [
   'PRIVATE'
 ]
 
-export interface IOrganization extends Document {
+export interface IOrganization {
   __v: number
   _id: ObjectId
   _at: Date | number
