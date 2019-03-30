@@ -1,19 +1,11 @@
 import React, { useState } from 'react'
 import './volunteer-setting.scss'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
-import { Anchor, Block, Button, Content, Flex, FlexSpacer, Input, Warning } from 'gerami'
+import { Block, Button, Content, Flex, FlexSpacer, Input } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  FormControl,
-  Input as MatInput,
-  InputLabel,
-  MenuItem,
-  Select,
-  Radio,
-  RadioGroup
-} from '@material-ui/core'
-
-
+import { faCertificate, faCalendarCheck, faToolbox, faHandHoldingUsd, faTasks} from '@fortawesome/free-solid-svg-icons'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 
 function VolunteerSettings() {
@@ -34,11 +26,17 @@ function VolunteerSettings() {
         [editBirthdate, setEditBirthdate]= useState(false),
         [editUsername, setEditUsername] = useState(false);
 
-const [certificateVisibility, setCertificateVisibility] = useState(false),
-  [eventVisibility, setEventVisibility]  = useState(false),
-  [materialVisibility, setMaterialVisibility] = useState(false),
-  [taskVisibility, setTaskVisibility] = useState(false),
-  [moneyVisibility, setMoneyVisibility] = useState(false);
+const [visibility, setVisibility] = useState({
+  task: false,
+  money: false,
+  material: false,
+  event: false,
+  certificate: false
+})
+
+  const  handleVisibility = (name:string) => (e:any) => {
+    setVisibility({...visibility,[name]:e.target.checked})
+  }
 
   const handleUsernameChange = (e:any)=>{
     e.preventDefault()
@@ -270,66 +268,69 @@ const [certificateVisibility, setCertificateVisibility] = useState(false),
 
           <hr/>
 
-          <Block className={'setting-general-field'}>
-            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
-            <div className={'full-width'}>
-              <span className={'fg-blackish'}>{`Certificates`}</span>
-              <span>{'Certificates'}</span>
+          <Block className={'setting-general-field visibility-general-field'}>
+            <div>
+              <FontAwesomeIcon className={'margin-right-big'} icon={faCertificate} />
+              <FormControlLabel
+                control={
+                  <Switch checked={visibility.certificate} onChange={handleVisibility('certificate')} value={'certificate'}/>
+                }
+                label={'Certificate'}
+              />
             </div>
-              <Radio value={certificateVisibility} onChange={()=> setCertificateVisibility(!certificateVisibility)}/>
+
+              <FlexSpacer />
+
+              <div>
+                <FontAwesomeIcon className={'margin-right-big'} icon={faCalendarCheck} />
+                <FormControlLabel
+                  control={
+                    <Switch checked={visibility.event} onChange={handleVisibility('event')} value={'event'}/>
+                  }
+                  label={'Event'}
+                />
+              </div>
+
+            <FlexSpacer/>
+
+            <div>
+              <FontAwesomeIcon className={'margin-right-big'} icon={faToolbox} />
+              <FormControlLabel
+                control={
+                  <Switch checked={visibility.material} onChange={handleVisibility('material')} value={'material'}/>
+                }
+                label={'material'}
+              />
+            </div>
+
           </Block>
+
 
           <div className={'padding-horizontal-very-big padding-vertical-normal'}>
             <hr style={{ opacity: 0.5 }} />
           </div>
 
-          <Block className={'setting-general-field'}>
-            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
-            <div className={'full-width'}>
-              <span className={'fg-blackish'}>{`Event-Attended`}</span>
-              <span>{'Event Attended'}</span>
+          <Block className={'setting-general-field visibility-general-field'}>
+            <div>
+              <FontAwesomeIcon className={'margin-right-big'} icon={faTasks} />
+              <FormControlLabel
+                control={
+                  <Switch checked={visibility.task} onChange={handleVisibility('task')} value={'task'}/>
+                }
+                label={'Task'}
+              />
             </div>
-            <Radio value={eventVisibility} onChange={()=> setEventVisibility(!eventVisibility)}/>
-          </Block>
+            <FlexSpacer/>
 
-          <div className={'padding-horizontal-very-big padding-vertical-normal'}>
-            <hr style={{ opacity: 0.5 }} />
-          </div>
-
-          <Block className={'setting-general-field'}>
-            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
-            <div className={'full-width'}>
-              <span className={'fg-blackish'}>{`Material-Donated`}</span>
-              <span>{'Material Donated'}</span>
+            <div>
+              <FontAwesomeIcon className={'margin-right-big'} icon={faHandHoldingUsd} />
+              <FormControlLabel
+                control={
+                  <Switch checked={visibility.money} onChange={handleVisibility('money')} value={'money'}/>
+                }
+                label={'Money'}
+              />
             </div>
-            <Radio value={materialVisibility} onChange={()=> setMaterialVisibility(!materialVisibility)}/>
-          </Block>
-
-          <div className={'padding-horizontal-very-big padding-vertical-normal'}>
-            <hr style={{ opacity: 0.5 }} />
-          </div>
-
-          <Block className={'setting-general-field'}>
-            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
-            <div className={'full-width'}>
-              <span className={'fg-blackish'}>{`taskVisibility`}</span>
-              <span>{'Task Visibility'}</span>
-            </div>
-            <Radio value={taskVisibility} onChange={()=> setTaskVisibility(!taskVisibility)}/>
-          </Block>
-
-          <div className={'padding-horizontal-very-big padding-vertical-normal'}>
-            <hr style={{ opacity: 0.5 }} />
-          </div>
-
-
-          <Block className={'setting-general-field'}>
-            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
-            <div className={'full-width'}>
-              <span className={'fg-blackish'}>{`Money-Donated`}</span>
-              <span>{'Money Donated'}</span>
-            </div>
-            <Radio value={moneyVisibility} onChange={()=> setMoneyVisibility(!moneyVisibility)}/>
           </Block>
 
           <div className={'padding-horizontal-very-big padding-vertical-normal'}>
