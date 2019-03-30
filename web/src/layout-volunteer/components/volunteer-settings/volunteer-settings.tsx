@@ -8,7 +8,9 @@ import {
   Input as MatInput,
   InputLabel,
   MenuItem,
-  Select
+  Select,
+  Radio,
+  RadioGroup
 } from '@material-ui/core'
 
 
@@ -32,6 +34,11 @@ function VolunteerSettings() {
         [editBirthdate, setEditBirthdate]= useState(false),
         [editUsername, setEditUsername] = useState(false);
 
+const [certificateVisibility, setCertificateVisibility] = useState(false),
+  [eventVisibility, setEventVisibility]  = useState(false),
+  [materialVisibility, setMaterialVisibility] = useState(false),
+  [taskVisibility, setTaskVisibility] = useState(false),
+  [moneyVisibility, setMoneyVisibility] = useState(false);
 
   const handleUsernameChange = (e:any)=>{
     e.preventDefault()
@@ -39,6 +46,7 @@ function VolunteerSettings() {
 
     //send data to back-end and update the volunteer-setting
     //then fetch the new userInfo
+
   }
 
   const handleGenderChange = ()=>{
@@ -249,6 +257,87 @@ function VolunteerSettings() {
             <hr style={{ opacity: 0.5 }} />
           </div>
         </Content>
+
+
+        {/*portfolio visibility control*/}
+        <Content style={{overflow: 'visible'}}>
+          <Block first>
+            <Flex>
+              <h3>{`Privacy Setting`}</h3>
+              <FlexSpacer/>
+            </Flex>
+          </Block>
+
+          <hr/>
+
+          <Block className={'setting-general-field'}>
+            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+            <div className={'full-width'}>
+              <span className={'fg-blackish'}>{`Certificates`}</span>
+              <span>{'Certificates'}</span>
+            </div>
+              <Radio value={certificateVisibility} onChange={()=> setCertificateVisibility(!certificateVisibility)}/>
+          </Block>
+
+          <div className={'padding-horizontal-very-big padding-vertical-normal'}>
+            <hr style={{ opacity: 0.5 }} />
+          </div>
+
+          <Block className={'setting-general-field'}>
+            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+            <div className={'full-width'}>
+              <span className={'fg-blackish'}>{`Event-Attended`}</span>
+              <span>{'Event Attended'}</span>
+            </div>
+            <Radio value={eventVisibility} onChange={()=> setEventVisibility(!eventVisibility)}/>
+          </Block>
+
+          <div className={'padding-horizontal-very-big padding-vertical-normal'}>
+            <hr style={{ opacity: 0.5 }} />
+          </div>
+
+          <Block className={'setting-general-field'}>
+            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+            <div className={'full-width'}>
+              <span className={'fg-blackish'}>{`Material-Donated`}</span>
+              <span>{'Material Donated'}</span>
+            </div>
+            <Radio value={materialVisibility} onChange={()=> setMaterialVisibility(!materialVisibility)}/>
+          </Block>
+
+          <div className={'padding-horizontal-very-big padding-vertical-normal'}>
+            <hr style={{ opacity: 0.5 }} />
+          </div>
+
+          <Block className={'setting-general-field'}>
+            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+            <div className={'full-width'}>
+              <span className={'fg-blackish'}>{`taskVisibility`}</span>
+              <span>{'Task Visibility'}</span>
+            </div>
+            <Radio value={taskVisibility} onChange={()=> setTaskVisibility(!taskVisibility)}/>
+          </Block>
+
+          <div className={'padding-horizontal-very-big padding-vertical-normal'}>
+            <hr style={{ opacity: 0.5 }} />
+          </div>
+
+
+          <Block className={'setting-general-field'}>
+            <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+            <div className={'full-width'}>
+              <span className={'fg-blackish'}>{`Money-Donated`}</span>
+              <span>{'Money Donated'}</span>
+            </div>
+            <Radio value={moneyVisibility} onChange={()=> setMoneyVisibility(!moneyVisibility)}/>
+          </Block>
+
+          <div className={'padding-horizontal-very-big padding-vertical-normal'}>
+            <hr style={{ opacity: 0.5 }} />
+          </div>
+
+        </Content>
+
       </Block>
     )
   )
