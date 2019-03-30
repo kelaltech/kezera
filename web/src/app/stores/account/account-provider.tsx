@@ -17,9 +17,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    reloadAccount()
-      .then(action => dispatch(action))
-      .catch(console.error)
+    reloadAccount(dispatch)
   }, [])
 
   return (

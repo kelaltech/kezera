@@ -11,25 +11,35 @@ import {
 
 import './account-general.scss'
 import useLocale from '../../hooks/use-locale/use-locale'
-import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
-import { useAccountDispatch } from '../../../app/stores/account/account-provider'
-import { logout } from '../../../app/stores/account/account-actions'
+import {
+  useAccountDispatch,
+  useAccountState
+} from '../../../app/stores/account/account-provider'
+import { logout, updateAccount } from '../../../app/stores/account/account-actions'
 import { IAccountStatus } from '../../../../../api/models/account/account.model'
 
 interface Props {
-  account: IAccountResponse
-  onChange: (account: IAccountResponse, timeout: number) => any
   /**
    * @default false
    */
   readonly?: boolean
 }
 
-function AccountGeneral({ account, onChange, readonly }: Props) {
+function AccountGeneral({ readonly }: Props) {
   const { loading, t } = useLocale(['account'])
 
+  const { account } = useAccountState()
+  if (!account) return <>{t`account:you-are-logged-out`}</>
   const accountDispatch = useAccountDispatch()
-  const handleLogout = async () => accountDispatch(await logout())
+
+  const emitChange = (accountChanges: any): void => {
+    if (readonly) return
+    const data = Object.assign(account, accountChanges)
+    updateAccount(accountDispatch, data, 0, data.currentPassword, data.newPassword)
+  }
+  const handleLogout = (): void => {
+    logout(accountDispatch)
+  }
 
   const [error, setError] = useState<string | null>(null)
 
@@ -45,17 +55,13 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
   const [phoneNumber, setPhoneNumber] = useState(account.phoneNumber)
   const [status, setStatus] = useState(account.status)
 
-  const emitChange = (accountChanges: any, timeout = 0): void => {
-    if (!readonly && onChange) onChange(Object.assign(account, accountChanges), timeout)
-  }
-
-  const handleEmailChange = (e: any) => {
+  const handleEmailChange = (e: any): void => {
     e.preventDefault()
     if (!email) return
     emitChange({ email })
     setEditingEmail(false)
   }
-  const handlePasswordChange = (e: any) => {
+  const handlePasswordChange = (e: any): void => {
     e.preventDefault()
     if (!currentPassword && !newPassword && !repeatNewPassword) return
     else if (!currentPassword || !newPassword || !repeatNewPassword) {
@@ -69,12 +75,12 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
     emitChange({ currentPassword, newPassword })
     setEditingPassword(false)
   }
-  const handlePhoneNumberChange = (e: any) => {
+  const handlePhoneNumberChange = (e: any): void => {
     e.preventDefault()
     emitChange({ phoneNumber })
     setEditingPhoneNumber(false)
   }
-  const handleStatusChange = (e: any) => {
+  const handleStatusChange = (e: any): void => {
     e.preventDefault()
     if (!status) return
     emitChange({ status })
@@ -120,6 +126,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
                 className={`${
                   editingEmail ? 'account-general-field-editing' : ''
                 } account-general-field`}
+                onDoubleClick={() => setEditingEmail(true)}
               >
                 <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
                 {editingEmail ? (
@@ -154,6 +161,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
                 className={`${
                   editingPassword ? 'account-general-field-editing' : ''
                 } account-general-field`}
+                onDoubleClick={() => setEditingPassword(true)}
               >
                 <FontAwesomeIcon className={'margin-right-big'} icon={'user-secret'} />
                 {editingPassword ? (
@@ -216,6 +224,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
                 className={`${
                   editingPhoneNumber ? 'account-general-field-editing' : ''
                 } account-general-field`}
+                onDoubleClick={() => setEditingPhoneNumber(true)}
               >
                 <FontAwesomeIcon className={'margin-right-big'} icon={'phone'} />
                 {editingPhoneNumber ? (
@@ -252,6 +261,7 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
                 className={`${
                   editingStatus ? 'account-general-field-editing' : ''
                 } account-general-field`}
+                onDoubleClick={() => setEditingStatus(true)}
               >
                 <FontAwesomeIcon
                   className={'margin-right-big'}

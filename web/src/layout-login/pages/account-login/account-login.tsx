@@ -59,8 +59,7 @@ function AccountLogin({ history }: RouteComponentProps<{}>) {
 
   const handleLogout = async (): Promise<void> => {
     setSubmitting(true)
-    accountDispatch(await logout())
-    setSubmitting(false)
+    logout(accountDispatch)
   }
 
   return (

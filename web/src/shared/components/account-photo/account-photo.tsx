@@ -4,27 +4,29 @@ import Axios from 'axios'
 
 import './account-photo.scss'
 import useLocale from '../../hooks/use-locale/use-locale'
-import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useAccountDispatch } from '../../../app/stores/account/account-provider'
+import {
+  useAccountDispatch,
+  useAccountState
+} from '../../../app/stores/account/account-provider'
 import defaultPhoto from '../../../assets/images/login/promo-1.jpg'
 import { reloadAccount } from '../../../app/stores/account/account-actions'
 
 interface Props {
-  account: IAccountResponse
-  onChange: (account: IAccountResponse, timeout: number) => any // todo: ???
   /**
    * @default false
    */
   readonly?: boolean
 }
 
-function AccountPhoto({ account, onChange, readonly }: Props) {
+function AccountPhoto({ readonly }: Props) {
   const { loading, t } = useLocale(['account'])
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [submitting, setSubmitting] = useState(false)
 
+  const { account } = useAccountState()
+  if (!account) return <>{t`account:you-are-logged-out`}</>
   const accountDispatch = useAccountDispatch()
 
   const handleChange = async (): Promise<void> => {
@@ -44,7 +46,7 @@ function AccountPhoto({ account, onChange, readonly }: Props) {
         // reset photo cache
         if (response.photoUri) response.photoUri = response.photoUri + `?ms=${Date.now()}`
 
-        accountDispatch(await reloadAccount(undefined, response))
+        await reloadAccount(accountDispatch, undefined, response)
       } catch (e) {
         // todo
         console.error(e)

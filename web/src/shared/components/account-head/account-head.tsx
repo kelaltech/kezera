@@ -4,33 +4,37 @@ import { Content, Flex, Input } from 'gerami'
 import './account-head.scss'
 import useLocale from '../../hooks/use-locale/use-locale'
 import AccountPhoto from '../account-photo/account-photo'
-import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
+import { updateAccount } from '../../../app/stores/account/account-actions'
+import {
+  useAccountDispatch,
+  useAccountState
+} from '../../../app/stores/account/account-provider'
 
 interface Props {
-  account: IAccountResponse
-  onChange?: (account: IAccountResponse, timeout?: number) => any
   /**
    * @default false
    */
   readonly?: boolean
 }
 
-function AccountHead({ account, onChange, readonly }: Props) {
+function AccountHead({ readonly }: Props) {
   const { loading, t } = useLocale(['account'])
 
+  const { account } = useAccountState()
+  if (!account) return <>{t`account:you-are-logged-out`}</>
+  const accountDispatch = useAccountDispatch()
+
   const emitChange = (accountChanges: any): void => {
-    if (!readonly && onChange) onChange(Object.assign(account, accountChanges), 1000)
+    if (readonly) return
+    const data = Object.assign(account, accountChanges)
+    updateAccount(accountDispatch, data, 1000)
   }
 
   return (
     loading || (
       <Content transparent style={{ overflow: 'visible' }}>
         <Flex>
-          <AccountPhoto
-            account={account}
-            onChange={emitChange /* todo */}
-            readonly={readonly}
-          />
+          <AccountPhoto readonly={readonly} />
 
           <label className={'account-head-display-name'}>
             <Input

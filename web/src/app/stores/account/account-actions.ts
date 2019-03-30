@@ -4,36 +4,41 @@ import { Action } from './account-reducer'
 import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 import { accountResponseToRequest } from '../../../apiv/filters/account.filter'
 
-export async function reloadAccount(
+export function reloadAccount(
+  accountDispatch: (action: Action) => void,
   silentFail = false,
   account?: IAccountResponse
-): Promise<Action> {
-  try {
-    if (!account)
-      account = (await Axios.get('/api/account/me', {
-        withCredentials: true
-      })).data
-
+): void {
+  const reload = (account?: IAccountResponse): void => {
     if (!account) throw Error('Account not found.')
     if (!account._id) throw Error('Received account data is malformed.')
 
     window.localStorage.setItem('account', JSON.stringify(account))
-    return { type: 'set', account }
-  } catch (e) {
-    if (!silentFail) throw e
-    return { type: 'unset' }
+    accountDispatch({ type: 'set', account })
+  }
+
+  if (account) {
+    reload(account)
+  } else {
+    Axios.get('/api/account/me', { withCredentials: true })
+      .then(response => response.data)
+      .then(reload)
+      .catch(e => {
+        if (!silentFail) throw e
+        accountDispatch({ type: 'unset' })
+      })
   }
 }
 
 let updateTimeout: NodeJS.Timeout | null = null
 let updateCancellation: CancelTokenSource | null = null
-export async function updateAccount(
+export function updateAccount(
+  accountDispatch: (action: Action) => void,
   account: IAccountResponse,
-  dispatch: (action: Action) => void,
   timeout = 0,
   currentPassword?: string,
   newPassword?: string
-): Promise<Action> {
+): void {
   if (updateTimeout !== null) clearTimeout(updateTimeout)
   if (updateCancellation !== null) updateCancellation.cancel()
 
@@ -46,26 +51,23 @@ export async function updateAccount(
       { withCredentials: true, cancelToken: updateCancellation.token }
     )
       .then(response => response.data)
-      .then(data => reloadAccount(false, data))
-      .then(action => dispatch(action))
+      .then(data => reloadAccount(accountDispatch, false, data))
       .catch(err => {
         if (!Axios.isCancel(err)) {
           console.error(err)
-          reloadAccount()
-            .then(action => dispatch(action))
-            .catch(console.error)
+          reloadAccount(accountDispatch)
         }
       })
 
     updateTimeout = null
   }, timeout)
 
-  return { type: 'set', account }
+  accountDispatch({ type: 'set', account })
 }
 
-export async function logout(): Promise<Action> {
-  await Axios.post('/api/account/logout')
-
-  window.localStorage.removeItem('account')
-  return { type: 'unset' }
+export function logout(accountDispatch: (action: Action) => void): void {
+  Axios.post('/api/account/logout').then(() => {
+    window.localStorage.removeItem('account')
+    accountDispatch({ type: 'unset' })
+  })
 }
