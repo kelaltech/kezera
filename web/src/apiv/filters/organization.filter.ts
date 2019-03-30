@@ -1,9 +1,20 @@
-import { IOrganizationRequest, IOrganizationPrivateResponse } from '../organization.apiv'
+import { IOrganizationRequest, IOrganizationResponse } from '../organization.apiv'
+import { accountResponseToRequest } from './account.filter'
 
 export async function organizationPrivateResponseToRequest(
-  privateResponse: IOrganizationPrivateResponse
+  response: IOrganizationResponse
 ): Promise<IOrganizationRequest> {
   return {
-    // todo
+    account: await accountResponseToRequest(response.account),
+
+    type: response.type,
+
+    motto: response.motto,
+    description: response.description,
+    locations: response.locations,
+    website: response.website,
+
+    licensedNames: response.licensedNames,
+    registrations: response.registrations
   }
 }

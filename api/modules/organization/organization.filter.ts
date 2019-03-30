@@ -1,10 +1,12 @@
 import { Document, Schema } from 'mongoose'
 
-import { IOrganizationRequest, IOrganizationPrivateResponse } from './organization.apiv'
+import { IOrganizationRequest, IOrganizationResponse } from './organization.apiv'
 import {
   IOrganization,
   OrganizationModel
 } from '../../models/organization/organization.model'
+import { accountDocumentToResponse } from '../account/account.filter'
+import { IAccount } from '../../models/account/account.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -13,12 +15,21 @@ export async function organizationRequestToLeanDocument(
   _id?: ObjectId,
   _last: Date | number = Date.now()
 ): Promise<any> {
-  console.log(request) // todo: temp
   return {
     _id,
-    _last
+    _last,
 
-    // todo
+    // handle account manually
+
+    type: request.type,
+
+    motto: request.motto,
+    description: request.description,
+    locations: request.locations,
+    website: request.website,
+
+    licensedNames: request.licensedNames,
+    registrations: request.registrations
   }
 }
 
@@ -34,11 +45,26 @@ export async function organizationRequestToDocument(
 
 export async function organizationDocumentToResponse(
   document: Document & IOrganization
-): Promise<IOrganizationPrivateResponse> {
-  console.log(document) // todo: temp
-  return {
-    _id: document._id
+): Promise<IOrganizationResponse> {
+  const populatedAccount: Document & IAccount = (await document
+    .populate('account')
+    .execPopulate()).account as any
 
-    // todo
+  return {
+    _id: document._id,
+
+    account: await accountDocumentToResponse(populatedAccount),
+
+    type: document.type,
+
+    motto: document.motto,
+    description: document.description,
+    locations: document.locations,
+    website: document.website,
+
+    subscribers: document.subscribers.map(subscriber => subscriber.toString()),
+
+    licensedNames: document.licensedNames,
+    registrations: document.registrations
   }
 }

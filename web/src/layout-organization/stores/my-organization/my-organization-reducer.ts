@@ -1,7 +1,7 @@
-import { IOrganizationPrivateResponse } from '../../../apiv/organization.apiv'
+import { IOrganizationResponse } from '../../../apiv/organization.apiv'
 
 export type State = {
-  readonly myOrganization?: IOrganizationPrivateResponse | null
+  readonly myOrganization?: IOrganizationResponse | null
 }
 
 const myOrganizationStringFromStorage = window.localStorage.getItem('my-organization')
@@ -12,7 +12,7 @@ export const initialState: State = {
 }
 
 export type Action =
-  | { readonly type: 'set'; readonly myOrganization: IOrganizationPrivateResponse }
+  | { readonly type: 'set'; readonly myOrganization: IOrganizationResponse }
   | { readonly type: 'unset' }
 
 export function reducer(state: State, action: Action): State {
