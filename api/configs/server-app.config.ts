@@ -3,6 +3,8 @@ import * as KoaPassport from 'koa-passport'
 import * as path from 'path'
 
 import { AccountModel } from '../models/account/account.model'
+import { CertificateModel } from '../models/certificate/certificate.model'
+import { CertificateDesignModel } from '../models/certificate-design/certificate-design.model'
 import { KeyModel } from '../models/key/key.model'
 import { OrganizationModel } from '../models/organization/organization.model'
 import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
@@ -23,7 +25,14 @@ export const serverAppConfig: IServerAppConfig = {
     }
   ],
 
-  models: [AccountModel, KeyModel, OrganizationModel, OrganizationApplicationModel],
+  models: [
+    AccountModel,
+    CertificateModel,
+    CertificateDesignModel,
+    KeyModel,
+    OrganizationModel,
+    OrganizationApplicationModel
+  ],
 
   routers: [accountRouter, eventRouter, newsRouter, organizationRouter],
 

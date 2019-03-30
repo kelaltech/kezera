@@ -8,7 +8,11 @@ Axios.interceptors.response.use(
   error => {
     if (Axios.isCancel(error)) return Promise.reject(error)
 
-    if (error.response.status == 401 && !window.localStorage.getItem('account')) {
+    if (
+      error.response.status == 401 &&
+      !window.localStorage.getItem('account') &&
+      window.location.pathname != '/login'
+    ) {
       window.location.replace(
         `/login?${qs.stringify(
           Object.assign(qs.parse(window.location.search, { ignoreQueryPrefix: true }), {
