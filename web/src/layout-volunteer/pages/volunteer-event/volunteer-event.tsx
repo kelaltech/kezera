@@ -5,8 +5,10 @@ import ProductSlider from '../../components/volunteer-product-slider/volunteer-p
 
 import './volunteer-event.scss'
 import axios from 'axios'
+import EventCard from '../../../shared/components/event-card/event-card'
 function VolunteerEvents() {
   const [events, setEvents] = useState([])
+  const [recentEvents, setRecentEvents] = useState([])
 
   useEffect(()=>{
     axios
@@ -15,6 +17,14 @@ function VolunteerEvents() {
         setEvents(events.data)
       })
       .catch(e=>console.log(e))
+
+    axios
+      .get('/api/event/recent') //todo change the api request
+      .then((events)=>{
+        setRecentEvents(events.data)
+      })
+      .catch(e=>console.log(e))
+
   },[])
   return (
     <div className={'events-container'}>
@@ -22,33 +32,35 @@ function VolunteerEvents() {
         <h4>Events Near you</h4>
         <Block />
         {events.map((event:any)=>(
-          <VolunteerEventCard
-            description={event.description}
-            title={event.title}
-            comment={event.comment}
-            endDate={event.endDate}
-            going={event.goingVolunteers}
-            img={`/api/event/${event._id}/picture`}
-            likes={event.likes.length}
-            location={event.location}
-            startDate={event.startDate}
-          />
+          <div>
+          <Block />
+          <EventCard event={event}  role={'VOLUNTEER'} fetch={()=>{}}/>
+          <Block/>
+          </div>
         ))}
+        <Block/>
       </div>
+      <div className={'events-list-container'}>
+        <h4>Coming up..! </h4>
+        <div>
+          <ProductSlider sliderWidth={events.length*50+'%'}>
+            {events.map((event:any)=>(
+           <div style={{
+             padding: '0 13px'
+           }}>
+                <EventCard event={event}  role={'VOLUNTEER'} fetch={()=>{}}/>
+           </div>
+            ))}
+          </ProductSlider>
+        </div>
+      </div>
+      <Block/>
       <div className={'events-list-container'}>
         <h4>Upcoming </h4>
         {events.map((event:any)=>(
-          <VolunteerEventCard
-            description={event.description}
-            title={event.title}
-            comment={event.comment}
-            endDate={event.endDate}
-            going={event.goingVolunteers}
-            img={`/api/event/${event._id}/picture`}
-            likes={event.likes.length}
-            location={event.location}
-            startDate={event.startDate}
-          />
+          <Block>
+            <EventCard event={event}  role={'VOLUNTEER'} fetch={()=>{}}/>
+          </Block>
         ))}
       </div>
     </div>
