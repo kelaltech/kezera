@@ -1,0 +1,10 @@
+
+.request-list-container {
+  width: 50%;
+  margin: 0 auto;
+  //background-color: #f02139;
+
+  @media screen and (max-width: 500px) {
+    width: 95%;
+  }
+}
