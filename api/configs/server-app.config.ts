@@ -5,12 +5,12 @@ import * as path from 'path'
 import { AccountModel } from '../models/account/account.model'
 import { KeyModel } from '../models/key/key.model'
 import { OrganizationModel } from '../models/organization/organization.model'
+import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
 
 import { accountRouter } from '../modules/account/account.router'
 import { newsRouter } from '../modules/news/news.route'
 import { eventRouter } from '../modules/event/event.router'
 import { organizationRouter } from '../modules/organization/organization.router'
-import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',

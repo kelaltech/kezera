@@ -15,7 +15,7 @@ interface Props {
   readonly?: boolean
 }
 
-function AccountGeneral({ account, onChange, readonly }: Props) {
+function AccountHead({ account, onChange, readonly }: Props) {
   const { loading, t } = useLocale(['account'])
 
   const emitChange = (accountChanges: any): void => {
@@ -54,4 +54,4 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
   )
 }
 
-export default AccountGeneral
+export default AccountHead
