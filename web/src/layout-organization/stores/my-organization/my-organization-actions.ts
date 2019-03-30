@@ -4,34 +4,39 @@ import { Action } from './my-organization-reducer'
 import { IOrganizationPrivateResponse } from '../../../../../api/modules/organization/organization.apiv'
 import { organizationPrivateResponseToRequest } from '../../../apiv/filters/organization.filter'
 
-export async function reloadMyOrganization(
+export function reloadMyOrganization(
+  myOrganizationDispatch: (action: Action) => void,
   silentFail = false,
   myOrganization?: IOrganizationPrivateResponse
-): Promise<Action> {
-  try {
-    if (!myOrganization)
-      myOrganization = (await Axios.get('/api/organization/me', {
-        withCredentials: true
-      })).data
-
+): void {
+  const reload = (myOrganization?: IOrganizationPrivateResponse): void => {
     if (!myOrganization) throw Error('My Organization not found.')
     if (!myOrganization._id) throw Error('Received My Organization data is malformed.')
 
     window.localStorage.setItem('my-organization', JSON.stringify(myOrganization))
-    return { type: 'set', myOrganization }
-  } catch (e) {
-    if (!silentFail) throw e
-    return { type: 'unset' }
+    myOrganizationDispatch({ type: 'set', myOrganization })
+  }
+
+  if (myOrganization) {
+    reload(myOrganization)
+  } else {
+    Axios.get('/api/organization/me', { withCredentials: true })
+      .then(response => response.data)
+      .then(reload)
+      .catch(e => {
+        if (!silentFail) throw e
+        myOrganizationDispatch({ type: 'unset' })
+      })
   }
 }
 
 let updateTimeout: NodeJS.Timeout | null = null
 let updateCancellation: CancelTokenSource | null = null
-export async function updateMyOrganization(
+export function updateMyOrganization(
+  myOrganizationDispatch: (action: Action) => void,
   myOrganization: IOrganizationPrivateResponse,
-  dispatch: (action: Action) => void,
   timeout = 0
-): Promise<Action> {
+): void {
   if (updateTimeout !== null) clearTimeout(updateTimeout)
   if (updateCancellation !== null) updateCancellation.cancel()
 
@@ -44,24 +49,21 @@ export async function updateMyOrganization(
       { withCredentials: true, cancelToken: updateCancellation.token }
     )
       .then(response => response.data)
-      .then(data => reloadMyOrganization(false, data))
-      .then(action => dispatch(action))
+      .then(data => reloadMyOrganization(myOrganizationDispatch, false, data))
       .catch(err => {
         if (!Axios.isCancel(err)) {
           console.error(err)
-          reloadMyOrganization()
-            .then(action => dispatch(action))
-            .catch(console.error)
+          reloadMyOrganization(myOrganizationDispatch)
         }
       })
 
     updateTimeout = null
   }, timeout)
 
-  return { type: 'set', myOrganization }
+  myOrganizationDispatch({ type: 'set', myOrganization })
 }
 
-export async function clear(): Promise<Action> {
+export function clear(myOrganizationDispatch: (action: Action) => void): void {
   window.localStorage.removeItem('my-organization')
-  return { type: 'unset' }
+  myOrganizationDispatch({ type: 'unset' })
 }

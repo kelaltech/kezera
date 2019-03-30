@@ -62,9 +62,10 @@ type UseFieldResponse<T> = {
   ref: MutableRefObject<T> | RefObject<T>
 
   value: string
-  setValue: (value: string, runValidation?: boolean) => Promise<void>
-  onBlur: (event: any, runValidation?: boolean) => Promise<void>
-  onChange: (event: any, runValidation?: boolean) => Promise<void>
+  setValue: (value: string, runValidation?: boolean) => void
+
+  onBlur: (event: any, runValidation?: boolean) => void
+  onChange: (event: any, runValidation?: boolean) => void
 
   validate: (value: string) => Promise<boolean>
 
@@ -78,8 +79,8 @@ type UseFieldResponse<T> = {
 
   inputProps: {
     value: string
-    onBlur: (event: any, runValidation?: boolean) => Promise<void>
-    onChange: (event: any, runValidation?: boolean) => Promise<void>
+    onBlur: (event: any, runValidation?: boolean) => void
+    onChange: (event: any, runValidation?: boolean) => void
     readOnly: boolean
   }
 }
@@ -190,10 +191,10 @@ function useField<T>(
     if (runValidation) await validate(newValue)
   }
 
-  const onBlur = async (event: any, runValidation = config.validateOnBlur || true) =>
-    setValueWithValidation(event.target.value, runValidation)
-  const onChange = async (event: any, runValidation = config.validateOnChange || false) =>
-    setValueWithValidation(event.target.value, runValidation)
+  const handleSet = (event: any, runValidation = config.validateOnBlur || true): void => {
+    setValueOnState(event.target.value)
+    setValueWithValidation(event.target.value, runValidation).catch(setError)
+  }
 
   useEffect(() => {
     if (config.validateOnInit) validate(value).catch(console.error)
@@ -212,9 +213,10 @@ function useField<T>(
     ref,
 
     value,
-    setValue: setValueWithValidation,
-    onBlur,
-    onChange,
+    setValue: handleSet,
+
+    onBlur: handleSet,
+    onChange: handleSet,
 
     validate,
 
@@ -229,8 +231,8 @@ function useField<T>(
     // shortcut
     inputProps: {
       value,
-      onBlur,
-      onChange,
+      onBlur: handleSet,
+      onChange: handleSet,
       readOnly: !active
     }
   }
