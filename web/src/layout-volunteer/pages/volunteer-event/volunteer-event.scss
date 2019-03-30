@@ -6,8 +6,10 @@
   margin: 0 15px;
   padding: 5px;
   float: right;
-  height: auto;
-  background-color: #00b478;
+  //position: fixed;
+  max-height: 100vh;
+  overflow: scroll;
+  //background-color: #00b478;
 
   @media screen and (max-width: 500px) {
     float: none;
