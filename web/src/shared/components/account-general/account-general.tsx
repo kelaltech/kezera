@@ -1,22 +1,20 @@
 import React, { useState } from 'react'
-import {
-  Anchor,
-  Block,
-  Button,
-  Content,
-  Flex,
-  FlexSpacer,
-  Input,
-  Page,
-  Warning
-} from 'gerami'
+import { Anchor, Block, Button, Content, Flex, FlexSpacer, Input, Warning } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  FormControl,
+  Input as MatInput,
+  InputLabel,
+  MenuItem,
+  Select
+} from '@material-ui/core'
 
 import './account-general.scss'
 import useLocale from '../../hooks/use-locale/use-locale'
 import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 import { useAccountDispatch } from '../../../app/stores/account/account-provider'
 import { logout } from '../../../app/stores/account/account-actions'
+import { IAccountStatus } from '../../../../../api/models/account/account.model'
 
 interface Props {
   account: IAccountResponse
@@ -37,15 +35,15 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
 
   const [editingEmail, setEditingEmail] = useState(false)
   const [editingPassword, setEditingPassword] = useState(false)
-  const [editingStatus, setEditingStatus] = useState(false)
   const [editingPhoneNumber, setEditingPhoneNumber] = useState(false)
+  const [editingStatus, setEditingStatus] = useState(false)
 
   const [email, setEmail] = useState(account.email)
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewtPassword] = useState('')
   const [repeatNewPassword, setRepeatNewPassword] = useState('')
-  const [status, setStatus] = useState(account.status)
   const [phoneNumber, setPhoneNumber] = useState(account.phoneNumber)
+  const [status, setStatus] = useState(account.status)
 
   const emitChange = (accountChanges: any, timeout = 0): void => {
     if (!readonly && onChange) onChange(Object.assign(account, accountChanges), timeout)
@@ -71,16 +69,16 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
     emitChange({ currentPassword, newPassword })
     setEditingPassword(false)
   }
+  const handlePhoneNumberChange = (e: any) => {
+    e.preventDefault()
+    emitChange({ phoneNumber })
+    setEditingPhoneNumber(false)
+  }
   const handleStatusChange = (e: any) => {
     e.preventDefault()
     if (!status) return
     emitChange({ status })
     setEditingStatus(false)
-  }
-  const handlePhoneNumberChange = (e: any) => {
-    e.preventDefault()
-    emitChange({ phoneNumber })
-    setEditingPhoneNumber(false)
   }
 
   return (
@@ -213,36 +211,6 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
               <hr style={{ opacity: 0.5 }} />
             </div>
 
-            <form method={'POST'} onSubmit={handleStatusChange}>
-              <Block
-                className={`${
-                  editingStatus ? 'account-general-field-editing' : ''
-                } account-general-field`}
-              >
-                <FontAwesomeIcon
-                  className={'margin-right-big'}
-                  icon={'question-circle'}
-                />
-                {editingStatus ? null /* todo */ : (
-                  <div className={'full-width'}>
-                    <span className={'fg-blackish'}>Account Status: </span>
-                    <span>{account.status}</span>
-                  </div>
-                )}
-                <Button
-                  type={!editingStatus ? 'submit' : 'button'}
-                  className={'small-circle-button margin-left-big'}
-                  onClick={() => setEditingStatus(!editingStatus)}
-                >
-                  <FontAwesomeIcon icon={editingStatus ? 'check' : 'pencil-alt'} />
-                </Button>
-              </Block>
-            </form>
-
-            <div className={'padding-horizontal-very-big padding-vertical-normal'}>
-              <hr style={{ opacity: 0.5 }} />
-            </div>
-
             <form method={'POST'} onSubmit={handlePhoneNumberChange}>
               <Block
                 className={`${
@@ -271,6 +239,59 @@ function AccountGeneral({ account, onChange, readonly }: Props) {
                   onClick={() => setEditingPhoneNumber(!editingPhoneNumber)}
                 >
                   <FontAwesomeIcon icon={editingPhoneNumber ? 'check' : 'pencil-alt'} />
+                </Button>
+              </Block>
+            </form>
+
+            <div className={'padding-horizontal-very-big padding-vertical-normal'}>
+              <hr style={{ opacity: 0.5 }} />
+            </div>
+
+            <form method={'POST'} onSubmit={handleStatusChange}>
+              <Block
+                className={`${
+                  editingStatus ? 'account-general-field-editing' : ''
+                } account-general-field`}
+              >
+                <FontAwesomeIcon
+                  className={'margin-right-big'}
+                  icon={'question-circle'}
+                />
+                {editingStatus && account.status !== 'BLOCKED' ? (
+                  <FormControl className={'full-width'}>
+                    <InputLabel htmlFor={'account-status-label-placeholder'} shrink>
+                      Status
+                    </InputLabel>
+                    <Select
+                      value={status}
+                      onChange={e => setStatus(e.target.value as IAccountStatus)}
+                      input={
+                        <MatInput
+                          name="account-status"
+                          id="account-status-label-placeholder"
+                        />
+                      }
+                    >
+                      <MenuItem value={'ACTIVE'}>ACTIVE</MenuItem>
+                      <MenuItem value={'DISABLED'}>DISABLED</MenuItem>
+                    </Select>
+                  </FormControl>
+                ) : (
+                  <div className={'full-width'}>
+                    <span className={'fg-blackish'}>Account Status: </span>
+                    <span>
+                      {account.status}
+                      {account.status === 'BLOCKED' &&
+                        ' (Contact the system administrator for more information).'}
+                    </span>
+                  </div>
+                )}
+                <Button
+                  type={!editingStatus ? 'submit' : 'button'}
+                  className={'small-circle-button margin-left-big'}
+                  onClick={() => setEditingStatus(!editingStatus)}
+                >
+                  <FontAwesomeIcon icon={editingStatus ? 'check' : 'pencil-alt'} />
                 </Button>
               </Block>
             </form>

@@ -14,6 +14,7 @@ interface INewsAddState {
   article: any
   error: any
   likeCount: number
+  liked: boolean
 }
 
 class NewsView extends React.Component<any, INewsAddState> {
@@ -25,7 +26,8 @@ class NewsView extends React.Component<any, INewsAddState> {
       description: EditorState.createEmpty(),
       article: EditorState.createEmpty(),
       error: '',
-      likeCount: 0
+      likeCount: 0,
+      liked: false
     }
   }
   componentDidMount(): void {
@@ -65,16 +67,20 @@ class NewsView extends React.Component<any, INewsAddState> {
       .put(`/api/news/${match.params._id}/like`)
       .then(data => {
         this.setState({
-          likeCount: data.data.likes
+          likeCount: data.data.likes,
+          liked: !this.state.liked
         })
       })
       .catch(e => {
         console.log(e)
       })
   }
+  fetchLikes = () => {
+    //render the like component
+  }
 
   render() {
-    const { description, title, article, error, likeCount } = this.state
+    const { description, title, article, liked, likeCount } = this.state
     return (
       <div className={'news-view-container'}>
         <div className={'news-view'}>
@@ -105,15 +111,21 @@ class NewsView extends React.Component<any, INewsAddState> {
             </div>
             <hr />
             <div className={'new-view-action-container'}>
-              <span onClick={this.handleLike}>
-                <FontAwesomeIcon className={'ico'} icon={['far', 'heart']} />
-                &nbsp; Like&nbsp; {likeCount == 0 ? '' : likeCount}
-              </span>
               <span>
-                <FontAwesomeIcon icon={['far', 'comment-alt']} />
-                &nbsp; Comment
+                {liked ? (
+                  <span className={'name-view-like-icon'} onClick={this.handleLike}>
+                    <FontAwesomeIcon className={'ico'} icon={['fas', 'heart']} />
+                  </span>
+                ) : (
+                  <span className={'name-view-like-icon'} onClick={this.handleLike}>
+                    <FontAwesomeIcon icon={['far', 'heart']} />
+                  </span>
+                )}
+                <span onClick={this.fetchLikes} className={'name-view-like-list'}>
+                  &nbsp; Like&nbsp; <span>{likeCount == 0 ? '' : likeCount}</span>
+                </span>
               </span>
-              <span>
+              <span className={'news-view-share-icon'}>
                 <FontAwesomeIcon icon={['fas', 'share-alt']} />
                 &nbsp; Share
               </span>

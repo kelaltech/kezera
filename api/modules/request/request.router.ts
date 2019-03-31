@@ -5,7 +5,8 @@ import {
   searchRequest,
   getRequest,
   goingVolunteers,
-  addRequestWithPicture
+  addRequestWithPicture,
+  getPicture
 } from './request.controller'
 
 import * as fs from 'fs'
@@ -20,6 +21,11 @@ requestRouter.get('/list', async ctx => {
 requestRouter.get('/:_id', async ctx => {
   console.log(ctx.params._id, '')
   ctx.body = await getRequest(ctx.params._id)
+})
+
+//GET /api/request/picture/:_id
+requestRouter.get('/picture/:_id', async ctx => {
+  ctx.body = await getPicture(ctx.params._id)
 })
 
 requestRouter.delete('/:_id', async ctx => {

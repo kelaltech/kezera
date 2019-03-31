@@ -8,6 +8,9 @@ export interface ITask extends Document {
   numberNeeded: number
   location: []
   type: ObjectId
+  duration: number
+  startTime: Date | number
+  endTime: Date | number
 }
 
 export const taskModelFactory = new ModelFactory<ITask>({

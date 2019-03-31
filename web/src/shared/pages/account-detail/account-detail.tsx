@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Block, Content, Page } from 'gerami'
 
 import useLocale from '../../hooks/use-locale/use-locale'
@@ -8,8 +8,11 @@ import {
   useAccountDispatch,
   useAccountState
 } from '../../../app/stores/account/account-provider'
-import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 import { updateAccount } from '../../../app/stores/account/account-actions'
+
+const VolunteerSettings = lazy(() =>
+  import('../../../layout-volunteer/components/volunteer-settings/volunteer-settings')
+)
 
 function AccountDetail() {
   const { loading, t } = useLocale(['account'])
@@ -38,7 +41,7 @@ function AccountDetail() {
             <AccountGeneral account={account} onChange={handleAccountChange} />
           </Block>
 
-          {/* todo: special cases */}
+          {account && account.role === 'VOLUNTEER' && <VolunteerSettings />}
         </Content>
       </Page>
     ))

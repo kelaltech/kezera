@@ -12,9 +12,15 @@ export async function removeRequest(id: Schema.Types.ObjectId): Promise<void> {
   await remove(RequestModel, id)
 }
 
-export async function getRequest(_Id: ObjectId): Promise<any> {
-  const docs = await get(RequestModel, _Id)
+export async function getRequest(_id: ObjectId): Promise<any> {
+  const docs = (await get(RequestModel, _id)) as any
+  docs.picture = '/api/request/picture/' + _id
   return docs
+}
+
+export async function getPicture(_id: ObjectId): Promise<Stream> {
+  const grid = new Grid(serverApp, RequestModel, _id)
+  return grid.get()
 }
 
 export async function searchRequest(term: any): Promise<any> {
@@ -22,7 +28,13 @@ export async function searchRequest(term: any): Promise<any> {
 }
 
 export async function listRequests(): Promise<any> {
-  return await list(RequestModel)
+  const requests = await list(RequestModel)
+
+  return requests.map((request: any) => {
+    const ret = request.toJSON()
+    ret.picture = '/api/request/picture/' + request._id
+    return ret
+  })
 }
 
 export async function goingVolunteers(requestId: Schema.Types.ObjectId): Promise<any> {

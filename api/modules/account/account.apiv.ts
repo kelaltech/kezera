@@ -1,6 +1,8 @@
 import { IAccountRole, IAccountStatus } from '../../models/account/account.model'
 
 export type IAccountRequest = {
+  status?: IAccountStatus // exclude 'BLOCKED' manually in server code (for security)
+
   email: string
   password?: string // for add
 
@@ -22,6 +24,8 @@ export type IAccountResponse = {
 
   displayName: string
   phoneNumber?: string
+
+  photoUri?: string
 }
 
 import {

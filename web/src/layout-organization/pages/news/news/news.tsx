@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Yoga } from 'gerami'
-
-import NewsCard from '../../../shared/components/news-card/news-card'
-import NewsTemp from '../../../assets/images/news-temp.jpg'
+import './news.scss'
+import NewsCard from '../../../../shared/components/news-card/news-card'
+import NewsTemp from '../../../../assets/images/news-temp.jpg'
 import axios from 'axios'
 import { convertFromRaw } from 'draft-js'
-
+import { Block } from 'gerami'
 export default function News() {
   const [news, setNews] = useState([])
 
@@ -44,9 +43,9 @@ export default function News() {
   }, [])
   // todo
   return (
-    <div>
-      <Yoga maxCol={2}>
-        {news.map((n: any) => (
+    <div className={'news-list-container'}>
+      {news.map((n: any) => (
+        <div>
           <NewsCard
             _id={n._id}
             commentCount={n.comments.length}
@@ -55,8 +54,9 @@ export default function News() {
             likeCount={n.likes.length}
             description={n.description}
           />
-        ))}
-      </Yoga>
+          <Block />
+        </div>
+      ))}
     </div>
   )
 }

@@ -1,16 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import { Block } from 'gerami'
+import { Block, Yoga } from 'gerami'
 
 import Report from '../request-report/request-report'
 import Contact from '../request-contact/request-contact'
 import Detail from '../request-detail/request-detail'
 import Going from '../request-going/request-going'
 import Images from '../request-images/request-images'
+import axios from 'axios'
+import { RouteComponentProps, withRouter } from 'react-router'
 
-export default function RequestTabs(props: any) {
+function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
   let [value, setValue] = useState(0)
+
+  const [request, setRequest] = useState<any>()
+
+  useEffect(() => {
+    axios
+      .get(`/api/request/ + ${match.params._id}`)
+      .then(res => {
+        setRequest(res.data)
+        console.log('successfully retrieved')
+        console.log(res.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }, [])
   return (
     <div>
       <Tabs
@@ -29,7 +46,7 @@ export default function RequestTabs(props: any) {
       </Tabs>
       {value === 0 && (
         <Block>
-          <Detail />
+          <Detail request={request} />
         </Block>
       )}
       {value === 1 && (
@@ -60,3 +77,4 @@ export default function RequestTabs(props: any) {
     </div>
   )
 }
+export default withRouter(RequestTabs)

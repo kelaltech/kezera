@@ -13,10 +13,14 @@ import {
 import { convertToRaw } from 'draft-js'
 import axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import { RouteComponentProps } from 'react-router'
+import { match, RouteComponentProps } from 'react-router'
+import { RadioGroup } from '@material-ui/core'
+import TaskAdd from '../task/task-add'
 
 export default function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
+
+  let [value, setValue] = useState(0)
 
   const addRequest = (form: any) => {
     const data = new FormData()

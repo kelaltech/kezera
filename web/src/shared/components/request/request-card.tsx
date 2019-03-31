@@ -4,6 +4,8 @@ import {
   Block,
   Button,
   Card,
+  Flex,
+  FlexSpacer,
   Image,
   Loading,
   Page,
@@ -20,34 +22,27 @@ export interface IRequestProps {
 
 export default function RequestCard({ request }: IRequestProps) {
   return (
-    <Page>
-      <Card size={'S'}>
-        <Image
-          src={`${request.image}`}
-          className={'request-image'}
-          placeholder={`${name}`}
-        />
-        <hr />
-        <Yoga maxCol={2}>
-          <h5>Start Date/Time</h5>
-          <h5>End Date/Time</h5>
-        </Yoga>
-        <Yoga maxCol={2}>
-          <label>{request.startDate}</label>
-          <label>{request.endDate}</label>
-        </Yoga>
-        <hr />
-        <Yoga maxCol={2}>
-          <Block last className={'left'}>
-            <Anchor className={'full-width'} to={'/api/request' + request._id}>
-              Details
-            </Anchor>
-          </Block>
-          <Button className={'right'} type="submit" primary>
-            Support the Cause
-          </Button>
-        </Yoga>
-      </Card>
-    </Page>
+    <Card imgSrc={request.picture}>
+      <div>{request.name}</div>
+      <hr />
+      <Yoga maxCol={2}>
+        <h5>Start Date/Time</h5>
+        <h5>End Date/Time</h5>
+      </Yoga>
+      <Yoga maxCol={2}>
+        <label>{new Date(request.startDate).toDateString()}</label>
+        <label>{new Date(request.endDate).toDateString()}</label>
+      </Yoga>
+      <hr />
+      <Flex>
+        <Anchor className={'margin-top-normal'} to={'/api/request/' + request._id}>
+          Details
+        </Anchor>
+        <FlexSpacer />
+        <Button type="submit" primary>
+          Support
+        </Button>
+      </Flex>
+    </Card>
   )
 }

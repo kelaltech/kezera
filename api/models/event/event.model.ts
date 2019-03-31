@@ -10,12 +10,14 @@ export interface IEvent extends Document {
   description: string
   interestedVolunteers: ObjectId[]
   attendedVolunteers: ObjectId[]
-  goinngVolunteers: ObjectId[]
+  goingVolunteers: ObjectId[]
   startDate: Date
   endDate: Date
+  location: string
   likes: ObjectId[]
   comments: ObjectId[]
   organizationId: ObjectId
+  amountOfPeople: Number
 }
 
 export const eventModelFactory = new ModelFactory<IEvent>({
@@ -24,7 +26,7 @@ export const eventModelFactory = new ModelFactory<IEvent>({
 })
 
 eventModelFactory.schema.index({
-  Title: 'text',
-  Description: 'text'
+  title: 'text',
+  description: 'text'
 })
 export const EventModel = eventModelFactory.model

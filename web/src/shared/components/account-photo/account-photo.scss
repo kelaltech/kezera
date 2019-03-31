@@ -24,11 +24,15 @@
   &:active,
   &:focus,
   &:hover {
+    background-color: $bg;
     color: $bg;
-    background-size: auto 100%;
   }
-  &:active {
-    filter: brightness(0.84);
+
+  .gerami-loading {
+    > * {
+      display: block;
+      margin: auto;
+    }
   }
 
   @media (max-width: $mobile) {
