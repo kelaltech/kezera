@@ -1,0 +1,8 @@
+
+.my-organization-list-container {
+  width:  50%;
+  margin: 0 auto;
+  @media screen and (max-width: 500px) {
+    width: 90%;
+  }
+}
