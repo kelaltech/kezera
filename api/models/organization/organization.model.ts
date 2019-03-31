@@ -24,7 +24,7 @@ export interface IOrganization {
   type: IOrganizationType
 
   motto?: string
-  description: string
+  bio: string
   locations: {
     latitude?: number
     longitude?: number

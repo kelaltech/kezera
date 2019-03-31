@@ -2,23 +2,55 @@ import React, { useState } from 'react'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { Block, Content, Page, Yoga } from 'gerami'
-import AccountRegister from '../../../shared/components/account-register/account-register'
+import { IOrganizationRequest } from '../../../../../api/modules/organization/organization.apiv'
 import { IAccountRequest } from '../../../../../api/modules/account/account.apiv'
+import AccountRegister from '../../../shared/components/account-register/account-register'
+import OrganizationApplyAbout from './components/organization-apply-about/organization-apply-about'
+import OrganizationApplyLegal from './components/organization-apply-legal/organization-apply-legal'
+import OrganizationApplyBrand from './components/organization-apply-brand/organization-apply-brand'
+import OrganizationApplyBio from './components/organization-apply-bio/organization-apply-bio'
 
 function OrganizationApply() {
   const { loading, t } = useLocale(['organization'])
 
-  const [account, setAccount] = useState<IAccountRequest>({
-    displayName: '',
-    email: '',
-    password: '',
-    phoneNumber: null
+  const [organization, setOrganization] = useState<IOrganizationRequest>({
+    /* COLUMN 1 */
+
+    // account
+    account: {
+      displayName: '',
+      email: '',
+      password: '',
+      phoneNumber: null
+    },
+
+    // about
+    type: 'NGO',
+    locations: [],
+
+    // legal
+    licensedNames: [],
+    registrations: [],
+
+    /* COLUMN 2 */
+
+    // brand
+    // ... logo
+    motto: undefined,
+    website: undefined,
+
+    // bio
+    bio: ''
   })
+
+  const setAccount = (account: IAccountRequest): void => {
+    setOrganization(Object.assign(organization, { account }))
+  }
 
   return (
     loading || (
       <Page>
-        <Content size={'XL'} transparent>
+        <Content size={'XXL'} transparent>
           <Block first className={'padding-horizontal-normal'}>
             <h1>Organization Application</h1>
           </Block>
@@ -33,9 +65,31 @@ function OrganizationApply() {
           </Block>
 
           <Yoga maxCol={2}>
-            <AccountRegister account={account} setAccount={setAccount} />
+            <div className={'top'}>
+              <AccountRegister account={organization.account} setAccount={setAccount} />
 
-            <Content className={'top'}>todo</Content>
+              <OrganizationApplyAbout
+                organization={organization}
+                setOrganization={setOrganization}
+              />
+
+              <OrganizationApplyLegal
+                organization={organization}
+                setOrganization={setOrganization}
+              />
+            </div>
+
+            <div className={'top'}>
+              <OrganizationApplyBrand
+                organization={organization}
+                setOrganization={setOrganization}
+              />
+
+              <OrganizationApplyBio
+                organization={organization}
+                setOrganization={setOrganization}
+              />
+            </div>
           </Yoga>
         </Content>
       </Page>

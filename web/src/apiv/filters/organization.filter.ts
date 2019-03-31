@@ -10,7 +10,7 @@ export async function organizationPrivateResponseToRequest(
     type: response.type,
 
     motto: response.motto,
-    description: response.description,
+    bio: response.bio,
     locations: response.locations,
     website: response.website,
 

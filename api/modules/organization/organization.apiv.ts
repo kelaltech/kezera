@@ -7,7 +7,7 @@ export type IOrganizationRequest = {
   type: IOrganizationType
 
   motto?: string
-  description: string
+  bio: string
   locations: {
     latitude?: number
     longitude?: number
@@ -31,7 +31,7 @@ export type IOrganizationResponse = {
   type: IOrganizationType
 
   motto?: string
-  description: string
+  bio: string
   locations: {
     latitude?: number
     longitude?: number

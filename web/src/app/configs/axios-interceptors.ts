@@ -8,6 +8,8 @@ Axios.interceptors.response.use(
   error => {
     if (Axios.isCancel(error)) return Promise.reject(error)
 
+    /*
+    // todo: causing problems (e.g. can't access /organization/apply logged out)
     if (
       error.response.status == 401 &&
       !window.localStorage.getItem('account') &&
@@ -21,6 +23,7 @@ Axios.interceptors.response.use(
         )}` // todo: a you need to login first message
       )
     }
+    */
 
     return Promise.reject(error.response.data)
   }

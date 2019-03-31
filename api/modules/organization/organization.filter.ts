@@ -24,7 +24,7 @@ export async function organizationRequestToLeanDocument(
     type: request.type,
 
     motto: request.motto,
-    description: request.description,
+    bio: request.bio,
     locations: request.locations,
     website: request.website,
 
@@ -58,7 +58,7 @@ export async function organizationDocumentToResponse(
     type: document.type,
 
     motto: document.motto,
-    description: document.description,
+    bio: document.bio,
     locations: document.locations,
     website: document.website,
 

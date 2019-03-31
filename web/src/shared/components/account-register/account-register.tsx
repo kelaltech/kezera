@@ -14,7 +14,7 @@ interface Props {
 function AccountRegister({ account, setAccount }: Props) {
   const { loading, t } = useLocale(['account'])
 
-  const emitAccount = (accountChanges: any): void => {
+  const emitChanges = (accountChanges: any): void => {
     setAccount(Object.assign(account, accountChanges))
   }
 
@@ -23,14 +23,14 @@ function AccountRegister({ account, setAccount }: Props) {
     minLength: [1, 'Required.'],
     maxLength: [50, 'Your display name cannot be longer than 50 characters.'],
     setValueHook: async value => {
-      emitAccount({ name: value })
+      emitChanges({ name: value })
     }
   })
   const email = useField<HTMLInputElement>({
     validation: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     validateOnChange: true,
     setValueHook: async value => {
-      emitAccount({ email: value })
+      emitChanges({ email: value })
     }
   })
   const password = useField<HTMLInputElement>({
@@ -42,7 +42,7 @@ function AccountRegister({ account, setAccount }: Props) {
     minLength: [8, 'Passwords need to be at least 8 characters long.'],
     maxLength: [72, 'Passwords cannot be more than 72 characters long.'],
     setValueHook: async value => {
-      emitAccount({ password: value })
+      emitChanges({ password: value })
     }
   })
   const repeatPassword = useField<HTMLInputElement>(
@@ -57,7 +57,7 @@ function AccountRegister({ account, setAccount }: Props) {
     validateOnChange: true,
     optional: true,
     setValueHook: async value => {
-      emitAccount({ phoneNumber: value })
+      emitChanges({ phoneNumber: value })
     }
   })
 
@@ -78,7 +78,7 @@ function AccountRegister({ account, setAccount }: Props) {
 
   return (
     loading || (
-      <Content className={'top margin-bottom-normal'}>
+      <Content className={'top margin-bottom-big'}>
         <Block first className={'bold'}>
           {t`account:account`}
         </Block>
