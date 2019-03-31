@@ -4,7 +4,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import './volunteer-product-slider.scss'
 function ProductSlider(props: any) {
-  const { children } = props
+  const { children, sliderWidth } = props
 
   const handleNext = () => {
     let parent: any = document.getElementById('product-slider')
@@ -23,7 +23,14 @@ function ProductSlider(props: any) {
         <FontAwesomeIcon icon={faChevronRight} />
       </span>
       <div className={'gerami-product-slider-scroll'} id={'product-slider'}>
-        <div className={'gerami-product-slider-item-box'}>{children}</div>
+        <div
+          style={{
+            width: sliderWidth
+          }}
+          className={'gerami-product-slider-item-box'}
+        >
+          {children}
+        </div>
       </div>
     </div>
   )

@@ -4,11 +4,7 @@ import { Block, Content, Page } from 'gerami'
 import useLocale from '../../hooks/use-locale/use-locale'
 import AccountHead from '../../components/account-head/account-head'
 import AccountGeneral from '../../components/account-general/account-general'
-import {
-  useAccountDispatch,
-  useAccountState
-} from '../../../app/stores/account/account-provider'
-import { updateAccount } from '../../../app/stores/account/account-actions'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 
 const VolunteerSettings = lazy(() =>
   import('../../../layout-volunteer/components/volunteer-settings/volunteer-settings')
@@ -18,33 +14,23 @@ function AccountDetail() {
   const { loading, t } = useLocale(['account'])
 
   const { account } = useAccountState()
-  const dispatch = useAccountDispatch()
-
-  const handleAccountChange = async (data: any, timeout = 0) => {
-    dispatch(
-      await updateAccount(data, dispatch, timeout, data.currentPassword, data.newPassword)
-    )
-  }
 
   return (
-    loading ||
-    (!account ? (
-      <>{t`account:you-are-already-logged-in`}</>
-    ) : (
+    loading || (
       <Page>
         <Content size={'XL'} transparent={true} style={{ overflow: 'visible' }}>
           <Block first last>
-            <AccountHead account={account} onChange={handleAccountChange} />
+            <AccountHead />
           </Block>
 
           <Block>
-            <AccountGeneral account={account} onChange={handleAccountChange} />
+            <AccountGeneral />
           </Block>
 
           {account && account.role === 'VOLUNTEER' && <VolunteerSettings />}
         </Content>
       </Page>
-    ))
+    )
   )
 }
 

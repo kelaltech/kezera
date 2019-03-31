@@ -5,6 +5,10 @@ import { useAccountState } from '../../app/stores/account/account-provider'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
+
+const OrganizationApply = lazy(() =>
+  import('../pages/organization-apply/organization-apply')
+)
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
 )
@@ -39,6 +43,7 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
 
   return (
     <Switch>
+      <Route exact path={`${p}/apply`} component={OrganizationApply} />
       <Route exact path={`${p}/account`} component={AccountDetail} />
 
       <Route exact path={`${p}/news`} component={News} />

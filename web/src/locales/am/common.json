@@ -10,5 +10,6 @@
   "register": "ምዝገባ",
   "register-as-volunteer": "የበጎ አድራጊ ምዝገባ",
   "login": "መግቢያ",
-  "Homepage": "ዋና ገፅ"
+  "Homepage": "ዋና ገፅ",
+  "validation-failed": "እርማቱን ወድቋል!"
 }
