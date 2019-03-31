@@ -93,7 +93,7 @@ function AccountRegister({ account, setAccount }: Props) {
             />
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
-              type={'name'}
+              type={'text'}
               {...displayName.inputProps}
               inputRef={displayName.ref}
               label={t`account:display-name`}

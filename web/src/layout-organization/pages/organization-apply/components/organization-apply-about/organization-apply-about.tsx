@@ -1,13 +1,30 @@
 import React from 'react'
-import { Block, Content } from 'gerami'
+import { Block, Content, Flex, TextArea } from 'gerami'
+import {
+  FormControl,
+  Input as MatInput,
+  InputLabel,
+  MenuItem,
+  Select
+} from '@material-ui/core'
 
 import useLocale from '../../../../../shared/hooks/use-locale/use-locale'
 import { IOrganizationRequest } from '../../../../../../../api/modules/organization/organization.apiv'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import useField from '../../../../../shared/hooks/use-field/use-field'
+import { IOrganizationType } from '../../../../../../../api/models/organization/organization.model'
 
 interface Props {
   organization: IOrganizationRequest
   setOrganization: (organization: IOrganizationRequest) => void
 }
+
+const organizationTypes: IOrganizationType[] = [
+  'NGO',
+  'HOSPITAL',
+  'GOVERNMENTAL',
+  'PRIVATE'
+] // todo: update these manually or go full dynamic
 
 function OrganizationApplyAbout({ organization, setOrganization }: Props) {
   const { loading, t } = useLocale(['organization'])
@@ -15,6 +32,21 @@ function OrganizationApplyAbout({ organization, setOrganization }: Props) {
   const emitChanges = (organizationChanges: any): void => {
     setOrganization(Object.assign(organization, organizationChanges))
   }
+
+  const type = useField({
+    initialValue: organization.type,
+    setValueHook: async value => {
+      emitChanges({ type: value })
+    }
+  })
+
+  const address = useField({
+    initialValue: organization.locations.length ? organization.locations[0].address : '',
+    optional: true,
+    setValueHook: async value => {
+      emitChanges({ locations: value ? [{ address: value }] : [] })
+    }
+  })
 
   return (
     loading || (
@@ -25,9 +57,44 @@ function OrganizationApplyAbout({ organization, setOrganization }: Props) {
 
         <hr />
 
-        <Block>type: {organization.type}</Block>
+        <Block>
+          <Flex>
+            <FontAwesomeIcon
+              className={'margin-right-big margin-auto'}
+              icon={'question-circle'}
+            />
+            <FormControl className={'full-width'}>
+              <InputLabel htmlFor={'organization-type-input'} shrink>
+                Organization Type
+              </InputLabel>
+              <Select
+                value={organization.type}
+                input={<MatInput id="organization-type-input" {...type.inputProps} />}
+              >
+                {organizationTypes.map((type, i) => (
+                  <MenuItem key={i} value={type}>
+                    {type}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Flex>
+        </Block>
 
-        <Block last>locations: ...</Block>
+        <Block last>
+          <Flex>
+            <FontAwesomeIcon
+              className={'margin-right-big margin-auto'}
+              icon={'map-marker'}
+            />
+            <TextArea
+              className={'margin-vertical-normal margin-auto full-width'}
+              {...address.inputProps}
+              label={`Address (Optional)`}
+            />
+            {/* todo: gerami.TextArea not working with controlled inputs */}
+          </Flex>
+        </Block>
       </Content>
     )
   )
