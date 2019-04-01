@@ -191,9 +191,18 @@ function useField<T>(
     if (runValidation) await validate(newValue)
   }
 
-  const handleSet = (event: any, runValidation = config.validateOnBlur || true): void => {
-    setValueOnState(event.target.value)
-    setValueWithValidation(event.target.value, runValidation).catch(setError)
+  const handleSet = (
+    value: string,
+    runValidation = config.validateOnBlur || true
+  ): void => {
+    setValueOnState(value)
+    setValueWithValidation(value, runValidation).catch(setError)
+  }
+  const handleSetFromEvent = (
+    event: any,
+    runValidation = config.validateOnBlur || true
+  ): void => {
+    handleSet(event.target.value, runValidation)
   }
 
   useEffect(() => {
@@ -215,8 +224,8 @@ function useField<T>(
     value,
     setValue: handleSet,
 
-    onBlur: handleSet,
-    onChange: handleSet,
+    onBlur: handleSetFromEvent,
+    onChange: handleSetFromEvent,
 
     validate,
 
@@ -231,8 +240,8 @@ function useField<T>(
     // shortcut
     inputProps: {
       value,
-      onBlur: handleSet,
-      onChange: handleSet,
+      onBlur: handleSetFromEvent,
+      onChange: handleSetFromEvent,
       readOnly: !active
     }
   }

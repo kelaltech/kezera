@@ -24,7 +24,7 @@ export interface IOrganization {
   type: IOrganizationType
 
   motto?: string
-  description: string
+  bio: string
   locations: {
     latitude?: number
     longitude?: number
@@ -32,10 +32,10 @@ export interface IOrganization {
   }[]
   website?: string
 
-  subscribers?: ObjectId[] // account
+  subscribers: ObjectId[] // account
 
-  licensedNames?: string[]
-  registrations?: {
+  licensedNames: string[]
+  registrations: {
     issuer: string
     type: string
     id: string
