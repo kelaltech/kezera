@@ -23,6 +23,7 @@ export async function organizationRequestToLeanDocument(
 
     type: request.type,
 
+    logo: request.logo, // base64
     motto: request.motto,
     bio: request.bio,
     locations: request.locations,
@@ -57,6 +58,7 @@ export async function organizationDocumentToResponse(
 
     type: document.type,
 
+    logoUri: `/api/organization/get-photo/${document._id}`,
     motto: document.motto,
     bio: document.bio,
     locations: document.locations,

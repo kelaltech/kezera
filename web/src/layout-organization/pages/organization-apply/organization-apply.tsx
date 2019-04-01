@@ -31,7 +31,7 @@ function OrganizationApply() {
     /* COLUMN 2 */
 
     // brand
-    // ... logo
+    logo: null, // base64
     motto: undefined,
     website: undefined,
 

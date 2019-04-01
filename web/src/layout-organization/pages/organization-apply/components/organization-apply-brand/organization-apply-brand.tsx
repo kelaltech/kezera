@@ -1,5 +1,5 @@
 import React from 'react'
-import { Block, Content, Flex, Input } from 'gerami'
+import { Block, Content, Flex, ImageInput, Input } from 'gerami'
 
 import useLocale from '../../../../../shared/hooks/use-locale/use-locale'
 import { IOrganizationRequest } from '../../../../../../../api/modules/organization/organization.apiv'
@@ -18,6 +18,7 @@ function OrganizationApplyBrand({ organization, setOrganization }: Props) {
     setOrganization({ ...organization, ...organizationChanges })
   }
 
+  const logo = useField<ImageInput>()
   const motto = useField<HTMLInputElement>({
     initialValue: organization.motto,
     maxLength: 50,
@@ -36,6 +37,10 @@ function OrganizationApplyBrand({ organization, setOrganization }: Props) {
       emitChanges({ website: value })
     }
   })
+
+  const emitLogo = (): void => {
+    if (logo.ref.current) emitChanges({ logo: logo.ref.current.imageUrl })
+  }
 
   const validationError = (error: string | null) =>
     error === null ? null : (
@@ -57,7 +62,24 @@ function OrganizationApplyBrand({ organization, setOrganization }: Props) {
 
         <hr />
 
-        <Block>logo: ...</Block>
+        <Block>
+          <Flex>
+            <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
+              <FontAwesomeIcon icon={'image'} />
+            </div>
+            <Flex className={'full-width'}>
+              <div
+                className={
+                  'padding-right-big margin-top-auto margin-bottom-normal fg-primary'
+                }
+              >
+                Logo<span className={'italic fg-blackish'}> (max. 1MB size)</span>:
+              </div>
+              <ImageInput ref={logo.ref} onChange={() => emitLogo()} />
+            </Flex>
+            {validationError(motto.error)}
+          </Flex>
+        </Block>
 
         <Block>
           <Flex>

@@ -9,6 +9,7 @@ export async function organizationPrivateResponseToRequest(
 
     type: response.type,
 
+    logo: undefined,
     motto: response.motto,
     bio: response.bio,
     locations: response.locations,
