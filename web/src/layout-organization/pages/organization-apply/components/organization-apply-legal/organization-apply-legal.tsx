@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Anchor, Block, Button, Content, Flex, Input } from 'gerami'
 
+import './organization-apply-legal.scss'
 import useLocale from '../../../../../shared/hooks/use-locale/use-locale'
 import { IOrganizationRequest } from '../../../../../../../api/modules/organization/organization.apiv'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,20 +19,55 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
     setOrganization({ ...organization, ...organizationChanges })
   }
 
-  const licensedNamesInput = useField()
-
-  const removeLicensedName = (name: string, index: number): void => {
+  const licensedNamesInput = useField<HTMLInputElement>()
+  const removeLicensedName = (index: number): void => {
     emitChanges({
-      licensedNames: organization.licensedNames.filter(
-        (n, i) => n !== name && i !== index
-      )
+      licensedNames: organization.licensedNames.filter((n, i) => i !== index)
     })
   }
   const addLicensedName = (): void => {
+    if (!licensedNamesInput.value) return
+
     emitChanges({
       licensedNames: organization.licensedNames.concat([licensedNamesInput.value])
     })
+
     licensedNamesInput.setValue('', false)
+
+    if (licensedNamesInput.ref.current) licensedNamesInput.ref.current.focus()
+  }
+
+  const registrationTypeInput = useField<HTMLInputElement>()
+  const registrationIdInput = useField<HTMLInputElement>()
+  const registrationIssuerInput = useField<HTMLInputElement>()
+  const removeRegistration = (index: number): void => {
+    emitChanges({
+      registrations: organization.registrations.filter((n, i) => i !== index)
+    })
+  }
+  const addRegistration = (): void => {
+    if (
+      !registrationTypeInput.value ||
+      !registrationIdInput.value ||
+      !registrationIssuerInput.value
+    )
+      return
+
+    emitChanges({
+      registrations: organization.registrations.concat([
+        {
+          type: registrationTypeInput.value,
+          id: registrationIdInput.value,
+          issuer: registrationIssuerInput.value
+        }
+      ])
+    })
+
+    registrationTypeInput.setValue('', false)
+    registrationIdInput.setValue('', false)
+    registrationIssuerInput.setValue('', false)
+
+    if (registrationTypeInput.ref.current) registrationTypeInput.ref.current.focus()
   }
 
   return (
@@ -45,26 +81,34 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
 
         <Block>
           <Flex>
-            <FontAwesomeIcon className={'margin-right-big margin-auto'} icon={'hammer'} />
+            <FontAwesomeIcon
+              icon={'balance-scale'}
+              style={{ margin: 'auto auto auto 0', width: 40 }}
+            />
             <div className={'full-width'}>
               <div className={'font-S'}>
-                <span className={'light fg-blackish'}>
+                <div className={'fg-primary'}>
                   Licensed Names
                   {!organization.licensedNames.length ? null : (
-                    <span className={'italic'}> (double click to remove)</span>
+                    <span className={'italic fg-blackish'}>
+                      {' '}
+                      (double click to remove)
+                    </span>
                   )}
                   :{' '}
-                </span>
-                <span>
+                </div>
+                <ul className={'padding-left-big margin-vertical-none'}>
                   {organization.licensedNames.map((name, i) => (
-                    <span key={i}>
-                      <Anchor onDoubleClick={() => removeLicensedName(name, i)}>
+                    <li key={i} className={'top margin-vertical-normal'}>
+                      <Anchor
+                        className={'fg-accent'}
+                        onDoubleClick={() => removeLicensedName(i)}
+                      >
                         {name}
                       </Anchor>
-                      {i >= organization.licensedNames.length - 1 ? null : <>, </>}
-                    </span>
+                    </li>
                   ))}
-                </span>
+                </ul>
               </div>
 
               <form
@@ -73,28 +117,102 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
                   addLicensedName()
                 }}
               >
-                <Flex>
+                <Content className={'organization-apply-legal-add-content'}>
+                  <div className={'font-S fg-blackish'}>Add Licensed Name:</div>
                   <Input
-                    className={'margin-vertical-normal margin-auto full-width'}
+                    className={'block margin-vertical-normal margin-auto full-width'}
                     {...licensedNamesInput.inputProps}
                     label={`New licensed name`}
                   />
-                  <Button
-                    type={'submit'}
-                    className={
-                      'margin-auto margin-left-normal padding-vertical-small padding-horizontal-normal font-S'
-                    }
-                    title={'Add licensed name'}
-                  >
-                    <FontAwesomeIcon icon={'plus'} />
-                  </Button>
-                </Flex>
+                  <div className={'right'}>
+                    <Button
+                      type={'submit'}
+                      className={
+                        'margin-auto margin-left-normal padding-vertical-small padding-horizontal-normal font-S'
+                      }
+                      title={'Add licensed name'}
+                    >
+                      <FontAwesomeIcon icon={'plus'} />
+                    </Button>
+                  </div>
+                </Content>
               </form>
             </div>
           </Flex>
         </Block>
 
-        <Block last>registrations: ...</Block>
+        <Block last>
+          <Flex>
+            <FontAwesomeIcon
+              style={{ margin: 'auto auto auto 0', width: 40 }}
+              icon={'file-contract'}
+            />
+            <div className={'full-width'}>
+              <div className={'font-S'}>
+                <div className={'fg-primary'}>
+                  Registrations
+                  {!organization.registrations.length ? null : (
+                    <span className={'italic fg-blackish'}>
+                      {' '}
+                      (double click to remove)
+                    </span>
+                  )}
+                  :{' '}
+                </div>
+                <ul className={'padding-left-big margin-vertical-none'}>
+                  {organization.registrations.map((registration, i) => (
+                    <li key={i} className={'top margin-vertical-normal'}>
+                      <Anchor
+                        className={'fg-accent'}
+                        onDoubleClick={() => removeRegistration(i)}
+                      >
+                        {registration.type}: {registration.id} ({registration.issuer})
+                      </Anchor>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <form
+                onSubmit={e => {
+                  e.preventDefault()
+                  addRegistration()
+                }}
+              >
+                <Content className={'organization-apply-legal-add-content'}>
+                  <div className={'font-S fg-blackish'}>Add Registration:</div>
+                  <Input
+                    className={'block margin-vertical-normal margin-auto full-width'}
+                    {...registrationTypeInput.inputProps}
+                    inputRef={registrationTypeInput.ref}
+                    label={`Registration Type`}
+                  />
+                  <Input
+                    className={'block margin-vertical-normal margin-auto full-width'}
+                    {...registrationIdInput.inputProps}
+                    label={`ID or Number`}
+                  />
+                  <Input
+                    className={'block margin-vertical-normal margin-auto full-width'}
+                    {...registrationIssuerInput.inputProps}
+                    label={`Issuer Institution`}
+                  />
+                  <div className={'right'}>
+                    <Button
+                      type={'submit'}
+                      className={
+                        'margin-auto margin-left-normal padding-vertical-small padding-horizontal-normal font-S'
+                      }
+                      title={'Add licensed name'}
+                    >
+                      <FontAwesomeIcon icon={'plus'} />
+                    </Button>
+                  </div>
+                </Content>
+              </form>
+            </div>
+          </Flex>
+        </Block>
       </Content>
     )
   )

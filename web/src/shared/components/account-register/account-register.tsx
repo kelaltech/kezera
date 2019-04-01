@@ -88,8 +88,8 @@ function AccountRegister({ account, setAccount }: Props) {
         <Block>
           <Flex>
             <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
               icon={['far', 'user-circle']}
+              style={{ margin: 'auto auto 15px 0', width: 40 }}
             />
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
@@ -105,8 +105,8 @@ function AccountRegister({ account, setAccount }: Props) {
         <Block>
           <Flex>
             <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
               icon={'envelope'}
+              style={{ margin: 'auto auto 15px 0', width: 40 }}
             />
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
@@ -122,8 +122,8 @@ function AccountRegister({ account, setAccount }: Props) {
         <Block>
           <Flex>
             <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
               icon={'user-secret'}
+              style={{ margin: 'auto auto 15px 0', width: 40 }}
             />
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
@@ -138,8 +138,8 @@ function AccountRegister({ account, setAccount }: Props) {
         <Block>
           <Flex>
             <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
               icon={'user-secret'}
+              style={{ margin: 'auto auto 15px 0', width: 40 }}
             />
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
@@ -153,7 +153,10 @@ function AccountRegister({ account, setAccount }: Props) {
 
         <Block last>
           <Flex>
-            <FontAwesomeIcon className={'margin-right-big margin-auto'} icon={'phone'} />
+            <FontAwesomeIcon
+              icon={'phone'}
+              style={{ margin: 'auto auto 15px 0', width: 40 }}
+            />
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
               type={'phone'}

@@ -22,7 +22,8 @@ import {
   faQuestionCircle,
   faUserSecret,
   faShareAlt,
-  faHammer
+  faBalanceScale,
+  faFileContract
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import {
@@ -57,7 +58,8 @@ export default function fontawesomeLibrary() {
     faQuestionCircle,
     faUserSecret,
     faShareAlt,
-    faHammer
+    faBalanceScale,
+    faFileContract
   )
 
   // brands
