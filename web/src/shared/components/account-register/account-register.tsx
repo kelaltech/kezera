@@ -15,7 +15,7 @@ function AccountRegister({ account, setAccount }: Props) {
   const { loading, t } = useLocale(['account'])
 
   const emitChanges = (accountChanges: any): void => {
-    setAccount(Object.assign(account, accountChanges))
+    setAccount({ ...account, ...accountChanges })
   }
 
   const displayName = useField<HTMLInputElement>({
@@ -23,7 +23,7 @@ function AccountRegister({ account, setAccount }: Props) {
     minLength: [1, 'Required.'],
     maxLength: [50, 'Your display name cannot be longer than 50 characters.'],
     setValueHook: async value => {
-      emitChanges({ name: value })
+      emitChanges({ displayName: value })
     }
   })
   const email = useField<HTMLInputElement>({

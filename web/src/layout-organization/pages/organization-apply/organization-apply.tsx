@@ -44,7 +44,7 @@ function OrganizationApply() {
   })
 
   const setAccount = (account: IAccountRequest): void => {
-    setOrganization(Object.assign(organization, { account }))
+    setOrganization({ ...organization, ...{ account } })
   }
 
   return (
@@ -67,12 +67,10 @@ function OrganizationApply() {
           <Yoga maxCol={2}>
             <div className={'top'}>
               <AccountRegister account={organization.account} setAccount={setAccount} />
-
               <OrganizationApplyAbout
                 organization={organization}
                 setOrganization={setOrganization}
               />
-
               <OrganizationApplyLegal
                 organization={organization}
                 setOrganization={setOrganization}

@@ -51,14 +51,6 @@ export default function requestAdd() {
           <hr />
           <Block>Type of Request</Block>
 
-          <Block>
-            <RadioGroup value={typeOfRequest} onChange={(e, v) => setTypeOfRequest(v)}>
-              <Radio type={'radio'} value={'1'} />
-              <Radio type={'radio'} value={'2'} />
-              <Radio name={'Task'} type={'radio'} value={'3'} />
-            </RadioGroup>
-          </Block>
-
           <hr />
           <Block last className={'right'}>
             <Button type={'submit'} primary>

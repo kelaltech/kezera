@@ -13,7 +13,7 @@ function OrganizationApplyBio({ organization, setOrganization }: Props) {
   const { loading, t } = useLocale(['organization'])
 
   const emitChanges = (organizationChanges: any): void => {
-    setOrganization(Object.assign(organization, organizationChanges))
+    setOrganization({ ...organization, ...organizationChanges })
   }
 
   return (
