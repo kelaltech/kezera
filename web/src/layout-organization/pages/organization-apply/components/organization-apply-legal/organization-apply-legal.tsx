@@ -81,10 +81,9 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
 
         <Block>
           <Flex>
-            <FontAwesomeIcon
-              icon={'balance-scale'}
-              style={{ margin: 'auto auto auto 0', width: 40 }}
-            />
+            <div style={{ margin: 'auto auto auto 0', width: 40 }}>
+              <FontAwesomeIcon icon={'balance-scale'} />
+            </div>
             <div className={'full-width'}>
               <div className={'font-S'}>
                 <div className={'fg-primary'}>
@@ -143,10 +142,9 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
 
         <Block last>
           <Flex>
-            <FontAwesomeIcon
-              style={{ margin: 'auto auto auto 0', width: 40 }}
-              icon={'file-contract'}
-            />
+            <div style={{ margin: 'auto auto auto 0', width: 40 }}>
+              <FontAwesomeIcon icon={'file-contract'} />
+            </div>
             <div className={'full-width'}>
               <div className={'font-S'}>
                 <div className={'fg-primary'}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './volunteer-my-organization.scss'
 import axios from 'axios'
-import {  Button } from 'gerami'
+import { Button } from 'gerami'
 
 interface OrganizationProps {
   coverImg: string
@@ -15,17 +15,17 @@ interface OrganizationProps {
 
 function MyOrganizationCard(props: OrganizationProps) {
   const { coverImg, location, motto, name, profileImg, website, type } = props
-  const  [subscribed, setSubscribed] = useState(false)
+  const [subscribed, setSubscribed] = useState(false)
 
-  const handleSubscription = (_id:any)=>{
+  const handleSubscription = (_id: any) => {
     //handle subscription
     axios
       .put(`/api/organization/${_id}/subscribe`)
-      .then((subscrib)=>{
+      .then(subscrib => {
         // setSubscribed(subscribed.data) //todo uncomment the line
         setSubscribed(!subscribed)
       })
-      .catch(e=>console.log(e))
+      .catch(e => console.log(e))
   }
   return (
     <div>
@@ -79,7 +79,7 @@ function MyOrganizationCard(props: OrganizationProps) {
             primary={true}
             onClick={handleSubscription}
           >
-            {subscribed?'Subscribe':'Unsubscribe'}
+            {subscribed ? 'Subscribe' : 'Unsubscribe'}
           </Button>
         </div>
       </div>

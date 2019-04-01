@@ -4,9 +4,9 @@ function Landing() {
   return (
     <div>
       Landing Page
-    <div className={''}>
-      <LandingCard/>
-    </div>
+      <div className={''}>
+        <LandingCard />
+      </div>
     </div>
   )
 }

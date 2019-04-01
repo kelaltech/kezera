@@ -23,7 +23,9 @@ import {
   faUserSecret,
   faShareAlt,
   faBalanceScale,
-  faFileContract
+  faFileContract,
+  faUserTie,
+  faGlobeAfrica
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import {
@@ -59,7 +61,9 @@ export default function fontawesomeLibrary() {
     faUserSecret,
     faShareAlt,
     faBalanceScale,
-    faFileContract
+    faFileContract,
+    faUserTie,
+    faGlobeAfrica
   )
 
   // brands

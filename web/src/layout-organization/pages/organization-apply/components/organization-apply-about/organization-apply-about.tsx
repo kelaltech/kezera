@@ -59,10 +59,9 @@ function OrganizationApplyAbout({ organization, setOrganization }: Props) {
 
         <Block>
           <Flex>
-            <FontAwesomeIcon
-              icon={'question-circle'}
-              style={{ margin: 'auto auto 10px 0', width: 40 }}
-            />
+            <div style={{ margin: 'auto auto 6px 0', width: 40 }}>
+              <FontAwesomeIcon icon={'question-circle'} />
+            </div>
             <FormControl className={'full-width'}>
               <InputLabel htmlFor={'organization-type-input'} shrink>
                 Organization Type
@@ -83,10 +82,9 @@ function OrganizationApplyAbout({ organization, setOrganization }: Props) {
 
         <Block last>
           <Flex>
-            <FontAwesomeIcon
-              icon={'map-marker'}
-              style={{ margin: 'auto auto auto 0', width: 40 }}
-            />
+            <div style={{ margin: 'auto auto auto 0', width: 40 }}>
+              <FontAwesomeIcon icon={'map-marker'} />
+            </div>
             <TextArea
               className={'margin-vertical-normal margin-auto full-width'}
               {...address.inputProps}

@@ -5,8 +5,6 @@ import RequestCard from '../../../shared/components/request/request-card'
 function VolunteerTask() {
   return (
     <div>
-
-
       <div className={'search-bar-container'}>
         <div className={'search-bar-img'} />
         <div className={'search-bar-img-overlay'} />
@@ -15,7 +13,7 @@ function VolunteerTask() {
       </div>
 
       <div className={'task-label'}>
-         <h3>Upcoming tasks</h3>
+        <h3>Upcoming tasks</h3>
       </div>
       <div className={'vol-task-container'}>
         {/*todo <RequestCard
