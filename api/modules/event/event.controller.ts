@@ -4,9 +4,10 @@ import { Document, Schema } from 'mongoose'
 import { Grid } from '../../lib/grid'
 import { Stream } from 'stream'
 import { serverApp } from '../../index'
-import { commentModel } from '../../models/comment/comment.model'
+import { commentModel, IComment } from '../../models/comment/comment.model'
 import { KoaError } from '../../lib/koa-error'
 import { AccountModel, IAccount } from '../../models/account/account.model'
+import { getComment } from '../comment/comment.methods'
 
 export async function removeEvent(
   id: Schema.Types.ObjectId,
@@ -76,21 +77,20 @@ export async function usersLikedAnEvent(id: Schema.Types.ObjectId): Promise<any>
   return users
 }
 
-export async function getComments(eventId: Schema.Types.ObjectId): Promise<any> {
-  //todo comments
-  return await get(EventModel, eventId)
+export async function getComments(eventId: Schema.Types.ObjectId): Promise<IComment[][]> {
+  let event = await get(EventModel, eventId)
+  let comments = []
+  for (let i = 0; i < event.comments.length; i++) {
+    comments.push(await getComment(event.comments[i]))
+  }
+  return comments
 }
 
 export async function addEvent(body: any, orgId: any, pic: Stream) {
-  //const organization = await get(AccountModel, orgId)
   body.organizationId = orgId
   const event = await add(EventModel, body)
   console.log(event)
   const grid = new Grid(serverApp, EventModel, event._id)
-  /*organization.events.push({
-    //@ts-ignore
-    eventId: event._id
-  })*/
   await Promise.all([grid.set(pic)])
 }
 

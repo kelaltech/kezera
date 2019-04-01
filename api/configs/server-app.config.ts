@@ -13,8 +13,14 @@ import { RequestModel } from '../models/request/request.model'
 
 import { accountRouter } from '../modules/account/account.router'
 import { newsRouter } from '../modules/news/news.route'
-import { requestRouter } from '../modules/request/request.router'
 import { eventRouter } from '../modules/event/event.router'
+import { materialRouter } from '../modules/material/material.router'
+import { requestRouter } from '../modules/request/request.router'
+import { EventModel } from '../models/event/event.model'
+import { MaterialModel } from '../models/material/material.model'
+import { commentModel } from '../models/comment/comment.model'
+import { commentRouter } from '../modules/comment/comment.route'
+
 import { organizationRouter } from '../modules/organization/organization.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
 import { volunteerRouter } from '../modules/volunteer/volunteer.router'
@@ -35,6 +41,9 @@ export const serverAppConfig: IServerAppConfig = {
     AccountModel,
     CertificateModel,
     KeyModel,
+    EventModel,
+    MaterialModel,
+    commentModel,
     OrganizationModel,
     OrganizationApplicationModel,
     FundModel,
@@ -48,8 +57,10 @@ export const serverAppConfig: IServerAppConfig = {
     eventRouter,
     organizationRouter,
     requestRouter,
+    commentRouter,
     verifierRouter,
     volunteerRouter,
+    materialRouter,
     organRouter
   ],
 

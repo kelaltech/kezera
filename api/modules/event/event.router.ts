@@ -87,9 +87,8 @@ eventRouter.get('/:_id/attendance/verify', async ctx => {
 eventRouter.delete('/:_id', async ctx => {
   ctx.body = await removeEvent(ctx.params._id, ctx.state.user._id)
 })
-
+// /api/event/:_id/comments
 eventRouter.get('/:_id/comments', async ctx => {
-  console.log('/:_id/comments')
   ctx.body = await getComments(ctx.params._id)
 })
 

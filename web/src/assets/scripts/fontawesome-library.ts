@@ -22,6 +22,9 @@ import {
   faQuestionCircle,
   faUserSecret,
   faShareAlt,
+  faExclamationCircle,
+  faEllipsisV,
+  faReply
   faBalanceScale,
   faFileContract,
   faUserTie,
@@ -69,6 +72,9 @@ export default function fontawesomeLibrary() {
     faQuestionCircle,
     faUserSecret,
     faShareAlt,
+    faExclamationCircle,
+    faEllipsisV,
+    faReply
     faBalanceScale,
     faFileContract,
     faUserTie,
@@ -86,5 +92,5 @@ export default function fontawesomeLibrary() {
   library.add(faFacebook)
 
   // regular (free)
-  library.add(farUserCircle, farCommentAlt, farHeart, farNewspaper, farCalendarAlt)
+  library.add(faUserCircle, faCommentAlt, Heart)
 }

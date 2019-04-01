@@ -23,7 +23,7 @@ export default function EventTabs(props: any) {
       </Tabs>
       {value === 0 && (
         <Block>
-          <Comments />
+          <Comments _id={props.id} />
         </Block>
       )}
       {value === 1 && (

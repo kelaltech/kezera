@@ -13,6 +13,7 @@ export interface IEvent extends Document {
   goingVolunteers: ObjectId[]
   startDate: Date
   endDate: Date
+  mapURL: string
   location: string
   likes: ObjectId[]
   comments: ObjectId[]

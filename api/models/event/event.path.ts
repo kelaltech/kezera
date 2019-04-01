@@ -10,6 +10,7 @@ export const eventPaths: SchemaDefinition = {
   goingVolunteers: [{ id: { type: ObjectId, refs: 'account' } }], // Change these
   attendedVolunteers: [{ id: { type: ObjectId, refs: 'account' } }], // Change these
   startDate: { type: Date, required: true },
+  mapURL: { type: String },
   location: { type: String, required: true },
   amountOfPeople: { type: Number, required: true },
   endDate: { type: Date, required: true },
