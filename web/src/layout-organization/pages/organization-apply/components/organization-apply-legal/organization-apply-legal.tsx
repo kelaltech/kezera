@@ -19,7 +19,7 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
     setOrganization({ ...organization, ...organizationChanges })
   }
 
-  const licensedNamesInput = useField<HTMLInputElement>()
+  const licensedNamesInput = useField<HTMLInputElement>({ maxLength: 50 })
   const removeLicensedName = (index: number): void => {
     emitChanges({
       licensedNames: organization.licensedNames.filter((n, i) => i !== index)
@@ -37,9 +37,9 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
     if (licensedNamesInput.ref.current) licensedNamesInput.ref.current.focus()
   }
 
-  const registrationTypeInput = useField<HTMLInputElement>()
-  const registrationIdInput = useField<HTMLInputElement>()
-  const registrationIssuerInput = useField<HTMLInputElement>()
+  const registrationTypeInput = useField<HTMLInputElement>({ maxLength: 50 })
+  const registrationIdInput = useField<HTMLInputElement>({ maxLength: 50 })
+  const registrationIssuerInput = useField<HTMLInputElement>({ maxLength: 50 })
   const removeRegistration = (index: number): void => {
     emitChanges({
       registrations: organization.registrations.filter((n, i) => i !== index)
@@ -121,7 +121,7 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
                   <Input
                     className={'block margin-vertical-normal margin-auto full-width'}
                     {...licensedNamesInput.inputProps}
-                    label={`New licensed name`}
+                    label={`Licensed Name`}
                   />
                   <div className={'right'}>
                     <Button
@@ -130,6 +130,7 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
                         'margin-auto margin-left-normal padding-vertical-small padding-horizontal-normal font-S'
                       }
                       title={'Add licensed name'}
+                      disabled={!licensedNamesInput.value}
                     >
                       <FontAwesomeIcon icon={'plus'} />
                     </Button>
@@ -202,6 +203,11 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
                         'margin-auto margin-left-normal padding-vertical-small padding-horizontal-normal font-S'
                       }
                       title={'Add licensed name'}
+                      disabled={
+                        !registrationTypeInput.value ||
+                        !registrationIdInput.value ||
+                        !registrationIssuerInput.value
+                      }
                     >
                       <FontAwesomeIcon icon={'plus'} />
                     </Button>

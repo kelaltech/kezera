@@ -24,10 +24,6 @@ function OrganizationApply() {
       phoneNumber: null
     },
 
-    // about
-    type: 'NGO',
-    locations: [],
-
     // legal
     licensedNames: [],
     registrations: [],
@@ -38,6 +34,10 @@ function OrganizationApply() {
     // ... logo
     motto: undefined,
     website: undefined,
+
+    // about
+    type: 'NGO',
+    locations: [],
 
     // bio
     bio: ''
@@ -67,10 +67,7 @@ function OrganizationApply() {
           <Yoga maxCol={2}>
             <div className={'top'}>
               <AccountRegister account={organization.account} setAccount={setAccount} />
-              <OrganizationApplyAbout
-                organization={organization}
-                setOrganization={setOrganization}
-              />
+
               <OrganizationApplyLegal
                 organization={organization}
                 setOrganization={setOrganization}
@@ -79,6 +76,11 @@ function OrganizationApply() {
 
             <div className={'top'}>
               <OrganizationApplyBrand
+                organization={organization}
+                setOrganization={setOrganization}
+              />
+
+              <OrganizationApplyAbout
                 organization={organization}
                 setOrganization={setOrganization}
               />

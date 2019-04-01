@@ -75,7 +75,7 @@ function OrganizationApplyBrand({ organization, setOrganization }: Props) {
           </Flex>
         </Block>
 
-        <Block>
+        <Block last>
           <Flex>
             <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
               <FontAwesomeIcon icon={'globe-africa'} />

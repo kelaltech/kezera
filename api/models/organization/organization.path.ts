@@ -33,12 +33,12 @@ export const organizationPaths: SchemaDefinition = {
     { type: ObjectId, required: true, ref: 'account', index: true, unique: true }
   ],
 
-  licensedNames: [{ type: String, required: true }],
+  licensedNames: [{ type: String, required: true, maxlength: 50 }],
   registrations: [
     {
-      issuer: { type: String, required: true },
-      type: { type: String, required: true },
-      id: { type: String, required: true }
+      issuer: { type: String, required: true, maxlength: 50 },
+      type: { type: String, required: true, maxlength: 50 },
+      id: { type: String, required: true, maxlength: 50 }
     }
   ]
 }
