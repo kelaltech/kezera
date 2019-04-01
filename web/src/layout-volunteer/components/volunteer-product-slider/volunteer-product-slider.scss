@@ -1,7 +1,9 @@
 .gerami-product-slider-container {
   position: relative;
   width: 100%;
+  margin-left: -15px;
   height: auto;
+  //background-color: dodgerblue;
 
   .product-nav {
     text-align: center;
@@ -30,13 +32,14 @@
 }
 
 .gerami-product-slider-item-box {
-  width: 300%;
+  //width: 300%;
   height: inherit;
   display: flex;
   justify-content: space-around;
 
   @media screen and (max-width: 500px) {
-    width: 500%;
+    width: 550% !important;
+    //width: auto !important;
   }
 }
 

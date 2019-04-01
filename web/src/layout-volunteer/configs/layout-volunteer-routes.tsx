@@ -24,7 +24,6 @@ const Request = lazy(() => import('../pages/volunteer-request/volunteer-request'
 const SearchResult = lazy(() =>
   import('../pages/volunteer-search-result/volunteer-search-result')
 )
-const Task = lazy(() => import('../pages/volunteer-task/volunteer-task'))
 
 export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
@@ -51,7 +50,6 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       <Route exact path={`${p}/profile`} component={Profile} />
       <Route exact path={`${p}/request`} component={Request} />
       <Route exact path={`${p}/search-result`} component={SearchResult} />
-      <Route exact path={`${p}/task`} component={Task} />
       <Route component={NotFound} />
     </Switch>
   )

@@ -1,68 +1,48 @@
 import React, { Component } from 'react'
-import { Anchor, Block, Button, Card, Image, Page, Yoga } from 'gerami'
+import {
+  Anchor,
+  Block,
+  Button,
+  Card,
+  Flex,
+  FlexSpacer,
+  Image,
+  Loading,
+  Page,
+  SlideShow,
+  Yoga
+} from 'gerami'
+import axios from 'axios'
 
 import './request-card.scss'
 
-export interface IRequestCardProps {
-  _id: string
-  className?: string
-  title: string
-  startDate: Number
-  endDate: Number
-  description: string
-  image: string
+export interface IRequestProps {
+  request: any
 }
 
-export default class RequestCard extends Component<IRequestCardProps, {}> {
-  render() {
-    const { _id, className, title, startDate, endDate, description, image } = this.props
-    return (
-      <Page>
-        <Card size={'M'}>
-          <Yoga maxCol={2}>
-            <Block first className={'request-title'}>
-              <h4>{title}</h4>
-            </Block>
-            <Block>
-              <Image src={image} className={'request-card-image'} />
-            </Block>
-          </Yoga>
-          <hr />
-          <Block className={'request-description'}>{description}</Block>
-
-          <hr />
-          <Yoga maxCol={2}>
-            <Block>
-              <h5>Start Date/Time</h5>
-            </Block>
-            <Block>
-              <h5>End Date/Time</h5>
-            </Block>
-          </Yoga>
-
-          <Yoga maxCol={2}>
-            <Block>
-              <label>{startDate}</label>
-            </Block>
-            <Block>
-              <label>{endDate}</label>
-            </Block>
-          </Yoga>
-          <hr />
-          <Yoga maxCol={2}>
-            <Block last className={'left'}>
-              <Anchor className={'full-width'} to={'/organization/request/' + _id}>
-                Details
-              </Anchor>
-            </Block>
-            <Block className={'right'}>
-              <Button type="submit" primary>
-                Donate
-              </Button>
-            </Block>
-          </Yoga>
-        </Card>
-      </Page>
-    )
-  }
+export default function RequestCard({ request }: IRequestProps) {
+  return (
+    <Card imgSrc={request.picture}>
+      <div>{request.name}</div>
+      <hr />
+      <Yoga maxCol={2}>
+        <h5>Start Date/Time</h5>
+        <h5>End Date/Time</h5>
+      </Yoga>
+      <Yoga maxCol={2}>
+        <label>{new Date(request.startDate).toDateString()}</label>
+        <label>{new Date(request.endDate).toDateString()}</label>
+      </Yoga>
+      <hr />
+      <Flex>
+        <Anchor className={'margin-top-normal'} to={'/api/request/' + request._id}>
+          Details
+        </Anchor>
+        <FlexSpacer />
+        <Button type="submit" primary>
+          Support
+        </Button>
+      </Flex>
+    </Card>
+  )
 }

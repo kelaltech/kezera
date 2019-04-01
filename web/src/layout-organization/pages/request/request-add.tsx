@@ -1,61 +1,105 @@
-import React, { useState } from 'react'
-import { Block, Button, Content, Input, Page, TextArea, Yoga } from 'gerami'
+import React, { Component, useRef, useState } from 'react'
+import {
+  Block,
+  Button,
+  Content,
+  ImageInput,
+  Input,
+  Page,
+  TextArea,
+  Title,
+  Yoga
+} from 'gerami'
+import { convertToRaw } from 'draft-js'
+import axios from 'axios'
+import { useAccountState } from '../../../app/stores/account/account-provider'
+import { match, RouteComponentProps } from 'react-router'
+import { RadioGroup } from '@material-ui/core'
+import TaskAdd from '../task/task-add'
 
-import { Radio, RadioGroup } from '@material-ui/core'
+export default function RequestAdd({ history }: RouteComponentProps<{}>) {
+  const { account } = useAccountState()
 
-export default function requestAdd() {
-  const [typeOfRequest, setTypeOfRequest] = useState('1')
+  let [value, setValue] = useState(0)
+
+  const addRequest = (form: any) => {
+    const data = new FormData()
+    data.append('name', form.name.value)
+    data.append('description', form.description.value)
+    data.append('startDate', form.startDate.value)
+    data.append('endDate', form.endDate.value)
+
+    if (uploadRef.current && uploadRef.current.files && uploadRef.current.files.length)
+      data.append('picture', uploadRef.current.files[0])
+
+    axios
+      .post('/api/request/add', data, { withCredentials: true })
+      .then(res => {
+        console.log('successfully added')
+        console.log(res.data)
+        history.push('/organization/request/' + res.data._id)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+
+  const finishClicked = (e: any) => {
+    e.preventDefault()
+    addRequest(e.target)
+  }
+
+  const uploadRef = useRef<HTMLInputElement>(null)
 
   return (
     <Page>
       <Content size={'L'}>
-        <form>
+        <form action="/api/request/add" onSubmit={finishClicked} method={'POST'}>
           <Block>
-            <h1>Make A Request</h1>
+            <Title size={'XXL'}>Make A Request</Title>
           </Block>
           <hr />
           <Block>
             <Input
               className={'full-width'}
-              name={'requestTitle'}
+              name={'name'}
               type={'text'}
               label={'Title of Request'}
             />
+          </Block>
+          <Block>
+            <ImageInput name={'picture'} innerRef={uploadRef} />
           </Block>
 
           <Block>
             <TextArea
               className={'full-width'}
-              name={'requestDescription'}
+              name={'description'}
               label={'Description of Request'}
             />
           </Block>
 
           <Yoga maxCol={2}>
             <Block>
-              <h6>Start Date</h6>
+              <Title>Start Date</Title>
             </Block>
             <Block>
-              <h6>End Date</h6>
+              <Title>End Date</Title>
             </Block>
           </Yoga>
 
           <Yoga maxCol={2}>
             <Block>
-              <Input className={'full-width'} name={'requestStartDate'} type={'date'} />
+              <Input className={'full-width'} name={'startDate'} type={'date'} />
             </Block>
             <Block>
-              <Input className={'full-width'} name={'requestEndDate'} type={'date'} />
+              <Input className={'full-width'} name={'endDate'} type={'date'} />
             </Block>
           </Yoga>
           <hr />
-          <Block>Type of Request</Block>
 
-          <hr />
           <Block last className={'right'}>
-            <Button type={'submit'} primary>
-              Finish
-            </Button>
+            <Button type={'submit'}>Finish</Button>
           </Block>
         </form>
       </Content>

@@ -1,0 +1,62 @@
+@import '../../../assets/styles/theme';
+
+.setting-general-field {
+  display: flex;
+  display: -webkit-flex;
+  border-radius: 0;
+  transition: all 300ms;
+  > * {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: darken($bg, 3%);
+  }
+}
+
+.setting-general-field-editing {
+  background-color: $bg !important;
+  border-left: $space / 4 solid $accent;
+  box-shadow: $shade-M;
+}
+
+.small-circle-button {
+  margin: auto 0;
+  padding: 0;
+
+  $size: $space * 2;
+  width: $size;
+  max-width: $size;
+  min-width: $size;
+  height: $size;
+  max-height: $size;
+  min-height: $size;
+
+  border: 0;
+  border-radius: 50%;
+  outline: 0;
+
+  background-color: transparentize($fg, 0.945) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: $primary !important;
+
+  &:focus,
+  &:hover {
+    background-color: $primary !important;
+    color: $bg !important;
+  }
+
+  &:active {
+    background-color: $accent !important;
+    color: $bg !important;
+  }
+}
+.visibility-general-field {
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+  }
+}

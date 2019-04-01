@@ -11,6 +11,7 @@ import { OrganizationApplicationModel } from '../models/organization-application
 
 import { accountRouter } from '../modules/account/account.router'
 import { newsRouter } from '../modules/news/news.route'
+import { requestRouter } from '../modules/request/request.router'
 import { eventRouter } from '../modules/event/event.router'
 import { organizationRouter } from '../modules/organization/organization.router'
 
@@ -34,7 +35,7 @@ export const serverAppConfig: IServerAppConfig = {
     OrganizationApplicationModel
   ],
 
-  routers: [accountRouter, eventRouter, newsRouter, organizationRouter],
+  routers: [accountRouter, newsRouter, eventRouter, organizationRouter, requestRouter],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],
   spaFileRelativePath: path.join('web', 'build', 'index.html'),
