@@ -87,10 +87,9 @@ function OrganizationApplyAbout({ organization, setOrganization }: Props) {
             </div>
             <TextArea
               className={'margin-vertical-normal margin-auto full-width'}
-              {...address.inputProps}
+              {...address.textAreaProps}
               label={`Address (Optional)`}
             />
-            {/* todo: gerami.TextArea not working with controlled inputs */}
           </Flex>
         </Block>
       </Content>

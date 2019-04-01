@@ -83,6 +83,13 @@ type UseFieldResponse<T> = {
     onChange: (event: any, runValidation?: boolean) => void
     readOnly: boolean
   }
+
+  textAreaProps: {
+    children: string
+    onBlur: (event: any, runValidation?: boolean) => void
+    onChange: (event: any, runValidation?: boolean) => void
+    readOnly: boolean
+  }
 }
 
 function useField<T>(
@@ -239,9 +246,15 @@ function useField<T>(
 
     config,
 
-    // shortcut
+    // shortcuts
     inputProps: {
       value,
+      onBlur: handleSetFromEvent,
+      onChange: handleSetFromEvent,
+      readOnly: !active
+    },
+    textAreaProps: {
+      children: value,
       onBlur: handleSetFromEvent,
       onChange: handleSetFromEvent,
       readOnly: !active
