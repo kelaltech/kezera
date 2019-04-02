@@ -35,7 +35,10 @@ export default function RequestCard({ request }: IRequestProps) {
       </Yoga>
       <hr />
       <Flex>
-        <Anchor className={'margin-top-normal'} to={'/api/detail/' + request._id}>
+        <Anchor
+          className={'margin-top-normal'}
+          to={'/organization/request/' + request._id}
+        >
           Details
         </Anchor>
         <FlexSpacer />

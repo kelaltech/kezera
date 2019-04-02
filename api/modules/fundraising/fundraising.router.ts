@@ -1,13 +1,14 @@
 import * as Router from 'koa-router'
 import { AddFund, ListFunds } from './fundraising.controller'
 
-export const taskRouter = new Router({ prefix: '/api/task' })
+export const fundRouter = new Router({ prefix: '/api/fundraising' })
 
-taskRouter.post('/add', async ctx => {
+fundRouter.post('/add', async ctx => {
+  console.log(ctx.request.body)
   ctx.body = await AddFund(ctx.request.body, ctx.state.user._id)
 })
 
 // /api/fundraising/all"
-taskRouter.get('/all', async ctx => {
+fundRouter.get('/all', async ctx => {
   ctx.body = await ListFunds()
 })

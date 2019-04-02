@@ -1,6 +1,7 @@
 import { Block, Content, Page, Title, Yoga } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component, useEffect, useState } from 'react'
+import axios from 'axios'
 
 export interface IRequestProps {
   request: any

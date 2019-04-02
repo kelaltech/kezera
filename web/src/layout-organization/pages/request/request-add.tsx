@@ -23,26 +23,31 @@ import {
   Select
 } from '@material-ui/core'
 import TaskAdd from '../task/task-add'
+import { IAccountStatus } from '../../../../../api/models/account/account.model'
+import FundAdd from '../fundraising/fund-add'
+import { Schema } from 'mongoose'
 
 function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
   let [type, setType] = useState<any>(0)
-
+  let [id, setId] = useState()
+  let [requestAdd, setRequestAdd] = useState(false)
   const addRequest = (form: any) => {
+    form.preventDefault()
     const data = new FormData()
-    data.append('name', form.name.value)
-    data.append('description', form.description.value)
-    data.append('startDate', form.startDate.value)
-    data.append('endDate', form.endDate.value)
-
+    data.append('name', form.target.name.value)
+    data.append('description', form.target.description.value)
+    data.append('startDate', form.target.startDate.value)
+    data.append('endDate', form.target.endDate.value)
+    data.append('type', type)
     if (uploadRef.current && uploadRef.current.files && uploadRef.current.files.length)
       data.append('picture', uploadRef.current.files[0])
 
     axios
       .post('/api/request/add', data, { withCredentials: true })
       .then(res => {
-        console.log('successfully added')
         console.log(res.data)
+        id = res.data
         history.push('/organization/request/' + res.data._id)
       })
       .catch(e => {
@@ -52,14 +57,22 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
 
   const finishClicked = (e: any) => {
     e.preventDefault()
-    addRequest(e.target)
+    addRequest(e)
+  }
+
+  const state = {
+    type: ''
+  }
+
+  const handleChange = (event: any) => {
+    setType({ [event.target.type]: event.target.value })
   }
 
   const uploadRef = useRef<HTMLInputElement>(null)
 
   return (
     <Page>
-      <Content size={'L'}>
+      <Content size={'L'} style={{ display: requestAdd ? 'none' : 'block' }}>
         <form action="/api/request/add" onSubmit={finishClicked} method={'POST'}>
           <Block>
             <Title size={'XXL'}>Make A Request</Title>
@@ -104,32 +117,36 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
           </Yoga>
           <hr />
           <Block>
-            {/*
-            <FormControl className={'full-width'}>
-              <InputLabel htmlFor={'request-type-label-placeholder'} shrink>
-                Type of Request
-              </InputLabel>
-              <Select
-                value={type}
-                input={
-                  <MatInput
-                    name="request-type"
-                    id="request-type-label-placeholder"
-                  />
-                }
-              >
-                <MenuItem value={'FUNDRAISING'}>Fundraising</MenuItem>
-                <MenuItem value={'MATERIAL'}>Material</MenuItem>
-                <MenuItem value={'ORGAN'}>Organ</MenuItem>
-                <MenuItem value={'TASK'}>Task</MenuItem>
-              </Select>
-            </FormControl>*/}
+            <form method={'POST'}>
+              <FormControl className={'full-width'}>
+                <InputLabel htmlFor={'request-type-label-placeholder'} shrink>
+                  Type of Request
+                </InputLabel>
+                <Select
+                  value={type}
+                  onChange={e => setType(e.target.value)}
+                  input={
+                    <MatInput
+                      placeholder={'Select the Type of Request'}
+                      name="request-type"
+                      id="request-type-label-placeholder"
+                    />
+                  }
+                >
+                  <MenuItem value={'Fundraising'}>Fundraising</MenuItem>
+                  <MenuItem value={1}>Material</MenuItem>
+                  <MenuItem value={2}>Organ</MenuItem>
+                  <MenuItem value={3}>Task</MenuItem>
+                </Select>
+              </FormControl>
+            </form>
           </Block>
           <Block last className={'right'}>
             <Button type={'submit'}>Finish</Button>
           </Block>
         </form>
       </Content>
+      {type == 'Fundraising' ? <FundAdd _id={'5ca328e1f85fdf3a9c3c09c2'} /> : ''}
     </Page>
   )
 }

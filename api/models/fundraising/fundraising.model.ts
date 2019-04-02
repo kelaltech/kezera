@@ -9,6 +9,8 @@ export interface IFundraising extends Document {
   type: ObjectId
   startTime: Date | number
   endTime: Date | number
+  requestId: ObjectId
+  currency: string
 }
 
 export const FundModelFactory = new ModelFactory<IFundraising>({

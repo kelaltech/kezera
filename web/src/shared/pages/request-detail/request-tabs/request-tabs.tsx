@@ -54,11 +54,7 @@ function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
           <Report />
         </Block>
       )}
-      {value === 2 && (
-        <Block>
-          <FundAdd />
-        </Block>
-      )}
+      {value === 2 && <Block>{/*<FundAdd _id={''}/>*/}</Block>}
       {value === 3 && (
         <Block>
           <Images />
