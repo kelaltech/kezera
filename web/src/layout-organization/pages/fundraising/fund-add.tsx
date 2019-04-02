@@ -22,6 +22,7 @@ import Axios from 'axios'
 
 interface IFundProps {
   _id: string
+  display: string
 }
 
 export default function FundAdd(props: IFundProps) {
@@ -44,78 +45,76 @@ export default function FundAdd(props: IFundProps) {
   }
 
   return (
-    <Page>
-      <Content size={'L'}>
-        <form onSubmit={e => HandleAdd(e)}>
+    <Content size={'L'} style={{ display: props.display }}>
+      <form onSubmit={e => HandleAdd(e)}>
+        <Block>
+          <Title size={'XL'}>Fundraising Specific</Title>
+        </Block>
+        <hr />
+        <Yoga maxCol={2}>
           <Block>
-            <Title size={'XL'}>Fundraising Specific</Title>
+            <Input
+              onChange={e => setAmount(e.target.value)}
+              className={'full-width'}
+              name={'amount'}
+              type={'text'}
+              label={'Amount of Money'}
+            />
           </Block>
-          <hr />
-          <Yoga maxCol={2}>
-            <Block>
-              <Input
-                onChange={e => setAmount(e.target.value)}
-                className={'full-width'}
-                name={'amount'}
-                type={'text'}
-                label={'Amount of Money'}
-              />
-            </Block>
-            <FormControl className={'full-width'}>
-              <InputLabel htmlFor={'fund-type-label-placeholder'} shrink>
-                Type of Currency
-              </InputLabel>
-              <Select
-                onChange={e => setCurrency(e.target.value)}
-                value={''}
-                input={
-                  <MatInput
-                    placeholder={'Select the Type of Currency'}
-                    name="currency"
-                    id="fund-type-label-placeholder"
-                  />
-                }
-              >
-                <MenuItem value={'USD'}>USD</MenuItem>
-                <MenuItem value={'ETB'}>ETB</MenuItem>
-                <MenuItem value={'EURO'}>EURO</MenuItem>
-                <MenuItem value={'POUND'}>POUND</MenuItem>
-              </Select>
-            </FormControl>
-          </Yoga>
+          <FormControl className={'full-width'}>
+            <InputLabel htmlFor={'fund-type-label-placeholder'} shrink>
+              Type of Currency
+            </InputLabel>
+            <Select
+              onChange={e => setCurrency(e.target.value)}
+              value={''}
+              input={
+                <MatInput
+                  placeholder={'Select the Type of Currency'}
+                  name="currency"
+                  id="fund-type-label-placeholder"
+                />
+              }
+            >
+              <MenuItem value={'USD'}>USD</MenuItem>
+              <MenuItem value={'ETB'}>ETB</MenuItem>
+              <MenuItem value={'EURO'}>EURO</MenuItem>
+              <MenuItem value={'POUND'}>POUND</MenuItem>
+            </Select>
+          </FormControl>
+        </Yoga>
 
-          <Yoga maxCol={2}>
-            <Block>
-              <Title>Start Time</Title>
-            </Block>
-            <Block>
-              <Title>End Time</Title>
-            </Block>
-          </Yoga>
-
-          <Yoga maxCol={2}>
-            <Block>
-              <Input
-                className={'full-width'}
-                name={'startTime'}
-                type={'date'}
-                onChange={e => setStartTime(e.target.value)}
-              />
-            </Block>
-            <Block>
-              <Input
-                className={'full-width'}
-                name={'endTime'}
-                type={'date'}
-                onChange={e => setEndTime(e.target.value)}
-              />
-            </Block>
-          </Yoga>
-          <Block className={'right'}>
-            <Button type={'submit'}>Add</Button>
+        <Yoga maxCol={2}>
+          <Block>
+            <Title>Start Time</Title>
           </Block>
-        </form>
-      </Content>
-    </Page>
+          <Block>
+            <Title>End Time</Title>
+          </Block>
+        </Yoga>
+
+        <Yoga maxCol={2}>
+          <Block>
+            <Input
+              className={'full-width'}
+              name={'startTime'}
+              type={'date'}
+              onChange={e => setStartTime(e.target.value)}
+            />
+          </Block>
+          <Block>
+            <Input
+              className={'full-width'}
+              name={'endTime'}
+              type={'date'}
+              onChange={e => setEndTime(e.target.value)}
+            />
+          </Block>
+        </Yoga>
+        <Block className={'right'}>
+          <Button type={'submit'}>Add</Button>
+        </Block>
+      </form>
+    </Content>
   )
 }
