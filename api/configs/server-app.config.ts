@@ -14,6 +14,8 @@ import { newsRouter } from '../modules/news/news.route'
 import { requestRouter } from '../modules/request/request.router'
 import { eventRouter } from '../modules/event/event.router'
 import { organizationRouter } from '../modules/organization/organization.router'
+import { fundRouter } from '../modules/fundraising/fundraising.router'
+import { FundModel } from '../models/fundraising/fundraising.model'
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
@@ -32,10 +34,18 @@ export const serverAppConfig: IServerAppConfig = {
     CertificateDesignModel,
     KeyModel,
     OrganizationModel,
-    OrganizationApplicationModel
+    OrganizationApplicationModel,
+    FundModel
   ],
 
-  routers: [accountRouter, newsRouter, eventRouter, organizationRouter, requestRouter],
+  routers: [
+    accountRouter,
+    newsRouter,
+    eventRouter,
+    organizationRouter,
+    requestRouter,
+    fundRouter
+  ],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],
   spaFileRelativePath: path.join('web', 'build', 'index.html'),

@@ -54,7 +54,7 @@ export async function addRequestWithPicture(
   data: any,
   account: IAccount,
   pic: Stream
-): Promise<any> {
+): Promise<ObjectId> {
   data._by = await account._id
   const request = await add(RequestModel, data)
 
@@ -62,5 +62,5 @@ export async function addRequestWithPicture(
 
   await grid.set(pic)
 
-  return request
+  return request._id
 }

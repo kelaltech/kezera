@@ -10,34 +10,14 @@ import {
   Title,
   Yoga
 } from 'gerami'
-import { convertToRaw } from 'draft-js'
-import axios from 'axios'
-import { useAccountState } from '../../../app/stores/account/account-provider'
 
 export default function TaskAdd() {
-  const { account } = useAccountState()
-
-  const addTask = (form: any) => {
-    const data = new FormData()
-    data.append('numberNeeded', form.numberNeeded.value)
-
-    axios
-      .post('/api/task/add', data, { withCredentials: true })
-      .then(res => {
-        console.log('successfully added')
-        console.log(res.data)
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }
-
   return (
     <Page>
       <Content size={'L'}>
-        <form action="/api/modules/task" method={'POST'}>
+        <form action="/api/request/add" method={'POST'}>
           <Block>
-            <Title size={'XXL'}>Task Specific</Title>
+            <Title size={'XL'}>Task Specific</Title>
           </Block>
           <hr />
           <Block>
@@ -45,9 +25,27 @@ export default function TaskAdd() {
               className={'full-width'}
               name={'numberNeeded'}
               type={'text'}
-              label={'Number of Participants Needed'}
+              label={'Number of Participants'}
             />
           </Block>
+
+          <Yoga maxCol={2}>
+            <Block>
+              <Title>Start Time</Title>
+            </Block>
+            <Block>
+              <Title>End Time</Title>
+            </Block>
+          </Yoga>
+
+          <Yoga maxCol={2}>
+            <Block>
+              <Input className={'full-width'} name={'startTime'} type={'time'} />
+            </Block>
+            <Block>
+              <Input className={'full-width'} name={'endTime'} type={'time'} />
+            </Block>
+          </Yoga>
         </form>
       </Content>
     </Page>

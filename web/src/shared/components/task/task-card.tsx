@@ -16,29 +16,31 @@ import axios from 'axios'
 
 import './request-card.scss'
 
-export interface IRequestProps {
-  request: any
+export interface ITaskProps {
+  task: any
 }
 
-export default function RequestCard({ request }: IRequestProps) {
+export default function TaskCard({ task }: ITaskProps) {
   return (
-    <Card imgSrc={request.picture}>
-      <div>{request.name}</div>
+    <Card imgSrc={task.picture}>
+      <div>{task.name}</div>
       <hr />
       <Yoga maxCol={2}>
         <h5>Start Date/Time</h5>
         <h5>End Date/Time</h5>
       </Yoga>
       <Yoga maxCol={2}>
-        <label>{new Date(request.startDate).toDateString()}</label>
-        <label>{new Date(request.endDate).toDateString()}</label>
+        <label>{new Date(task.startDate).toDateString()}</label>
+        <label>{new Date(task.endDate).toDateString()}</label>
       </Yoga>
+      <Yoga maxCol={2}>
+        <label>{new Date(task.startTime).toDateString()}</label>
+        <label>{new Date(task.endTime).toDateString()}</label>
+      </Yoga>
+      <label>{task.numberNeeded}</label>
       <hr />
       <Flex>
-        <Anchor
-          className={'margin-top-normal'}
-          to={'/organization/request/' + request._id}
-        >
+        <Anchor className={'margin-top-normal'} to={'/api/detail/' + task._id}>
           Details
         </Anchor>
         <FlexSpacer />
