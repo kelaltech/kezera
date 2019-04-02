@@ -23,7 +23,6 @@ export async function organizationRequestToLeanDocument(
 
     type: request.type,
 
-    logo: request.logo, // base64
     motto: request.motto,
     bio: request.bio,
     locations: request.locations,

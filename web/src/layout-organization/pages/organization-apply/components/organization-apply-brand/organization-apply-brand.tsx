@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MutableRefObject, RefObject, useEffect } from 'react'
 import { Block, Content, Flex, ImageInput, Input } from 'gerami'
 
 import useLocale from '../../../../../shared/hooks/use-locale/use-locale'
@@ -9,16 +9,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 interface Props {
   organization: IOrganizationRequest
   setOrganization: (organization: IOrganizationRequest) => void
+  setLogoRef: (
+    logoInput: MutableRefObject<HTMLInputElement> | RefObject<HTMLInputElement>
+  ) => void
 }
 
-function OrganizationApplyBrand({ organization, setOrganization }: Props) {
+function OrganizationApplyBrand({ organization, setOrganization, setLogoRef }: Props) {
   const { loading, t } = useLocale(['organization'])
 
   const emitChanges = (organizationChanges: any): void => {
     setOrganization({ ...organization, ...organizationChanges })
   }
 
-  const logo = useField<ImageInput>()
+  const logo = useField<HTMLInputElement>()
   const motto = useField<HTMLInputElement>({
     initialValue: organization.motto,
     maxLength: 50,
@@ -38,10 +41,6 @@ function OrganizationApplyBrand({ organization, setOrganization }: Props) {
     }
   })
 
-  const emitLogo = (): void => {
-    if (logo.ref.current) emitChanges({ logo: logo.ref.current.imageUrl })
-  }
-
   const validationError = (error: string | null) =>
     error === null ? null : (
       <div
@@ -52,6 +51,10 @@ function OrganizationApplyBrand({ organization, setOrganization }: Props) {
         !
       </div>
     )
+
+  useEffect(() => {
+    setLogoRef(logo.ref)
+  }, [])
 
   return (
     loading || (
@@ -75,7 +78,7 @@ function OrganizationApplyBrand({ organization, setOrganization }: Props) {
               >
                 Logo<span className={'italic fg-blackish'}> (max. 1MB size)</span>:
               </div>
-              <ImageInput ref={logo.ref} onChange={() => emitLogo()} />
+              <ImageInput innerRef={logo.ref} />
             </Flex>
             {validationError(motto.error)}
           </Flex>

@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { MutableRefObject, RefObject, useState } from 'react'
 import { Anchor, Block, Button, Content, Flex, FlexSpacer, Page, Yoga } from 'gerami'
-import { Checkbox, FormControl, Input as MatInput, InputLabel } from '@material-ui/core'
+import { Checkbox, InputLabel } from '@material-ui/core'
+import Axios from 'axios'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { IOrganizationRequest } from '../../../../../api/modules/organization/organization.apiv'
@@ -32,7 +33,6 @@ function OrganizationApply() {
     /* COLUMN 2 */
 
     // brand
-    logo: null, // base64
     motto: undefined,
     website: undefined,
 
@@ -43,10 +43,30 @@ function OrganizationApply() {
     // bio
     bio: ''
   })
+  const [logoRef, setLogoRef] = useState<
+    MutableRefObject<HTMLInputElement> | RefObject<HTMLInputElement>
+  >()
   const [acceptTerms, setAcceptTerms] = useState(false)
 
   const setAccount = (account: IAccountRequest): void => {
     setOrganization({ ...organization, ...{ account } })
+  }
+
+  const apply = () => {
+    const data = new FormData()
+    data.append('data', JSON.stringify(organization))
+    if (
+      logoRef &&
+      logoRef.current &&
+      logoRef.current.files &&
+      logoRef.current.files.length
+    ) {
+      data.append('logo', logoRef.current.files[0])
+    }
+    Axios.post('/api/organization/apply', data, {
+      withCredentials: true,
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
   }
 
   return (
@@ -80,6 +100,7 @@ function OrganizationApply() {
               <OrganizationApplyBrand
                 organization={organization}
                 setOrganization={setOrganization}
+                setLogoRef={setLogoRef}
               />
 
               <OrganizationApplyAbout
@@ -114,7 +135,9 @@ function OrganizationApply() {
               </Flex>
               <FlexSpacer />
               <div className={'right'}>
-                <Button primary>Apply Now</Button>
+                <Button primary onClick={() => apply()} disabled={!acceptTerms}>
+                  Apply Now
+                </Button>
               </div>
             </Flex>
           </Block>

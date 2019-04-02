@@ -6,7 +6,6 @@ export type IOrganizationRequest = {
 
   type: IOrganizationType
 
-  logo?: string | null // base64 (1mb limit, by default)
   motto?: string
   bio: string
   locations: {
