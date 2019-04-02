@@ -20,7 +20,7 @@ type UseFieldConfig = {
   validateHook?: (
     value: string,
     passed: boolean,
-    error: string,
+    error: string | null,
     validation?:
       | RegExp
       | [RegExp, string?]
@@ -83,6 +83,14 @@ type UseFieldResponse<T> = {
     onChange: (event: any, runValidation?: boolean) => void
     readOnly: boolean
   }
+
+  textAreaProps: {
+    // todo: may not be working.. updating the state
+    children: string
+    onBlur: (event: any, runValidation?: boolean) => void
+    onChange: (event: any, runValidation?: boolean) => void
+    readOnly: boolean
+  }
 }
 
 function useField<T>(
@@ -103,72 +111,74 @@ function useField<T>(
     let passed = true
     let error: string | null = null
 
+    const maxLength =
+      config.maxLength === undefined
+        ? null
+        : Array.isArray(config.maxLength) &&
+          config.maxLength.length === 2 &&
+          config.maxLength[0] != undefined
+        ? config.maxLength[0]
+        : config.maxLength
+
+    const minLength =
+      config.minLength === undefined
+        ? null
+        : Array.isArray(config.minLength) &&
+          config.minLength.length === 2 &&
+          config.minLength[0] != undefined
+        ? config.minLength[0]
+        : config.minLength
+
     if (
-      config.maxLength &&
-      value.length >
-        (Array.isArray(config.maxLength) &&
-        config.maxLength.length === 2 &&
-        config.maxLength[0] != undefined
-          ? config.maxLength[0]
-          : config.maxLength)
+      (config.validation === undefined &&
+        config.maxLength === undefined &&
+        config.minLength === undefined) ||
+      (config.optional === true && !value)
     ) {
+      passed = true
+    } else if (maxLength !== null && value.length > maxLength) {
+      passed = false
       error =
         (Array.isArray(config.maxLength) &&
           config.maxLength.length === 2 &&
           config.maxLength[1]) ||
-        error ||
         defaultError
-    }
-
-    if (
-      config.minLength &&
-      value.length <
-        (Array.isArray(config.minLength) &&
-        config.minLength.length === 2 &&
-        config.minLength[0] !== undefined
-          ? config.minLength[0]
-          : config.minLength)
-    ) {
+    } else if (minLength !== null && value.length < minLength) {
+      passed = false
       error =
         (Array.isArray(config.minLength) &&
           config.minLength.length === 2 &&
           config.minLength[1]) ||
-        error ||
         defaultError
-    }
-
-    if (!config.validation || (config.optional === true && !value)) {
-      return passed
     } else if (typeof config.validation === 'function') {
       let response: boolean | string | void
       try {
         response = await config.validation(value)
       } catch (e) {
         passed = false
-        error = (e && e.message) || error || defaultError
+        error = (e && e.message) || defaultError
       }
       if (typeof response === 'boolean') {
         passed = response
-        error = error || defaultError
+        error = defaultError
       } else {
         passed = false
-        error = response == undefined ? error || defaultError : response
+        error = response == undefined ? defaultError : response
       }
     } else if (Array.isArray(config.validation) && config.validation.length === 2) {
       passed =
         config.validation[0] !== undefined ? !!value.match(config.validation[0]) : passed
-      error =
-        config.validation[1] !== undefined ? config.validation[1] : error || defaultError
+      error = config.validation[1] !== undefined ? config.validation[1] : defaultError
     } else {
       passed = !!value.match(config.validation as RegExp)
-      error = error || defaultError
+      error = defaultError
     }
 
     if (config.validateHook) {
       const response = await config.validateHook(value, passed, error, config.validation)
       if (Array.isArray(response) && response.length === 2) {
         passed = response[0] !== undefined ? response[0] : passed
-        error = response[1] !== undefined ? response[1] : error || defaultError
+        error = response[1] !== undefined ? response[1] : defaultError
       }
     }
 
@@ -237,9 +247,15 @@ function useField<T>(
 
     config,
 
-    // shortcut
+    // shortcuts
     inputProps: {
       value,
+      onBlur: handleSetFromEvent,
+      onChange: handleSetFromEvent,
+      readOnly: !active
+    },
+    textAreaProps: {
+      children: value,
       onBlur: handleSetFromEvent,
       onChange: handleSetFromEvent,
       readOnly: !active

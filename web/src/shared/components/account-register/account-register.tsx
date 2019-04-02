@@ -87,13 +87,11 @@ function AccountRegister({ account, setAccount }: Props) {
 
         <Block>
           <Flex>
-            <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
-              icon={['far', 'user-circle']}
-            />
+            <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
+              <FontAwesomeIcon icon={['far', 'user-circle']} />
+            </div>
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
-              type={'text'}
               {...displayName.inputProps}
               inputRef={displayName.ref}
               label={t`account:display-name`}
@@ -104,10 +102,9 @@ function AccountRegister({ account, setAccount }: Props) {
 
         <Block>
           <Flex>
-            <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
-              icon={'envelope'}
-            />
+            <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
+              <FontAwesomeIcon icon={'envelope'} />
+            </div>
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
               type={'email'}
@@ -121,10 +118,9 @@ function AccountRegister({ account, setAccount }: Props) {
 
         <Block>
           <Flex>
-            <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
-              icon={'user-secret'}
-            />
+            <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
+              <FontAwesomeIcon icon={'user-secret'} />
+            </div>
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
               type={'password'}
@@ -137,10 +133,9 @@ function AccountRegister({ account, setAccount }: Props) {
 
         <Block>
           <Flex>
-            <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
-              icon={'user-secret'}
-            />
+            <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
+              <FontAwesomeIcon icon={'user-secret'} />
+            </div>
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
               type={'password'}
@@ -153,7 +148,9 @@ function AccountRegister({ account, setAccount }: Props) {
 
         <Block last>
           <Flex>
-            <FontAwesomeIcon className={'margin-right-big margin-auto'} icon={'phone'} />
+            <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
+              <FontAwesomeIcon icon={'phone'} />
+            </div>
             <Input
               className={'margin-vertical-normal margin-auto full-width'}
               type={'phone'}

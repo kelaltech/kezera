@@ -22,7 +22,11 @@ import {
   faQuestionCircle,
   faUserSecret,
   faShareAlt,
-  faHammer
+  faBalanceScale,
+  faFileContract,
+  faUserTie,
+  faGlobeAfrica,
+  faInfoCircle
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import {
@@ -57,7 +61,11 @@ export default function fontawesomeLibrary() {
     faQuestionCircle,
     faUserSecret,
     faShareAlt,
-    faHammer
+    faBalanceScale,
+    faFileContract,
+    faUserTie,
+    faGlobeAfrica,
+    faInfoCircle
   )
 
   // brands

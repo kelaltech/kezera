@@ -27,18 +27,16 @@ export const organizationPaths: SchemaDefinition = {
       address: { type: String, required: true, maxlength: 250 }
     }
   ],
-  website: { type: String, maxlength: 100, validate: /\w+:(\/?\/?)[^\s]+/ },
+  website: { type: String, minlength: 1, maxlength: 100, validate: /\w+:(\/?\/?)[^\s]+/ },
 
-  subscribers: [
-    { type: ObjectId, required: true, ref: 'account', index: true, unique: true }
-  ],
+  subscribers: [{ type: ObjectId, required: true, ref: 'account', index: true }],
 
-  licensedNames: [{ type: String, required: true }],
+  licensedNames: [{ type: String, required: true, maxlength: 50 }],
   registrations: [
     {
-      issuer: { type: String, required: true },
-      type: { type: String, required: true },
-      id: { type: String, required: true }
+      issuer: { type: String, required: true, maxlength: 50 },
+      type: { type: String, required: true, maxlength: 50 },
+      id: { type: String, required: true, maxlength: 50 }
     }
   ]
 }

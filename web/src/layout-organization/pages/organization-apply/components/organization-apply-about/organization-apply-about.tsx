@@ -1,11 +1,12 @@
 import React from 'react'
-import { Block, Content, Flex, TextArea } from 'gerami'
+import { Block, Content, Flex } from 'gerami'
 import {
   FormControl,
   Input as MatInput,
   InputLabel,
   MenuItem,
-  Select
+  Select,
+  TextField
 } from '@material-ui/core'
 
 import useLocale from '../../../../../shared/hooks/use-locale/use-locale'
@@ -59,10 +60,9 @@ function OrganizationApplyAbout({ organization, setOrganization }: Props) {
 
         <Block>
           <Flex>
-            <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
-              icon={'question-circle'}
-            />
+            <div style={{ margin: 'auto auto 6px 0', width: 40 }}>
+              <FontAwesomeIcon icon={'question-circle'} />
+            </div>
             <FormControl className={'full-width'}>
               <InputLabel htmlFor={'organization-type-input'} shrink>
                 Organization Type
@@ -83,16 +83,14 @@ function OrganizationApplyAbout({ organization, setOrganization }: Props) {
 
         <Block last>
           <Flex>
-            <FontAwesomeIcon
-              className={'margin-right-big margin-auto'}
-              icon={'map-marker'}
-            />
-            <TextArea
+            <div style={{ margin: 'auto auto auto 0', width: 40 }}>
+              <FontAwesomeIcon icon={'map-marker'} />
+            </div>
+            <TextField
               className={'margin-vertical-normal margin-auto full-width'}
               {...address.inputProps}
               label={`Address (Optional)`}
             />
-            {/* todo: gerami.TextArea not working with controlled inputs */}
           </Flex>
         </Block>
       </Content>

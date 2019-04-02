@@ -30,6 +30,7 @@ export type IOrganizationResponse = {
 
   type: IOrganizationType
 
+  logoUri?: string
   motto?: string
   bio: string
   locations: {
