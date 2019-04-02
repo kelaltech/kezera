@@ -5,22 +5,22 @@ import { Block, Yoga } from 'gerami'
 
 import Report from '../request-report/request-report'
 import Contact from '../request-contact/request-contact'
-import Detail from '../request-detail/request-detail'
 import Going from '../request-going/request-going'
 import Images from '../request-images/request-images'
 import axios from 'axios'
 import { RouteComponentProps, withRouter } from 'react-router'
+import RequestDetail from '../request-detail/request-detail'
+import FundAdd from '../../../../layout-organization/pages/fundraising/fund-add'
 
 function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
   let [value, setValue] = useState(0)
-
-  const [request, setRequest] = useState<any>()
+  const [request, setRequests] = useState<any[]>([])
 
   useEffect(() => {
     axios
       .get(`/api/request/ + ${match.params._id}`)
       .then(res => {
-        setRequest(res.data)
+        setRequests(res.data)
         console.log('successfully retrieved')
         console.log(res.data)
       })
@@ -46,7 +46,7 @@ function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
       </Tabs>
       {value === 0 && (
         <Block>
-          <Detail request={request} />
+          <RequestDetail request={request} />
         </Block>
       )}
       {value === 1 && (
@@ -56,7 +56,7 @@ function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
       )}
       {value === 2 && (
         <Block>
-          <Going />
+          <FundAdd />
         </Block>
       )}
       {value === 3 && (

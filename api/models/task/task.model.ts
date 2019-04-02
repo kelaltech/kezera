@@ -6,9 +6,7 @@ type ObjectId = Schema.Types.ObjectId
 
 export interface ITask extends Document {
   numberNeeded: number
-  location: []
   type: ObjectId
-  duration: number
   startTime: Date | number
   endTime: Date | number
 }

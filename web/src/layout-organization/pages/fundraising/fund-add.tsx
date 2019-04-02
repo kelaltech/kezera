@@ -11,21 +11,21 @@ import {
   Yoga
 } from 'gerami'
 
-export default function TaskAdd() {
+export default function FundAdd() {
   return (
     <Page>
       <Content size={'L'}>
-        <form action="/api/request/add" method={'POST'}>
+        <form action="/api/request/fundraising/add" method={'POST'}>
           <Block>
-            <Title size={'XL'}>Task Specific</Title>
+            <Title size={'XL'}>Fundraising Specific</Title>
           </Block>
           <hr />
           <Block>
             <Input
               className={'full-width'}
-              name={'numberNeeded'}
+              name={'amount'}
               type={'text'}
-              label={'Number of Participants'}
+              label={'Amount of Money'}
             />
           </Block>
 

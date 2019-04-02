@@ -1,22 +1,17 @@
 import { Block, Content, Page, Title, Yoga } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component, useEffect, useState } from 'react'
-import { func } from 'prop-types'
-import axios from 'axios'
-import { IRequestProps } from '../../../components/request/request-card'
-import { match, RouteComponentProps, withRouter } from 'react-router'
-import { withMobileDialog } from '@material-ui/core'
 
-export interface IDetailsProps {
+export interface IRequestProps {
   request: any
 }
 
-function RequestDetail({ request }: IDetailsProps) {
+export default function RequestDetail({ request }: IRequestProps) {
   return (
     <Page>
       <Content>
-        <Block className="">
-          <Title size={'XXL'}>{request.name}</Title>
+        <Block>
+          <div>{request.name}</div>
         </Block>
         <Block>
           <p>{request.description}</p>
@@ -64,5 +59,3 @@ function RequestDetail({ request }: IDetailsProps) {
     </Page>
   )
 }
-
-export default RequestDetail

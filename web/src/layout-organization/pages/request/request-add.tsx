@@ -10,17 +10,23 @@ import {
   Title,
   Yoga
 } from 'gerami'
-import { convertToRaw } from 'draft-js'
+
 import axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import { match, RouteComponentProps } from 'react-router'
-import { RadioGroup } from '@material-ui/core'
+import { match, RouteComponentProps, withRouter } from 'react-router'
+import {
+  FormControl,
+  Input as MatInput,
+  InputLabel,
+  MenuItem,
+  RadioGroup,
+  Select
+} from '@material-ui/core'
 import TaskAdd from '../task/task-add'
 
-export default function RequestAdd({ history }: RouteComponentProps<{}>) {
+function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
-
-  let [value, setValue] = useState(0)
+  let [type, setType] = useState<any>(0)
 
   const addRequest = (form: any) => {
     const data = new FormData()
@@ -97,7 +103,28 @@ export default function RequestAdd({ history }: RouteComponentProps<{}>) {
             </Block>
           </Yoga>
           <hr />
-
+          <Block>
+            {/*
+            <FormControl className={'full-width'}>
+              <InputLabel htmlFor={'request-type-label-placeholder'} shrink>
+                Type of Request
+              </InputLabel>
+              <Select
+                value={type}
+                input={
+                  <MatInput
+                    name="request-type"
+                    id="request-type-label-placeholder"
+                  />
+                }
+              >
+                <MenuItem value={'FUNDRAISING'}>Fundraising</MenuItem>
+                <MenuItem value={'MATERIAL'}>Material</MenuItem>
+                <MenuItem value={'ORGAN'}>Organ</MenuItem>
+                <MenuItem value={'TASK'}>Task</MenuItem>
+              </Select>
+            </FormControl>*/}
+          </Block>
           <Block last className={'right'}>
             <Button type={'submit'}>Finish</Button>
           </Block>
@@ -106,3 +133,4 @@ export default function RequestAdd({ history }: RouteComponentProps<{}>) {
     </Page>
   )
 }
+export default withRouter(RequestAdd)
