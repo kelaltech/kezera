@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Block } from 'gerami'
-import VolunteerEventCard from '../../components/volunteer-event-card/volunteer-event-card'
 import ProductSlider from '../../components/volunteer-product-slider/volunteer-product-slider'
 
 import './volunteer-event.scss'

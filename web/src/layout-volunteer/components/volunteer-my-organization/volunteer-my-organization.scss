@@ -1,0 +1,60 @@
+.my-org-container {
+  width: 100%;
+  height: auto;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.3);
+}
+
+.my-org-cover {
+  width: 100%;
+  height: 150px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.my-org-profile {
+  width: 120px;
+  height: 120px;
+  border-radius: 60%;
+  box-shadow: 0 2px 3px 0.35px rgba(0, 0, 0, 0.3), 0 -1px 3px 0.34px rgba(0, 0, 0, 0.2);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.my-org-info-container {
+  width: 100%;
+  height: auto;
+  padding: 60px 5px 0;
+
+  .my-org-info {
+    display: flex;
+    flex-direction: column;
+    .org-label {
+      font-size: 1em;
+      color: #7f7f7f;
+    }
+    .org-value {
+      font-size: 1em;
+      font-family: 'Roboto', serif;
+      color: #353535;
+    }
+  }
+  .my-org-name,
+  .my-org-address {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.my-org-motto {
+  text-align: center;
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-weight: 600;
+  color: rgba(42, 42, 42, 0.99);
+  //line-height:2em;
+  font-size: 1.3em;
+}

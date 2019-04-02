@@ -8,7 +8,13 @@ Axios.interceptors.response.use(
   error => {
     if (Axios.isCancel(error)) return Promise.reject(error)
 
-    if (error.response.status == 401 && !window.localStorage.getItem('account')) {
+    /*
+    // todo: causing problems (e.g. can't access /organization/apply logged out)
+    if (
+      error.response.status == 401 &&
+      !window.localStorage.getItem('account') &&
+      window.location.pathname != '/login'
+    ) {
       window.location.replace(
         `/login?${qs.stringify(
           Object.assign(qs.parse(window.location.search, { ignoreQueryPrefix: true }), {
@@ -17,6 +23,7 @@ Axios.interceptors.response.use(
         )}` // todo: a you need to login first message
       )
     }
+    */
 
     return Promise.reject(error.response.data)
   }

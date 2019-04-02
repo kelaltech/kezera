@@ -1,15 +1,5 @@
 @import '../../../../assets/styles/theme';
 
-@keyframes HeaderBlockClip {
-  0% {
-    clip-path: ellipse(140% 100% at 60% 0px);
-  }
-
-  100% {
-    clip-path: ellipse(140% 100% at 40% 0px);
-  }
-}
-
 .header {
   z-index: 7;
   position: sticky;
@@ -17,26 +7,20 @@
 }
 
 .header-shade-area {
-  filter: drop-shadow($shade-M);
+  filter: drop-shadow($shade-S);
 }
 
 .header-block {
   padding: ($space / 1.4) $space !important;
   background-image: linear-gradient(
     to top right,
-    transparentize($accent, 0.97),
+    transparentize($primary, 0.97),
     transparent
   );
   background-size: 100% 100%;
   background-position: -100% 50%;
   box-shadow: none;
   transform: scale3d(1, 1, 1);
-  clip-path: ellipse(140% 100% at 50% 0px);
-  animation-name: HeaderBlockClip;
-  animation-duration: 7s;
-  animation-direction: alternate;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
 }
 
 .header-logo {

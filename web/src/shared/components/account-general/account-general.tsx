@@ -34,7 +34,7 @@ function AccountGeneral({ readonly }: Props) {
 
   const emitChange = (accountChanges: any): void => {
     if (readonly) return
-    const data = Object.assign(account, accountChanges)
+    const data = { ...account, ...accountChanges }
     updateAccount(accountDispatch, data, 0, data.currentPassword, data.newPassword)
   }
   const handleLogout = (): void => {

@@ -1,30 +1,98 @@
 import React, { useState, useEffect } from 'react'
-import { Tabs } from '@material-ui/core'
+import { Tabs, Checkbox } from '@material-ui/core'
 import Tab from '@material-ui/core/Tab'
 import { Block } from 'gerami'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 import './volunteer-search-result.scss'
-import NewsCard from '../../../shared/components/news-card/news-card'
-import EventCard from '../../../shared/components/event-card/event-card'
-import VolunteerEventCard from '../../components/volunteer-event-card/volunteer-event-card'
+import qs from 'qs'
+
+import FormControlLabel from '@material-ui/core/es/FormControlLabel'
+import NewsSearchResult from '../../pages/volunteer-search-result/components/search-result-news/volunteer-search-news'
+import EventsSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-events/volunteer-search-events'
+import DonationSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-donations/volunteer-search-donations'
+import OrganizationSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-organizations/volunteer-search-organizations'
+import TaskSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-tasks/volunteer-search-tasks'
+import VolSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-volunteer/volunteer-search-volunteer'
 
 function VolunteerSearchResult() {
   let [value, setValue] = useState(0)
+  let [isCollapsed, setCollapse] = useState(false)
+  let [searchTerm, setSearchTerm] = useState({})
+  const collapseFilter = () => {
+    setCollapse(!isCollapsed)
+    let filter = document.getElementById('search_filters')
+    let filterBox = document.getElementById('filters')
+    isCollapsed ? (filter!.style.height = '70vh') : (filter!.style.height = '0')
+    isCollapsed
+      ? (filterBox!.style.display = 'block')
+      : (filterBox!.style.display = 'none')
+  }
 
+  useEffect(() => {
+    setSearchTerm(
+      qs.parse(window.location.search, {
+        ignoreQueryPrefix: true
+      })
+    )
+  }, [])
   return (
     <div>
       <div className="search-result-container">
-        <div>
-          <h4>Filter</h4>
+        <div className={'search-filter-container'}>
+          <div className={'search-filter-top'}>
+            <h4>Filter</h4>
+            <span onClick={collapseFilter}>
+              {isCollapsed ? (
+                <FontAwesomeIcon icon={faPlusCircle} />
+              ) : (
+                <FontAwesomeIcon icon={faMinusCircle} />
+              )}
+            </span>
+          </div>
+          <div id={'search_filters'} className={'search-filters'}>
+            <div className={'filters'} id={'filters'}>
+              <FormControlLabel
+                control={<Checkbox value={'Checked'} />}
+                label={'Location'}
+              />
+              <FormControlLabel
+                control={<Checkbox value={'Checked'} />}
+                label={'profession'}
+              />
+              <FormControlLabel control={<Checkbox value={'Checked'} />} label={'NGo'} />
+              <FormControlLabel control={<Checkbox value={'Checked'} />} label={'Govt'} />
+              <FormControlLabel
+                control={<Checkbox value={'Checked'} />}
+                label={'Hospital'}
+              />
+              <FormControlLabel
+                control={<Checkbox value={'Checked'} />}
+                label={'from subscription'}
+              />
+              <FormControlLabel
+                control={<Checkbox value={'Checked'} />}
+                label={'Recent'}
+              />
+              <FormControlLabel
+                control={<Checkbox value={'Checked'} />}
+                label={'Recent'}
+              />
+            </div>
+          </div>
         </div>
         <div>
           <Tabs
+            style={{
+              position: 'sticky',
+              top: '55px'
+            }}
             value={value}
             onChange={(e, v) => setValue(v)}
             indicatorColor={'primary'}
             textColor={'primary'}
-            variant="scrollable"
-            //  scrollButtons="auto"
+            variant="fullWidth"
+            scrollButtons="auto"
           >
             <Tab label={'All'} />
             <Tab label={'News'} />
@@ -63,7 +131,7 @@ function VolunteerSearchResult() {
           )}
           {value === 6 && (
             <Block>
-              <VSearchResult />
+              <VolSearchResult />
             </Block>
           )}
         </div>
@@ -71,125 +139,4 @@ function VolunteerSearchResult() {
     </div>
   )
 }
-
-function NewsSearchResult() {
-  const [news, setNews] = useState([])
-
-  useEffect(() => {
-    //fetch search result from back
-  }, [])
-  return (
-    <div>
-      <h1>News Search result</h1>
-
-      <div>
-        {Data.map(n => (
-          <Block>
-            <NewsCard
-              title={n.title}
-              likeCount={n.likeCount}
-              commentCount={n.commentCount}
-              description={n.description}
-              imgSrc={n.imgSrc}
-              _id={n.id}
-            />
-          </Block>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function EventsSearchResult() {
-  return (
-    <div>
-      <h1>Events Search result</h1>
-      <div />
-    </div>
-  )
-}
-
-function DonationSearchResult() {
-  return (
-    <div>
-      <h1>Donation Search result</h1>
-    </div>
-  )
-}
-
-function TaskSearchResult() {
-  return (
-    <div>
-      <h1>Task Search result</h1>
-    </div>
-  )
-}
-
-function OrganizationSearchResult() {
-  return (
-    <div>
-      <h1>Organization Search result</h1>
-    </div>
-  )
-}
-function VSearchResult() {
-  return (
-    <div>
-      <h1>Volunteer Search result</h1>
-    </div>
-  )
-}
-
-const Data = [
-  {
-    title: 'Random image',
-    likeCount: 12,
-    commentCount: 223,
-    description: 'Get a random image by appending ?random to the end of the url.',
-    imgSrc: 'https://picsum.photos/300/300/?random',
-    id: 'id'
-  },
-  {
-    title: 'Random image',
-    likeCount: 12,
-    commentCount: 223,
-    description: 'Get a random image by appending ?random to the end of the url.',
-    imgSrc: 'https://picsum.photos/200/300/?random',
-    id: 'id'
-  },
-  {
-    title: 'Random image',
-    likeCount: 12,
-    commentCount: 223,
-    description: 'Get a random image by appending ?random to the end of the url.',
-    imgSrc: 'https://picsum.photos/400/300/?random',
-    id: 'id'
-  },
-  {
-    title: 'Random image',
-    likeCount: 12,
-    commentCount: 223,
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. A ipsum impedit odit incidunt. Delectus alias nihil minus  ab eligendi nemo earum tempora! Recusandae neque quia error  commodi tempore earum similique? ',
-    imgSrc: 'https://picsum.photos/300/300/?random',
-    id: 'id'
-  },
-  {
-    title: 'Random image',
-    likeCount: 12,
-    commentCount: 223,
-    description: 'Get a random image by appending ?random to the end of the url.',
-    imgSrc: 'https://picsum.photos/500?random',
-    id: 'id'
-  },
-  {
-    title: 'Random image',
-    likeCount: 12,
-    commentCount: 223,
-    description: 'Get a random image by appending ?random to the end of the url.',
-    imgSrc: 'https://picsum.photos/300/200/?random',
-    id: 'id'
-  }
-]
-
 export default VolunteerSearchResult

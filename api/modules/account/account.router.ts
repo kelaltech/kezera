@@ -11,12 +11,16 @@ export const accountRouter = new Router({ prefix: '/api/account' })
 /* GENERAL */
 
 // GET /api/account/me
-accountRouter.get('/me', authenticate(), handle(AccountController, (c, s) => c.me(s)))
+accountRouter.get(
+  '/me',
+  authenticate({ allowedAccountStatuses: ['ACTIVE', 'DISABLED'] }),
+  handle(AccountController, (c, s) => c.me(s))
+)
 
 // PUT /api/account/edit-me *
 accountRouter.put(
   '/edit-me',
-  authenticate(),
+  authenticate({ allowedAccountStatuses: ['ACTIVE', 'DISABLED'] }),
   handle(AccountController, (c, s) => c.editMe(s))
 )
 
@@ -25,7 +29,7 @@ accountRouter.put(
 // POST /api/account/add-photo *
 accountRouter.post(
   '/add-photo',
-  authenticate(),
+  authenticate({ allowedAccountStatuses: ['ACTIVE', 'DISABLED'] }),
   handle(AccountController, (c, s) => c.addPhoto(s))
 )
 
@@ -33,7 +37,11 @@ accountRouter.post(
 accountRouter.get('/get-photo/:account_id', handle(AccountController, c => c.getPhoto()))
 
 // GET /api/account/remove-photo *
-accountRouter.get('/remove-photo', handle(AccountController, (c, s) => c.removePhoto(s)))
+accountRouter.get(
+  '/remove-photo',
+  authenticate({ allowedAccountStatuses: ['ACTIVE', 'DISABLED'] }),
+  handle(AccountController, (c, s) => c.removePhoto(s))
+)
 
 /* PASSWORD RESET */
 

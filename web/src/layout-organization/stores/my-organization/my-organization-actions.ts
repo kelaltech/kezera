@@ -1,15 +1,15 @@
 import Axios, { CancelTokenSource } from 'axios'
 
 import { Action } from './my-organization-reducer'
-import { IOrganizationPrivateResponse } from '../../../../../api/modules/organization/organization.apiv'
+import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
 import { organizationPrivateResponseToRequest } from '../../../apiv/filters/organization.filter'
 
 export function reloadMyOrganization(
   myOrganizationDispatch: (action: Action) => void,
   silentFail = false,
-  myOrganization?: IOrganizationPrivateResponse
+  myOrganization?: IOrganizationResponse
 ): void {
-  const reload = (myOrganization?: IOrganizationPrivateResponse): void => {
+  const reload = (myOrganization?: IOrganizationResponse): void => {
     if (!myOrganization) throw Error('My Organization not found.')
     if (!myOrganization._id) throw Error('Received My Organization data is malformed.')
 
@@ -34,7 +34,7 @@ let updateTimeout: NodeJS.Timeout | null = null
 let updateCancellation: CancelTokenSource | null = null
 export function updateMyOrganization(
   myOrganizationDispatch: (action: Action) => void,
-  myOrganization: IOrganizationPrivateResponse,
+  myOrganization: IOrganizationResponse,
   timeout = 0
 ): void {
   if (updateTimeout !== null) clearTimeout(updateTimeout)
