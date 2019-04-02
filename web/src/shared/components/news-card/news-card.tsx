@@ -14,7 +14,7 @@ export interface INewsCardProps {
   _id: string
 }
 
-function NewsCard(props: INewsCardProps) {
+function  NewsCard(props: INewsCardProps) {
   const [likeClicked, setLikeClicked] = useState(0)
   let { description, commentCount, likeCount, title, imgSrc, _id } = props
 
