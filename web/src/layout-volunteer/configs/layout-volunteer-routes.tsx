@@ -21,6 +21,7 @@ const MyOrganization = lazy(() =>
 const News = lazy(() => import('../pages/volunteer-news/volunteer-news'))
 const Profile = lazy(() => import('../pages/volunteer-profile/volunteer-profile'))
 const Request = lazy(() => import('../pages/volunteer-request/volunteer-request'))
+const Task = lazy(()=>import('../pages/volunteer-task/volunteer-task'))
 const SearchResult = lazy(() =>
   import('../pages/volunteer-search-result/volunteer-search-result')
 )
@@ -47,6 +48,7 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       {/*todo change the path to*/}
       <Route exact path={`${p}/my-organization`} component={MyOrganization} />
       <Route exact path={`${p}/news`} component={News} />
+      <Route exact path={`${p}/tasks`} component={Task} />
       <Route exact path={`${p}/profile`} component={Profile} />
       <Route exact path={`${p}/request`} component={Request} />
       <Route exact path={`${p}/search-result`} component={SearchResult} />

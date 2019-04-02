@@ -9,6 +9,7 @@
   flex-wrap: wrap;
   @media screen and (max-width: 700px) {
     flex-direction: column;
+    flex-wrap: nowrap;
   }
 }
 
@@ -17,8 +18,7 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  @media screen and (max-width: 700px) {
-    width: 100%;
+  @media screen and (max-width: 750px) {
     height: 200px;
   }
 }

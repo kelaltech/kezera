@@ -32,8 +32,6 @@ function VolunteerNews() {
           title = ''
         }
 
-        console.log(data.data)
-
         setNews(data.data)
       })
       .catch(e => {
@@ -51,7 +49,6 @@ function VolunteerNews() {
         <div>
           {news.map((n: any) => (
             <div>
-              <Block>
                 <NewsCard
                   _id={n._id}
                   commentCount={n.comments.length}
@@ -60,7 +57,7 @@ function VolunteerNews() {
                   likeCount={n.likes.length}
                   description={n.description}
                 />
-              </Block>
+              <Block/>
             </div>
           ))}
         </div>
