@@ -85,6 +85,7 @@ type UseFieldResponse<T> = {
   }
 
   textAreaProps: {
+    // todo: may not be working.. updating the state
     children: string
     onBlur: (event: any, runValidation?: boolean) => void
     onChange: (event: any, runValidation?: boolean) => void

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Block, Content, Flex, Input, TextArea } from 'gerami'
+import { Block, Content, Flex } from 'gerami'
+import { TextField } from '@material-ui/core'
 
 import useLocale from '../../../../../shared/hooks/use-locale/use-locale'
 import { IOrganizationRequest } from '../../../../../../../api/modules/organization/organization.apiv'
@@ -52,12 +53,11 @@ function OrganizationApplyBio({ organization, setOrganization }: Props) {
             <div style={{ margin: 'auto auto auto 0', width: 40 }}>
               <FontAwesomeIcon icon={'info-circle'} />
             </div>
-            <TextArea
-              rows={14}
+            <TextField
+              multiline
               className={'margin-vertical-normal margin-auto full-width'}
-              {...bio.textAreaProps}
+              {...bio.inputProps}
               label={`Organization Bio`}
-              maxLength={10000}
             />
             {validationError(bio.error)}
           </Flex>

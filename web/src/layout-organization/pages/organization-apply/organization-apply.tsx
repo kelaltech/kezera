@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { Anchor, Block, Button, Content, Flex, FlexSpacer, Page, Yoga } from 'gerami'
+import { Checkbox, FormControl, Input as MatInput, InputLabel } from '@material-ui/core'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
-import { Block, Content, Page, Yoga } from 'gerami'
 import { IOrganizationRequest } from '../../../../../api/modules/organization/organization.apiv'
 import { IAccountRequest } from '../../../../../api/modules/account/account.apiv'
 import AccountRegister from '../../../shared/components/account-register/account-register'
@@ -42,6 +43,7 @@ function OrganizationApply() {
     // bio
     bio: ''
   })
+  const [acceptTerms, setAcceptTerms] = useState(false)
 
   const setAccount = (account: IAccountRequest): void => {
     setOrganization({ ...organization, ...{ account } })
@@ -91,6 +93,31 @@ function OrganizationApply() {
               />
             </div>
           </Yoga>
+
+          <hr />
+
+          <Block last className={'padding-horizontal-normal'}>
+            <Flex>
+              <Flex>
+                <Checkbox
+                  id={'accept-terms-checkbox'}
+                  checked={acceptTerms}
+                  onChange={() => setAcceptTerms(!acceptTerms)}
+                  className={'margin-vertical-auto'}
+                />
+                <InputLabel
+                  className={'margin-vertical-auto'}
+                  htmlFor={'accept-terms-checkbox'}
+                >
+                  I accept the <Anchor to={'/terms'}>terms & conditions</Anchor>.
+                </InputLabel>
+              </Flex>
+              <FlexSpacer />
+              <div className={'right'}>
+                <Button primary>Apply Now</Button>
+              </div>
+            </Flex>
+          </Block>
         </Content>
       </Page>
     )
