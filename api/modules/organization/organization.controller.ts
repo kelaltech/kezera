@@ -11,6 +11,8 @@ import {
   organizationRequestToDocument
 } from './organization.filter'
 import { OrganizationApplicationModel } from '../../models/organization-application/organization-application.model'
+import { email } from '../../lib/email'
+import { KoaError } from '../../lib/koa-error'
 
 export class OrganizationController extends KoaController {
   async apply(
@@ -36,8 +38,27 @@ export class OrganizationController extends KoaController {
     const document = await add(
       OrganizationApplicationModel,
       await organizationRequestToDocument(data),
-      { session }
+      {
+        session,
+        preSave: async doc => {
+          if (!data.account.password)
+            throw new KoaError(
+              'Password is required to create a new account.',
+              400,
+              'NO_PASSWORD'
+            )
+
+          await doc.setAccountPassword(data.account.password, session)
+          return doc
+        }
+      }
     )
+
+    await email({
+      subject: `Organization Application for "${data.account.displayName}"`,
+      to: data.account.email,
+      text: `Hello,\n\nWe have received your application, and is currently under review. We will email you again after we finish reviewing your application.\n\nSincerely,\nThe SPVA Team`
+    })
 
     if (session && session.inTransaction()) await session.commitTransaction()
 
