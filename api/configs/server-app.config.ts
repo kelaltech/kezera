@@ -20,6 +20,7 @@ import { EventModel } from '../models/event/event.model'
 import { MaterialModel } from '../models/material/material.model'
 import { commentModel } from '../models/comment/comment.model'
 import { commentRouter } from '../modules/comment/comment.route'
+import { RequestModel } from '../models/request/request.model'
 
 import { organizationRouter } from '../modules/organization/organization.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
@@ -37,6 +38,7 @@ export const serverAppConfig: IServerAppConfig = {
     }
   ],
 
+  models: [AccountModel, KeyModel, EventModel, MaterialModel, commentModel, RequestModel],
   models: [
     AccountModel,
     CertificateModel,

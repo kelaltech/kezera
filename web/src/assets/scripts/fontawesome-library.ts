@@ -24,7 +24,8 @@ import {
   faShareAlt,
   faExclamationCircle,
   faEllipsisV,
-  faReply
+  faReply,
+  faEye,
   faBalanceScale,
   faFileContract,
   faUserTie,
@@ -74,7 +75,7 @@ export default function fontawesomeLibrary() {
     faShareAlt,
     faExclamationCircle,
     faEllipsisV,
-    faReply
+    faReply,
     faBalanceScale,
     faFileContract,
     faUserTie,
@@ -85,12 +86,14 @@ export default function fontawesomeLibrary() {
     faUserCircle,
     faHandsHelping,
     faBell,
-    faBellSlash
+    faBellSlash,
+    faHandsHelping,
+    faEye
   )
 
   // brands
   library.add(faFacebook)
 
   // regular (free)
-  library.add(faUserCircle, faCommentAlt, Heart)
+  library.add(farUserCircle, farCommentAlt, farHeart)
 }

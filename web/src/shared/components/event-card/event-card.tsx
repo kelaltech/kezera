@@ -5,8 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
 import axios from 'axios'
+import { IOrganizationEventRequest } from '../../../apiv/event.apiv'
 
-export default function EventCard(props: any) {
+interface IEventProps {
+  event: IOrganizationEventRequest
+  role: string
+}
+
+export default function EventCard(props: IEventProps) {
   let [open, setOpen] = useState(false)
   let months = [
     'Jan.',
@@ -29,6 +35,7 @@ export default function EventCard(props: any) {
       .then()
       .catch()
   }
+
   let handleInterested = function(id: any) {
     axios
       .put(`/api/event/${id}/interest`)
@@ -40,19 +47,14 @@ export default function EventCard(props: any) {
     if (window.confirm('Are you sure you want to delete this event?')) {
       axios
         .delete(`/api/event/${id}`)
-        .then(res => props.fetch())
+        .then()
         .catch(console.error)
     }
   }
 
   return (
     <Content className={'EventCard'}>
-      <EventEdit
-        open={open}
-        onClose={() => setOpen(false)}
-        event={props.event}
-        fetch={props.fetch()}
-      />
+      <EventEdit open={open} onClose={() => setOpen(false)} event={props.event} />
       <div className={'EventCardImage'}>
         <div className={'BlurryImage'}>
           <Image className={'EventImage'} src={`/api/event/${props.event._id}/picture`} />

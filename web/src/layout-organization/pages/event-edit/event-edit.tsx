@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Block,
   Button,
@@ -15,8 +15,41 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TextField from '@material-ui/core/TextField'
 import { Dialog } from '@material-ui/core'
 import axios from 'axios'
+import { IOrganizationEventRequest } from '../../../apiv/event.apiv'
+import { Schema } from 'mongoose'
 
-export default function EventEdit(props: any) {
+interface IEventEditProps {
+  event: IOrganizationEventRequest
+  open: boolean
+  onClose: () => void
+}
+
+export default function EventEdit(props: IEventEditProps) {
+  let [endDate, setEndDate] = useState()
+  let [startDate, setStartDate] = useState()
+  let [title, setTitle] = useState()
+  let [description, setDescription] = useState()
+  let [people, setPeople] = useState()
+  let [location, setLocation] = useState()
+
+  let HandleUpdate = function(e: any, id: Schema.Types.ObjectId) {
+    e.preventDefault()
+    let data = new FormData()
+    title != undefined ? data.append('title', title) : undefined
+    description != undefined ? data.append('description', description) : undefined
+    startDate != undefined ? data.append('startDate', startDate) : undefined
+    endDate != undefined ? data.append('endDate', endDate) : undefined
+    people != undefined ? data.append('amountOfPeople', people) : undefined
+    location != undefined ? data.append('location', location) : undefined
+    data.append('image', e.target.image.files[0])
+    axios
+      .put(`/api/event/${id}`, data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true
+      })
+      .then()
+      .catch(console.error)
+  }
   return (
     <Dialog onClose={props.onClose} open={props.open}>
       <Block className={'center'}>
@@ -24,7 +57,7 @@ export default function EventEdit(props: any) {
       </Block>
       <Content size={'L'}>
         <form
-          onSubmit={(e: any) => editResponse(e, props.event._id)}
+          onSubmit={e => HandleUpdate(e, props.event._id)}
           encType={'multipart/form-data'}
         >
           <Block first>
@@ -39,6 +72,7 @@ export default function EventEdit(props: any) {
                 className={'margin-big full-width'}
                 placeholder={'Title'}
                 defaultValue={props.event.title}
+                onChange={e => setTitle(e.target.value)}
               />
             </Flex>
           </Block>
@@ -46,8 +80,9 @@ export default function EventEdit(props: any) {
             <TextArea
               name="description"
               className={'full-width'}
-              placeholder={'Purpose...'}
+              placeholder={'Description...'}
               defaultValue={props.event.description}
+              onChange={e => setDescription(e.target.value)}
             />
           </Block>
           <Yoga maxCol={2}>
@@ -63,6 +98,7 @@ export default function EventEdit(props: any) {
                   label="Start date"
                   type="date"
                   defaultValue="2017-05-24"
+                  onChange={e => setStartDate(e.target.value)}
                   InputLabelProps={{
                     shrink: true
                   }}
@@ -78,6 +114,7 @@ export default function EventEdit(props: any) {
                   className="full-width"
                   placeholder={'location'}
                   defaultValue={props.event.location}
+                  onChange={e => setLocation(e.target.value)}
                 />
               </label>
             </Block>
@@ -96,6 +133,7 @@ export default function EventEdit(props: any) {
                   InputLabelProps={{
                     shrink: true
                   }}
+                  onChange={e => setEndDate(e.target.value)}
                 />
               </label>
               <label className={'flex'}>
@@ -108,7 +146,8 @@ export default function EventEdit(props: any) {
                   className="full-width"
                   type={'text'}
                   placeholder={'Total people'}
-                  defaultValue={props.event.amountOfPeople}
+                  defaultValue={'' + props.event.amountOfPeople}
+                  onChange={e => setPeople(e.target.value)}
                 />
               </label>
             </Block>
@@ -131,24 +170,4 @@ export default function EventEdit(props: any) {
       </Content>
     </Dialog>
   )
-}
-
-function editResponse(e: any, id: any) {
-  e.preventDefault()
-  let data = new FormData()
-  data.append('title', e.target.title.value)
-  data.append('description', e.target.description.value)
-  data.append('startDate', e.target.startDate.value)
-  data.append('endDate', e.target.endDate.value)
-  data.append('amountOfPeople', e.target.amountOfPeople.value)
-  data.append('location', e.target.location.value)
-  data.append('image', e.target.image.files[0])
-
-  axios
-    .put(`/api/event/${id}`, data, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      withCredentials: true
-    })
-    .then()
-    .catch(console.error)
 }

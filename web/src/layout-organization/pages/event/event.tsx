@@ -12,8 +12,6 @@ export default function AccountSettings() {
   let [open, setOpen] = useState(false)
   let [event, setEvent] = useState([])
   const { t } = useTranslation()
-  const num = 12
-  // todo
 
   let fetchEvents = function() {
     axios
@@ -34,14 +32,6 @@ export default function AccountSettings() {
           <Title size={'3XL'}> Events and Activities</Title>
         </Block>
       </Block>
-      {/* <Block className={'inline-block right-search-input'}>
-        <form action={'/organization/event/search'} method={'GET'}>
-          <Input type="search" name={'term'} placeholder={'Search event...'} required />
-          <Button className={'SearchButton'} type={'submit'}>
-            <FontAwesomeIcon icon={'search'} className={'SearchIcon'} />
-          </Button>
-        </form>
-      </Block> */}
       <Block className="right right-search-input">
         <Button primary onClick={() => setOpen(true)}>
           {' '}
@@ -51,7 +41,7 @@ export default function AccountSettings() {
       {event.length > 0 ? (
         <Yoga maxCol={5}>
           {event.map(e => (
-            <EventCard event={e} role={'ORGANIZATION'} fetch={() => fetchEvents()} />
+            <EventCard event={e} role={'ORGANIZATION'} />
           ))}
         </Yoga>
       ) : (

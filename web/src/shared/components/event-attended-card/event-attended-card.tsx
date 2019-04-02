@@ -2,7 +2,11 @@ import React from 'react'
 import './event-attended-card.scss'
 import { Image, Content, Title, Block } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { IAccount } from '../../../../../api/models/account/account.model'
 
+interface IEventAttendedProps {
+  user: IAccount
+}
 const users = [
   {
     Name: 'Anteneh Ashnafi',
@@ -11,6 +15,7 @@ const users = [
     Phone: '+251913055885'
   }
 ]
+
 export default function EventAttendedCard(props: any) {
   return (
     <>

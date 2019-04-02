@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose'
 
 export type IOrganizationEventRequest = {
+  _id: Schema.Types.ObjectId
   title: string
   description: string
   startDate: Date

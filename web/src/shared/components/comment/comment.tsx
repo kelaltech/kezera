@@ -14,12 +14,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios from 'axios'
 import { Schema } from 'mongoose'
 import { socket } from '../../../app/app'
+import { ICommentRequest } from '../../../apiv/comment.apiv'
 
 interface ICommentProps {
   ParentId: Schema.Types.ObjectId
   Type: String
   TypeId: String | Schema.Types.ObjectId
-  comment?: any // Change these any
+  comment: ICommentRequest // Change these any
 }
 
 export default function Comment(props: ICommentProps) {

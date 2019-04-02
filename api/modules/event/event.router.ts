@@ -63,6 +63,7 @@ eventRouter.get('/:_id/attended', async ctx => {
 
 // /api/event/:_id"
 eventRouter.put('/:_id', async ctx => {
+  console.log(ctx.request.body)
   ctx.body = await editEvent(
     ctx.params._id,
     ctx.request.body,

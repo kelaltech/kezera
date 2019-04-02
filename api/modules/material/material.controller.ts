@@ -1,7 +1,7 @@
 import { IMaterial, MaterialModel } from '../../models/material/material.model'
-import { add, edit, remove } from '../../lib/crud'
+import { add, edit, remove, get } from '../../lib/crud'
 import { Schema } from 'mongoose'
-import { DonationModel } from '../../models/donation/donation.model'
+import { RequestModel } from '../../models/request/request.model'
 import { KoaError } from '../../lib/koa-error'
 
 export async function AddMaterial(body: any, id: Schema.Types.ObjectId): Promise<void> {
@@ -9,11 +9,14 @@ export async function AddMaterial(body: any, id: Schema.Types.ObjectId): Promise
   await add(MaterialModel, body)
 }
 
+export async function GetMaterial(id: Schema.Types.ObjectId): Promise<IMaterial> {
+  return await get(MaterialModel, id)
+}
 export async function DeleteMaterial(
   id: Schema.Types.ObjectId,
   orgId: Schema.Types.ObjectId
 ): Promise<void> {
-  let donation = DonationModel.find({ organizationId: orgId })
+  let donation = RequestModel.find({ organizationId: orgId })
   if (donation) await remove(MaterialModel, id)
   else throw new KoaError('Not Authorized for this action', 401)
 }
@@ -31,7 +34,7 @@ export async function UpdateMaterial(
 }
 
 export async function ListMaterials(orgId: Schema.Types.ObjectId): Promise<any> {
-  let donations = await DonationModel.find({ type: 'MATERIAL' })
+  let donations = await RequestModel.find({ type: 'MATERIAL' })
   let material: any = []
   for (let i = 0; i < donations.length; i++) {
     if (donations[i]._by.toString() == orgId.toString()) {

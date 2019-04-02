@@ -3,6 +3,7 @@ import {
   DeleteMaterial,
   UpdateMaterial,
   AddMaterial,
+  GetMaterial,
   ListMaterials
 } from './material.controller'
 // import * as fs from 'fs'
@@ -12,6 +13,11 @@ export const materialRouter = new Router({ prefix: '/api/material' })
 materialRouter.get('/all', async ctx => {
   console.log('Getting materials')
   ctx.body = await ListMaterials(ctx.state.user._id)
+})
+
+materialRouter.get('/:_id', async ctx => {
+  console.log('Getting specific materials')
+  ctx.body = await GetMaterial(ctx.params._id)
 })
 
 materialRouter.post('/create', async ctx => {

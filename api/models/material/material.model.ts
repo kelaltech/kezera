@@ -2,10 +2,10 @@ import { ModelFactory } from 'meseret'
 import { Document, Schema } from 'mongoose'
 import { materialPaths } from './material.path'
 
-export type IMaterialStatus = 'NEW' | 'PARTIALLY_USED' | 'USED' | 'OLD' | 'OTHER'
+export type IMaterialStatus = 'NEW' | 'SLIGHTLY_USED' | 'USED' | 'OLD' | 'OTHER'
 export const materialStatuses: IMaterialStatus[] = [
   'NEW',
-  'PARTIALLY_USED',
+  'SLIGHTLY_USED',
   'USED',
   'OTHER'
 ]
@@ -24,7 +24,7 @@ export interface IMaterial extends Document {
   _at?: Date | number
   status: IMaterialStatus
   materialType: IMaterialType
-  donationId: Schema.Types.ObjectId
+  requestId: Schema.Types.ObjectId
 }
 
 export const materialModelFactory = new ModelFactory<IMaterial>({
