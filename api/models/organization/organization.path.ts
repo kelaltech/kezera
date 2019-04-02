@@ -29,9 +29,7 @@ export const organizationPaths: SchemaDefinition = {
   ],
   website: { type: String, minlength: 1, maxlength: 100, validate: /\w+:(\/?\/?)[^\s]+/ },
 
-  subscribers: [
-    { type: ObjectId, required: true, ref: 'account', index: true, unique: true }
-  ],
+  subscribers: [{ type: ObjectId, required: true, ref: 'account', index: true }],
 
   licensedNames: [{ type: String, required: true, maxlength: 50 }],
   registrations: [

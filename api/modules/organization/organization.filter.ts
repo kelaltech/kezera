@@ -5,7 +5,10 @@ import {
   IOrganization,
   OrganizationModel
 } from '../../models/organization/organization.model'
-import { accountDocumentToResponse } from '../account/account.filter'
+import {
+  accountDocumentToResponse,
+  accountRequestToDocument
+} from '../account/account.filter'
 import { IAccount } from '../../models/account/account.model'
 
 type ObjectId = Schema.Types.ObjectId | string
@@ -20,6 +23,7 @@ export async function organizationRequestToLeanDocument(
     _last,
 
     // handle account manually
+    account: await accountRequestToDocument(request.account, 'DISABLED', 'ORGANIZATION'),
 
     type: request.type,
 
@@ -46,9 +50,8 @@ export async function organizationRequestToDocument(
 export async function organizationDocumentToResponse(
   document: Document & IOrganization
 ): Promise<IOrganizationResponse> {
-  const populatedAccount: Document & IAccount = (await document
-    .populate('account')
-    .execPopulate()).account as any
+  const populatedAccount: Document & IAccount = (await document.populate('account'))
+    .account as any
 
   return {
     _id: document._id,
