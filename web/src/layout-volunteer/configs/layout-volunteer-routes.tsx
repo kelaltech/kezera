@@ -25,6 +25,7 @@ const Task = lazy(()=>import('../pages/volunteer-task/volunteer-task'))
 const SearchResult = lazy(() =>
   import('../pages/volunteer-search-result/volunteer-search-result')
 )
+const VolunteerRegister = lazy(()=> import('../pages/volunteer-register/volunteer-register'))
 
 export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
@@ -51,6 +52,7 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       <Route exact path={`${p}/tasks`} component={Task} />
       <Route exact path={`${p}/profile`} component={Profile} />
       <Route exact path={`${p}/request`} component={Request} />
+      <Route exact path={`${p}/sign-up`} component={VolunteerRegister} />
       <Route exact path={`${p}/search-result`} component={SearchResult} />
       <Route component={NotFound} />
     </Switch>
