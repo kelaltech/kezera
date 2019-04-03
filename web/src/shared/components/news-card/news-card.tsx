@@ -18,7 +18,7 @@ export interface INewsCardProps {
 
 function  NewsCard(props: INewsCardProps) {
   const [likeClicked, setLikeClicked] = useState(0)
-  let { description, commentCount, likeCount, title, imgSrc, _id, style,flex } = props
+  let { description, commentCount, likeCount, title, imgSrc, _id} = props
 
   function handleClick() {
     axios
@@ -31,8 +31,8 @@ function  NewsCard(props: INewsCardProps) {
       })
   }
   return (
-    <div className={'news-card-container'} style={style}>
-      <Content className={'news-card-box'} style={flex}>
+    <div className={'news-card-container'} >
+      <Content className={'news-card-box'}>
         <div
           className={'news-card-image'}
           style={{
