@@ -1,6 +1,9 @@
 import React from 'react'
 
-function VolSearchResult() {
+interface IVolunteerResult {
+  term?:string
+}
+function VolSearchResult(props:IVolunteerResult) {
   return (
     <div>
       <h1>Volunteer Search result</h1>

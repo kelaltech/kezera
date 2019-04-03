@@ -26,16 +26,16 @@
   }
 }
 
-.result, .result-news {
+.result {
   width: 100%;
-  background-color: #6b6b6b;
+  margin: 0;
+}
 
-  div:nth-child(1) {
-    //width: 90%;
-    margin: 0 auto;
-    background-color: #fefefe;
-    height: auto;
-    display: flex;
+.result-news, .result-event, .result-organization {
+  display: flex;
+  justify-content: space-around;
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
   }
 }
 

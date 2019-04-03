@@ -10,6 +10,9 @@ import { faSearch} from  '@fortawesome/free-solid-svg-icons'
 
 import newsTemp from '../../../assets/images/news-temp.jpg'
 import EventCard from '../../../shared/components/event-card/event-card'
+import OrganizationCard from '../../components/volunteer-my-organization/volunteer-my-organizattion'
+import logo from '../../../assets/images/kelal-tech-logo.svg'
+import tempNews from '../../../assets/images/news-temp.jpg'
 
 function DiscoveryPage() {
   const [term, setTerm] = useState()
@@ -57,33 +60,39 @@ function DiscoveryPage() {
         </div>
 
         <div className={'discovery-result-container'}>
-          <div className={'result result-news'}>
+          <div className={'result'}>
             <h1>News</h1>
-            <div>
+            <div className={'result-news'}>
               {
                 Data.map((n:any)=>(
-                  <div>
                   <NewsCard
+                    style={{
+                      margin: '1px 3px'
+                    }}
                     {...n}/>
-                  </div>
                 ))
               }
             </div>
           </div>
-          <div className={'result result-event'}>
+          <div className={'result '}>
             <h1>Event</h1>
-            <div>
+            <div className={'result-event'}>
               {
                 event.map((n:any)=>(
-                  <div>
                     <EventCard event={n} role={'ORGANIZATION'} fetch={() => {}} />
-                  </div>
                 ))
               }
             </div>
           </div>
-          <div className={'result-organization'}>
+          <div className={'result'}>
             <h1>Organization</h1>
+            <div className={'result-organization'}>
+              {
+                data.map((o:any)=>(
+                  <OrganizationCard {...o} />
+                ))
+              }
+            </div>
           </div>
           <div className={'result-request'}>
             <h1>Request</h1>
@@ -123,5 +132,34 @@ const Data = [
     description: 'Get a random image by appending ?random to the end of the url.',
     imgSrc: newsTemp,
     id: 'id'
+  }
+]
+
+const data = [{
+  coverImg: tempNews,
+  profileImg: tempNews,
+  name: 'Marry Joy International',
+  type: 'Ngo',
+  motto: 'More Heart More Impact!,Humanity Movement',
+  location: 'Addis Ababa, Megegnagna',
+  website: 'https://merryjoy.org'
+},
+  {
+    coverImg: logo,
+    profileImg: tempNews,
+    name: 'Marry Joy International',
+    type: 'Ngo',
+    motto: 'More Heart More Impact!',
+    location: 'Addis Ababa, Megegnagna',
+    website: 'https://merryjoy.org'
+  },
+  {
+    coverImg: tempNews,
+    profileImg: logo,
+    name: 'Marry Joy International',
+    type: 'Ngo',
+    motto: 'More Heart More Impact!',
+    location: 'Addis Ababa, Megegnagna',
+    website: 'https://merryjoy.org'
   }
 ]
