@@ -17,11 +17,11 @@ export class Grid {
     if (!this._id) throw new KoaError('"_id" parameter not found.', 400, 'NO_ID')
   }
 
-  private static _checkData(data: Stream): void {
+  static _checkData(data: Stream): void {
     if (!data) throw new KoaError('"data" parameter not found.', 400, 'NO_DATA')
   }
 
-  private async _checkDocument(): Promise<void> {
+  async _checkDocument(): Promise<void> {
     if (!this.checkDocument) return
 
     if (!(await this.model.findById(this._id)))
@@ -32,16 +32,16 @@ export class Grid {
       )
   }
 
-  private async _checkFilename(filename: string): Promise<void> {
+  async _checkFilename(filename: string): Promise<void> {
     if (!(await this.has(filename)))
       throw new KoaError('No file to get.', 404, 'FILE_NOT_FOUND')
   }
 
-  private _path(filename: string) {
+  _getPath(filename: string) {
     return `${this.model.modelName.toLowerCase()}/${this._id}/${this.type}/${filename}`
   }
 
-  private get _gfs(): g.Grid {
+  get _gfs(): g.Grid {
     const gfs = this.app.grid
     if (!gfs) throw new KoaError('GridFS not available.', 500, 'NO_GRID')
 
@@ -58,7 +58,7 @@ export class Grid {
 
     return new Promise<void>((resolve, reject) => {
       const writeStream = this._gfs.createWriteStream({
-        filename: this._path(filename),
+        filename: this._getPath(filename),
         content_type: contentType
       })
       writeStream.once('finish', () => resolve())
@@ -79,14 +79,12 @@ export class Grid {
     await this._checkDocument()
     await this._checkFilename(filename)
 
-    return this._gfs.createReadStream({ filename: this._path(filename) })
+    return this._gfs.createReadStream({ filename: this._getPath(filename) })
   }
 
   async has(filename = 'default'): Promise<boolean> {
-    await this._checkDocument()
-
     return new Promise<boolean>((resolve, reject) => {
-      this._gfs.exist({ filename: this._path(filename) }, (err, found) =>
+      this._gfs.exist({ filename: this._getPath(filename) }, (err, found) =>
         err ? reject(err) : resolve(found)
       )
     })
@@ -95,7 +93,7 @@ export class Grid {
   async listFilenames(): Promise<string[]> {
     await this._checkDocument()
 
-    const folder = this._path('')
+    const folder = this._getPath('')
     const files = await this._gfs.files
       .find({ filename: new RegExp(`^${folder}`) })
       .toArray()
@@ -114,7 +112,7 @@ export class Grid {
     if (check) await this._checkFilename(filename)
 
     return new Promise<void>((resolve, reject) => {
-      this._gfs.remove({ filename: this._path(filename) }, err =>
+      this._gfs.remove({ filename: this._getPath(filename) }, err =>
         err ? reject(err) : resolve()
       )
     })

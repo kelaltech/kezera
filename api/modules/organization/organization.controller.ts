@@ -60,10 +60,10 @@ export class OrganizationController extends KoaController {
       text: `Hello,\n\nWe have received your application, and is currently under review. We will email you again after we finish reviewing your application.\n\nSincerely,\nThe SPVA Team`
     })
 
-    if (session && session.inTransaction()) await session.commitTransaction()
+    if (session && session.inTransaction()) await session.commitTransaction() // todo
 
     if (logoPath) {
-      const grid = new Grid(serverApp, OrganizationApplicationModel, document._id)
+      const grid = new Grid(serverApp, OrganizationApplicationModel, document._id, 'logo')
       await grid.set(logoPath, logoType)
     }
 

@@ -69,7 +69,7 @@ function OrganizationApply() {
     setOrganization({ ...organization, ...{ account } })
   }
 
-  const apply = () => {
+  const apply = (): void => {
     setState('SENDING')
 
     const data = new FormData()
@@ -115,7 +115,7 @@ function OrganizationApply() {
 
           {state === 'SENT' ? (
             <>
-              <Block last className={'padding-horizontal-normal font-S fg-blackish'}>
+              <Block last className={'padding-horizontal-normal'}>
                 We have successfully received your application, and will contact you once
                 again through your email ({organization.account.email || 'n/a'}) when we
                 finish the reviewing process.

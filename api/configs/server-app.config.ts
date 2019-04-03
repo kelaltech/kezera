@@ -8,6 +8,7 @@ import { CertificateDesignModel } from '../models/certificate-design/certificate
 import { KeyModel } from '../models/key/key.model'
 import { OrganizationModel } from '../models/organization/organization.model'
 import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
+import { FundModel } from '../models/fundraising/fundraising.model'
 
 import { accountRouter } from '../modules/account/account.router'
 import { newsRouter } from '../modules/news/news.route'
@@ -15,7 +16,7 @@ import { requestRouter } from '../modules/request/request.router'
 import { eventRouter } from '../modules/event/event.router'
 import { organizationRouter } from '../modules/organization/organization.router'
 import { fundRouter } from '../modules/fundraising/fundraising.router'
-import { FundModel } from '../models/fundraising/fundraising.model'
+import { verifierRouter } from '../modules/verifier/verifier.router'
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
@@ -44,7 +45,8 @@ export const serverAppConfig: IServerAppConfig = {
     eventRouter,
     organizationRouter,
     requestRouter,
-    fundRouter
+    fundRouter,
+    verifierRouter
   ],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],
