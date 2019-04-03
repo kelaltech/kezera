@@ -1,0 +1,30 @@
+@import "../../../assets/styles/theme";
+
+.search-bar-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+.search-bar-input {
+  width: 100%;
+  max-width: 200px;
+  background-color: #eeeeee;
+  border-radius: 4px;
+  padding: 0 5px;
+  display: flex;
+  .input-search {
+    flex: 80%;
+  }
+  .input-search-icon {
+    text-align: center;
+    flex: 20%;
+    display: flex;
+    justify-content: center;
+    padding-left: 3px;
+    color: #cccccc;
+
+    *{
+      align-self: center;
+    }
+  }
+}
