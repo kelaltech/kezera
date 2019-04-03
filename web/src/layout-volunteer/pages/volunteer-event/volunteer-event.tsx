@@ -5,9 +5,42 @@ import ProductSlider from '../../components/volunteer-product-slider/volunteer-p
 import './volunteer-event.scss'
 import axios from 'axios'
 import EventCard from '../../../shared/components/event-card/event-card'
+import Slider from "react-slick";
+
+const settings = {
+  infinite: true,
+  slidesToShow: 4,
+  speed: 500,
+  responsive:  [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        initialSlide: 2
+      }
+    },
+    {
+      breakpoint: 580,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+};
 function VolunteerEvents() {
   const [events, setEvents] = useState([])
-  const [recentEvents, setRecentEvents] = useState([])
+  const [nearEvents, setNearEvents] = useState([])
 
   useEffect(() => {
     axios
@@ -18,41 +51,29 @@ function VolunteerEvents() {
       .catch(e => console.log(e))
 
     axios
-      .get('/api/event/recent') //todo change the api request
+      .get('/api/event/around/me') //todo change the api request
       .then(events => {
-        setRecentEvents(events.data)
+        setNearEvents(events.data)
       })
       .catch(e => console.log(e))
   }, [])
   return (
     <div className={'events-container'}>
-      <div className={'events-around-you'}>
-        <h4>Events Near you</h4>
-        <Block />
-        {events.map((event: any) => (
-          <div>
-            <Block />
-            <EventCard event={event} role={'VOLUNTEER'} fetch={() => {}} />
-            <Block />
-          </div>
-        ))}
-        <Block />
-      </div>
-      <div className={'events-list-container'}>
-        <h4>Coming up..! </h4>
-        <div>
-          <ProductSlider sliderWidth={events.length * 50 + '%'}>
+      <div className={'e-slider events-list-container'}>
+        <h4>Events around you </h4>
+          <Slider {...settings}>
             {events.map((event: any) => (
-              <div
-                style={{
-                  padding: '0 13px'
-                }}
-              >
-                <EventCard event={event} role={'VOLUNTEER'} fetch={() => {}} />
+              <div className={'slider-event-list'}>
+                <EventCard  event={event} role={'VOLUNTEER'} fetch={() => {}} />
               </div>
             ))}
-          </ProductSlider>
-        </div>
+           {/* {nearEvents.map((event: any) => (//todo uncomment
+              <div className={'slider-event-list'}>
+                <EventCard  event={event} role={'VOLUNTEER'} fetch={() => {}} />
+              </div>
+            ))}*/}
+
+          </Slider>
       </div>
       <Block />
       <div className={'events-list-container'}>
