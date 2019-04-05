@@ -1,4 +1,4 @@
-  @import '../fonts/fonts';
+@import '../fonts/fonts';
 
 @import 'theme';
 @import '~gerami/src/styles/index';
@@ -42,14 +42,13 @@ a {
     color: rgb(255, 75, 135);
   }
 }
+
 .gerami-input {
-  &:active {
-    background-color: transparent;
-  }
-  &:focus {
-    background-color: transparent;
-  }
+  &:active,
+  &:focus,
   &:hover {
+    margin-bottom: -$border;
+    border-bottom-width: $border * 2;
     background-color: transparent;
   }
 }

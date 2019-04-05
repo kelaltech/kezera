@@ -27,10 +27,12 @@ function LayoutVolunteer({ error, match }: Props) {
       <Layout
         noShell={noShell}
         preHeader={null}
-        headerOptions={{ navigation: layoutVolunteerNavigation(t, account) ,centerNode: <Search to={'/volunteer/search-result'}/>}}
+        headerOptions={{
+          navigation: layoutVolunteerNavigation(t, account),
+          centerNode: <Search to={'/volunteer/search-result'} />
+        }}
         error={error}
         nonContentHeight={164}
-
       >
         <Suspense fallback={<Loading delay />}>
           <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />

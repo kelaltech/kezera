@@ -2,51 +2,50 @@ import React, { useState, useEffect } from 'react'
 import { Tabs, Checkbox } from '@material-ui/core'
 import Tab from '@material-ui/core/Tab'
 import { Block } from 'gerami'
-import {FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faMinusCircle} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 import './volunteer-search-result.scss'
 import qs from 'qs'
 import axios from 'axios'
 import FormControlLabel from '@material-ui/core/es/FormControlLabel'
 import NewsSearchResult from '../../pages/volunteer-search-result/components/search-result-news/volunteer-search-news'
-import EventsSearchResult
-  from '../../pages/volunteer-search-result/components/volunteer-search-events/volunteer-search-events'
-import DonationSearchResult
-  from '../../pages/volunteer-search-result/components/volunteer-search-donations/volunteer-search-donations'
-import OrganizationSearchResult
-  from '../../pages/volunteer-search-result/components/volunteer-search-organizations/volunteer-search-organizations'
-import TaskSearchResult
-  from '../../pages/volunteer-search-result/components/volunteer-search-tasks/volunteer-search-tasks'
-import VolSearchResult
-  from '../../pages/volunteer-search-result/components/volunteer-search-volunteer/volunteer-search-volunteer'
+import EventsSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-events/volunteer-search-events'
+import DonationSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-donations/volunteer-search-donations'
+import OrganizationSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-organizations/volunteer-search-organizations'
+import TaskSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-tasks/volunteer-search-tasks'
+import VolSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-volunteer/volunteer-search-volunteer'
 
 function VolunteerSearchResult() {
   let [value, setValue] = useState(0)
   let [isCollapsed, setCollapse] = useState(false)
   let [searchTerm, setSearchTerm] = useState('')
   let [searchResult, setSearchResult] = useState([])
-  const collapseFilter = ()=>{
+  const collapseFilter = () => {
     setCollapse(!isCollapsed)
     let filter = document.getElementById('search_filters')
     let filterBox = document.getElementById('filters')
-    isCollapsed?filter!.style.height = '70vh':filter!.style.height = '0'
-    isCollapsed?filterBox!.style.display = 'block':filterBox!.style.display = 'none'
+    isCollapsed ? (filter!.style.height = '70vh') : (filter!.style.height = '0')
+    isCollapsed
+      ? (filterBox!.style.display = 'block')
+      : (filterBox!.style.display = 'none')
   }
 
-  useEffect(()=>{
-    setSearchTerm(qs.parse(window.location.search,{
-      ignoreQueryPrefix: true
-    }));
-    fetchAllResult();
-  },[])
+  useEffect(() => {
+    setSearchTerm(
+      qs.parse(window.location.search, {
+        ignoreQueryPrefix: true
+      })
+    )
+    fetchAllResult()
+  }, [])
 
-  const fetchAllResult = ()=>{
+  const fetchAllResult = () => {
     axios
       .get('/api/search/all')
-      .then((result:any)=>{
+      .then((result: any) => {
         setSearchResult(result.data)
       })
-      .catch((e:any)=>console.log(e))
+      .catch((e: any) => console.log(e))
   }
 
   return (
@@ -55,46 +54,50 @@ function VolunteerSearchResult() {
         <div className={'search-filter-container'}>
           <div className={'search-filter-top'}>
             <h4>Filter</h4>
-            <span onClick={collapseFilter}>{ isCollapsed?
-              <FontAwesomeIcon icon={faPlusCircle}/>:
-              <FontAwesomeIcon icon={faMinusCircle}/>}
+            <span onClick={collapseFilter}>
+              {isCollapsed ? (
+                <FontAwesomeIcon icon={faPlusCircle} />
+              ) : (
+                <FontAwesomeIcon icon={faMinusCircle} />
+              )}
             </span>
           </div>
           <div id={'search_filters'} className={'search-filters'}>
             <div className={'filters'} id={'filters'}>
               <FormControlLabel
-                control={<Checkbox value={'Checked'}/>}
-                label={'Location'}/>
+                control={<Checkbox value={'Checked'} />}
+                label={'Location'}
+              />
               <FormControlLabel
-                control={<Checkbox value={'Checked'}/>}
-                label={'profession'}/>
+                control={<Checkbox value={'Checked'} />}
+                label={'profession'}
+              />
+              <FormControlLabel control={<Checkbox value={'Checked'} />} label={'NGo'} />
+              <FormControlLabel control={<Checkbox value={'Checked'} />} label={'Govt'} />
               <FormControlLabel
-                control={<Checkbox value={'Checked'}/>}
-                label={'NGo'}/>
+                control={<Checkbox value={'Checked'} />}
+                label={'Hospital'}
+              />
               <FormControlLabel
-                control={<Checkbox value={'Checked'}/>}
-                label={'Govt'}/>
+                control={<Checkbox value={'Checked'} />}
+                label={'from subscription'}
+              />
               <FormControlLabel
-                control={<Checkbox value={'Checked'}/>}
-                label={'Hospital'}/>
+                control={<Checkbox value={'Checked'} />}
+                label={'Recent'}
+              />
               <FormControlLabel
-                control={<Checkbox value={'Checked'}/>}
-                label={'from subscription'}/>
-              <FormControlLabel
-                control={<Checkbox value={'Checked'}/>}
-                label={'Recent'}/>
-              <FormControlLabel
-                control={<Checkbox value={'Checked'}/>}
-                label={'Recent'}/>
+                control={<Checkbox value={'Checked'} />}
+                label={'Recent'}
+              />
             </div>
-
           </div>
         </div>
         <div>
           <Tabs
             style={{
               position: 'sticky',
-              top:'55px'
+              top: '55px'
             }}
             value={value}
             onChange={(e, v) => setValue(v)}
@@ -119,32 +122,32 @@ function VolunteerSearchResult() {
           )}
           {value === 1 && (
             <Block>
-              <NewsSearchResult term={ searchTerm} />
+              <NewsSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 2 && (
             <Block>
-              <EventsSearchResult term={ searchTerm} />
+              <EventsSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 3 && (
             <Block>
-              <TaskSearchResult term={ searchTerm} />
+              <TaskSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 4 && (
             <Block>
-              <DonationSearchResult term={ searchTerm}/>
+              <DonationSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 5 && (
             <Block>
-              <OrganizationSearchResult term={ searchTerm} />
+              <OrganizationSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 6 && (
             <Block>
-              <VolSearchResult term={searchTerm}/>
+              <VolSearchResult term={searchTerm} />
             </Block>
           )}
         </div>

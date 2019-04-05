@@ -12,13 +12,13 @@ export interface INewsCardProps {
   description: string
   imgSrc: string
   _id: string
-  style?:CSSProperties
-  flex?:CSSProperties
+  style?: CSSProperties
+  flex?: CSSProperties
 }
 
-function  NewsCard(props: INewsCardProps) {
+function NewsCard(props: INewsCardProps) {
   const [likeClicked, setLikeClicked] = useState(0)
-  let { description, commentCount, likeCount, title, imgSrc, _id, style,flex } = props
+  let { description, commentCount, likeCount, title, imgSrc, _id, style, flex } = props
 
   function handleClick() {
     axios

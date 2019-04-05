@@ -3,14 +3,14 @@ import { Button, Loading } from 'gerami'
 import Axios from 'axios'
 
 import './account-photo.scss'
-import useLocale from '../../hooks/use-locale/use-locale'
+import useLocale from '../../../../hooks/use-locale/use-locale'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   useAccountDispatch,
   useAccountState
-} from '../../../app/stores/account/account-provider'
-import defaultPhoto from '../../../assets/images/login/promo-1.jpg'
-import { reloadAccount } from '../../../app/stores/account/account-actions'
+} from '../../../../../app/stores/account/account-provider'
+import defaultPhoto from '../../../../../assets/images/login/promo-1.jpg'
+import { reloadAccount } from '../../../../../app/stores/account/account-actions'
 
 interface Props {
   /**

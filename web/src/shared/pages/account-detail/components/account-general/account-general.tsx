@@ -10,13 +10,13 @@ import {
 } from '@material-ui/core'
 
 import './account-general.scss'
-import useLocale from '../../hooks/use-locale/use-locale'
+import useLocale from '../../../../hooks/use-locale/use-locale'
 import {
   useAccountDispatch,
   useAccountState
-} from '../../../app/stores/account/account-provider'
-import { logout, updateAccount } from '../../../app/stores/account/account-actions'
-import { IAccountStatus } from '../../../../../api/models/account/account.model'
+} from '../../../../../app/stores/account/account-provider'
+import { logout, updateAccount } from '../../../../../app/stores/account/account-actions'
+import { IAccountStatus } from '../../../../../../../api/models/account/account.model'
 
 interface Props {
   /**

@@ -3,29 +3,27 @@ import axios from 'axios'
 import EventCard from '../../../../../shared/components/event-card/event-card'
 
 interface IEventResult {
-  term?:string
+  term?: string
 }
-function EventsSearchResult(props:IEventResult) {
-  const {term} = props
+function EventsSearchResult(props: IEventResult) {
+  const { term } = props
   const [events, setEvents] = useState([])
 
-  useEffect(()=>{
+  useEffect(() => {
     axios
-      .get('/api/event/search?term='+term)
-      .then((events:any)=>{
+      .get('/api/event/search?term=' + term)
+      .then((events: any) => {
         setEvents(events)
       })
-      .catch((e:any)=>console.log(e))
-  },[])
+      .catch((e: any) => console.log(e))
+  }, [])
   return (
     <div>
       <h1>Events Search result</h1>
       <div>
-        {
-          events.map((e:any)=>(
-            <EventCard event={e}/>
-          ))
-        }
+        {events.map((e: any) => (
+          <EventCard event={e} />
+        ))}
       </div>
     </div>
   )

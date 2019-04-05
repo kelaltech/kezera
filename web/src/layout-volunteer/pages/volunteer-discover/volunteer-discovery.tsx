@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import './volunteer-discovery.scss'
 import axios from 'axios'
-import {Block} from 'gerami'
-import PropTypes from 'prop-types';
+import { Block } from 'gerami'
+import PropTypes from 'prop-types'
 import NewsCard from '../../../shared/components/news-card/news-card'
 import { Input } from '@material-ui/core'
-import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faSearch} from  '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 import newsTemp from '../../../assets/images/news-temp.jpg'
 import EventCard from '../../../shared/components/event-card/event-card'
@@ -18,33 +18,30 @@ function DiscoveryPage() {
   const [term, setTerm] = useState()
   const [news, setNews] = useState([])
   const [event, setEvent] = useState([])
-  const handleSearchChange = (e:any)=>{
+  const handleSearchChange = (e: any) => {
     setTerm(e.target.value)
   }
-  useEffect(()=>{
+  useEffect(() => {
     axios
       .get('/api/news/all')
-      .then((news:any)=>{
+      .then((news: any) => {
         setNews(news.data)
       })
-      .catch(e=>console.log(e))
+      .catch(e => console.log(e))
 
     axios
       .get('/api/event/all')
-      .then((event:any)=>{
+      .then((event: any) => {
         setEvent(event.data)
       })
-      .catch(e=>console.log(e))
-  },[])
+      .catch(e => console.log(e))
+  }, [])
   return (
-
     <div>
       <div className={'discovery-container'}>
         <div className={'discovery-search-box'}>
           <div className={'discovery-search'}>
-            <div
-             className={'search-box'}
-            >
+            <div className={'search-box'}>
               <Input
                 type={'type'}
                 disableUnderline={true}
@@ -53,7 +50,7 @@ function DiscoveryPage() {
                 onChange={handleSearchChange}
               />
               <span>
-                <FontAwesomeIcon icon={faSearch}/>
+                <FontAwesomeIcon icon={faSearch} />
               </span>
             </div>
           </div>
@@ -63,35 +60,30 @@ function DiscoveryPage() {
           <div className={'result'}>
             <h1>News</h1>
             <div className={'result-news'}>
-              {
-                Data.map((n:any)=>(
-                  <NewsCard
-                    style={{
-                      margin: '1px 3px'
-                    }}
-                    {...n}/>
-                ))
-              }
+              {Data.map((n: any) => (
+                <NewsCard
+                  style={{
+                    margin: '1px 3px'
+                  }}
+                  {...n}
+                />
+              ))}
             </div>
           </div>
           <div className={'result '}>
             <h1>Event</h1>
             <div className={'result-event'}>
-              {
-                event.map((n:any)=>(
-                    <EventCard event={n} role={'ORGANIZATION'} fetch={() => {}} />
-                ))
-              }
+              {event.map((n: any) => (
+                <EventCard event={n} role={'ORGANIZATION'} fetch={() => {}} />
+              ))}
             </div>
           </div>
           <div className={'result'}>
             <h1>Organization</h1>
             <div className={'result-organization'}>
-              {
-                data.map((o:any)=>(
-                  <OrganizationCard {...o} />
-                ))
-              }
+              {data.map((o: any) => (
+                <OrganizationCard {...o} />
+              ))}
             </div>
           </div>
           <div className={'result-request'}>
@@ -103,8 +95,8 @@ function DiscoveryPage() {
   )
 }
 DiscoveryPage.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+  classes: PropTypes.object.isRequired
+}
 
 export default DiscoveryPage
 
@@ -135,15 +127,16 @@ const Data = [
   }
 ]
 
-const data = [{
-  coverImg: tempNews,
-  profileImg: tempNews,
-  name: 'Marry Joy International',
-  type: 'Ngo',
-  motto: 'More Heart More Impact!,Humanity Movement',
-  location: 'Addis Ababa, Megegnagna',
-  website: 'https://merryjoy.org'
-},
+const data = [
+  {
+    coverImg: tempNews,
+    profileImg: tempNews,
+    name: 'Marry Joy International',
+    type: 'Ngo',
+    motto: 'More Heart More Impact!,Humanity Movement',
+    location: 'Addis Ababa, Megegnagna',
+    website: 'https://merryjoy.org'
+  },
   {
     coverImg: logo,
     profileImg: tempNews,

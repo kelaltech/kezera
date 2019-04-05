@@ -21,7 +21,7 @@ const MyOrganization = lazy(() =>
 const News = lazy(() => import('../pages/volunteer-news/volunteer-news'))
 const Profile = lazy(() => import('../pages/volunteer-profile/volunteer-profile'))
 const Request = lazy(() => import('../pages/volunteer-request/volunteer-request'))
-const Task = lazy(()=>import('../pages/volunteer-task/volunteer-task'))
+const Task = lazy(() => import('../pages/volunteer-task/volunteer-task'))
 const SearchResult = lazy(() =>
   import('../pages/volunteer-search-result/volunteer-search-result')
 )

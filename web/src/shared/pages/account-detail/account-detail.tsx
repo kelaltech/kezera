@@ -2,8 +2,8 @@ import React, { lazy } from 'react'
 import { Block, Content, Page } from 'gerami'
 
 import useLocale from '../../hooks/use-locale/use-locale'
-import AccountHead from '../../components/account-head/account-head'
-import AccountGeneral from '../../components/account-general/account-general'
+import AccountHead from './components/account-head/account-head'
+import AccountGeneral from './components/account-general/account-general'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 
 const VolunteerSettings = lazy(() =>

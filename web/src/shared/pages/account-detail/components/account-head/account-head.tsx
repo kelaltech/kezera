@@ -2,13 +2,13 @@ import React from 'react'
 import { Content, Flex, Input } from 'gerami'
 
 import './account-head.scss'
-import useLocale from '../../hooks/use-locale/use-locale'
+import useLocale from '../../../../hooks/use-locale/use-locale'
 import AccountPhoto from '../account-photo/account-photo'
-import { updateAccount } from '../../../app/stores/account/account-actions'
+import { updateAccount } from '../../../../../app/stores/account/account-actions'
 import {
   useAccountDispatch,
   useAccountState
-} from '../../../app/stores/account/account-provider'
+} from '../../../../../app/stores/account/account-provider'
 
 interface Props {
   /**
