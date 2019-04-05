@@ -23,7 +23,7 @@ export async function organizationRequestToLeanDocument(
     _last,
 
     // handle account manually
-    account: await accountRequestToDocument(request.account, 'DISABLED', 'ORGANIZATION'),
+    account: await accountRequestToDocument(request.account, 'ACTIVE', 'ORGANIZATION'),
 
     type: request.type,
 
