@@ -1,5 +1,5 @@
 import React, { lazy } from 'react'
-import { Route, Switch } from 'react-router'
+import { Redirect, Route, Switch } from 'react-router'
 
 import { useAccountState } from '../../app/stores/account/account-provider'
 
@@ -71,6 +71,7 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/request/add`} component={RequestAdd} />
       <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
 
+      <Redirect exact from={`${p}/apply`} to={'/login/apply'} />
       <Route
         exact
         path={`${p}/certificate-design`}
