@@ -6,9 +6,6 @@ import { useAccountState } from '../../app/stores/account/account-provider'
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
 
-const OrganizationApply = lazy(() =>
-  import('../pages/organization-apply/organization-apply')
-)
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
 )
@@ -38,12 +35,24 @@ const RequestInformation = lazy(() =>
   import('../../shared/pages/request-detail/request-information')
 )
 
+const OrganizationApply = lazy(() =>
+  import('../pages/organization-apply/organization-apply')
+)
+const OrganizationCertificateDesign = lazy(() =>
+  import('../pages/organization-certificate-design/organization-certificate-design')
+)
+const OrganizationPortfolio = lazy(() =>
+  import('../pages/organization-portfolio/organization-portfolio')
+)
+const OrganizationSummary = lazy(() =>
+  import('../pages/organization-summary/organization-summary')
+)
+
 export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
 
   return (
     <Switch>
-      <Route exact path={`${p}/apply`} component={OrganizationApply} />
       <Route exact path={`${p}/account`} component={AccountDetail} />
 
       <Route exact path={`${p}/news`} component={News} />
@@ -64,6 +73,16 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/request/list`} component={RequestList} />
       <Route exact path={`${p}/request/add`} component={RequestAdd} />
       <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
+
+      <Route exact path={`${p}/apply`} component={OrganizationApply} />
+      <Route
+        exact
+        path={`${p}/certificate-design`}
+        component={OrganizationCertificateDesign}
+      />
+      <Route exact path={`${p}/portfolio`} component={OrganizationPortfolio} />
+      <Route exact path={`${p}/summary`} component={OrganizationSummary} />
+      <Route exact path={`${p}/`} component={OrganizationSummary} />
 
       <Route component={NotFound} />
     </Switch>

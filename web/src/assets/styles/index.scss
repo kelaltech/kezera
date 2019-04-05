@@ -16,13 +16,18 @@ body {
   );
 }
 
-a {
+.gerami-anchor,
+.gerami-anchor:visited {
   text-decoration: none !important;
 
   &:active,
   &:focus,
   &:hover {
     text-decoration: underline !important;
+  }
+
+  &:active {
+    color: $accent;
   }
 }
 
