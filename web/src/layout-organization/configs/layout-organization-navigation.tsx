@@ -14,21 +14,21 @@ function layoutOrganizationNavigation(
     items = items.concat([
       {
         to: '/organization/request/list',
-        icon: ['far', 'user-circle'],
+        icon: 'donate',
         name: `Donation Requests`, // todo: translate
         shortName: `Requests` // todo: translate
       },
       {
-        to: '/organization/news',
-        icon: ['far', 'user-circle'],
-        name: `Your News`, // todo: translate
-        shortName: `News` // todo: translate
-      },
-      {
         to: '/organization/event',
-        icon: ['far', 'user-circle'],
+        icon: ['far', 'calendar-alt'],
         name: `Your Events`, // todo: translate
         shortName: `Events` // todo: translate
+      },
+      {
+        to: '/organization/news',
+        icon: ['far', 'newspaper'],
+        name: `Your News`, // todo: translate
+        shortName: `News` // todo: translate
       },
       {
         to: '/organization/account',
