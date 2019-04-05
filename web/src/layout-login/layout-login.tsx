@@ -3,7 +3,6 @@ import { RouteComponentProps } from 'react-router'
 import { Loading } from 'gerami'
 import * as qs from 'qs'
 
-import './layout-login.scss'
 import useLocale from '../shared/hooks/use-locale/use-locale'
 import { useAccountState } from '../app/stores/account/account-provider'
 import LayoutLoginProviders from './configs/layout-login-providers'

@@ -35,9 +35,6 @@ const RequestInformation = lazy(() =>
   import('../../shared/pages/request-detail/request-information')
 )
 
-const OrganizationApply = lazy(() =>
-  import('../pages/organization-apply/organization-apply')
-)
 const OrganizationCertificateDesign = lazy(() =>
   import('../pages/organization-certificate-design/organization-certificate-design')
 )
@@ -74,7 +71,6 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/request/add`} component={RequestAdd} />
       <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
 
-      <Route exact path={`${p}/apply`} component={OrganizationApply} />
       <Route
         exact
         path={`${p}/certificate-design`}

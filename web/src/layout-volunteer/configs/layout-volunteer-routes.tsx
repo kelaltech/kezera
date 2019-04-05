@@ -9,9 +9,6 @@ const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
 )
-const AccountVolunteerRegister = lazy(() =>
-  import('../pages/volunteer-register/volunteer-register')
-)
 const Discovery = lazy(() => import('../pages/volunteer-discover/volunteer-discovery'))
 const Event = lazy(() => import('../pages/volunteer-event/volunteer-event'))
 const Landing = lazy(() => import('../pages/volunteer-landing/volunteer-landing'))
@@ -41,7 +38,9 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
           to={`/login?${qs.stringify({ continue: `${p}/account` })}`}
         />
       )}
-      <Route exact path={`${p}/register`} component={AccountVolunteerRegister} />
+
+      <Redirect exact from={`${p}/register`} to={'/login/register'} />
+
       <Route exact path={`${p}/discovery`} component={Discovery} />
       <Route exact path={`${p}/events`} component={Event} />
       <Route exact path={`${p}/landing`} component={Landing} />

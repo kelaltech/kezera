@@ -40,12 +40,6 @@ function layoutOrganizationNavigation(
   } else {
     items = items.concat([
       {
-        to: `/register?${qs.stringify({ continue: window.location.pathname })}`,
-        icon: ['far', 'user-circle'],
-        name: t`register-as-volunteer`,
-        shortName: t`register`
-      },
-      {
         to: `/login?${qs.stringify({ continue: window.location.pathname })}`,
         icon: 'sign-in-alt',
         name: t`login`,
