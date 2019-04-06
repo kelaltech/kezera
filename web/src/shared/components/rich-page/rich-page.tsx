@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 import { Block, Content, geramiSizeTypes, Page, Warning } from 'gerami'
 
 import { Namespace } from '../../../lib/language'
@@ -10,6 +10,7 @@ type Props = PropsWithChildren<{
   size?: geramiSizeTypes
   indentHorizontal?: boolean // suited for gerami.Yoga
 
+  documentTitle?: string // default to Props.title, if it is string
   title?: string | JSX.Element
   description?: string | JSX.Element
 
@@ -32,13 +33,38 @@ function RichPage({
   size = 'XXL',
   indentHorizontal = false,
 
+  documentTitle,
   title,
   description,
 
   error,
   onErrorClose
 }: Props) {
-  const { loading } = useLocale(languageNamespaces)
+  const { loading, t } = useLocale(languageNamespaces)
+
+  useEffect(() => {
+    const backup = document.title
+
+    const onBlur = () => {
+      document.title = 'Come back! We miss you.  :)' // todo: translate
+    }
+    const onFocus = () => {
+      document.title =
+        documentTitle || (title && typeof title === 'string' ? title : backup)
+    }
+
+    window.addEventListener('blur', onBlur)
+    window.addEventListener('focus', onFocus)
+
+    onFocus()
+
+    return () => {
+      window.removeEventListener('blur', onBlur)
+      window.removeEventListener('focus', onFocus)
+
+      document.title = backup
+    }
+  }, [])
 
   return (
     loading || (
