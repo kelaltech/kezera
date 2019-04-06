@@ -13,29 +13,85 @@ import EventCard from '../../../shared/components/event-card/event-card'
 import OrganizationCard from '../../components/volunteer-my-organization/volunteer-my-organizattion'
 import logo from '../../../assets/images/kelal-tech-logo.svg'
 import tempNews from '../../../assets/images/news-temp.jpg'
+import Slider from 'react-slick'
+import RequestCard from '../../../shared/components/request/request-card'
 
+const settings = {
+  infinite: true,
+  slidesToShow: 4,
+  speed: 500,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        initialSlide: 2
+      }
+    },
+    {
+      breakpoint: 580,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+}
 function DiscoveryPage() {
-  const [term, setTerm] = useState()
   const [news, setNews] = useState([])
   const [event, setEvent] = useState([])
-  const handleSearchChange = (e: any) => {
-    setTerm(e.target.value)
-  }
-  useEffect(() => {
-    axios
-      .get('/api/news/all')
-      .then((news: any) => {
-        setNews(news.data)
-      })
-      .catch(e => console.log(e))
+  const [organization, setOrganization] = useState([])
+  const [request, setRequest] = useState([])
 
+  useEffect(() => {
+    fetchOrganization()
+    fetchEvent()
+    fetchNews()
+    fetchRequest()
+  }, [])
+
+  const fetchEvent = () => {
     axios
-      .get('/api/event/all')
+      .get('/api/event/recent')
       .then((event: any) => {
         setEvent(event.data)
       })
       .catch(e => console.log(e))
-  }, [])
+  }
+  const fetchNews = () => {
+    axios
+      .get('/api/news/recent')
+      .then((news: any) => {
+        setNews(news.data)
+      })
+      .catch(e => console.log(e))
+  }
+  const fetchOrganization = () => {
+    axios
+      .get('/api/organization/recent')
+      .then((o: any) => {
+        setOrganization(o.data)
+      })
+      .catch(e => console.log(e))
+  }
+  const fetchRequest = () => {
+    axios
+      .get('/api/request/recent')
+      .then((r: any) => {
+        setRequest(r.data)
+      })
+      .catch(e => console.log(e))
+  }
   return (
     <div>
       <div className={'discovery-container'}>
@@ -47,7 +103,6 @@ function DiscoveryPage() {
                 disableUnderline={true}
                 autoComplete={'something'}
                 placeholder={'Search'}
-                onChange={handleSearchChange}
               />
               <span>
                 <FontAwesomeIcon icon={faSearch} />
@@ -57,37 +112,53 @@ function DiscoveryPage() {
         </div>
 
         <div className={'discovery-result-container'}>
-          <div className={'result'}>
+          <div>
             <h1>News</h1>
-            <div className={'result-news'}>
-              {Data.map((n: any) => (
-                <NewsCard
-                  style={{
-                    margin: '1px 3px'
-                  }}
-                  {...n}
-                />
-              ))}
+            <div className={'dis-slider'}>
+              <Slider {...settings}>
+                {news.map((n: any) => (
+                  <div className={'slider-list'}>
+                    <NewsCard {...n} />
+                  </div>
+                ))}
+              </Slider>
             </div>
           </div>
           <div className={'result '}>
             <h1>Event</h1>
-            <div className={'result-event'}>
-              {event.map((n: any) => (
-                <EventCard event={n} role={'ORGANIZATION'} fetch={() => {}} />
-              ))}
+            <div className={'dis-slider'}>
+              <Slider {...settings}>
+                {event.map((n: any) => (
+                  <div className={'slider-list'}>
+                    <EventCard event={n} role={'ORGANIZATION'} fetch={() => {}} />
+                  </div>
+                ))}
+              </Slider>
             </div>
           </div>
           <div className={'result'}>
             <h1>Organization</h1>
-            <div className={'result-organization'}>
-              {data.map((o: any) => (
-                <OrganizationCard {...o} />
-              ))}
+            <div className={'dis-slider'}>
+              <Slider {...settings}>
+                {organization.map((o: any) => (
+                  <div className={'slider-list'}>
+                    <OrganizationCard {...o} />
+                  </div>
+                ))}
+              </Slider>
             </div>
           </div>
           <div className={'result-request'}>
             <h1>Request</h1>
+            <div className={'dis-slider'}>
+              <Slider {...settings}>
+                {request.map((r: any) => (
+                  <div className={'slider-list'}>
+                    <RequestCard {...r} />
+                  </div>
+                ))}
+              </Slider>
+            </div>
           </div>
         </div>
       </div>
@@ -100,40 +171,50 @@ DiscoveryPage.propTypes = {
 
 export default DiscoveryPage
 
-const Data = [
-  {
-    title: 'Random image',
-    likeCount: 12,
-    commentCount: 223,
-    description: 'Get a random image by appending ?random to the end of the url.',
-    imgSrc: newsTemp,
-    id: 'id'
-  },
-  {
-    title: 'Random image',
-    likeCount: 12,
-    commentCount: 223,
-    description: 'Get a random image by appending ?random to the end of the url.',
-    imgSrc: newsTemp,
-    id: 'id'
-  },
-  {
-    title: 'Random image',
-    likeCount: 12,
-    commentCount: 223,
-    description: 'Get a random image by appending ?random to the end of the url.',
-    imgSrc: newsTemp,
-    id: 'id'
-  }
-]
-
+/*
 const data = [
   {
-    coverImg: tempNews,
+  coverImg: tempNews,
+  profileImg: tempNews,
+  name: 'Marry Joy International',
+  type: 'Ngo',
+  motto: 'More Heart More Impact!,Humanity Movement',
+  location: 'Addis Ababa, Megegnagna',
+  website: 'https://merryjoy.org'
+},
+  {
+    coverImg: logo,
     profileImg: tempNews,
     name: 'Marry Joy International',
     type: 'Ngo',
-    motto: 'More Heart More Impact!,Humanity Movement',
+    motto: 'More Heart More Impact!',
+    location: 'Addis Ababa, Megegnagna',
+    website: 'https://merryjoy.org'
+  },
+  {
+    coverImg: logo,
+    profileImg: tempNews,
+    name: 'Marry Joy International',
+    type: 'Ngo',
+    motto: 'More Heart More Impact!',
+    location: 'Addis Ababa, Megegnagna',
+    website: 'https://merryjoy.org'
+  },
+  {
+    coverImg: logo,
+    profileImg: tempNews,
+    name: 'Marry Joy International',
+    type: 'Ngo',
+    motto: 'More Heart More Impact!',
+    location: 'Addis Ababa, Megegnagna',
+    website: 'https://merryjoy.org'
+  },
+  {
+    coverImg: logo,
+    profileImg: tempNews,
+    name: 'Marry Joy International',
+    type: 'Ngo',
+    motto: 'More Heart More Impact!',
     location: 'Addis Ababa, Megegnagna',
     website: 'https://merryjoy.org'
   },
@@ -155,4 +236,4 @@ const data = [
     location: 'Addis Ababa, Megegnagna',
     website: 'https://merryjoy.org'
   }
-]
+]*/

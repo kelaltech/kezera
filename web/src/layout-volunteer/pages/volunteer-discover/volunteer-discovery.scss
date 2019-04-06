@@ -25,17 +25,10 @@
   }
 }
 
-.result {
-  width: 100%;
-  margin: 0;
+.slider-list {
+  padding: 0 5px;
 }
-
-.result-news,
-.result-event,
-.result-organization {
-  display: flex;
-  justify-content: space-around;
-  @media screen and (max-width: 500px) {
-    flex-direction: column;
-  }
+.dis-slider {
+  width: 80%;
+  margin: 0 auto;
 }
