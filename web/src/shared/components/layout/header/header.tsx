@@ -66,7 +66,7 @@ export default function Header({
                             className="header-wordmark middle"
                             title={t`app-name` + ' | ' + t`Homepage`}
                           >
-                            <span className="fg-primary bold">{t`app-name`}</span>
+                            <span className="bold">{t`app-name`}</span>
                           </Anchor>
                         )}
                   </div>
@@ -130,7 +130,7 @@ export default function Header({
                   style={{ textDecoration: 'none' }}
                   onClick={() => setIsNavOpen(false)}
                 >
-                  <span className="fg-primary bold">{t`app-name`}</span>
+                  <span className="bold">{t`app-name`}</span>
                 </Anchor>
               </Block>
               {navigation &&

@@ -16,11 +16,18 @@ body {
   );
 }
 
-a {
+.gerami-anchor,
+.gerami-anchor:visited {
   text-decoration: none !important;
 
-  &:active,
-  &:focus,
+  &:active {
+    text-decoration: none !important;
+    color: $accent;
+  }
+  &:focus {
+    text-decoration: none !important;
+    color: $accent;
+  }
   &:hover {
     text-decoration: underline !important;
   }
@@ -42,14 +49,14 @@ a {
     color: rgb(255, 75, 135);
   }
 }
-.gerami-input {
-  &:active {
-    background-color: transparent;
-  }
-  &:focus {
-    background-color: transparent;
-  }
+
+.gerami-input,
+.gerami-textarea {
+  &:active,
+  &:focus,
   &:hover {
+    margin-bottom: -$border;
+    border-bottom-width: $border * 2;
     background-color: transparent;
   }
 }

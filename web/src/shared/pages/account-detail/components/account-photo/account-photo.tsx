@@ -3,14 +3,13 @@ import { Button, Loading } from 'gerami'
 import Axios from 'axios'
 
 import './account-photo.scss'
-import useLocale from '../../hooks/use-locale/use-locale'
+import useLocale from '../../../../hooks/use-locale/use-locale'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   useAccountDispatch,
   useAccountState
-} from '../../../app/stores/account/account-provider'
-import defaultPhoto from '../../../assets/images/login/promo-1.jpg'
-import { reloadAccount } from '../../../app/stores/account/account-actions'
+} from '../../../../../app/stores/account/account-provider'
+import { reloadAccount } from '../../../../../app/stores/account/account-actions'
 
 interface Props {
   /**
@@ -70,8 +69,11 @@ function AccountPhoto({ readonly }: Props) {
           onClick={() => inputRef.current && inputRef.current.click()}
           style={{
             backgroundImage: submitting
-              ? 'none'
-              : `url(${account.photoUri || defaultPhoto})`
+              ? 'linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95))'
+              : account.photoUri
+              ? `url(${account.photoUri})`
+              : 'linear-gradient(to top right, transparent, rgba(255,255,255,0.42))',
+            color: account.photoUri ? undefined : 'rgba(255,255,255,0.95)'
           }}
         >
           {submitting ? (

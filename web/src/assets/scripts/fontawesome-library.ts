@@ -26,13 +26,19 @@ import {
   faFileContract,
   faUserTie,
   faGlobeAfrica,
-  faInfoCircle
+  faInfoCircle,
+  faNewspaper,
+  faDonate,
+  faUserCircle,
+  faHandsHelping
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import {
-  faUserCircle,
-  faCommentAlt,
-  faHeart as Heart
+  faUserCircle as farUserCircle,
+  faCommentAlt as farCommentAlt,
+  faHeart as farHeart,
+  faNewspaper as farNewspaper,
+  faCalendarAlt as farCalendarAlt
 } from '@fortawesome/free-regular-svg-icons'
 
 export default function fontawesomeLibrary() {
@@ -65,12 +71,16 @@ export default function fontawesomeLibrary() {
     faFileContract,
     faUserTie,
     faGlobeAfrica,
-    faInfoCircle
+    faInfoCircle,
+    faNewspaper,
+    faDonate,
+    faUserCircle,
+    faHandsHelping
   )
 
   // brands
   library.add(faFacebook)
 
   // regular (free)
-  library.add(faUserCircle, faCommentAlt, Heart)
+  library.add(farUserCircle, farCommentAlt, farHeart, farNewspaper, farCalendarAlt)
 }

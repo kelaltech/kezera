@@ -3,7 +3,7 @@ import { createReadStream } from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import { IOrganizationRequest, IOrganizationResponse } from './organization.apiv'
-import { add } from '../../lib/crud'
+import { add, get } from '../../lib/crud'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
 import {
@@ -13,6 +13,7 @@ import {
 import { OrganizationApplicationModel } from '../../models/organization-application/organization-application.model'
 import { email } from '../../lib/email'
 import { KoaError } from '../../lib/koa-error'
+import { OrganizationModel } from '../../models/organization/organization.model'
 
 export class OrganizationController extends KoaController {
   async apply(
@@ -68,5 +69,16 @@ export class OrganizationController extends KoaController {
     }
 
     return organizationDocumentToResponse(document)
+  }
+
+  async me(
+    session?: ClientSession,
+    account_id = super.getUser()!._id
+  ): Promise<IOrganizationResponse> {
+    const document = await get(OrganizationModel, null, {
+      conditions: { account: account_id },
+      session
+    })
+    return await organizationDocumentToResponse(document)
   }
 }

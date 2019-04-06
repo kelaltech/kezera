@@ -17,7 +17,7 @@ export function MyOrganizationProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    // todo: re-enable: reloadMyOrganization(dispatch)
+    reloadMyOrganization(dispatch)
   }, [])
 
   return (

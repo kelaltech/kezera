@@ -38,6 +38,9 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
           to={`/login?${qs.stringify({ continue: `${p}/account` })}`}
         />
       )}
+
+      <Redirect exact from={`${p}/register`} to={'/login/register'} />
+
       <Route exact path={`${p}/discovery`} component={Discovery} />
       <Route exact path={`${p}/events`} component={Event} />
       <Route exact path={`${p}/landing`} component={Landing} />

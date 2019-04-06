@@ -12,17 +12,8 @@
 .footer-right {
   width: 60px;
 
-  a,
-  a:visited {
+  a {
     color: transparentize($fg, 0.42);
-    text-decoration: none;
-
-    &:active,
-    &:focus,
-    &:hover {
-      color: $primary;
-      text-decoration: underline;
-    }
   }
 }
 
