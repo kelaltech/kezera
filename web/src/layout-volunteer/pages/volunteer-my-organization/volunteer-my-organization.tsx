@@ -28,7 +28,7 @@ function MyOrganization() {
       {organizations.subscribed.length !== 0 && (
         <div>
           <h3>My Organizations</h3>
-          <Yoga maxCol={2}>
+          <Yoga maxCol={1}>
             {//todo change data to organization.subscribed
             data.map(organization => (
               <MyOrganizationCard {...organization} />
