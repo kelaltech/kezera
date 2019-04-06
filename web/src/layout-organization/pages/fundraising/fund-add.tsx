@@ -1,15 +1,5 @@
-import React, { Component, useRef, useState } from 'react'
-import {
-  Block,
-  Button,
-  Content,
-  ImageInput,
-  Input,
-  Page,
-  TextArea,
-  Title,
-  Yoga
-} from 'gerami'
+import React, { useState } from 'react'
+import { Block, Content, Input, Title, Yoga } from 'gerami'
 import {
   FormControl,
   Input as MatInput,
@@ -17,104 +7,95 @@ import {
   MenuItem,
   Select
 } from '@material-ui/core'
-import { Schema } from 'mongoose'
-import Axios from 'axios'
 
 interface IFundProps {
-  _id: string
-  display: string
+  onChange: (fund: any) => void
 }
 
-export default function FundAdd(props: IFundProps) {
-  let [amount, setAmount] = useState()
-  let [currency, setCurrency] = useState()
-  let [startTime, setStartTime] = useState()
-  let [endTime, setEndTime] = useState()
+function FundAdd(props: IFundProps) {
+  const [fund, setFund] = useState<any>({
+    amount: '',
+    currency: 'ETB',
+    startTime: '',
+    endTime: ''
+  })
 
-  let HandleAdd = function(e: any) {
-    e.preventDefault()
-    let formData = new FormData()
-    formData.append('amount', amount)
-    formData.append('currency', currency)
-    formData.append('startTime', startTime)
-    formData.append('endTime', endTime)
-    formData.append('requestId', props._id.toString())
-    Axios.post('/api/fundraising/add', formData)
-      .then()
-      .catch()
+  let emitChange = function(changes: any): void {
+    props.onChange({ ...fund, ...changes })
+    setFund({ ...fund, ...changes })
   }
 
   return (
-    <Content size={'L'} style={{ display: props.display }}>
-      <form onSubmit={e => HandleAdd(e)}>
+    <Content size={'L'}>
+      <Block>
+        <Title size={'XL'}>Fundraising Specific</Title>
+      </Block>
+      <hr />
+      <Yoga maxCol={2}>
         <Block>
-          <Title size={'XL'}>Fundraising Specific</Title>
+          <Input
+            required={true}
+            onChange={e => emitChange({ amount: e.target.value })}
+            className={'full-width'}
+            value={fund.amount}
+            type={'text'}
+            label={'Amount of Money'}
+          />
         </Block>
-        <hr />
-        <Yoga maxCol={2}>
-          <Block>
-            <Input
-              onChange={e => setAmount(e.target.value)}
-              className={'full-width'}
-              name={'amount'}
-              type={'text'}
-              label={'Amount of Money'}
-            />
-          </Block>
-          <FormControl className={'full-width'}>
-            <InputLabel htmlFor={'fund-type-label-placeholder'} shrink>
-              Type of Currency
-            </InputLabel>
-            <Select
-              onChange={e => setCurrency(e.target.value)}
-              value={''}
-              input={
-                <MatInput
-                  placeholder={'Select the Type of Currency'}
-                  name="currency"
-                  id="fund-type-label-placeholder"
-                />
-              }
-            >
-              <MenuItem value={'USD'}>USD</MenuItem>
-              <MenuItem value={'ETB'}>ETB</MenuItem>
-              <MenuItem value={'EURO'}>EURO</MenuItem>
-              <MenuItem value={'POUND'}>POUND</MenuItem>
-            </Select>
-          </FormControl>
-        </Yoga>
+        <FormControl className={'full-width'}>
+          <InputLabel htmlFor={'fund-type-label-placeholder'} shrink>
+            Type of Currency
+          </InputLabel>
+          <Select
+            required={true}
+            onChange={e => emitChange({ currency: e.target.value })}
+            value={fund.currency}
+            input={
+              <MatInput
+                placeholder={'Select the Type of Currency'}
+                name="currency"
+                id="fund-type-label-placeholder"
+              />
+            }
+          >
+            <MenuItem value={'USD'}>USD</MenuItem>
+            <MenuItem value={'ETB'}>ETB</MenuItem>
+            <MenuItem value={'EURO'}>EURO</MenuItem>
+            <MenuItem value={'POUND'}>POUND</MenuItem>
+          </Select>
+        </FormControl>
+      </Yoga>
 
-        <Yoga maxCol={2}>
-          <Block>
-            <Title>Start Time</Title>
-          </Block>
-          <Block>
-            <Title>End Time</Title>
-          </Block>
-        </Yoga>
-
-        <Yoga maxCol={2}>
-          <Block>
-            <Input
-              className={'full-width'}
-              name={'startTime'}
-              type={'date'}
-              onChange={e => setStartTime(e.target.value)}
-            />
-          </Block>
-          <Block>
-            <Input
-              className={'full-width'}
-              name={'endTime'}
-              type={'date'}
-              onChange={e => setEndTime(e.target.value)}
-            />
-          </Block>
-        </Yoga>
-        <Block className={'right'}>
-          <Button type={'submit'}>Add</Button>
+      <Yoga maxCol={2}>
+        <Block>
+          <Title>Start Time</Title>
         </Block>
-      </form>
+        <Block>
+          <Title>End Time</Title>
+        </Block>
+      </Yoga>
+
+      <Yoga maxCol={2}>
+        <Block>
+          <Input
+            required={true}
+            className={'full-width'}
+            value={fund.startTime}
+            type={'date'}
+            onChange={e => emitChange({ startTime: e.target.value })}
+          />
+        </Block>
+        <Block>
+          <Input
+            className={'full-width'}
+            value={fund.endTime}
+            type={'date'}
+            onChange={e => emitChange({ endTime: e.target.value })}
+          />
+        </Block>
+      </Yoga>
     </Content>
   )
 }
+
+export default FundAdd

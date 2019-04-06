@@ -2,12 +2,23 @@ import { Block, Content, Page, Title, Yoga } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component, useEffect, useState } from 'react'
 import axios from 'axios'
+import { match, RouteComponentProps, withRouter } from 'react-router'
 
-export interface IRequestProps {
-  request: any
-}
+export default function RequestAdd() {
+  const [request, setRequest] = useState<any>(0)
 
-export default function RequestDetail({ request }: IRequestProps) {
+  useEffect(() => {
+    axios
+      .get(`/api/request/${request._id}`)
+      .then(res => {
+        setRequest(res.data)
+        console.log('successfully retrieved')
+        console.log(res.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }, [])
   return (
     <Page>
       <Content>

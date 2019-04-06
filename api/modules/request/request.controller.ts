@@ -5,6 +5,8 @@ import { IAccount } from '../../models/account/account.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
+import { AddTask, getTask } from '../task/task.controller'
+import { AddFund, getFund } from '../fundraising/fundraising.controller'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -30,9 +32,19 @@ export async function searchRequest(term: any): Promise<any> {
 export async function listRequests(): Promise<any> {
   const requests = await list(RequestModel)
 
-  return requests.map((request: any) => {
+  return requests.map(request => {
     const ret = request.toJSON()
     ret.picture = '/api/request/picture/' + request._id
+
+    switch (ret.type) {
+      case 'Task':
+        ret.task = getTask(request._id)
+        break
+      case 'Fundraising':
+        ret.fundraising = getFund(request._id)
+        break
+    }
+
     return ret
   })
 }
@@ -57,6 +69,15 @@ export async function addRequestWithPicture(
 ): Promise<ObjectId> {
   data._by = await account._id
   const request = await add(RequestModel, data)
+
+  switch (data.type) {
+    case 'Fundraising':
+      await AddFund(JSON.parse(data.fundraising), request._id)
+      break
+    case 'Task':
+      await AddTask(JSON.parse(data.task), request._id)
+      break
+  }
 
   const grid = new Grid(serverApp, RequestModel, request._id)
 

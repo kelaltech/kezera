@@ -10,37 +10,39 @@ import {
   Loading,
   Page,
   SlideShow,
+  Title,
   Yoga
 } from 'gerami'
 import axios from 'axios'
 
-import './request-card.scss'
-
 export interface ITaskProps {
-  task: any
+  request: any
 }
 
-export default function TaskCard({ task }: ITaskProps) {
+export default function TaskCard({ request }: ITaskProps) {
   return (
-    <Card imgSrc={task.picture}>
-      <div>{task.name}</div>
-      <hr />
-      <Yoga maxCol={2}>
-        <h5>Start Date/Time</h5>
-        <h5>End Date/Time</h5>
-      </Yoga>
-      <Yoga maxCol={2}>
-        <label>{new Date(task.startDate).toDateString()}</label>
-        <label>{new Date(task.endDate).toDateString()}</label>
-      </Yoga>
-      <Yoga maxCol={2}>
-        <label>{new Date(task.startTime).toDateString()}</label>
-        <label>{new Date(task.endTime).toDateString()}</label>
-      </Yoga>
-      <label>{task.numberNeeded}</label>
+    <Card imgSrc={request.picture}>
+      <Title size={'L'} className={'center'}>
+        {request.name}
+      </Title>
       <hr />
       <Flex>
-        <Anchor className={'margin-top-normal'} to={'/api/detail/' + task._id}>
+        <label>{new Date(request.startDate).toDateString()}</label>
+        <FlexSpacer />
+        <label>-</label>
+        <FlexSpacer />
+        <label>{new Date(request.endDate).toDateString()}</label>
+      </Flex>
+      <Flex>
+        <label>{new Date(request.task.startTime).toDateString()}</label>
+        <FlexSpacer />
+        <label>{new Date(request.task.endTime).toDateString()}</label>
+      </Flex>
+      <h5>{request.type}</h5>
+      <label>{request.task.numberNeeded}</label>
+      <hr />
+      <Flex>
+        <Anchor className={'margin-top-normal'} to={'/api/request/' + request._id}>
           Details
         </Anchor>
         <FlexSpacer />

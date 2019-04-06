@@ -14,13 +14,13 @@ import FundAdd from '../../../../layout-organization/pages/fundraising/fund-add'
 
 function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
   let [value, setValue] = useState(0)
-  const [request, setRequests] = useState<any[]>([])
+  const [request, setRequest] = useState<any>()
 
   useEffect(() => {
     axios
-      .get(`/api/request/ + ${match.params._id}`)
+      .get(`/api/request/${match.params._id}`)
       .then(res => {
-        setRequests(res.data)
+        setRequest(res.data)
         console.log('successfully retrieved')
         console.log(res.data)
       })
@@ -46,7 +46,7 @@ function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
       </Tabs>
       {value === 0 && (
         <Block>
-          <RequestDetail request={request} />
+          <RequestDetail />
         </Block>
       )}
       {value === 1 && (
@@ -54,7 +54,7 @@ function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
           <Report />
         </Block>
       )}
-      {value === 2 && <Block>{/*<FundAdd _id={''}/>*/}</Block>}
+      {value === 2 && <Block>Dont GO!!!!</Block>}
       {value === 3 && (
         <Block>
           <Images />

@@ -15,15 +15,15 @@ import {
 } from 'gerami'
 import axios from 'axios'
 
-import './request-card.scss'
+import './fund-card.scss'
 
-export interface IRequestProps {
+export interface IFundProps {
   request: any
 }
 
-export default function RequestCard({ request }: IRequestProps) {
+export default function FundCard({ request }: IFundProps) {
   return (
-    <Card imgSrc={request.picture}>
+    <Card className={'fund-card'} imgSrc={request.picture}>
       <Title size={'L'} className={'center'}>
         {request.name}
       </Title>
@@ -36,6 +36,7 @@ export default function RequestCard({ request }: IRequestProps) {
         <label>{new Date(request.endDate).toDateString()}</label>
       </Flex>
       <h5>{request.type}</h5>
+      <h5>{request.fundraising.amount}</h5>
       <hr />
       <Flex>
         <Anchor
