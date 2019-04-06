@@ -49,15 +49,15 @@ function VolunteerNews() {
         <div>
           {news.map((n: any) => (
             <div>
-                <NewsCard
-                  _id={n._id}
-                  commentCount={n.comments.length}
-                  imgSrc={Data[i++].imgSrc}
-                  title={n.title}
-                  likeCount={n.likes.length}
-                  description={n.description}
-                />
-              <Block/>
+              <NewsCard
+                _id={n._id}
+                commentCount={n.comments.length}
+                imgSrc={Data[i++].imgSrc}
+                title={n.title}
+                likeCount={n.likes.length}
+                description={n.description}
+              />
+              <Block />
             </div>
           ))}
         </div>
