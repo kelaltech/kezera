@@ -1,6 +1,5 @@
-@import "../../../assets/styles/react-slick-slider";
+@import '../../../assets/styles/react-slick-slider';
 .discovery-container {
-
 }
 
 .discovery-search-box {
@@ -13,7 +12,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   margin: 0 auto;
   .search-box {
     border: 1px solid #6b6b6b;
@@ -26,16 +25,10 @@
   }
 }
 
-.result {
-  width: 100%;
-  margin: 0;
+.slider-list {
+  padding: 0 5px;
 }
-
-.result-news, .result-event, .result-organization {
-  display: flex;
-  justify-content: space-around;
-  @media screen and (max-width: 500px) {
-    flex-direction: column;
-  }
+.dis-slider {
+  width: 80%;
+  margin: 0 auto;
 }
-
