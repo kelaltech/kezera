@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useEffect } from 'react'
 import { Block, Content, geramiSizeTypes, Page, Warning } from 'gerami'
 
+import './rich-page.scss'
 import { Namespace } from '../../../lib/language'
 import useLocale from '../../hooks/use-locale/use-locale'
 
@@ -8,7 +9,6 @@ type Props = PropsWithChildren<{
   languageNamespaces?: Namespace[]
 
   size?: geramiSizeTypes
-  indentHorizontal?: boolean // suited for gerami.Yoga
 
   documentTitle?: string // default to Props.title, if it is string
   title?: string | JSX.Element
@@ -31,7 +31,6 @@ function RichPage({
   languageNamespaces = [],
 
   size = 'XXL',
-  indentHorizontal = false,
 
   documentTitle,
   title,
@@ -69,42 +68,27 @@ function RichPage({
   return (
     loading || (
       <Page>
-        <Content size={size} transparent>
+        <Content size={size} transparent style={{ overflow: 'visible' }}>
           {title === undefined ? null : (
             <>
-              <Block
-                first
-                className={`padding-horizontal-${indentHorizontal ? 'normal' : 'none'}`}
-              >
+              <Block first className={`padding-horizontal-none`}>
                 {typeof title === 'string' ? <h1>{title}</h1> : title}
               </Block>
 
-              <div
-                className={`padding-horizontal-${indentHorizontal ? 'normal' : 'none'}`}
-              >
+              <div className={`padding-horizontal-none`}>
                 <hr />
               </div>
             </>
           )}
 
           {description === undefined ? null : (
-            <Block
-              last
-              className={`padding-horizontal-${
-                indentHorizontal ? 'normal' : 'none'
-              } font-S fg-blackish`}
-            >
+            <Block last className={`padding-horizontal-none font-S fg-blackish`}>
               {description}
             </Block>
           )}
 
           {!error ? null : (
-            <Block
-              last
-              className={`padding-horizontal-${
-                indentHorizontal ? 'normal' : 'none'
-              } font-S`}
-            >
+            <Block last className={`padding-horizontal-none font-S`}>
               <Warning
                 problem={
                   typeof error === 'string' ? error : error.prettyMessage || error.message

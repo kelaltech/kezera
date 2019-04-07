@@ -105,8 +105,8 @@ function AccountGeneral({ readonly }: Props) {
 
               {(account.role === 'ORGANIZATION' || account.role === 'VOLUNTEER') && (
                 <>
-                  <Anchor to={`/${account.role.toLowerCase()}/portfolio`}>
-                    {t`account:go-to-portfolio`}
+                  <Anchor to={`/${account.role.toLowerCase()}/me`}>
+                    {t`account:go-to-my-profile`}
                   </Anchor>
                   <span className={'padding-horizontal-normal fg-whitish'}>|</span>
                 </>

@@ -6,7 +6,7 @@ import {
   OrganizationModel
 } from '../../models/organization/organization.model'
 import {
-  accountDocumentToResponse,
+  accountDocumentToPublicResponse,
   accountRequestToDocument
 } from '../account/account.filter'
 import { IAccount } from '../../models/account/account.model'
@@ -50,13 +50,14 @@ export async function organizationRequestToDocument(
 export async function organizationDocumentToResponse(
   document: Document & IOrganization
 ): Promise<IOrganizationResponse> {
-  const populatedAccount: Document & IAccount = (await document.populate('account'))
-    .account as any
+  const populatedAccount: Document & IAccount = ((await document
+    .populate('account')
+    .execPopulate()).account as any).toJSON()
 
   return {
     _id: document._id,
 
-    account: await accountDocumentToResponse(populatedAccount),
+    account: await accountDocumentToPublicResponse(populatedAccount),
 
     type: document.type,
 
@@ -66,7 +67,7 @@ export async function organizationDocumentToResponse(
     locations: document.locations,
     website: document.website,
 
-    subscribers: document.subscribers.map(subscriber => subscriber.toString()),
+    subscribersCount: document.subscribers.length,
 
     licensedNames: document.licensedNames,
     registrations: document.registrations
