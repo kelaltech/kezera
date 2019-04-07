@@ -1,11 +1,13 @@
 import React, { PropsWithChildren, useEffect } from 'react'
-import { Block, Content, geramiSizeTypes, Page, Warning } from 'gerami'
+import { Block, Content, geramiSizeTypes, Loading, Page, Warning } from 'gerami'
 
 import './rich-page.scss'
 import { Namespace } from '../../../lib/language'
 import useLocale from '../../hooks/use-locale/use-locale'
 
 type Props = PropsWithChildren<{
+  ready?: boolean
+
   languageNamespaces?: Namespace[]
 
   size?: geramiSizeTypes
@@ -28,6 +30,8 @@ TODO:
 function RichPage({
   children,
 
+  ready,
+
   languageNamespaces = [],
 
   size = 'XXL',
@@ -39,7 +43,7 @@ function RichPage({
   error,
   onErrorClose
 }: Props) {
-  const { loading, t } = useLocale(languageNamespaces)
+  const { loaded, t } = useLocale(languageNamespaces)
 
   useEffect(() => {
     const backup = document.title
@@ -65,43 +69,43 @@ function RichPage({
     }
   }, [])
 
-  return (
-    loading || (
-      <Page>
-        <Content size={size} transparent style={{ overflow: 'visible' }}>
-          {title === undefined ? null : (
-            <>
-              <Block first className={`padding-horizontal-none`}>
-                {typeof title === 'string' ? <h1>{title}</h1> : title}
-              </Block>
-
-              <div className={`padding-horizontal-none`}>
-                <hr />
-              </div>
-            </>
-          )}
-
-          {description === undefined ? null : (
-            <Block last className={`padding-horizontal-none font-S fg-blackish`}>
-              {description}
+  return !(ready && loaded) ? (
+    <Loading />
+  ) : (
+    <Page>
+      <Content size={size} transparent style={{ overflow: 'visible' }}>
+        {title === undefined ? null : (
+          <>
+            <Block first className={`padding-horizontal-none`}>
+              {typeof title === 'string' ? <h1>{title}</h1> : title}
             </Block>
-          )}
 
-          {!error ? null : (
-            <Block last className={`padding-horizontal-none font-S`}>
-              <Warning
-                problem={
-                  typeof error === 'string' ? error : error.prettyMessage || error.message
-                }
-                shy={() => onErrorClose && onErrorClose(undefined)}
-              />
-            </Block>
-          )}
+            <div className={`padding-horizontal-none`}>
+              <hr />
+            </div>
+          </>
+        )}
 
-          <div className={'rich-page-content'}>{children}</div>
-        </Content>
-      </Page>
-    )
+        {description === undefined ? null : (
+          <Block last className={`padding-horizontal-none font-S fg-blackish`}>
+            {description}
+          </Block>
+        )}
+
+        {!error ? null : (
+          <Block last className={`padding-horizontal-none font-S`}>
+            <Warning
+              problem={
+                typeof error === 'string' ? error : error.prettyMessage || error.message
+              }
+              shy={() => onErrorClose && onErrorClose(undefined)}
+            />
+          </Block>
+        )}
+
+        <div className={'rich-page-content'}>{children}</div>
+      </Content>
+    </Page>
   )
 }
 

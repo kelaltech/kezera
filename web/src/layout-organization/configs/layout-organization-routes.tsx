@@ -76,8 +76,8 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
         path={`${p}/certificate-design`}
         component={OrganizationCertificateDesign}
       />
-      <Route exact path={`${p}/me`} component={OrganizationDetail} />
       <Route exact path={`${p}/:_id`} component={OrganizationDetail} />
+      {/* exact path={`${p}/me`} is a specially supported Route by OrganizationDetail */}
 
       <Route component={NotFound} />
     </Switch>

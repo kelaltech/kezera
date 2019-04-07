@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Anchor, Content, Flex, FlexSpacer, Loading } from 'gerami'
+import { Anchor, Content, Flex, FlexSpacer } from 'gerami'
 import { Tab, Tabs } from '@material-ui/core'
 import * as qs from 'qs'
+import Axios from 'axios'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import { IOrganizationResponse } from '../../../apiv/organization.apiv'
 import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import OrganizationDetailInfo from './components/organization-detail-info/organization-detail-info'
@@ -17,7 +19,44 @@ type ITabName = 'info' | 'requests' | 'events' | 'news'
 function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: string }>) {
   const { t } = useLocale(['organization'])
 
-  const { myOrganization: organization } = useMyOrganizationState() // todo: temp, generalize, fetch from url :_id
+  const [error, setError] = useState()
+  const [organization, setOrganization] = useState<IOrganizationResponse>()
+
+  const { myOrganization } = useMyOrganizationState()
+
+  const [waitingForMe, setWaitingForMe] = useState(false)
+  const [requestedId, setRequestedId] = useState<string>()
+
+  useEffect(() => {
+    if (requestedId === match.params._id) {
+      return
+    } else if (match.params._id.toLowerCase() === 'me') {
+      setWaitingForMe(true)
+
+      if (myOrganization) {
+        setError(undefined)
+        setWaitingForMe(false)
+        setRequestedId(myOrganization._id)
+
+        setOrganization(myOrganization)
+      }
+    } else if (waitingForMe) {
+      return
+    } else {
+      setError(undefined)
+      setRequestedId(match.params._id)
+
+      setOrganization(undefined)
+
+      Axios.get<IOrganizationResponse>(`/api/organization/${match.params._id}`)
+        .then(response => {
+          if (!response.data || !response.data._id)
+            return setError(`Organization response is malformed.`)
+          setOrganization(response.data)
+        })
+        .catch(setError)
+    }
+  }, [match.params._id, myOrganization])
 
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true })
   const [tab, setTab] = useState<ITabName>(query.tab || 'info')
@@ -36,19 +75,22 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
     }
   }, [query.tab])
 
-  return !organization ? (
-    <Loading delay />
-  ) : (
+  return (
     <RichPage
+      ready={!!organization || error}
       languageNamespaces={['organization']}
-      documentTitle={organization.account.displayName}
+      error={error}
+      documentTitle={organization && organization.account.displayName}
       title={
-        <Anchor to={`/organization/${organization._id}`}>
-          <h1>{organization.account.displayName}</h1>
-        </Anchor>
+        organization && (
+          <Anchor to={`/organization/${organization._id}fail`}>
+            <h1>{organization.account.displayName}</h1>
+          </Anchor>
+        )
       }
       description={
-        !organization.motto && !organization.website ? (
+        organization &&
+        (!organization.motto && !organization.website ? (
           undefined
         ) : (
           <Flex>
@@ -71,27 +113,31 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
               </Anchor>
             )}
           </Flex>
-        )
+        ))
       }
     >
-      <Content className={'fg-whitish'}>
-        <Content>
-          <Tabs
-            value={tab}
-            onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
-          >
-            <Tab label={`Info.`} value={'info'} />
-            <Tab label={`Requests`} value={'requests'} />
-            <Tab label={`Events`} value={'events'} />
-            <Tab label={`News`} value={'news'} />
-          </Tabs>
-        </Content>
+      {organization && (
+        <Content className={'fg-whitish'}>
+          <Content>
+            <Tabs
+              value={tab}
+              onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
+            >
+              <Tab label={`Info.`} value={'info'} />
+              <Tab label={`Requests`} value={'requests'} />
+              <Tab label={`Events`} value={'events'} />
+              <Tab label={`News`} value={'news'} />
+            </Tabs>
+          </Content>
 
-        {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
-        {tab === 'requests' && <OrganizationDetailRequests organization={organization} />}
-        {tab === 'events' && <OrganizationDetailEvents organization={organization} />}
-        {tab === 'news' && <OrganizationDetailNews organization={organization} />}
-      </Content>
+          {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
+          {tab === 'requests' && (
+            <OrganizationDetailRequests organization={organization} />
+          )}
+          {tab === 'events' && <OrganizationDetailEvents organization={organization} />}
+          {tab === 'news' && <OrganizationDetailNews organization={organization} />}
+        </Content>
+      )}
     </RichPage>
   )
 }
