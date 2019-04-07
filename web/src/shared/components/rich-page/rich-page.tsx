@@ -4,7 +4,7 @@ import { Block, Content, geramiSizeTypes, Loading, Page, Warning } from 'gerami'
 import './rich-page.scss'
 import { Namespace } from '../../../lib/language'
 import useLocale from '../../hooks/use-locale/use-locale'
-import useTitle from '../../hooks/use-title/use-title'
+import useTitle, { IUseTitleOptions } from '../../hooks/use-title/use-title'
 
 type Props = PropsWithChildren<{
   ready?: boolean
@@ -14,6 +14,8 @@ type Props = PropsWithChildren<{
   size?: geramiSizeTypes
 
   documentTitle?: string // default to Props.title, if it is string
+  documentTitleOptions?: IUseTitleOptions
+
   title?: string | JSX.Element
   description?: string | JSX.Element
 
@@ -38,6 +40,8 @@ function RichPage({
   size = 'XXL',
 
   documentTitle,
+  documentTitleOptions,
+
   title,
   description,
 
@@ -45,7 +49,11 @@ function RichPage({
   onErrorClose
 }: Props) {
   const { loaded, t } = useLocale(languageNamespaces)
-  useTitle(documentTitle || (title && typeof title === 'string' ? title : undefined))
+
+  useTitle(
+    documentTitle || (title && typeof title === 'string' ? title : undefined),
+    documentTitleOptions
+  )
 
   return !(ready && loaded) ? (
     <Loading />

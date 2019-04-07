@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import useLocale from '../use-locale/use-locale'
 
-type IUseTitleOptions = {
+export type IUseTitleOptions = {
   blurTitle?: string | null
 }
 
