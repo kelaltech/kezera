@@ -1,21 +1,40 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router'
 import { Anchor, Content, Flex, FlexSpacer, Loading } from 'gerami'
 import { Tab, Tabs } from '@material-ui/core'
+import * as qs from 'qs'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
-import RichPage from '../../../shared/components/rich-page/rich-page'
 import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
+import RichPage from '../../../shared/components/rich-page/rich-page'
 import OrganizationDetailInfo from './components/organization-detail-info/organization-detail-info'
 import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-Requests'
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
-import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news' // todo: temp
+import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
 
-function OrganizationDetail() {
+type ITabName = 'info' | 'requests' | 'events' | 'news'
+
+function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: string }>) {
   const { t } = useLocale(['organization'])
 
   const { myOrganization: organization } = useMyOrganizationState() // todo: temp, generalize, fetch from url :_id
 
-  let [tab, setTab] = useState(0)
+  const query = qs.parse(window.location.search, { ignoreQueryPrefix: true })
+  const [tab, setTab] = useState<ITabName>(query.tab || 'info')
+
+  useEffect(() => {
+    switch (query.tab as ITabName | undefined) {
+      default:
+      case 'info':
+        return setTab('info')
+      case 'requests':
+        return setTab('requests')
+      case 'events':
+        return setTab('events')
+      case 'news':
+        return setTab('news')
+    }
+  }, [query.tab])
 
   return !organization ? (
     <Loading delay />
@@ -57,18 +76,21 @@ function OrganizationDetail() {
     >
       <Content className={'fg-whitish'}>
         <Content>
-          <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-            <Tab label={`Info.`} value={0} />
-            <Tab label={`Requests`} value={1} />
-            <Tab label={`Events`} value={2} />
-            <Tab label={`News`} value={3} />
+          <Tabs
+            value={tab}
+            onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
+          >
+            <Tab label={`Info.`} value={'info'} />
+            <Tab label={`Requests`} value={'requests'} />
+            <Tab label={`Events`} value={'events'} />
+            <Tab label={`News`} value={'news'} />
           </Tabs>
         </Content>
 
-        {tab === 0 && <OrganizationDetailInfo organization={organization} />}
-        {tab === 1 && <OrganizationDetailRequests organization={organization} />}
-        {tab === 2 && <OrganizationDetailEvents organization={organization} />}
-        {tab === 3 && <OrganizationDetailNews organization={organization} />}
+        {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
+        {tab === 'requests' && <OrganizationDetailRequests organization={organization} />}
+        {tab === 'events' && <OrganizationDetailEvents organization={organization} />}
+        {tab === 'news' && <OrganizationDetailNews organization={organization} />}
       </Content>
     </RichPage>
   )
