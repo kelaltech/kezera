@@ -4,6 +4,7 @@ import { Block, Content, geramiSizeTypes, Loading, Page, Warning } from 'gerami'
 import './rich-page.scss'
 import { Namespace } from '../../../lib/language'
 import useLocale from '../../hooks/use-locale/use-locale'
+import useTitle from '../../hooks/use-title/use-title'
 
 type Props = PropsWithChildren<{
   ready?: boolean
@@ -44,30 +45,7 @@ function RichPage({
   onErrorClose
 }: Props) {
   const { loaded, t } = useLocale(languageNamespaces)
-
-  useEffect(() => {
-    const backup = document.title
-
-    const onBlur = () => {
-      document.title = 'Come back! We miss you.  :)' // todo: translate
-    }
-    const onFocus = () => {
-      document.title =
-        documentTitle || (title && typeof title === 'string' ? title : backup)
-    }
-
-    window.addEventListener('blur', onBlur)
-    window.addEventListener('focus', onFocus)
-
-    onFocus()
-
-    return () => {
-      window.removeEventListener('blur', onBlur)
-      window.removeEventListener('focus', onFocus)
-
-      document.title = backup
-    }
-  }, [])
+  useTitle(documentTitle || (title && typeof title === 'string' ? title : undefined))
 
   return !(ready && loaded) ? (
     <Loading />
