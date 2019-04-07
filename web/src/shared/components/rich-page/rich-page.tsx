@@ -1,16 +1,21 @@
 import React, { PropsWithChildren, useEffect } from 'react'
-import { Block, Content, geramiSizeTypes, Page, Warning } from 'gerami'
+import { Block, Content, geramiSizeTypes, Loading, Page, Warning } from 'gerami'
 
+import './rich-page.scss'
 import { Namespace } from '../../../lib/language'
 import useLocale from '../../hooks/use-locale/use-locale'
+import useTitle, { IUseTitleOptions } from '../../hooks/use-title/use-title'
 
 type Props = PropsWithChildren<{
+  ready?: boolean
+
   languageNamespaces?: Namespace[]
 
   size?: geramiSizeTypes
-  indentHorizontal?: boolean // suited for gerami.Yoga
 
   documentTitle?: string // default to Props.title, if it is string
+  documentTitleOptions?: IUseTitleOptions
+
   title?: string | JSX.Element
   description?: string | JSX.Element
 
@@ -28,96 +33,65 @@ TODO:
 function RichPage({
   children,
 
+  ready,
+
   languageNamespaces = [],
 
   size = 'XXL',
-  indentHorizontal = false,
 
   documentTitle,
+  documentTitleOptions,
+
   title,
   description,
 
   error,
   onErrorClose
 }: Props) {
-  const { loading, t } = useLocale(languageNamespaces)
+  const { loaded, t } = useLocale(languageNamespaces)
 
-  useEffect(() => {
-    const backup = document.title
+  useTitle(
+    documentTitle || (title && typeof title === 'string' ? title : undefined),
+    documentTitleOptions
+  )
 
-    const onBlur = () => {
-      document.title = 'Come back! We miss you.  :)' // todo: translate
-    }
-    const onFocus = () => {
-      document.title =
-        documentTitle || (title && typeof title === 'string' ? title : backup)
-    }
-
-    window.addEventListener('blur', onBlur)
-    window.addEventListener('focus', onFocus)
-
-    onFocus()
-
-    return () => {
-      window.removeEventListener('blur', onBlur)
-      window.removeEventListener('focus', onFocus)
-
-      document.title = backup
-    }
-  }, [])
-
-  return (
-    loading || (
-      <Page>
-        <Content size={size} transparent>
-          {title === undefined ? null : (
-            <>
-              <Block
-                first
-                className={`padding-horizontal-${indentHorizontal ? 'normal' : 'none'}`}
-              >
-                {typeof title === 'string' ? <h1>{title}</h1> : title}
-              </Block>
-
-              <div
-                className={`padding-horizontal-${indentHorizontal ? 'normal' : 'none'}`}
-              >
-                <hr />
-              </div>
-            </>
-          )}
-
-          {description === undefined ? null : (
-            <Block
-              last
-              className={`padding-horizontal-${
-                indentHorizontal ? 'normal' : 'none'
-              } font-S fg-blackish`}
-            >
-              {description}
+  return !(ready && loaded) ? (
+    <Loading />
+  ) : (
+    <Page>
+      <Content size={size} transparent style={{ overflow: 'visible' }}>
+        {title === undefined ? null : (
+          <>
+            <Block first className={`padding-horizontal-none`}>
+              {typeof title === 'string' ? <h1>{title}</h1> : title}
             </Block>
-          )}
 
-          {!error ? null : (
-            <Block
-              last
-              className={`padding-horizontal-${
-                indentHorizontal ? 'normal' : 'none'
-              } font-S`}
-            >
-              <Warning
-                problem={
-                  typeof error === 'string' ? error : error.prettyMessage || error.message
-                }
-                shy={() => onErrorClose && onErrorClose(undefined)}
-              />
-            </Block>
-          )}
+            <div className={`padding-horizontal-none`}>
+              <hr />
+            </div>
+          </>
+        )}
 
-          <div className={'rich-page-content'}>{children}</div>
-        </Content>
-      </Page>
-    )
+        {description === undefined ? null : (
+          <Block last className={`padding-horizontal-none font-S fg-blackish`}>
+            {description}
+          </Block>
+        )}
+
+        {!error ? null : (
+          <Block last className={`padding-horizontal-none font-S`}>
+            <Warning
+              problem={
+                typeof error === 'string' ? error : error.prettyMessage || error.message
+              }
+              shy={() => onErrorClose && onErrorClose(undefined)}
+            />
+          </Block>
+        )}
+
+        <div className={'rich-page-content'}>{children}</div>
+      </Content>
+    </Page>
   )
 }
 

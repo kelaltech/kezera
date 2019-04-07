@@ -48,7 +48,7 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       <Route exact path={`${p}/my-organization`} component={MyOrganization} />
       <Route exact path={`${p}/news`} component={News} />
       <Route exact path={`${p}/tasks`} component={Task} />
-      <Route exact path={`${p}/profile`} component={Profile} />
+      <Route exact path={`${p}/me`} component={Profile} />
       <Route exact path={`${p}/request`} component={Request} />
       <Route exact path={`${p}/search-result`} component={SearchResult} />
       <Route component={NotFound} />

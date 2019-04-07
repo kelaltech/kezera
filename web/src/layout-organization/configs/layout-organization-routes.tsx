@@ -38,11 +38,8 @@ const RequestInformation = lazy(() =>
 const OrganizationCertificateDesign = lazy(() =>
   import('../pages/organization-certificate-design/organization-certificate-design')
 )
-const OrganizationPortfolio = lazy(() =>
-  import('../pages/organization-portfolio/organization-portfolio')
-)
-const OrganizationSummary = lazy(() =>
-  import('../pages/organization-summary/organization-summary')
+const OrganizationDetail = lazy(() =>
+  import('../../shared/pages/organization-detail/organization-detail')
 )
 
 export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string }) {
@@ -51,6 +48,9 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
   return (
     <Switch>
       <Route exact path={`${p}/account`} component={AccountDetail} />
+
+      <Redirect exact from={`${p}/apply`} to={'/login/apply'} />
+      <Redirect exact from={`${p}/`} to={'/organization/me'} />
 
       <Route exact path={`${p}/news`} component={News} />
       <Route exact path={`${p}/news/create`} component={NewsAddPage} />
@@ -71,15 +71,13 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/request/add`} component={RequestAdd} />
       <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
 
-      <Redirect exact from={`${p}/apply`} to={'/login/apply'} />
       <Route
         exact
         path={`${p}/certificate-design`}
         component={OrganizationCertificateDesign}
       />
-      <Route exact path={`${p}/portfolio`} component={OrganizationPortfolio} />
-      <Route exact path={`${p}/summary`} component={OrganizationSummary} />
-      <Route exact path={`${p}/`} component={OrganizationSummary} />
+      <Route exact path={`${p}/:_id`} component={OrganizationDetail} />
+      {/* exact path={`${p}/me`} is a specially supported Route by OrganizationDetail */}
 
       <Route component={NotFound} />
     </Switch>

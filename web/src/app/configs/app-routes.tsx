@@ -28,15 +28,18 @@ export default function AppRoutes() {
       {account && account.role === 'VERIFIER' ? (
         <Route path={'/verifier'} component={LayoutVerifier} />
       ) : null}
+      {
+        /* todo: create LayoutDefault, refactor, and secure this */
+        <Route path={'/volunteer'} component={LayoutVolunteer} />
+      }
 
-      <Route path={'/volunteer'} component={LayoutVolunteer} />
       <Route path={'/login'} component={LayoutLogin} />
 
       <Route
         path={''}
         component={
           !account
-            ? LayoutVolunteer
+            ? LayoutVolunteer /* todo: change to LayoutDefault */
             : account.role === 'VOLUNTEER'
             ? LayoutVolunteer
             : account.role === 'ORGANIZATION'

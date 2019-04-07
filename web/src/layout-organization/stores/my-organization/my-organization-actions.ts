@@ -2,7 +2,7 @@ import Axios, { CancelTokenSource } from 'axios'
 
 import { Action } from './my-organization-reducer'
 import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
-import { organizationPrivateResponseToRequest } from '../../../apiv/filters/organization.filter'
+import { organizationResponseToRequest } from '../../../apiv/filters/organization.filter'
 
 export function reloadMyOrganization(
   myOrganizationDispatch: (action: Action) => void,
@@ -45,7 +45,7 @@ export function updateMyOrganization(
 
     Axios.put(
       '/api/organization/edit-me',
-      await organizationPrivateResponseToRequest(myOrganization),
+      await organizationResponseToRequest(myOrganization),
       { withCredentials: true, cancelToken: updateCancellation.token }
     )
       .then(response => response.data)

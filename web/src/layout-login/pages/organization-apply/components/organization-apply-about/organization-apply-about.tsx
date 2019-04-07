@@ -81,11 +81,14 @@ function OrganizationApplyAbout({ organization, setOrganization }: Props) {
           </Flex>
         </Block>
 
+        {/* todo: accept array of locations */}
         <Block last>
+          {/* todo: make use of latitude and longitude (and google maps) */}
           <Flex>
             <div style={{ margin: 'auto auto auto 0', width: 40 }}>
               <FontAwesomeIcon icon={'map-marker'} />
             </div>
+            {/* todo: address may not be attached in request or addressed in the back-end, investigate! */}
             <TextField
               className={'margin-vertical-normal margin-auto full-width'}
               {...address.inputProps}

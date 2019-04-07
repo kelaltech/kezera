@@ -90,7 +90,6 @@ function OrganizationApply() {
   return (
     <RichPage
       languageNamespaces={['organization', 'account']}
-      indentHorizontal={true}
       title={`Organization Application`}
       description={
         state === 'SENT'
@@ -116,7 +115,7 @@ function OrganizationApply() {
         </>
       ) : (
         <>
-          <Yoga maxCol={2}>
+          <Yoga maxCol={2} className={'yoga-in-rich-page'}>
             <div className={'top'}>
               <AccountRegister account={organization.account} setAccount={setAccount} />
 
