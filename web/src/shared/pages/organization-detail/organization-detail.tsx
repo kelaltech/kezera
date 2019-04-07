@@ -1,15 +1,21 @@
-import React from 'react'
-import { Anchor, Flex, FlexSpacer, Loading } from 'gerami'
+import React, { useState } from 'react'
+import { Anchor, Content, Flex, FlexSpacer, Loading } from 'gerami'
+import { Tab, Tabs } from '@material-ui/core'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
-import OrganizationDetailAbout from './components/organization-detail-about/organization-detail-about' // todo: temp
+import OrganizationDetailInfo from './components/organization-detail-info/organization-detail-info'
+import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-Requests'
+import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
+import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news' // todo: temp
 
 function OrganizationDetail() {
   const { t } = useLocale(['organization'])
 
   const { myOrganization: organization } = useMyOrganizationState() // todo: temp, generalize, fetch from url :_id
+
+  let [tab, setTab] = useState(0)
 
   return !organization ? (
     <Loading delay />
@@ -49,7 +55,21 @@ function OrganizationDetail() {
         )
       }
     >
-      <OrganizationDetailAbout organization={organization} />
+      <Content className={'fg-whitish'}>
+        <Content>
+          <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+            <Tab label={`Info.`} value={0} />
+            <Tab label={`Requests`} value={1} />
+            <Tab label={`Events`} value={2} />
+            <Tab label={`News`} value={3} />
+          </Tabs>
+        </Content>
+
+        {tab === 0 && <OrganizationDetailInfo organization={organization} />}
+        {tab === 1 && <OrganizationDetailRequests organization={organization} />}
+        {tab === 2 && <OrganizationDetailEvents organization={organization} />}
+        {tab === 3 && <OrganizationDetailNews organization={organization} />}
+      </Content>
     </RichPage>
   )
 }
