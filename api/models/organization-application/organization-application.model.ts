@@ -1,7 +1,7 @@
 import { ModelFactory } from 'meseret'
 import { Document } from 'mongoose'
 
-import { organizationApplicationPaths } from './organization-application.path'
+import { organizationApplicationPaths } from './organization-application.paths'
 import { organizationApplicationMethods } from './organization-application.methods'
 import { IOrganization } from '../organization/organization.model'
 import { IAccount } from '../account/account.model'

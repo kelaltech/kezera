@@ -1,7 +1,7 @@
 import { ModelFactory } from 'meseret'
 import { Schema } from 'mongoose'
 
-import { certificateDesignPaths } from './certificate-design.path'
+import { certificateDesignPaths } from './certificate-design.paths'
 
 type ObjectId = Schema.Types.ObjectId | string
 

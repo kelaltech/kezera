@@ -1,6 +1,6 @@
 import { SchemaDefinition } from 'mongoose'
 
-import { organizationPaths } from '../organization/organization.path'
+import { organizationPaths } from '../organization/organization.paths'
 import { accountSchema } from '../account/account.model'
 
 export const organizationApplicationPaths: SchemaDefinition = {
