@@ -17,7 +17,7 @@ import { eventRouter } from '../modules/event/event.router'
 import { organizationRouter } from '../modules/organization/organization.router'
 import { fundRouter } from '../modules/fundraising/fundraising.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
-
+import { volunteerRouter } from '../modules/volunteer/volunteer.router'
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
 
@@ -46,7 +46,8 @@ export const serverAppConfig: IServerAppConfig = {
     organizationRouter,
     requestRouter,
     fundRouter,
-    verifierRouter
+    verifierRouter,
+    volunteerRouter
   ],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],

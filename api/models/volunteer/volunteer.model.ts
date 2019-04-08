@@ -1,11 +1,11 @@
 import { ModelFactory } from 'meseret'
 import { Document, Schema } from 'mongoose'
 
-import {VolunteerPaths } from './volunteer.path'
+import { VolunteerPaths } from './volunteer.path'
 
 type ObjectId = Schema.Types.ObjectId | string | number
 
-export interface IVolunteer extends Document{
+export interface IVolunteer extends Document {
   _at: Date | number
   account: ObjectId
   country: string
