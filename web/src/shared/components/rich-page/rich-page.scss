@@ -1,8 +1,45 @@
 @import '../../../assets/styles/theme';
 
+@keyframes cover-moves {
+  0% {
+    background-size: 100% auto;
+  }
+  100% {
+    background-size: 114% auto;
+  }
+}
+
+.rich-page-cover {
+  height: 42vh;
+
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: 100% auto;
+  box-shadow: inset 0 -3px 14px transparentize(black, 0.95),
+    inset 0 -2px 7px transparentize(black, 0.93);
+
+  animation: 42s ease-in-out 0s infinite alternate cover-moves;
+  transition: all 3s ease-in-out;
+}
+
+.rich-page-photo {
+  margin-top: -28vh;
+  margin-bottom: -7vh;
+
+  width: 35vh;
+  height: 35vh;
+
+  border-radius: 14%;
+
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+  box-shadow: $shade-S, $shade-L;
+}
+
 .rich-page-content {
   .yoga-in-rich-page {
-    // todo: move this to gerami v0.1.3
+    // todo: move this to gerami v0.1.3 (as a default style for Yoga)
     margin-right: -($space / 2) !important;
     margin-left: -($space / 2) !important;
     padding: ($space / 2) 0 !important;
