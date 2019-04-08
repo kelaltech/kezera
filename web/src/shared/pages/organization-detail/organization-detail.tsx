@@ -77,13 +77,13 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
 
   return (
     <RichPage
-      ready={!!organization || error}
+      ready={!!(organization || error)}
       languageNamespaces={['organization']}
       error={error}
       documentTitle={organization && organization.account.displayName}
       title={
         organization && (
-          <Anchor to={`/organization/${organization._id}fail`}>
+          <Anchor to={`/organization/${organization._id}`}>
             <h1>{organization.account.displayName}</h1>
           </Anchor>
         )
@@ -117,7 +117,7 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
       }
     >
       {organization && (
-        <Content className={'fg-whitish'}>
+        <Content className={'bg-whitish'} style={{ overflow: 'visible' }}>
           <Content>
             <Tabs
               value={tab}

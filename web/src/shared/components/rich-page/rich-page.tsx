@@ -55,7 +55,7 @@ function RichPage({
     documentTitleOptions
   )
 
-  return !(ready && loaded) ? (
+  return !(ready !== false && loaded) ? (
     <Loading />
   ) : (
     <Page>
@@ -79,14 +79,13 @@ function RichPage({
         )}
 
         {!error ? null : (
-          <Block last className={`padding-horizontal-none font-S`}>
-            <Warning
-              problem={
-                typeof error === 'string' ? error : error.prettyMessage || error.message
-              }
-              shy={() => onErrorClose && onErrorClose(undefined)}
-            />
-          </Block>
+          <Warning
+            className={`margin-bottom-very-big padding-horizontal-none font-S`}
+            problem={
+              typeof error === 'string' ? error : error.prettyMessage || error.message
+            }
+            shy={() => onErrorClose && onErrorClose(undefined)}
+          />
         )}
 
         <div className={'rich-page-content'}>{children}</div>

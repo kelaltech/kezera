@@ -81,4 +81,12 @@ export class OrganizationController extends KoaController {
     })
     return await organizationDocumentToResponse(document)
   }
+
+  async get(
+    session?: ClientSession,
+    _id = super.getParam('_id')
+  ): Promise<IOrganizationResponse> {
+    const document = await get(OrganizationModel, _id, { session })
+    return await organizationDocumentToResponse(document)
+  }
 }

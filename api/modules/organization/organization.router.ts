@@ -15,3 +15,6 @@ organizationRouter.get(
   authorize(['ORGANIZATION']),
   handle(OrganizationController, (c, s) => c.me(s))
 )
+
+// GET /api/organization/:_id
+organizationRouter.get('/:_id', handle(OrganizationController, (c, s) => c.get(s)))
