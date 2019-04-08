@@ -1,4 +1,4 @@
-import { add } from '../../lib/crud'
+import { add, search } from '../../lib/crud'
 import { AccountController } from '../account/account.controller'
 import { IAccountRequest } from '../account/account.apiv'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
@@ -15,4 +15,7 @@ export async function RegisterVolunteer(data: IAccountRequest): Promise<any> {
 
 export async function subscribedOrganization(account: IAccount) {
   return await OrganizationModel.find({ subscribers: account._id })
+}
+export async function searchVolunteer(term: string) {
+  return await search(VolunteerModel, term)
 }

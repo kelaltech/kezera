@@ -103,8 +103,8 @@ function VolunteerSearchResult() {
             onChange={(e, v) => setValue(v)}
             indicatorColor={'primary'}
             textColor={'primary'}
-            variant="fullWidth"
-            scrollButtons="auto"
+            variant="scrollable"
+            scrollButtons="on"
           >
             <Tab label={'All'} />
             <Tab label={'News'} />
