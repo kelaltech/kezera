@@ -1,5 +1,5 @@
 import Router = require('koa-router')
-import { RegisterVolunteer } from './volunteer.controller'
+import { RegisterVolunteer, subscribedOrganization } from './volunteer.controller'
 
 export const volunteerRouter = new Router({
   prefix: '/api/volunteer'
@@ -7,4 +7,8 @@ export const volunteerRouter = new Router({
 
 volunteerRouter.post('/register', async (ctx: any) => {
   ctx.body = await RegisterVolunteer(ctx.request.body)
+})
+
+volunteerRouter.get('/my/organization', async ctx => {
+  ctx.body = await subscribedOrganization(ctx.state.user)
 })
