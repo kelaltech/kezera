@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import {
   Anchor,
   Block,
   Button,
   Card,
+  Content,
   Flex,
   FlexSpacer,
   Image,
@@ -16,12 +17,39 @@ import {
 import axios from 'axios'
 
 import './request-card.scss'
+import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
+import RequestEdit from '../../../layout-organization/pages/request/request-edit'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 
 export interface IRequestProps {
   request: any
+  props: any
 }
 
-export default function RequestCard({ request }: IRequestProps) {
+export default function RequestCard({ request, props }: IRequestProps) {
+  let [open, setOpen] = useState(false)
+  const { account } = useAccountState()
+  const [requests, setRequests] = useState<any>([])
+
+  useEffect(() => {
+    axios
+      .get(`/api/request/${request.id}`)
+      .then(res => {
+        setRequests(res.data)
+        console.log('successfully retrieved')
+        console.log(res.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }, [])
+
+  let DeleteRequest = function(id: any) {
+    if (window.confirm('Are you sure?')) {
+      axios.delete(`/api/request/${request.id}`).catch(console.error)
+    }
+  }
   return (
     <Card imgSrc={request.picture}>
       <Title size={'L'} className={'center'}>
@@ -45,6 +73,21 @@ export default function RequestCard({ request }: IRequestProps) {
           Details
         </Anchor>
         <FlexSpacer />
+        <Block>
+          <span className={'full-width flex '}>
+            <Button onClick={() => props.setOpen(true)} className={'ActionButton'}>
+              <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
+            </Button>
+          </span>
+          <span className={'full-width flex'}>
+            <Button
+              onClick={() => DeleteRequest(request._id)}
+              className={'ActionButton '}
+            >
+              <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />
+            </Button>
+          </span>
+        </Block>
         <Button type="submit" primary>
           Support
         </Button>

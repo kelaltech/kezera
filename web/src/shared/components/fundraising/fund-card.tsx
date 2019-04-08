@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import {
   Anchor,
   Block,
   Button,
   Card,
+  Content,
   Flex,
   FlexSpacer,
   Image,
@@ -16,40 +17,69 @@ import {
 import axios from 'axios'
 
 import './fund-card.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAccountState } from '../../../app/stores/account/account-provider'
+import RequestEdit from '../../../layout-organization/pages/request/request-edit'
+import EditFund from '../../../layout-organization/pages/fundraising/fund-edit'
 
-export interface IFundProps {
+interface IFundProps {
   request: any
 }
 
 export default function FundCard({ request }: IFundProps) {
+  let [open, setOpen] = useState(false)
+  const { account } = useAccountState()
+
+  let DeleteRequest = function(id: any) {
+    if (window.confirm('Are you sure?')) {
+      axios.delete(`/api/request/${id}`).catch(console.error)
+    }
+  }
   return (
-    <Card className={'fund-card'} imgSrc={request.picture}>
-      <Title size={'L'} className={'center'}>
-        {request.name}
-      </Title>
-      <hr />
-      <Flex>
-        <label>{new Date(request.startDate).toDateString()}</label>
-        <FlexSpacer />
-        <label>-</label>
-        <FlexSpacer />
-        <label>{new Date(request.endDate).toDateString()}</label>
-      </Flex>
-      <h5>{request.type}</h5>
-      <h5>{request.fundraising.amount}</h5>
-      <hr />
-      <Flex>
-        <Anchor
-          className={'margin-top-normal'}
-          to={'/organization/request/' + request._id}
-        >
-          Details
-        </Anchor>
-        <FlexSpacer />
-        <Button type="submit" primary>
-          Support
-        </Button>
-      </Flex>
-    </Card>
+    <Content className={'fund-card'}>
+      <Card imgSrc={request.picture}>
+        <Title size={'L'} className={'center'}>
+          {request.name}
+        </Title>
+        <hr />
+        <Flex>
+          <label>{new Date(request.startDate).toDateString()}</label>
+          <FlexSpacer />
+          <label>-</label>
+          <FlexSpacer />
+          <label>{new Date(request.endDate).toDateString()}</label>
+        </Flex>
+        <h5>{request.type}</h5>
+        <h5>{request.fundraising.amount}</h5>
+        <hr />
+        <Flex>
+          <Anchor
+            className={'margin-top-normal'}
+            to={`/organization/request/${request._id}`}
+          >
+            Details
+          </Anchor>
+          <FlexSpacer />
+          <Flex>
+            <span className={'full-width flex '}>
+              <Button
+                onClick={() => <EditFund request={request} />}
+                className={'ActionButton'}
+              >
+                <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
+              </Button>
+            </span>
+            <span className={'full-width flex'}>
+              <Button
+                onClick={() => DeleteRequest(request._id)}
+                className={'ActionButton '}
+              >
+                <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
+              </Button>
+            </span>
+          </Flex>
+        </Flex>
+      </Card>
+    </Content>
   )
 }

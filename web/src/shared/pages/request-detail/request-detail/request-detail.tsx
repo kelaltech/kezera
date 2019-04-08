@@ -4,21 +4,11 @@ import React, { Component, useEffect, useState } from 'react'
 import axios from 'axios'
 import { match, RouteComponentProps, withRouter } from 'react-router'
 
-export default function RequestAdd() {
-  const [request, setRequest] = useState<any>(0)
+export interface IRequestDetailProps {
+  request: any
+}
 
-  useEffect(() => {
-    axios
-      .get(`/api/request/${request._id}`)
-      .then(res => {
-        setRequest(res.data)
-        console.log('successfully retrieved')
-        console.log(res.data)
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }, [])
+export default function RequestDetail({ request }: IRequestDetailProps) {
   return (
     <Page>
       <Content>

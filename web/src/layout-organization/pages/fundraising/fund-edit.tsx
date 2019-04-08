@@ -27,46 +27,30 @@ import { IAccountStatus } from '../../../../../api/models/account/account.model'
 import FundAdd from '../fundraising/fund-add'
 import { Schema } from 'mongoose'
 
-function RequestAdd({ history }: RouteComponentProps<{}>) {
-  const { account } = useAccountState()
-  let [type, setType] = useState<any>(0)
-  let [id, setId] = useState()
-
+interface IRequestProp {
+  request: any
+}
+function EditFund({ request }: IRequestProp) {
   let [specific, setSpecific] = useState()
 
-  const addRequest = (form: any) => {
-    console.log(3, specific)
-
-    form.preventDefault()
-    const data = new FormData()
-    data.append('name', form.target.name.value)
-    data.append('description', form.target.description.value)
-    data.append('startDate', form.target.startDate.value)
-    data.append('endDate', form.target.endDate.value)
-    data.append('type', type)
-
-    switch (type) {
-      case 'Fundraising':
-        data.append('Fundraising', JSON.stringify(specific))
-        break
-      case 'Task':
-        data.append('Task', JSON.stringify(specific))
-        break
-    }
-
-    if (uploadRef.current && uploadRef.current.files && uploadRef.current.files.length)
-      data.append('picture', uploadRef.current.files[0])
+  function editFunds(e: any, id: any) {
+    e.preventDefault()
+    let data = new FormData()
+    data.append('name', e.target.name.value)
+    data.append('description', e.target.description.value)
+    data.append('startDate', e.target.startDate.value)
+    data.append('endDate', e.target.endDate.value)
+    data.append('amount', e.target.amount.value)
+    data.append('currency', e.target.currency.value)
+    data.append('picture', e.target.image.files[0])
 
     axios
-      .post('/api/request/add', data, { withCredentials: true })
-      .then(res => {
-        console.log(res.data)
-        id = res.data
-        //history.push('/organization/request/' + res.data._id)
+      .put(`/api/request/${request.id}`, data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true
       })
-      .catch(e => {
-        console.log(e)
-      })
+      .then()
+      .catch(console.error)
   }
 
   const uploadRef = useRef<HTMLInputElement>(null)
@@ -74,7 +58,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
   return (
     <Page>
       <Content size={'L'}>
-        <form onSubmit={e => addRequest(e)} method={'POST'}>
+        <form onSubmit={e => editFunds(e, request.id)} method={'POST'}>
           <Block>
             <Title size={'XXL'}>Make A Request</Title>
           </Block>
@@ -124,46 +108,67 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
             </Block>
           </Yoga>
           <hr />
-          <Block>
+          <Yoga maxCol={2}>
+            <Block>
+              <Input
+                required={true}
+                className={'full-width'}
+                value={request.amount}
+                type={'text'}
+                label={'Amount of Money'}
+              />
+            </Block>
             <FormControl className={'full-width'}>
-              <InputLabel htmlFor={'request-type-label-placeholder'} shrink>
-                Type of Request
+              <InputLabel htmlFor={'fund-type-label-placeholder'} shrink>
+                Type of Currency
               </InputLabel>
               <Select
                 required={true}
-                value={type}
-                onChange={e => setType(e.target.value)}
+                value={request.currency}
                 input={
                   <MatInput
-                    placeholder={'Select the Type of Request'}
-                    name="request-type"
-                    id="request-type-label-placeholder"
+                    placeholder={'Select the Type of Currency'}
+                    name="currency"
+                    id="fund-type-label-placeholder"
                   />
                 }
               >
-                <MenuItem value={'Fundraising'}>Fundraising</MenuItem>
-                <MenuItem value={'Material'}>Material</MenuItem>
-                <MenuItem value={'Organ'}>Organ</MenuItem>
-                <MenuItem value={'Task'}>Task</MenuItem>
+                <MenuItem value={'USD'}>USD</MenuItem>
+                <MenuItem value={'ETB'}>ETB</MenuItem>
+                <MenuItem value={'EURO'}>EURO</MenuItem>
+                <MenuItem value={'POUND'}>POUND</MenuItem>
               </Select>
             </FormControl>
-          </Block>
-          {type == 'Fundraising' && <FundAdd onChange={setSpecific} />}
-          {type == 'Task' && <TaskAdd onChange={setSpecific} />}
+          </Yoga>
+
+          <Yoga maxCol={2}>
+            <Block>
+              <Title>Start Time</Title>
+            </Block>
+            <Block>
+              <Title>End Time</Title>
+            </Block>
+          </Yoga>
+
+          <Yoga maxCol={2}>
+            <Block>
+              <Input
+                required={true}
+                className={'full-width'}
+                value={request.startTime}
+                type={'date'}
+              />
+            </Block>
+            <Block>
+              <Input className={'full-width'} value={request.endTime} type={'date'} />
+            </Block>
+          </Yoga>
           <Block last className={'right'}>
-            <Button type={'submit'}>Make the Request</Button>
-          </Block>
-          <Block last className={'right'}>
-            <Button type={'submit'} to={`/organization/request/add`}>
-              Make Another Request
-            </Button>
-            <Button type={'submit'} to={`/organization/request/list`}>
-              Finish
-            </Button>
+            <Button type={'submit'}>Finish</Button>
           </Block>
         </form>
       </Content>
     </Page>
   )
 }
-export default withRouter(RequestAdd)
+export default EditFund

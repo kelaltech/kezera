@@ -1,5 +1,5 @@
 import { RequestModel } from '../../models/request/request.model'
-import { add, get, list, remove, search } from '../../lib/crud'
+import { add, edit, get, list, remove, search } from '../../lib/crud'
 import { Schema } from 'mongoose'
 import { IAccount } from '../../models/account/account.model'
 import { Stream } from 'stream'
@@ -84,4 +84,17 @@ export async function addRequestWithPicture(
   await grid.set(pic)
 
   return request._id
+}
+
+export async function editRequest(
+  id: Schema.Types.ObjectId,
+  body: any,
+  pic: Stream
+): Promise<any> {
+  await get(RequestModel, id)
+  {
+    await edit(RequestModel, id, body)
+    await new Grid(serverApp, RequestModel, id).remove()
+    await new Grid(serverApp, RequestModel, id).set(pic)
+  }
 }

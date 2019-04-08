@@ -46,7 +46,7 @@ function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
       </Tabs>
       {value === 0 && (
         <Block>
-          <RequestDetail />
+          <RequestDetail request={setRequest} />
         </Block>
       )}
       {value === 1 && (
