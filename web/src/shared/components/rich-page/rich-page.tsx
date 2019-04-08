@@ -74,7 +74,7 @@ function RichPage({
       }, coverDuration)
     }
     return () => (interval ? clearInterval(interval) : undefined)
-  }, [coverIndex])
+  }, [covers, covers.length, coverIndex])
 
   useEffect(() => {
     // prefetch all cover images into the browser's cache
@@ -89,12 +89,19 @@ function RichPage({
   ) : (
     <>
       {(coverIndex !== -1 || photo !== undefined) && (
-        <div
-          className={'rich-page-cover bg-whitish'}
-          style={
-            coverIndex === -1 ? {} : { backgroundImage: `url(${covers[coverIndex]})` }
-          }
-        />
+        <div style={{ overflow: 'hidden' }}>
+          <div
+            className={`${
+              photo !== undefined ? 'rich-page-cover-with-photo' : ''
+            } rich-page-cover bg-whitish`}
+            style={{
+              animationDuration: `${coverDuration}ms`,
+              ...(coverIndex === -1
+                ? {}
+                : { backgroundImage: `url(${covers[coverIndex]})` })
+            }}
+          />
+        </div>
       )}
       {photo && (
         <Content

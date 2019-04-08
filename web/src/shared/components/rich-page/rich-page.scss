@@ -2,39 +2,45 @@
 
 @keyframes cover-moves {
   0% {
-    background-size: 100% auto;
+    transform: scale3d(1.07, 1.07, 1);
   }
   100% {
-    background-size: 114% auto;
+    transform: scale3d(1.14, 1.14, 1);
   }
 }
 
 .rich-page-cover {
-  height: 42vh;
+  height: $space * 14;
 
   background-attachment: fixed;
   background-position: center center;
-  background-size: 100% auto;
+  background-size: cover;
   box-shadow: inset 0 -3px 14px transparentize(black, 0.95),
     inset 0 -2px 7px transparentize(black, 0.93);
 
-  animation: 42s ease-in-out 0s infinite alternate cover-moves;
+  animation: 14s ease-in-out 0s infinite alternate cover-moves;
   transition: all 3s ease-in-out;
+}
+.rich-page-cover-with-photo {
+  filter: brightness(0.42) blur(7px);
+  opacity: 0.84;
 }
 
 .rich-page-photo {
-  margin-top: -28vh;
-  margin-bottom: -7vh;
+  margin-top: -$space * 12;
+  margin-bottom: $space * 2;
 
-  width: 35vh;
-  height: 35vh;
+  width: $space * 10;
+  height: $space * 10;
 
   border-radius: 14%;
 
   background-attachment: scroll;
   background-position: center center;
   background-size: cover;
-  box-shadow: $shade-S, $shade-L;
+  box-shadow: $shade-S, $shade-M, $shade-L;
+
+  transform: scale3d(1, 1, 1);
 }
 
 .rich-page-content {

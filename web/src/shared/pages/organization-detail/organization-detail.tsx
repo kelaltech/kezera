@@ -77,6 +77,8 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
 
   return (
     <RichPage
+      covers={organization ? [organization.logoUri as string] : []}
+      photo={organization && organization.logoUri}
       ready={!!(organization || error)}
       languageNamespaces={['organization']}
       error={error}

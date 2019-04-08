@@ -48,11 +48,12 @@ export async function organizationRequestToDocument(
 }
 
 export async function organizationDocumentToResponse(
-  document: Document & IOrganization
+  document: Document & IOrganization,
+  account?: Document & IAccount
 ): Promise<IOrganizationResponse> {
-  const populatedAccount: Document & IAccount = ((await document
-    .populate('account')
-    .execPopulate()).account as any).toJSON()
+  const populatedAccount: Document & IAccount =
+    account ||
+    ((await document.populate('account').execPopulate()).account as any).toJSON()
 
   return {
     _id: document._id,
@@ -61,7 +62,7 @@ export async function organizationDocumentToResponse(
 
     type: document.type,
 
-    logoUri: `/api/organization/get-photo/${document._id}`,
+    logoUri: `/api/account/get-photo/${populatedAccount._id}`,
     motto: document.motto,
     bio: document.bio,
     locations: document.locations,
