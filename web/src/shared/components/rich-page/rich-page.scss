@@ -43,6 +43,11 @@
   transform: scale3d(1, 1, 1);
 }
 
+.rich-page-action-vaults {
+  display: inline-block;
+  margin: auto 0 auto 0.5em;
+}
+
 .rich-page-content {
   .yoga-in-rich-page {
     // todo: move this to gerami v0.1.3 (as a default style for Yoga)

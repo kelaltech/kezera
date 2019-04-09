@@ -1,5 +1,16 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
-import { Block, Content, geramiSizeTypes, Loading, Page, Warning } from 'gerami'
+import {
+  Block,
+  Button,
+  Content,
+  Flex,
+  FlexSpacer,
+  geramiSizeTypes,
+  Loading,
+  Page,
+  Warning
+} from 'gerami'
+import { IButtonProps } from 'gerami/src/components/Button/Button'
 
 import './rich-page.scss'
 import { Namespace } from '../../../lib/language'
@@ -23,15 +34,16 @@ type Props = PropsWithChildren<{
   title?: string | JSX.Element
   description?: string | JSX.Element
 
+  actions?: IButtonProps[]
+
   error?: string | { prettyMessage?: string; message?: string }
   onErrorClose?: (error: undefined) => void
 }>
 
 /*
 TODO:
-- support action buttons (with config) (also overridable with JSX.Element[] type)
-- support header images (with different sizes) (overridable by JSX.Element type)
-- support to use a custom (JSX.Element) error component
+- support to use a custom (JSX.Element) every sub-component (error, photo, cover, actions...)
+- support to style and className every sub-component (error, photo, cover, actions...)
 */
 
 function RichPage({
@@ -52,6 +64,8 @@ function RichPage({
 
   title,
   description,
+
+  actions = [],
 
   error,
   onErrorClose
@@ -112,10 +126,22 @@ function RichPage({
 
       <Page>
         <Content size={size} transparent style={{ overflow: 'visible' }}>
-          {title === undefined ? null : (
+          {title === undefined && !actions.length ? null : (
             <>
               <Block first className={`padding-horizontal-none`}>
-                {typeof title === 'string' ? <h1>{title}</h1> : title}
+                <Flex>
+                  <>{typeof title === 'string' ? <h1>{title}</h1> : title}</>
+
+                  <FlexSpacer />
+
+                  {actions.map(action => (
+                    <span className={'rich-page-action-vaults'}>
+                      <Button {...action as any}>
+                        {action.value || action.children}
+                      </Button>
+                    </span>
+                  ))}
+                </Flex>
               </Block>
 
               <div className={`padding-horizontal-none`}>
