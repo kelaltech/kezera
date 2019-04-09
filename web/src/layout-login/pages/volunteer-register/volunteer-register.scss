@@ -1,0 +1,13 @@
+@import '../../../assets/styles/theme';
+.vol-register-cont {
+  width: 40%;
+  margin: 0 auto;
+  text-align: right;
+
+  @media screen and (max-width: $mobile) {
+    width: 100%;
+    text-align: center;
+  }
+}
+.vol-submit-btn {
+}
