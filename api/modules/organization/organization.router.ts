@@ -19,17 +19,20 @@ organizationRouter.get(
 // GET /api/organization/:_id
 organizationRouter.get('/:_id', handle(OrganizationController, (c, s) => c.get(s)))
 
-// GET /api/organization/requests/:_id?since&count
+// GET /api/organization/requests/:organization_id?since&count
 organizationRouter.get(
-  '/requests/:_id',
+  '/requests/:organization_id',
   handle(OrganizationController, (c, s) => c.requests(s))
 )
 
-// GET /api/organization/events/:_id?since&count
+// GET /api/organization/events/:organization_id?since&count
 organizationRouter.get(
-  '/events/:_id',
+  '/events/:organization_id',
   handle(OrganizationController, (c, s) => c.events(s))
 )
 
-// GET /api/organization/news/:_id?since&count
-organizationRouter.get('/news/:_id', handle(OrganizationController, (c, s) => c.news(s)))
+// GET /api/organization/news/:organization_id?since&count
+organizationRouter.get(
+  '/news/:organization_id',
+  handle(OrganizationController, (c, s) => c.news(s))
+)

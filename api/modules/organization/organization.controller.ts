@@ -120,12 +120,14 @@ export class OrganizationController extends KoaController {
     since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
     count = super.getQuery('count') ? Number(super.getQuery('count')) : 14
   ): Promise<IEvent[]> {
+    // todo: remove the next line when Event.organizationId gets fixed
+    const organization = await get(OrganizationModel, organization_id)
     // todo: filter?
     return await list(EventModel, {
       session,
       since,
       count,
-      conditions: { organizationId: organization_id }
+      conditions: { organizationId: organization.account }
     })
   }
 
