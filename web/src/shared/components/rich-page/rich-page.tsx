@@ -134,8 +134,8 @@ function RichPage({
 
                   <FlexSpacer />
 
-                  {actions.map(action => (
-                    <span className={'rich-page-action-vaults'}>
+                  {actions.map((action, i) => (
+                    <span key={i} className={'rich-page-action-vaults'}>
                       <Button {...action as any}>
                         {action.value || action.children}
                       </Button>
