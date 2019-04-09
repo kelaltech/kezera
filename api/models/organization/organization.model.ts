@@ -1,7 +1,7 @@
 import { ModelFactory } from 'meseret'
 import { Schema } from 'mongoose'
 
-import { organizationPaths } from './organization.path'
+import { organizationPaths } from './organization.paths'
 
 type ObjectId = Schema.Types.ObjectId | string | number
 

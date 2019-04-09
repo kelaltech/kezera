@@ -65,9 +65,14 @@ export function updateAccount(
   accountDispatch({ type: 'set', account })
 }
 
-export function logout(accountDispatch: (action: Action) => void): void {
+export function logout(
+  accountDispatch: (action: Action) => void,
+  onLogout?: () => void
+): void {
   Axios.post('/api/account/logout').then(() => {
     window.localStorage.removeItem('account')
     accountDispatch({ type: 'unset' })
+
+    if (onLogout) onLogout()
   })
 }
