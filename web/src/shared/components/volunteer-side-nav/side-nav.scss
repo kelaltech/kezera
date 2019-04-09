@@ -1,0 +1,31 @@
+.drawer-container {
+  width: 24%;
+  position: fixed;
+  background-color: #f02139;
+  min-height: 100vh;
+  height: auto;
+  //z-index: -1;
+  display: flex;
+  transition: .5s all;
+}
+
+.small-nav {
+  width: 20%;
+  height: inherit;
+  background-color: #3f51b5;
+}
+.wide-nav {
+  width: 78%;
+  height: inherit;
+  background-color: #00b478;
+}
+.min-nav {
+  width: 0;
+  display: none;
+}
+
+.open-close {
+  width: 20px;
+  height: 40px;
+  background-color: dodgerblue;
+}

@@ -12,7 +12,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
-import axios from 'axios'
 import { useVolunteerDispatch, useVolunteerState } from '../../stores/volunteer/volunteer-provider'
 import { updateSetting } from '../../stores/volunteer/volunteer-actions'
 interface Props {
