@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import './volunteer-news.scss'
 import NewsCard from '../../../shared/components/news-card/news-card'
 import { Block } from 'gerami'
+
 import axios from 'axios'
+import Sidenav from '../../../shared/components/volunteer-side-nav/side-nav'
 function VolunteerNews() {
   const [news, setNews] = useState([])
 
@@ -37,6 +39,7 @@ function VolunteerNews() {
   }, [])
   return (
     <div>
+      <Sidenav/>
       <div className={'volunteer-news-container'}>
         <span>
           <Block />

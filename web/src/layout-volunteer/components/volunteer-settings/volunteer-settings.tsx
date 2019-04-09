@@ -12,12 +12,22 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import axios from 'axios'
+import { useVolunteerDispatch, useVolunteerState } from '../../stores/volunteer/volunteer-provider'
+import { updateSetting } from '../../stores/volunteer/volunteer-actions'
+interface Props {
+  /**
+   * @default false
+   */
+  readonly?: boolean
+}
 
-function VolunteerSettings() {
+function VolunteerSettings({readonly}: Props) {
   const { loading, t } = useLocale([
     /* todo: use some namespace */
   ])
 
+  const {volunteer} = useVolunteerState()
   const [gender, setGender] = useState()
   const [country, setCountry] = useState()
   const [location, setLocation] = useState()
@@ -43,20 +53,24 @@ function VolunteerSettings() {
     setVisibility({ ...visibility, [name]: e.target.checked })
   }
 
+ const emitChange = (volunteerChanges:any):void => {
+    if(readonly) return
+   const data = {...volunteer, ...volunteerChanges}
+    updateSetting(useVolunteerDispatch, data,0)
+ }
+
   const handleUsernameChange = (e: any) => {
     e.preventDefault()
-    if (!username) return
 
-    //send data to back-end and update the volunteer-setting
-    //then fetch the new userInfo
   }
-
   const handleGenderChange = () => {}
 
   const handleBirthdate = () => {}
 
   const handleCountryChange = () => {}
   const handleLocationChange = () => {}
+
+
   return (
     loading || (
       <Block last>

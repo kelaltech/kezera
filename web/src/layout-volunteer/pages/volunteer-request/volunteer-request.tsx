@@ -53,7 +53,7 @@ function AllRequests() {
     <div>
       {requests.length !== 0 ? (
         <div>
-           {requests.map(request => (
+          {requests.map(request => (
             <RequestCard {...request} />
           ))}
         </div>
@@ -80,7 +80,7 @@ function MaterialRequest() {
     <div>
       {material.length !== 0 ? (
         <div>
-           {material.map(request => (
+          {material.map(request => (
             <RequestCard {...request} />
           ))}
         </div>
@@ -107,7 +107,7 @@ function FundraisingRequest() {
     <div>
       {fund.length !== 0 ? (
         <div>
-           {fund.map(request => (
+          {fund.map(request => (
             <RequestCard {...request} />
           ))}
         </div>
@@ -134,7 +134,7 @@ function OrganRequest() {
     <div>
       {organ.length !== 0 ? (
         <div>
-           {organ.map(request => (
+          {organ.map(request => (
             <RequestCard {...request} />
           ))}
         </div>
@@ -146,4 +146,3 @@ function OrganRequest() {
     </div>
   )
 }
-
