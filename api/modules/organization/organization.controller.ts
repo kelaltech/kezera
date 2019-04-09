@@ -3,7 +3,7 @@ import { createReadStream } from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import { IOrganizationRequest, IOrganizationResponse } from './organization.apiv'
-import { add, get } from '../../lib/crud'
+import { add, get, list } from '../../lib/crud'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
 import {
@@ -14,6 +14,9 @@ import { OrganizationApplicationModel } from '../../models/organization-applicat
 import { email } from '../../lib/email'
 import { KoaError } from '../../lib/koa-error'
 import { OrganizationModel } from '../../models/organization/organization.model'
+import { IRequest, RequestModel } from '../../models/request/request.model'
+import { EventModel, IEvent } from '../../models/event/event.model'
+import { INews, NewsModel } from '../../models/news/news.model'
 
 export class OrganizationController extends KoaController {
   async apply(
@@ -93,5 +96,53 @@ export class OrganizationController extends KoaController {
   ): Promise<IOrganizationResponse> {
     const document = await get(OrganizationModel, _id, { session })
     return await organizationDocumentToResponse(document)
+  }
+
+  async requests(
+    session?: ClientSession,
+    organization_id = super.getParam('organization_id'),
+    since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
+    count = super.getQuery('count') ? Number(super.getQuery('count')) : 42
+  ): Promise<IRequest[]> {
+    // todo: filter?
+    // todo: attach type-specific fields using a refactored method from Request Module
+    return await list(RequestModel, {
+      session,
+      since,
+      count,
+      conditions: { _by: organization_id }
+    })
+  }
+
+  async events(
+    session?: ClientSession,
+    organization_id = super.getParam('organization_id'),
+    since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
+    count = super.getQuery('count') ? Number(super.getQuery('count')) : 14
+  ): Promise<IEvent[]> {
+    // todo: remove the next line when Event.organizationId gets fixed
+    const organization = await get(OrganizationModel, organization_id)
+    // todo: filter?
+    return await list(EventModel, {
+      session,
+      since,
+      count,
+      conditions: { organizationId: organization.account }
+    })
+  }
+
+  async news(
+    session?: ClientSession,
+    organization_id = super.getParam('organization_id'),
+    since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
+    count = super.getQuery('count') ? Number(super.getQuery('count')) : 14
+  ): Promise<INews[]> {
+    // todo: filter?
+    return await list(NewsModel, {
+      session,
+      since,
+      count,
+      conditions: { _by: organization_id }
+    })
   }
 }
