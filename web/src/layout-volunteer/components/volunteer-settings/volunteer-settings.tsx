@@ -33,13 +33,12 @@ function VolunteerSettings({readonly}: Props) {
   const [location, setLocation] = useState()
   const [birthdate, setBirthdate] = useState()
   const [username, setUsername] = useState()
-  const [userInfo, setUserInfo] = useState()
 
   const [editGender, setEditGender] = useState(false),
-    [editCountry, setEditCountry] = useState(false),
-    [editLocation, setEditLocation] = useState(false),
-    [editBirthdate, setEditBirthdate] = useState(false),
-    [editUsername, setEditUsername] = useState(false)
+        [editCountry, setEditCountry] = useState(false),
+        [editLocation, setEditLocation] = useState(false),
+        [editBirthdate, setEditBirthdate] = useState(false),
+        [editUsername, setEditUsername] = useState(false)
 
   const [visibility, setVisibility] = useState({
     task: false,
@@ -61,15 +60,29 @@ function VolunteerSettings({readonly}: Props) {
 
   const handleUsernameChange = (e: any) => {
     e.preventDefault()
-
+    emitChange({username})
+    setEditUsername(false)
   }
-  const handleGenderChange = () => {}
-
-  const handleBirthdate = () => {}
-
-  const handleCountryChange = () => {}
-  const handleLocationChange = () => {}
-
+  const handleGenderChange = (e:any) => {
+    e.preventDefault()
+    emitChange({gender})
+    setEditGender(false)
+  }
+  const handleBirthdate = (e:any) => {
+    e.preventDefault()
+    emitChange({birthdate})
+    setEditBirthdate(false)
+  }
+  const handleCountryChange = (e:any) => {
+    e.preventDefault()
+    emitChange({country})
+    setEditCountry(false)
+  }
+  const handleLocationChange = (e:any) => {
+    e.preventDefault()
+    emitChange({location})
+    setEditLocation(false)
+  }
 
   return (
     loading || (
