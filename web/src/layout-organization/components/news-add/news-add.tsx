@@ -6,6 +6,7 @@ import { convertToRaw, convertFromRaw, EditorState, addNewBlock, Block } from 'd
 import './news-add.scss'
 import { Button, ImageInput } from 'gerami'
 import { withRouter } from 'react-router'
+import 'https://unpkg.com/medium-draft@0.3.10/dist/medium-draft.js'
 
 interface INewsAddState {
   title: any
