@@ -2,9 +2,9 @@ import React from 'react'
 import { Block, Content, Flex } from 'gerami'
 import { TextField } from '@material-ui/core'
 
-import useLocale from '../../../../../shared/hooks/use-locale/use-locale'
-import { IOrganizationRequest } from '../../../../../../../api/modules/organization/organization.apiv'
-import useField from '../../../../../shared/hooks/use-field/use-field'
+import useLocale from '../../hooks/use-locale/use-locale'
+import { IOrganizationRequest } from '../../../../../api/modules/organization/organization.apiv'
+import useField from '../../hooks/use-field/use-field'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Props {
@@ -12,21 +12,25 @@ interface Props {
   setOrganization: (organization: IOrganizationRequest) => void
 }
 
-function OrganizationApplyBio({ organization, setOrganization }: Props) {
+function OrganizationFormBio({ organization, setOrganization }: Props) {
   const { loading, t } = useLocale(['organization'])
 
   const emitChanges = (organizationChanges: any): void => {
     setOrganization({ ...organization, ...organizationChanges })
   }
 
-  const bio = useField<HTMLInputElement>({
-    initialValue: organization.bio,
-    validateOnChange: true,
-    maxLength: 10000,
-    setValueHook: async value => {
-      emitChanges({ bio: value })
-    }
-  })
+  const bio = useField<HTMLInputElement>(
+    {
+      initialValue: organization.bio,
+      validateOnChange: true,
+      maxLength: 10000,
+      setValueHook: async value => {
+        emitChanges({ bio: value })
+      }
+    },
+    undefined,
+    [organization.bio]
+  )
 
   const validationError = (error: string | null) =>
     error === null ? null : (
@@ -70,4 +74,4 @@ function OrganizationApplyBio({ organization, setOrganization }: Props) {
   )
 }
 
-export default OrganizationApplyBio
+export default OrganizationFormBio

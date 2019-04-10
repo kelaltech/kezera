@@ -95,7 +95,8 @@ type UseFieldResponse<T> = {
 
 function useField<T>(
   config: UseFieldConfig = {},
-  deps: DependencyList = []
+  validationDependencies: DependencyList = [],
+  initialValueDependencies: DependencyList = []
 ): UseFieldResponse<T> {
   const { t } = useLocale()
 
@@ -105,7 +106,11 @@ function useField<T>(
 
   const [value, setValueOnState] = useState(config.initialValue || '')
   const [error, setError] = useState<string | null>(null)
-  const [active, setActive] = useState(config.active || true)
+  const [active, setActive] = useState(config.active !== undefined ? config.active : true)
+
+  useEffect(() => {
+    setValueOnState(config.initialValue || '')
+  }, initialValueDependencies)
 
   const validate = async (value: string): Promise<boolean> => {
     let passed = true
@@ -222,11 +227,13 @@ function useField<T>(
   useEffect(() => {
     if (
       config.validateOnUpdate ||
-      (config.validateOnUpdate !== false && (config.validateOnInit || deps.length))
+      (config.validateOnUpdate !== false &&
+        (config.validateOnInit || validationDependencies.length))
     )
       validate(value).catch(console.error)
-    else if (config.validateOnInit || deps.length) config.validateOnUpdate = true
-  }, deps)
+    else if (config.validateOnInit || validationDependencies.length)
+      config.validateOnUpdate = true
+  }, validationDependencies)
 
   return {
     ref,

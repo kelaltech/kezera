@@ -8,10 +8,39 @@ import { IOrganizationRequest } from '../../../../../api/modules/organization/or
 import { IAccountRequest } from '../../../../../api/modules/account/account.apiv'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import AccountRegister from '../../../shared/components/account-register/account-register'
-import OrganizationApplyAbout from './components/organization-apply-about/organization-apply-about'
 import OrganizationApplyLegal from './components/organization-apply-legal/organization-apply-legal'
-import OrganizationApplyBrand from './components/organization-apply-brand/organization-apply-brand'
-import OrganizationApplyBio from './components/organization-apply-bio/organization-apply-bio'
+import OrganizationFormBrand from '../../../shared/components/organization-form-brand/organization-form-brand'
+import OrganizationFormAbout from '../../../shared/components/organization-form-about/organization-form-about'
+import OrganizationFormBio from '../../../shared/components/organization-form-bio/organization-form-bio'
+
+const defaultOrganizationRequest: IOrganizationRequest = {
+  /* COLUMN 1 */
+
+  // account
+  account: {
+    displayName: '',
+    email: '',
+    password: '',
+    phoneNumber: null
+  },
+
+  // legal
+  licensedNames: [],
+  registrations: [],
+
+  /* COLUMN 2 */
+
+  // brand
+  motto: undefined,
+  website: undefined,
+
+  // about
+  type: 'NGO',
+  locations: [],
+
+  // bio
+  bio: ''
+}
 
 function OrganizationApply() {
   const { t } = useLocale(['organization'])
@@ -19,34 +48,9 @@ function OrganizationApply() {
   const [error, setError] = useState<string>()
   const [state, setState] = useState<'INITIAL' | 'SENDING' | 'SENT'>('INITIAL')
 
-  const [organization, setOrganizationOnState] = useState<IOrganizationRequest>({
-    /* COLUMN 1 */
-
-    // account
-    account: {
-      displayName: '',
-      email: '',
-      password: '',
-      phoneNumber: null
-    },
-
-    // legal
-    licensedNames: [],
-    registrations: [],
-
-    /* COLUMN 2 */
-
-    // brand
-    motto: undefined,
-    website: undefined,
-
-    // about
-    type: 'NGO',
-    locations: [],
-
-    // bio
-    bio: ''
-  })
+  const [organization, setOrganizationOnState] = useState<IOrganizationRequest>(
+    defaultOrganizationRequest
+  )
   const [logoRef, setLogoRef] = useState<
     MutableRefObject<HTMLInputElement> | RefObject<HTMLInputElement>
   >()
@@ -126,18 +130,18 @@ function OrganizationApply() {
             </div>
 
             <div className={'top'}>
-              <OrganizationApplyBrand
+              <OrganizationFormBrand
                 organization={organization}
                 setOrganization={setOrganization}
                 setLogoRef={setLogoRef}
               />
 
-              <OrganizationApplyAbout
+              <OrganizationFormAbout
                 organization={organization}
                 setOrganization={setOrganization}
               />
 
-              <OrganizationApplyBio
+              <OrganizationFormBio
                 organization={organization}
                 setOrganization={setOrganization}
               />

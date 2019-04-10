@@ -1,20 +1,20 @@
 import React, { MutableRefObject, RefObject, useEffect } from 'react'
 import { Block, Content, Flex, ImageInput, Input } from 'gerami'
 
-import useLocale from '../../../../../shared/hooks/use-locale/use-locale'
-import { IOrganizationRequest } from '../../../../../../../api/modules/organization/organization.apiv'
-import useField from '../../../../../shared/hooks/use-field/use-field'
+import useLocale from '../../hooks/use-locale/use-locale'
+import { IOrganizationRequest } from '../../../../../api/modules/organization/organization.apiv'
+import useField from '../../hooks/use-field/use-field'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Props {
   organization: IOrganizationRequest
   setOrganization: (organization: IOrganizationRequest) => void
-  setLogoRef: (
+  setLogoRef?: (
     logoInput: MutableRefObject<HTMLInputElement> | RefObject<HTMLInputElement>
   ) => void
 }
 
-function OrganizationApplyBrand({ organization, setOrganization, setLogoRef }: Props) {
+function OrganizationFormBrand({ organization, setOrganization, setLogoRef }: Props) {
   const { loading, t } = useLocale(['organization'])
 
   const emitChanges = (organizationChanges: any): void => {
@@ -22,24 +22,32 @@ function OrganizationApplyBrand({ organization, setOrganization, setLogoRef }: P
   }
 
   const logo = useField<HTMLInputElement>()
-  const motto = useField<HTMLInputElement>({
-    initialValue: organization.motto,
-    maxLength: 50,
-    optional: true,
-    setValueHook: async value => {
-      emitChanges({ motto: value })
-    }
-  })
-  const website = useField<HTMLInputElement>({
-    initialValue: organization.website,
-    validation: /\w+:(\/?\/?)[^\s]+/,
-    validateOnChange: true,
-    maxLength: 100,
-    optional: true,
-    setValueHook: async value => {
-      emitChanges({ website: value })
-    }
-  })
+  const motto = useField<HTMLInputElement>(
+    {
+      initialValue: organization.motto,
+      maxLength: 50,
+      optional: true,
+      setValueHook: async value => {
+        emitChanges({ motto: value })
+      }
+    },
+    undefined,
+    [organization.motto]
+  )
+  const website = useField<HTMLInputElement>(
+    {
+      initialValue: organization.website,
+      validation: /\w+:(\/?\/?)[^\s]+/,
+      validateOnChange: true,
+      maxLength: 100,
+      optional: true,
+      setValueHook: async value => {
+        emitChanges({ website: value })
+      }
+    },
+    undefined,
+    [organization.website]
+  )
 
   const validationError = (error: string | null) =>
     error === null ? null : (
@@ -53,8 +61,8 @@ function OrganizationApplyBrand({ organization, setOrganization, setLogoRef }: P
     )
 
   useEffect(() => {
-    setLogoRef(logo.ref)
-  }, [])
+    if (setLogoRef) setLogoRef(logo.ref)
+  }, [setLogoRef])
 
   return (
     loading || (
@@ -65,24 +73,26 @@ function OrganizationApplyBrand({ organization, setOrganization, setLogoRef }: P
 
         <hr />
 
-        <Block>
-          <Flex>
-            <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
-              <FontAwesomeIcon icon={'image'} />
-            </div>
-            <Flex className={'full-width'}>
-              <div
-                className={
-                  'padding-right-big margin-top-auto margin-bottom-normal fg-primary'
-                }
-              >
-                Logo<span className={'italic fg-blackish'}> (max. 1MB size)</span>:
+        {!setLogoRef ? null : (
+          <Block>
+            <Flex>
+              <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
+                <FontAwesomeIcon icon={'image'} />
               </div>
-              <ImageInput innerRef={logo.ref} />
+              <Flex className={'full-width'}>
+                <div
+                  className={
+                    'padding-right-big margin-top-auto margin-bottom-normal fg-primary'
+                  }
+                >
+                  Logo<span className={'italic fg-blackish'}> (max. 1MB size)</span>:
+                </div>
+                <ImageInput innerRef={logo.ref} />
+              </Flex>
+              {validationError(motto.error)}
             </Flex>
-            {validationError(motto.error)}
-          </Flex>
-        </Block>
+          </Block>
+        )}
 
         <Block>
           <Flex>
@@ -121,4 +131,4 @@ function OrganizationApplyBrand({ organization, setOrganization, setLogoRef }: P
   )
 }
 
-export default OrganizationApplyBrand
+export default OrganizationFormBrand
