@@ -13,7 +13,8 @@ import {
   getLikes,
   listAllNews,
   getPictureFromNews,
-  addPictureForNews
+  addPictureForNews,
+  recentNews
 } from './news.controller'
 import * as fs from 'fs'
 
@@ -93,4 +94,9 @@ newsRouter.get('/search', async ctx => {
 
 newsRouter.post('/:_newsId/comment/new', async ctx => {
   ctx.body = await addComment(ctx.state.user, ctx.params._newsId, ctx.request.body)
+})
+
+//GET /api/news/recent?count=5
+newsRouter.get('/recent', async ctx => {
+  ctx.body = await recentNews(ctx.query.count)
 })

@@ -62,7 +62,7 @@ function DiscoveryPage() {
 
   const fetchEvent = () => {
     axios
-      .get('/api/event/recent')
+      .get('/api/event/recent?count=5')
       .then((event: any) => {
         setEvent(event.data)
       })
@@ -70,7 +70,7 @@ function DiscoveryPage() {
   }
   const fetchNews = () => {
     axios
-      .get('/api/news/recent')
+      .get('/api/news/recent?count=5')
       .then((news: any) => {
         setNews(news.data)
       })
@@ -78,7 +78,7 @@ function DiscoveryPage() {
   }
   const fetchOrganization = () => {
     axios
-      .get('/api/organization/recent')
+      .get('/api/organization/recent?count=5')
       .then((o: any) => {
         setOrganization(o.data)
       })
@@ -86,7 +86,7 @@ function DiscoveryPage() {
   }
   const fetchRequest = () => {
     axios
-      .get('/api/request/recent')
+      .get('/api/request/recent?count=5')
       .then((r: any) => {
         setRequest(r.data)
       })

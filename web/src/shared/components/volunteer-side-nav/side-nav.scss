@@ -1,12 +1,12 @@
 .drawer-container {
-  width: 24%;
+  width: 20%;
   position: fixed;
   background-color: #f02139;
   min-height: 100vh;
   height: auto;
   //z-index: -1;
   display: flex;
-  transition: .5s all;
+  transition: 0.5s all;
 }
 
 .small-nav {
