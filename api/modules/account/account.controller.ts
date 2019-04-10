@@ -82,7 +82,7 @@ export class AccountController extends KoaController {
     await edit(
       AccountModel,
       user!._id,
-      Object.assign(document, request),
+      { ...document, ...request },
       {
         session,
         postUpdate: async () => {
