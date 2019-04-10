@@ -32,11 +32,13 @@ export default function FundCard({ request }: IFundProps) {
 
   let DeleteRequest = function(id: any) {
     if (window.confirm('Are you sure?')) {
-      axios.delete(`/api/request/${id}`).catch(console.error)
+      axios.delete(`/api/request/${request._id}`).catch(console.error)
     }
   }
+
   return (
     <Content className={'fund-card'}>
+      <RequestEdit request={request} open={open} onClose={() => setOpen(false)} />
       <Card imgSrc={request.picture}>
         <Title size={'L'} className={'center'}>
           {request.name}
@@ -49,8 +51,10 @@ export default function FundCard({ request }: IFundProps) {
           <FlexSpacer />
           <label>{new Date(request.endDate).toDateString()}</label>
         </Flex>
-        <h5>{request.type}</h5>
-        <h5>{request.fundraising.amount}</h5>
+        <h5 className={'center'}>{request.type}</h5>
+        <Title className={'center'} size={'S'}>
+          {request.fundraising.amount} {request.fundraising.currency}
+        </Title>
         <hr />
         <Flex>
           <Anchor
@@ -61,22 +65,22 @@ export default function FundCard({ request }: IFundProps) {
           </Anchor>
           <FlexSpacer />
           <Flex>
-            <span className={'full-width flex '}>
-              <Button
-                onClick={() => <EditFund request={request} />}
-                className={'ActionButton'}
-              >
-                <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
-              </Button>
-            </span>
-            <span className={'full-width flex'}>
-              <Button
-                onClick={() => DeleteRequest(request._id)}
-                className={'ActionButton '}
-              >
-                <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
-              </Button>
-            </span>
+            {account && account.role === 'ORGANIZATION' ? (
+              <Flex>
+                <Button onClick={() => setOpen(true)} className={'ActionButton'}>
+                  <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
+                </Button>
+                <FlexSpacer />
+                <Button
+                  onClick={() => DeleteRequest(request._id)}
+                  className={'ActionButton'}
+                >
+                  <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
+                </Button>
+              </Flex>
+            ) : (
+              <Button>Donate</Button>
+            )}
           </Flex>
         </Flex>
       </Card>

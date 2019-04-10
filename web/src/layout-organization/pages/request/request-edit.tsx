@@ -6,7 +6,6 @@ import {
   Flex,
   ImageInput,
   Input,
-  Page,
   TextArea,
   Yoga,
   Title
@@ -18,19 +17,33 @@ import axios from 'axios'
 
 interface IEdit {
   request: any
-  props: any
+  open: boolean
+  onClose: () => void
 }
-export default function RequestEdit({ request }: IEdit) {
+export default function RequestEdit({ request, open, onClose }: IEdit) {
+  function editRequest(e: any) {
+    e.preventDefault()
+    let data = new FormData()
+    data.append('name', e.target.name.value)
+    data.append('description', e.target.description.value)
+    data.append('startDate', e.target.startDate.value)
+    data.append('endDate', e.target.endDate.value)
+
+    axios
+      .put(`/api/request/${request._id}`, data, {
+        withCredentials: true
+      })
+      .then()
+      .catch(console.error)
+  }
+
   return (
-    <Dialog onClose={request.onClose} open={request.open}>
+    <Dialog onClose={onClose} open={open}>
       <Block className={'center'}>
         <Title size="XXL"> Update/Edit Request </Title>
       </Block>
       <Content size={'L'}>
-        <form
-          onSubmit={(e: any) => editRequest(e, request._id)}
-          encType={'multipart/form-data'}
-        >
+        <form onSubmit={(e: any) => editRequest(e)} encType={'multipart/form-data'}>
           <Block first>
             <Flex>
               <ImageInput
@@ -50,7 +63,7 @@ export default function RequestEdit({ request }: IEdit) {
             <TextArea
               name="description"
               className={'full-width'}
-              placeholder={'Purpose...'}
+              placeholder={'Description'}
               defaultValue={request.description}
             />
           </Block>
@@ -64,17 +77,12 @@ export default function RequestEdit({ request }: IEdit) {
                 <TextField
                   name="startDate"
                   className="full-width"
+                  defaultValue={request.startDate}
                   label="Start date"
                   type="date"
                   InputLabelProps={{
                     shrink: true
                   }}
-                />
-              </label>
-              <label className={'flex'}>
-                <FontAwesomeIcon
-                  className={'margin-top-big margin-right-normal'}
-                  icon={'map-marker'}
                 />
               </label>
             </Block>
@@ -97,37 +105,14 @@ export default function RequestEdit({ request }: IEdit) {
             </Block>
           </Yoga>
           <Block last className={'right'}>
-            <Button
-              type={'submit'}
-              onClick={() => request.onClose()}
-              primary={true}
-              className={''}
-            >
+            <Button type={'submit'} primary={true} className={''}>
               Update
             </Button>
             &emsp;
-            <Button onClick={() => request.onClose()} className={''}>
-              Cancel
-            </Button>
+            <Button className={''}>Cancel</Button>
           </Block>
         </form>
       </Content>
     </Dialog>
   )
-}
-
-function editRequest(e: any, request: any) {
-  e.preventDefault()
-  let data = new FormData()
-  data.append('name', e.target.name.value)
-  data.append('description', e.target.description.value)
-  data.append('startDate', e.target.startDate.value)
-  data.append('endDate', e.target.endDate.value)
-
-  axios
-    .put(`/api/request/${request.id}`, data, {
-      withCredentials: true
-    })
-    .then()
-    .catch(console.error)
 }

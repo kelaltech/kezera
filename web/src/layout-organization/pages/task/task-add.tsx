@@ -22,7 +22,7 @@ export default function TaskAdd(props: ITaskProps) {
     endTime: ''
   })
 
-  let emitChange = function(changes: any) {
+  let emitChange = function(changes: any): void {
     props.onChange({ ...task, ...changes })
     setTask({ ...task, ...changes })
   }
@@ -58,17 +58,17 @@ export default function TaskAdd(props: ITaskProps) {
           <Input
             required={true}
             className={'full-width'}
+            onChange={e => emitChange({ startTime: e.target.value })}
             value={task.startTime}
             type={'date'}
-            onChange={e => emitChange({ startTime: e.target.value })}
           />
         </Block>
         <Block>
           <Input
             className={'full-width'}
+            onChange={e => emitChange({ endTime: e.target.value })}
             value={task.endTime}
             type={'date'}
-            onChange={e => emitChange({ endTIme: e.target.value })}
           />
         </Block>
       </Yoga>

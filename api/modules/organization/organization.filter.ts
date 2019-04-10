@@ -5,7 +5,10 @@ import {
   IOrganization,
   OrganizationModel
 } from '../../models/organization/organization.model'
-import { accountDocumentToResponse } from '../account/account.filter'
+import {
+  accountDocumentToPublicResponse,
+  accountRequestToDocument
+} from '../account/account.filter'
 import { IAccount } from '../../models/account/account.model'
 
 type ObjectId = Schema.Types.ObjectId | string
@@ -20,6 +23,7 @@ export async function organizationRequestToLeanDocument(
     _last,
 
     // handle account manually
+    account: await accountRequestToDocument(request.account, 'ACTIVE', 'ORGANIZATION'),
 
     type: request.type,
 
@@ -46,23 +50,24 @@ export async function organizationRequestToDocument(
 export async function organizationDocumentToResponse(
   document: Document & IOrganization
 ): Promise<IOrganizationResponse> {
-  const populatedAccount: Document & IAccount = (await document
+  const populatedAccount: Document & IAccount = ((await document
     .populate('account')
-    .execPopulate()).account as any
+    .execPopulate()).account as any).toJSON()
 
   return {
     _id: document._id,
 
-    account: await accountDocumentToResponse(populatedAccount),
+    account: await accountDocumentToPublicResponse(populatedAccount),
 
     type: document.type,
 
+    logoUri: `/api/organization/get-photo/${document._id}`,
     motto: document.motto,
     bio: document.bio,
     locations: document.locations,
     website: document.website,
 
-    subscribers: document.subscribers.map(subscriber => subscriber.toString()),
+    subscribersCount: document.subscribers.length,
 
     licensedNames: document.licensedNames,
     registrations: document.registrations

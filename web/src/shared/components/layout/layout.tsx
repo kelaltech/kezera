@@ -1,7 +1,6 @@
 import React, { Component, ReactNode } from 'react'
 import { Page, Warning } from 'gerami'
 import { MinHeightProperty } from 'csstype'
-
 import Header, { IHeaderProps } from './header/header'
 import Footer from './footer/footer'
 

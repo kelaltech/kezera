@@ -3,6 +3,8 @@ import {
   Block,
   Button,
   Content,
+  Flex,
+  FlexSpacer,
   ImageInput,
   Input,
   Page,
@@ -148,19 +150,23 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
               </Select>
             </FormControl>
           </Block>
-          {type == 'Fundraising' && <FundAdd onChange={setSpecific} />}
-          {type == 'Task' && <TaskAdd onChange={setSpecific} />}
+          {type == 'Fundraising' ? (
+            <FundAdd onChange={setSpecific} />
+          ) : (
+            type == 'Task' && <TaskAdd onChange={setSpecific} />
+          )}
           <Block last className={'right'}>
             <Button type={'submit'}>Make the Request</Button>
           </Block>
-          <Block last className={'right'}>
-            <Button type={'submit'} to={`/organization/request/add`}>
+          <Flex className={'center'}>
+            <Button type={'reset'} to={`/organization/request/add`}>
               Make Another Request
             </Button>
+            <FlexSpacer />
             <Button type={'submit'} to={`/organization/request/list`}>
               Finish
             </Button>
-          </Block>
+          </Flex>
         </form>
       </Content>
     </Page>

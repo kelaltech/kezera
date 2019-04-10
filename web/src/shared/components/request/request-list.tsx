@@ -7,6 +7,7 @@ import RequestCard from '../../../shared/components/request/request-card'
 import promo from '../../../assets/images/login/promo-1.jpg'
 import FundCard from '../fundraising/fund-card'
 import TaskCard from '../task/task-card'
+import RichPage from '../rich-page/rich-page'
 
 export default function RequestList() {
   const [requests, setRequests] = useState<any[]>([])

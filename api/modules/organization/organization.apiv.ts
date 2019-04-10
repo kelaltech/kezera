@@ -1,4 +1,4 @@
-import { IAccountRequest, IAccountResponse } from '../account/account.apiv'
+import { IAccountPublicResponse, IAccountRequest } from '../account/account.apiv'
 import { IOrganizationType } from '../../models/organization/organization.model'
 
 export type IOrganizationRequest = {
@@ -26,10 +26,11 @@ export type IOrganizationRequest = {
 export type IOrganizationResponse = {
   _id: string
 
-  account: IAccountResponse
+  account: IAccountPublicResponse
 
   type: IOrganizationType
 
+  logoUri?: string
   motto?: string
   bio: string
   locations: {
@@ -39,7 +40,7 @@ export type IOrganizationResponse = {
   }[]
   website?: string
 
-  subscribers: string[] // account
+  subscribersCount: number
 
   licensedNames: string[]
   registrations: {

@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component, CSSProperties, useEffect, useState } from 'react'
 
 import './news-card.scss'
 import { Content } from 'gerami'
@@ -12,6 +12,8 @@ export interface INewsCardProps {
   description: string
   imgSrc: string
   _id: string
+  style?: CSSProperties
+  flex?: CSSProperties
 }
 
 function NewsCard(props: INewsCardProps) {
@@ -40,7 +42,9 @@ function NewsCard(props: INewsCardProps) {
         <div className={'news-card-content'}>
           {/*Content*/}
           <div className={'news-card-content-title'}>{title}</div>
-          <div className={'news-card-content-desc'}>{description}</div>
+          <div className={'news-card-content-desc'}>
+            {description.toString().slice(0, 200)}
+          </div>
           <div className={'news-card-content-stat'}>
             <span>
               <FontAwesomeIcon icon={['fas', 'heart']} />

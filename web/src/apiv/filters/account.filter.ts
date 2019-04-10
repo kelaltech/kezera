@@ -1,7 +1,11 @@
-import { IAccountRequest, IAccountResponse } from '../account.apiv'
+import {
+  IAccountPublicResponse,
+  IAccountRequest,
+  IAccountResponse
+} from '../account.apiv'
 
 export async function accountResponseToRequest(
-  response: IAccountResponse,
+  response: IAccountResponse | IAccountPublicResponse,
   password?: string,
   currentPassword?: string,
   newPassword?: string

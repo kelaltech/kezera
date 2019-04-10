@@ -22,7 +22,7 @@ function layoutVolunteerNavigation(
   } else {
     items = items.concat([
       {
-        to: `/register?${qs.stringify({ continue: window.location.pathname })}`,
+        to: `/login/register?${qs.stringify({ continue: window.location.pathname })}`,
         icon: ['far', 'user-circle'],
         name: t`register-as-volunteer`,
         shortName: t`register`

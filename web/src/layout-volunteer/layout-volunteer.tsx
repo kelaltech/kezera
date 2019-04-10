@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Loading } from 'gerami'
 import * as qs from 'qs'
+import Search from '../shared/components/search/search'
 
 import useLocale from '../shared/hooks/use-locale/use-locale'
 import { useAccountState } from '../app/stores/account/account-provider'
@@ -26,7 +27,10 @@ function LayoutVolunteer({ error, match }: Props) {
       <Layout
         noShell={noShell}
         preHeader={null}
-        headerOptions={{ navigation: layoutVolunteerNavigation(t, account) }}
+        headerOptions={{
+          navigation: layoutVolunteerNavigation(t, account),
+          centerNode: <Search to={'/volunteer/search-result'} />
+        }}
         error={error}
         nonContentHeight={164}
       >

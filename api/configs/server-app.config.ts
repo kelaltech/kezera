@@ -9,6 +9,7 @@ import { KeyModel } from '../models/key/key.model'
 import { OrganizationModel } from '../models/organization/organization.model'
 import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
 import { FundModel } from '../models/fundraising/fundraising.model'
+import { TaskModel } from '../models/task/task.model'
 import { RequestModel } from '../models/request/request.model'
 
 import { accountRouter } from '../modules/account/account.router'
@@ -16,8 +17,8 @@ import { newsRouter } from '../modules/news/news.route'
 import { requestRouter } from '../modules/request/request.router'
 import { eventRouter } from '../modules/event/event.router'
 import { organizationRouter } from '../modules/organization/organization.router'
-import { fundRouter } from '../modules/fundraising/fundraising.router'
-
+import { verifierRouter } from '../modules/verifier/verifier.router'
+import { volunteerRouter } from '../modules/volunteer/volunteer.router'
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
 
@@ -37,6 +38,7 @@ export const serverAppConfig: IServerAppConfig = {
     OrganizationModel,
     OrganizationApplicationModel,
     FundModel,
+    TaskModel,
     RequestModel
   ],
 
@@ -46,7 +48,8 @@ export const serverAppConfig: IServerAppConfig = {
     eventRouter,
     organizationRouter,
     requestRouter,
-    fundRouter
+    verifierRouter,
+    volunteerRouter
   ],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],

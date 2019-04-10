@@ -54,6 +54,7 @@ requestRouter.get('/:_id/attended', async ctx => {
 requestRouter.put('/:_id', async ctx => {
   ctx.body = await editRequest(
     ctx.request.body,
+    ctx.request.type,
     ctx.state.user._id,
     fs.createReadStream(ctx.request.files!.image.path)
   )

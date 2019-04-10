@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 import './volunteer-search-result.scss'
 import qs from 'qs'
-
+import axios from 'axios'
 import FormControlLabel from '@material-ui/core/es/FormControlLabel'
 import NewsSearchResult from '../../pages/volunteer-search-result/components/search-result-news/volunteer-search-news'
 import EventsSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-events/volunteer-search-events'
@@ -18,7 +18,8 @@ import VolSearchResult from '../../pages/volunteer-search-result/components/volu
 function VolunteerSearchResult() {
   let [value, setValue] = useState(0)
   let [isCollapsed, setCollapse] = useState(false)
-  let [searchTerm, setSearchTerm] = useState({})
+  let [searchTerm, setSearchTerm] = useState('')
+  let [searchResult, setSearchResult] = useState([])
   const collapseFilter = () => {
     setCollapse(!isCollapsed)
     let filter = document.getElementById('search_filters')
@@ -35,7 +36,18 @@ function VolunteerSearchResult() {
         ignoreQueryPrefix: true
       })
     )
+    fetchAllResult()
   }, [])
+
+  const fetchAllResult = () => {
+    axios
+      .get('/api/search/all')
+      .then((result: any) => {
+        setSearchResult(result.data)
+      })
+      .catch((e: any) => console.log(e))
+  }
+
   return (
     <div>
       <div className="search-result-container">
@@ -103,35 +115,39 @@ function VolunteerSearchResult() {
             <Tab label={'Volunteer'} />
           </Tabs>
 
-          {value === 0 && <Block>All</Block>}
+          {value === 0 && (
+            <div>
+              <h1>All results </h1>
+            </div>
+          )}
           {value === 1 && (
             <Block>
-              <NewsSearchResult />
+              <NewsSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 2 && (
             <Block>
-              <EventsSearchResult />
+              <EventsSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 3 && (
             <Block>
-              <TaskSearchResult />
+              <TaskSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 4 && (
             <Block>
-              <DonationSearchResult />
+              <DonationSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 5 && (
             <Block>
-              <OrganizationSearchResult />
+              <OrganizationSearchResult term={searchTerm} />
             </Block>
           )}
           {value === 6 && (
             <Block>
-              <VolSearchResult />
+              <VolSearchResult term={searchTerm} />
             </Block>
           )}
         </div>

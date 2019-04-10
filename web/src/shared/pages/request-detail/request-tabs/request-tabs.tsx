@@ -9,18 +9,19 @@ import Going from '../request-going/request-going'
 import Images from '../request-images/request-images'
 import axios from 'axios'
 import { RouteComponentProps, withRouter } from 'react-router'
-import RequestDetail from '../request-detail/request-detail'
 import FundAdd from '../../../../layout-organization/pages/fundraising/fund-add'
 
-function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
+interface IDet {
+  request: any
+}
+
+function RequestTabs({ request }: IDet) {
   let [value, setValue] = useState(0)
-  const [request, setRequest] = useState<any>()
 
   useEffect(() => {
     axios
-      .get(`/api/request/${match.params._id}`)
+      .get(`/api/request/${request._id}`)
       .then(res => {
-        setRequest(res.data)
         console.log('successfully retrieved')
         console.log(res.data)
       })
@@ -44,11 +45,7 @@ function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
         <Tab label="Related News and Events"> 5 </Tab>
         <Tab label="Contact Information"> 6 </Tab>
       </Tabs>
-      {value === 0 && (
-        <Block>
-          <RequestDetail request={setRequest} />
-        </Block>
-      )}
+      {value === 0 && <Block />}
       {value === 1 && (
         <Block>
           <Report />
@@ -73,4 +70,4 @@ function RequestTabs({ match }: RouteComponentProps<{ _id: string }>) {
     </div>
   )
 }
-export default withRouter(RequestTabs)
+export default RequestTabs

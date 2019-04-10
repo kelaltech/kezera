@@ -13,22 +13,22 @@ function layoutOrganizationNavigation(
   if (account) {
     items = items.concat([
       {
-        to: '/organization/news',
-        icon: ['far', 'user-circle'],
-        name: `News`, // todo: translate
-        shortName: `News` // todo: translate
+        to: '/organization/request/list',
+        icon: 'donate',
+        name: `Donation Requests`, // todo: translate
+        shortName: `Requests` // todo: translate
       },
       {
         to: '/organization/event',
-        icon: ['far', 'user-circle'],
-        name: `Events`, // todo: translate
+        icon: ['far', 'calendar-alt'],
+        name: `Your Events`, // todo: translate
         shortName: `Events` // todo: translate
       },
       {
-        to: '/organization/request/list',
-        icon: ['far', 'user-circle'],
-        name: `Requests`, // todo: translate
-        shortName: `Requests` // todo: translate
+        to: '/organization/news',
+        icon: ['far', 'newspaper'],
+        name: `Your News`, // todo: translate
+        shortName: `News` // todo: translate
       },
       {
         to: '/organization/account',
@@ -39,12 +39,6 @@ function layoutOrganizationNavigation(
     ])
   } else {
     items = items.concat([
-      {
-        to: `/register?${qs.stringify({ continue: window.location.pathname })}`,
-        icon: ['far', 'user-circle'],
-        name: t`register-as-volunteer`,
-        shortName: t`register`
-      },
       {
         to: `/login?${qs.stringify({ continue: window.location.pathname })}`,
         icon: 'sign-in-alt',

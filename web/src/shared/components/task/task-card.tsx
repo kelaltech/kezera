@@ -4,6 +4,7 @@ import {
   Block,
   Button,
   Card,
+  Content,
   Flex,
   FlexSpacer,
   Image,
@@ -33,48 +34,54 @@ export default function TaskCard({ request }: ITaskProps) {
   }
 
   return (
-    <Card imgSrc={request.picture}>
-      <Title size={'L'} className={'center'}>
-        {request.name}
-      </Title>
-      <hr />
-      <Flex>
-        <label>{new Date(request.startDate).toDateString()}</label>
-        <FlexSpacer />
-        <label>-</label>
-        <FlexSpacer />
-        <label>{new Date(request.endDate).toDateString()}</label>
-      </Flex>
-      <Flex>
-        <label>{new Date(request.task.startTime).toDateString()}</label>
-        <FlexSpacer />
-        <label>{new Date(request.task.endTime).toDateString()}</label>
-      </Flex>
-      <h5>{request.type}</h5>
-      <label>{request.task.numberNeeded}</label>
-      <hr />
-      <Flex>
-        <Anchor
-          className={'margin-top-normal'}
-          to={`/organization/request/${request._id}`}
-        >
-          Details
-        </Anchor>
-        <FlexSpacer />
-        <span className={'full-width flex '}>
-          <Button onClick={() => setOpen(true)} className={'ActionButton'}>
-            <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
-          </Button>
-        </span>
-        <span className={'full-width flex'}>
-          <Button onClick={() => DeleteTask(request._id)} className={'ActionButton '}>
-            <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />
-          </Button>
-        </span>
-        <Button type="submit" primary>
-          Participate
-        </Button>
-      </Flex>
-    </Card>
+    <Content>
+      <Card imgSrc={request.picture}>
+        <RequestEdit request={request} open={open} onClose={() => setOpen(false)} />
+        <Title size={'L'} className={'center'}>
+          {request.name}
+        </Title>
+        <hr />
+        <Flex>
+          <label>{new Date(request.startDate).toDateString()}</label>
+          <FlexSpacer />
+          <label>-</label>
+          <FlexSpacer />
+          <label>{new Date(request.endDate).toDateString()}</label>
+        </Flex>
+        <h5>{request.type}</h5>
+        <label>{request.task.numberNeeded}</label>
+        <hr />
+        <Flex>
+          <Anchor
+            className={'margin-top-normal'}
+            to={`/organization/request/${request._id}`}
+          >
+            Details
+          </Anchor>
+          <FlexSpacer />
+          {account && account.role === 'ORGANIZATION' ? (
+            <Flex>
+              <span className={'full-width flex '}>
+                <Button onClick={() => setOpen(true)} className={'ActionButton1'}>
+                  <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
+                </Button>
+              </span>
+              <span className={'full-width flex'}>
+                <Button
+                  onClick={() => DeleteTask(request._id)}
+                  className={'ActionButton12 '}
+                >
+                  <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
+                </Button>
+              </span>
+            </Flex>
+          ) : (
+            <Button type="submit" primary>
+              Participate
+            </Button>
+          )}
+        </Flex>
+      </Card>
+    </Content>
   )
 }

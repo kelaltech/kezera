@@ -24,10 +24,10 @@ import { useAccountState } from '../../../app/stores/account/account-provider'
 
 export interface IRequestProps {
   request: any
-  props: any
+  setOpen?: any
 }
 
-export default function RequestCard({ request, props }: IRequestProps) {
+export default function RequestCard({ request }: IRequestProps) {
   let [open, setOpen] = useState(false)
   const { account } = useAccountState()
   const [requests, setRequests] = useState<any>([])
@@ -73,24 +73,27 @@ export default function RequestCard({ request, props }: IRequestProps) {
           Details
         </Anchor>
         <FlexSpacer />
-        <Block>
-          <span className={'full-width flex '}>
-            <Button onClick={() => props.setOpen(true)} className={'ActionButton'}>
-              <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
-            </Button>
-          </span>
-          <span className={'full-width flex'}>
-            <Button
-              onClick={() => DeleteRequest(request._id)}
-              className={'ActionButton '}
-            >
-              <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />
-            </Button>
-          </span>
-        </Block>
-        <Button type="submit" primary>
-          Support
-        </Button>
+        {account && account.role === 'ORGANIZATION' ? (
+          <Block>
+            <span className={'full-width flex '}>
+              <Button onClick={() => setOpen(true)} className={'ActionButton'}>
+                <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
+              </Button>
+            </span>
+            <span className={'full-width flex'}>
+              <Button
+                onClick={() => DeleteRequest(request._id)}
+                className={'ActionButton '}
+              >
+                <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />
+              </Button>
+            </span>
+          </Block>
+        ) : (
+          <Button type="submit" primary>
+            Support
+          </Button>
+        )}
       </Flex>
     </Card>
   )
