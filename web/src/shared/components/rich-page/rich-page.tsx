@@ -1,5 +1,16 @@
-import React, { PropsWithChildren, useEffect } from 'react'
-import { Block, Content, geramiSizeTypes, Loading, Page, Warning } from 'gerami'
+import React, { PropsWithChildren, useEffect, useState } from 'react'
+import {
+  Block,
+  Button,
+  Content,
+  Flex,
+  FlexSpacer,
+  geramiSizeTypes,
+  Loading,
+  Page,
+  Warning
+} from 'gerami'
+import { IButtonProps } from 'gerami/src/components/Button/Button'
 
 import './rich-page.scss'
 import { Namespace } from '../../../lib/language'
@@ -16,8 +27,14 @@ type Props = PropsWithChildren<{
   documentTitle?: string // default to Props.title, if it is string
   documentTitleOptions?: IUseTitleOptions
 
+  covers?: string[]
+  coverDuration?: number
+  photo?: string
+
   title?: string | JSX.Element
   description?: string | JSX.Element
+
+  actions?: IButtonProps[]
 
   error?: string | { prettyMessage?: string; message?: string }
   onErrorClose?: (error: undefined) => void
@@ -25,9 +42,8 @@ type Props = PropsWithChildren<{
 
 /*
 TODO:
-- support action buttons (with config) (also overridable with JSX.Element[] type)
-- support header images (with different sizes) (overridable by JSX.Element type)
-- support to use a custom (JSX.Element) error component
+- support to use a custom (JSX.Element) every sub-component (error, photo, cover, actions...)
+- support to style and className every sub-component (error, photo, cover, actions...)
 */
 
 function RichPage({
@@ -42,8 +58,14 @@ function RichPage({
   documentTitle,
   documentTitleOptions,
 
+  covers = [],
+  coverDuration = 14000,
+  photo,
+
   title,
   description,
+
+  actions = [],
 
   error,
   onErrorClose
@@ -55,43 +77,99 @@ function RichPage({
     documentTitleOptions
   )
 
-  return !(ready && loaded) ? (
+  const [coverIndex, setCoverIndex] = useState(-1)
+
+  useEffect(() => {
+    let interval: any
+    if (covers.length) {
+      if (coverIndex === -1) setCoverIndex(0)
+      interval = setInterval(() => {
+        setCoverIndex(coverIndex + 1 < covers.length ? coverIndex + 1 : 0)
+      }, coverDuration)
+    }
+    return () => (interval ? clearInterval(interval) : undefined)
+  }, [covers, covers.length, coverIndex])
+
+  useEffect(() => {
+    // prefetch all cover images into the browser's cache
+    for (const cover of covers) {
+      const img = document.createElement('img')
+      img.src = cover
+    }
+  }, [])
+
+  return !(ready !== false && loaded) ? (
     <Loading />
   ) : (
-    <Page>
-      <Content size={size} transparent style={{ overflow: 'visible' }}>
-        {title === undefined ? null : (
-          <>
-            <Block first className={`padding-horizontal-none`}>
-              {typeof title === 'string' ? <h1>{title}</h1> : title}
+    <>
+      {(coverIndex !== -1 || photo !== undefined) && (
+        <div style={{ overflow: 'hidden' }}>
+          <div
+            className={`${
+              photo !== undefined ? 'rich-page-cover-with-photo' : ''
+            } rich-page-cover bg-whitish`}
+            style={{
+              animationDuration: `${coverDuration}ms`,
+              ...(coverIndex === -1
+                ? {}
+                : { backgroundImage: `url(${covers[coverIndex]})` })
+            }}
+          />
+        </div>
+      )}
+      {photo && (
+        <Content
+          className={'rich-page-photo'}
+          style={{ backgroundImage: `url(${photo})` }}
+        />
+      )}
+
+      <Page>
+        <Content size={size} transparent style={{ overflow: 'visible' }}>
+          {title === undefined && !actions.length ? null : (
+            <>
+              <Block first className={`padding-horizontal-none`}>
+                <Flex>
+                  <>{typeof title === 'string' ? <h1>{title}</h1> : title}</>
+
+                  <FlexSpacer />
+
+                  {actions.map((action, i) => (
+                    <span key={i} className={'rich-page-action-vaults'}>
+                      <Button {...action as any}>
+                        {action.value || action.children}
+                      </Button>
+                    </span>
+                  ))}
+                </Flex>
+              </Block>
+
+              <div className={`padding-horizontal-none`}>
+                <hr />
+              </div>
+            </>
+          )}
+
+          {description === undefined ? null : (
+            <Block last className={`padding-horizontal-none font-S fg-blackish`}>
+              {description}
             </Block>
+          )}
 
-            <div className={`padding-horizontal-none`}>
-              <hr />
-            </div>
-          </>
-        )}
-
-        {description === undefined ? null : (
-          <Block last className={`padding-horizontal-none font-S fg-blackish`}>
-            {description}
-          </Block>
-        )}
-
-        {!error ? null : (
-          <Block last className={`padding-horizontal-none font-S`}>
+          {!error ? null : (
             <Warning
+              className={`margin-bottom-very-big padding-horizontal-none font-S`}
               problem={
                 typeof error === 'string' ? error : error.prettyMessage || error.message
               }
               shy={() => onErrorClose && onErrorClose(undefined)}
             />
-          </Block>
-        )}
+          )}
 
-        <div className={'rich-page-content'}>{children}</div>
-      </Content>
-    </Page>
+          <div className={'rich-page-content'}>{children}</div>
+        </Content>
+      </Page>
+    </>
   )
 }
 

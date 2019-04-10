@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import MyOrganizationCard from '../../../../components/volunteer-my-organization/volunteer-my-organizattion'
 
@@ -9,6 +9,14 @@ function OrganizationSearchResult(props: IOrganizationResult) {
   const { term } = props
   const [organization, setOrganizations] = useState([])
 
+  useEffect(() => {
+    axios
+      .get('/api/event/search?term=' + term)
+      .then(org => {
+        setOrganizations(org.data)
+      })
+      .then(e => console.log(e))
+  })
   return (
     <div>
       <h1>Organization Search result</h1>

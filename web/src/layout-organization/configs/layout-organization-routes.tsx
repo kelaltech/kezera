@@ -36,7 +36,7 @@ const RequestInformation = lazy(() =>
 )
 
 const OrganizationCertificateDesign = lazy(() =>
-  import('../pages/organization-certificate-design/organization-certificate-design')
+  import('../pages/certificate-design/certificate-design')
 )
 const OrganizationDetail = lazy(() =>
   import('../../shared/pages/organization-detail/organization-detail')

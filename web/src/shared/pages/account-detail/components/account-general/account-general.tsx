@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { Anchor, Block, Button, Content, Flex, FlexSpacer, Input, Warning } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -25,7 +26,7 @@ interface Props {
   readonly?: boolean
 }
 
-function AccountGeneral({ readonly }: Props) {
+function AccountGeneral({ readonly, history }: Props & RouteComponentProps<{}>) {
   const { loading, t } = useLocale(['account'])
 
   const { account } = useAccountState()
@@ -38,7 +39,7 @@ function AccountGeneral({ readonly }: Props) {
     updateAccount(accountDispatch, data, 0, data.currentPassword, data.newPassword)
   }
   const handleLogout = (): void => {
-    logout(accountDispatch)
+    logout(accountDispatch, () => history.push('/'))
   }
 
   const [error, setError] = useState<string | null>(null)
@@ -314,4 +315,4 @@ function AccountGeneral({ readonly }: Props) {
   )
 }
 
-export default AccountGeneral
+export default withRouter(AccountGeneral)

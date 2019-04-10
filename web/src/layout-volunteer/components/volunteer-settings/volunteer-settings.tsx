@@ -12,24 +12,32 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import { useVolunteerDispatch, useVolunteerState } from '../../stores/volunteer/volunteer-provider'
+import { updateSetting } from '../../stores/volunteer/volunteer-actions'
+interface Props {
+  /**
+   * @default false
+   */
+  readonly?: boolean
+}
 
-function VolunteerSettings() {
+function VolunteerSettings({readonly}: Props) {
   const { loading, t } = useLocale([
     /* todo: use some namespace */
   ])
 
+  const {volunteer} = useVolunteerState()
   const [gender, setGender] = useState()
   const [country, setCountry] = useState()
   const [location, setLocation] = useState()
   const [birthdate, setBirthdate] = useState()
   const [username, setUsername] = useState()
-  const [userInfo, setUserInfo] = useState()
 
   const [editGender, setEditGender] = useState(false),
-    [editCountry, setEditCountry] = useState(false),
-    [editLocation, setEditLocation] = useState(false),
-    [editBirthdate, setEditBirthdate] = useState(false),
-    [editUsername, setEditUsername] = useState(false)
+        [editCountry, setEditCountry] = useState(false),
+        [editLocation, setEditLocation] = useState(false),
+        [editBirthdate, setEditBirthdate] = useState(false),
+        [editUsername, setEditUsername] = useState(false)
 
   const [visibility, setVisibility] = useState({
     task: false,
@@ -43,20 +51,38 @@ function VolunteerSettings() {
     setVisibility({ ...visibility, [name]: e.target.checked })
   }
 
+ const emitChange = (volunteerChanges:any):void => {
+    if(readonly) return
+   const data = {...volunteer, ...volunteerChanges}
+    updateSetting(useVolunteerDispatch, data,0)
+ }
+
   const handleUsernameChange = (e: any) => {
     e.preventDefault()
-    if (!username) return
-
-    //send data to back-end and update the volunteer-setting
-    //then fetch the new userInfo
+    emitChange({username})
+    setEditUsername(false)
+  }
+  const handleGenderChange = (e:any) => {
+    e.preventDefault()
+    emitChange({gender})
+    setEditGender(false)
+  }
+  const handleBirthdate = (e:any) => {
+    e.preventDefault()
+    emitChange({birthdate})
+    setEditBirthdate(false)
+  }
+  const handleCountryChange = (e:any) => {
+    e.preventDefault()
+    emitChange({country})
+    setEditCountry(false)
+  }
+  const handleLocationChange = (e:any) => {
+    e.preventDefault()
+    emitChange({location})
+    setEditLocation(false)
   }
 
-  const handleGenderChange = () => {}
-
-  const handleBirthdate = () => {}
-
-  const handleCountryChange = () => {}
-  const handleLocationChange = () => {}
   return (
     loading || (
       <Block last>

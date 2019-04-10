@@ -24,7 +24,7 @@ function VolunteerSearchResult() {
     setCollapse(!isCollapsed)
     let filter = document.getElementById('search_filters')
     let filterBox = document.getElementById('filters')
-    isCollapsed ? (filter!.style.height = '70vh') : (filter!.style.height = '0')
+    isCollapsed ? (filter!.style.height = '20vh') : (filter!.style.height = '0')
     isCollapsed
       ? (filterBox!.style.display = 'block')
       : (filterBox!.style.display = 'none')
@@ -103,8 +103,8 @@ function VolunteerSearchResult() {
             onChange={(e, v) => setValue(v)}
             indicatorColor={'primary'}
             textColor={'primary'}
-            variant="fullWidth"
-            scrollButtons="auto"
+            variant="scrollable"
+            scrollButtons="on"
           >
             <Tab label={'All'} />
             <Tab label={'News'} />

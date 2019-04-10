@@ -20,6 +20,7 @@ export class VerifierController extends KoaController {
 
     // save account
     const accountData = JSON.parse(JSON.stringify(application.account))
+    delete accountData._id
     const account = await add(AccountModel, accountData, { session })
 
     // save organization
@@ -37,6 +38,9 @@ export class VerifierController extends KoaController {
       text: `Hello,\n\nWe have completed reviewing your organization application and have accepted you to the system. Welcome! You can start by logging into your account.\n\nSincerely,\nThe SPVA Team`
     })
 
+    // commit changes
+    if (session) await session.commitTransaction()
+
     // swap logo
     const applicationGrid = new Grid(
       serverApp,
@@ -47,20 +51,17 @@ export class VerifierController extends KoaController {
     )
     if (await applicationGrid.has()) {
       // save organization logo
-      const organizationGrid = new Grid(
-        serverApp,
-        OrganizationModel,
-        organization._id,
-        'logo',
-        false
+      const organizationGrid = new Grid(serverApp, AccountModel, account._id, 'photo')
+      await organizationGrid.set(
+        await applicationGrid.get(),
+        await applicationGrid.getType()
       )
-      await organizationGrid.set(await applicationGrid.get() /* todo: re-set type too */)
 
       // delete application logo
       await applicationGrid.remove()
     }
 
     // return organization response
-    return organizationDocumentToResponse(organization)
+    return await organizationDocumentToResponse(organization)
   }
 }

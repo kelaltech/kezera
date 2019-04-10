@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Anchor, Content, Flex, FlexSpacer } from 'gerami'
 import { Tab, Tabs } from '@material-ui/core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as qs from 'qs'
 import Axios from 'axios'
 
@@ -13,6 +14,7 @@ import OrganizationDetailInfo from './components/organization-detail-info/organi
 import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-Requests'
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
 import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 
 type ITabName = 'info' | 'requests' | 'events' | 'news'
 
@@ -22,6 +24,7 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
   const [error, setError] = useState()
   const [organization, setOrganization] = useState<IOrganizationResponse>()
 
+  const { account } = useAccountState()
   const { myOrganization } = useMyOrganizationState()
 
   const [waitingForMe, setWaitingForMe] = useState(false)
@@ -77,13 +80,15 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
 
   return (
     <RichPage
-      ready={!!organization || error}
+      covers={organization ? [organization.logoUri as string] : []}
+      photo={organization && organization.logoUri}
+      ready={!!(organization || error)}
       languageNamespaces={['organization']}
       error={error}
       documentTitle={organization && organization.account.displayName}
       title={
         organization && (
-          <Anchor to={`/organization/${organization._id}fail`}>
+          <Anchor to={`/organization/${organization._id}`}>
             <h1>{organization.account.displayName}</h1>
           </Anchor>
         )
@@ -101,8 +106,8 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
                   |
                 </span>
                 <span>
-                  {organization.subscribersCount || 'No'} Subscriber
-                  {organization.subscribersCount === 1 ? '' : 's'}
+                  {organization.subscribersCount || 'NO'} SUBSCRIBER
+                  {organization.subscribersCount === 1 ? '' : 'S'}
                 </span>
               </>
             )}
@@ -115,9 +120,32 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
           </Flex>
         ))
       }
+      actions={
+        (account &&
+          ((account.role === 'ORGANIZATION' && [
+            {
+              to: '/account',
+              primary: true,
+              children: (
+                <>
+                  <FontAwesomeIcon
+                    icon={'pencil-alt'}
+                    className={'margin-right-normal font-S'}
+                  />
+                  Edit Account
+                </>
+              )
+            }
+          ]) ||
+            (account.role === 'VOLUNTEER' && [
+              // todo: continue here...
+              { onClick: () => alert('hi'), value: 'TODO' }
+            ]))) ||
+        []
+      }
     >
       {organization && (
-        <Content className={'fg-whitish'}>
+        <Content className={'bg-whitish'} style={{ overflow: 'visible' }}>
           <Content>
             <Tabs
               value={tab}

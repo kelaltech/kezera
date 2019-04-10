@@ -4,8 +4,10 @@ import { Editor, createEditorState, ImageSideButton } from 'medium-draft'
 import axios from 'axios'
 import { convertToRaw, convertFromRaw, EditorState, addNewBlock, Block } from 'draft-js'
 import './news-add.scss'
+import 'medium-draft/lib/index.css'
 import { Button, ImageInput } from 'gerami'
 import { withRouter } from 'react-router'
+// import 'https://unpkg.com/medium-draft@0.3.10/dist/medium-draft.js'
 
 interface INewsAddState {
   title: any

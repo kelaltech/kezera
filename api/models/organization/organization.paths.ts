@@ -14,7 +14,7 @@ export const organizationPaths: SchemaDefinition = {
 
   motto: { type: String, minlength: 1, maxlength: 50 },
   bio: { type: String, required: true, minlength: 1, maxlength: 10000 },
-  location: [
+  locations: [
     {
       latitude: {
         type: Number,
