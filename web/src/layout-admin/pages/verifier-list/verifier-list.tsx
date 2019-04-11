@@ -1,125 +1,104 @@
 import React, { useState } from 'react'
 import './verifier-list.scss'
-import { Block, Page, Title } from 'gerami'
-import Table, {
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableRow
-} from '../../../shared/components/Table/Table'
+import { Block, Button, Page, Title, Content, Image } from 'gerami'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Axios from 'axios'
-import { Schema } from 'mongoose'
 import { Link } from 'react-router-dom'
+import VerifierAdd from '../verifier-add/verifier-add'
+import { useAdminDispatch, useAdminState } from '../../stores/admin-provider'
+import { DeleteVerifiers } from '../../stores/admin-action'
 
-let list = [
-  {
-    displayName: 'Abebe bebe',
-    email: 'abebe@gmail.com',
-    _at: '2/2/2019'
-  },
-  {
-    displayName: 'Kebede debebe',
-    email: 'kebede@gmail.com',
-    _at: '2/2/2019'
-  },
-  {
-    displayName: 'Brook Tesfaye',
-    email: 'brook@gmail.com',
-    _at: '2/2/2019'
-  },
-  {
-    displayName: 'Kaleab Melkie',
-    email: 'kaleab@gmail.com',
-    _at: '2/2/2019'
-  },
-  {
-    displayName: 'Dagmawi worku',
-    email: 'dagmawi@gmail.com',
-    _at: '2/2/2019'
-  }
-]
 export default function VerifierList() {
   let [open, setOpen] = useState(false)
-  let [verifiers, setVerifiers] = useState([])
+  let { verifiers } = useAdminState()
+  const AdminDispatch = useAdminDispatch()
 
-  let handleDelete = function(id: Schema.Types.ObjectId) {
-    Axios.delete(`/api/admin/verifier/${id}`)
-      .then(() => FetchVerifiers())
-      .catch()
+  let handleDelete = function(id: string) {
+    if (window.confirm('Are you sure you want to remove this user?')) {
+      DeleteVerifiers(id, AdminDispatch)
+    }
   }
-
-  let FetchVerifiers = function() {
-    Axios.get('/api/admin/verifiers')
-      .then(resp => setVerifiers(resp.data))
-      .catch()
-  }
-
   return (
     <Page>
-      <Block className={'center'}>
-        <Title size={'XXL'}> Verifier list </Title>
+      <Block className={''}>
+        <Title size={'3XL'}>
+          <FontAwesomeIcon icon={'user-shield'} /> &emsp; Verifiers{' '}
+        </Title>
       </Block>
-      <Table>
-        <TableHeader>
-          <TableCell color={'white'}>
-            {' '}
-            <label> No. </label>{' '}
-          </TableCell>
-          <TableCell color={'white'}>
-            {' '}
-            <label> Name </label>{' '}
-          </TableCell>
-          <TableCell color={'white'}>
-            {' '}
-            <label> Email </label>{' '}
-          </TableCell>
-          <TableCell color={'white'}>
-            {' '}
-            <label> Created on </label>{' '}
-          </TableCell>
-          <TableCell color={'white'}>
-            <label> Actions </label>
-          </TableCell>
-        </TableHeader>
-        <TableBody>
-          {list.map((field: any, index: number) => (
+      <Block className={'right'}>
+        <Button onClick={() => setOpen(true)}>
+          {' '}
+          <FontAwesomeIcon icon={'user-shield'} /> &emsp; Create Verifier{' '}
+        </Button>
+      </Block>
+      <VerifierAdd open={open} onClose={() => setOpen(false)} />
+      <Content>
+        <Table>
+          <TableHead className={'Verifier-Table-Header'}>
             <TableRow>
-              <TableCell>
-                <label>&emsp;{index + 1}</label>
-              </TableCell>
-              <TableCell>
-                <label>{field.displayName}</label>
-              </TableCell>
-              <TableCell>
-                <label>{field.email} </label>
-              </TableCell>
-              <TableCell>
-                <label> {field._at}</label>
-              </TableCell>
-              <TableCell>
-                <Link to={`/admin/verifier/verifierId`}>
-                  <label>
-                    <FontAwesomeIcon
-                      className={'ViewButton'}
-                      icon={'eye'}
-                      title={'View verifier'}
-                    />
-                  </label>
-                </Link>
-                &emsp;
-                <label onClick={() => alert('Delete Verifier')}>
-                  <FontAwesomeIcon
-                    className={'RemoveButton'}
-                    icon={'trash'}
-                    title={'delete verifier'}
-                  />
-                </label>
-              </TableCell>
+              <TableCell className="Verifier-Table-Header-Cells">Name</TableCell>
+              <TableCell className="Verifier-Table-Header-Cells">Email</TableCell>
+              <TableCell className="Verifier-Table-Header-Cells">Phone no.</TableCell>
+              <TableCell className="Verifier-Table-Header-Cells">Action</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {verifiers &&
+              verifiers.map((field: any) => (
+                <TableRow>
+                  <TableCell>
+                    <label>
+                      <Image
+                        src={`/api/admin/verifier/pic/${field._id}`}
+                        className="Verifier-Image middle"
+                      />
+                      &emsp;
+                      <span className="middle"> {field.displayName} </span>
+                    </label>
+                  </TableCell>
+                  <TableCell>
+                    <label>{field.email} </label>
+                  </TableCell>
+                  <TableCell>
+                    <label> {field.phoneNumber}</label>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={`/admin/verifier/${field._id}`}>
+                      <label>
+                        <FontAwesomeIcon
+                          className={'ViewButton'}
+                          icon={'eye'}
+                          title={'View verifier'}
+                        />
+                      </label>
+                    </Link>
+                    &emsp;
+                    <label onClick={() => handleDelete(field._id)}>
+                      <FontAwesomeIcon
+                        className={'RemoveButton'}
+                        icon={'trash'}
+                        title={'delete verifier'}
+                      />
+                    </label>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </Content>
+      <Block className="center">
+        <Button onClick={() => alert('ayseram')}> 1 </Button> &nbsp;
+        <Button onClick={() => alert('ayseram')}> 2 </Button> &nbsp;
+        <Button onClick={() => alert('ayseram')}> 3 </Button> &nbsp;
+        <Button onClick={() => alert('ayseram')}> 4 </Button> &nbsp;
+        <Button onClick={() => alert('ayseram')}> 5 </Button> &nbsp;
+        <Button onClick={() => alert('ayseram')}> 6 </Button> &nbsp;
+        <Button onClick={() => alert('ayseram')}> Next </Button> &nbsp;
+      </Block>
     </Page>
   )
 }

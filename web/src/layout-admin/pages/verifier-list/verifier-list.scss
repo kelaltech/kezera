@@ -1,3 +1,4 @@
+@import '../../../assets/styles/theme';
 .RemoveButton {
   &:hover {
     color: #ff714a;
@@ -11,4 +12,16 @@
     cursor: pointer;
   }
   color: #537cdb;
+}
+
+.Verifier-Table-Header {
+  background-color: $primary !important;
+}
+.Verifier-Table-Header-Cells {
+  color: white !important;
+}
+.Verifier-Image {
+  width: 30px;
+  border-radius: 50%;
+  height: 30px;
 }

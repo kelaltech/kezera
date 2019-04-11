@@ -6,15 +6,14 @@ import {
   Flex,
   ImageInput,
   Input,
-  Page,
   TextArea,
   Yoga,
   Title
 } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import TextField from '@material-ui/core/TextField'
-import { Dialog } from '@material-ui/core'
-import Axios from 'axios'
+import { Dialog, TextField } from '@material-ui/core'
+import { useEventDispatch } from '../../stores/events/events.provider'
+import { AddEvents } from '../../stores/events/events.action'
 
 interface IEventAddProps {
   open: boolean
@@ -29,6 +28,8 @@ export default function EventAdd(props: any) {
   let [people, setPeople] = useState()
   let [location, setLocation] = useState()
 
+  let eventDispatch = useEventDispatch()
+
   let HandleAdd = function(e: any) {
     e.preventDefault()
     let data = new FormData()
@@ -39,13 +40,7 @@ export default function EventAdd(props: any) {
     people != undefined ? data.append('amountOfPeople', people) : undefined
     location != undefined ? data.append('location', location) : undefined
     data.append('image', e.target.image.files[0])
-
-    Axios.post(`/api/event/create`, data, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      withCredentials: true
-    })
-      .then()
-      .catch(console.error)
+    AddEvents(data, eventDispatch)
   }
 
   return (

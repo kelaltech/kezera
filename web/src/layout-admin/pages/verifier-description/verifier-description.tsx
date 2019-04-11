@@ -8,8 +8,7 @@ import Table, {
   TableBody,
   TableRow
 } from '../../../shared/components/Table/Table'
-
-interface IVerifierDescriptionProps {}
+import { useFetch } from '../../hooks/Fetch'
 
 const verifier = {
   displayName: 'Anteneh Ashenafi',
@@ -40,76 +39,83 @@ const verifier = {
     }
   ]
 }
-export default function VerifierDescription(props: IVerifierDescriptionProps) {
+
+export default function VerifierDescription(props: any) {
+  let v: any = useFetch('/api/admin/verifier/' + props.match.params._id)
+
   return (
     <Page>
-      <Content size={'XXL'}>
-        <Block className={'center'}>
-          <Image
-            src={
-              'https://s3.amazonaws.com/images.seroundtable.com/google-trusted-verifier-app-1454592091.jpg'
-            }
-            className={'VerifierImage middle inline-block'}
-          />
-        </Block>
-        <Block className={'center'}>
-          <Title size={'XXL'} className={'inline-block middle'}>
-            {' '}
-            {verifier.displayName}{' '}
-          </Title>
-        </Block>
-        <Block className={'center VerifierDescription'}>
-          <Block className={'flex'}>
-            <span className={'center flex full-width'}>
-              <FontAwesomeIcon icon={'envelope'} className={'margin-top-small'} />
-              &emsp;
-              {verifier.email}
-            </span>
-            <span className={'flex full-width'}>
-              <FontAwesomeIcon icon={'phone'} className={'margin-top-small'} />
-              &emsp;
-              {verifier.phone}
-            </span>
-          </Block>
-          <Block className={'flex'}>
-            <span className={'flex full-width'}>
-              <FontAwesomeIcon icon={'calendar'} className={'margin-top-small'} />
-              &emsp;
-              {verifier._at}
-            </span>
-            <span className={'flex full-width'}>
-              <FontAwesomeIcon icon={'map-marker'} className={'margin-top-small'} />
-              &emsp;
-              {verifier.location}
-            </span>
-          </Block>
-        </Block>
-        <Block className={'center'}>
-          <Title size={'XL'}>
-            <b> Verified organizations </b>
-          </Title>
-          {verifier.verifiedOrganizations.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableCell color={'white'}>Id</TableCell>
-                <TableCell color={'white'}>Name</TableCell>
-                <TableCell color={'white'}>Verified date</TableCell>
-              </TableHeader>
-              <TableBody>
-                {verifier.verifiedOrganizations.map(org => (
-                  <TableRow>
-                    <TableCell>{org.id}</TableCell>
-                    <TableCell>{org.name}</TableCell>
-                    <TableCell>{org._at}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          ) : (
-            ''
-          )}
-        </Block>
-      </Content>
+      {v ? (
+        <>
+          <Content size={'XXL'}>
+            <Block className={'center'}>
+              <Image
+                src={`/api/admin/verifier/pic/${props.match.params._id}`}
+                className={'VerifierImage middle inline-block'}
+              />
+            </Block>
+            <Block className={'center'}>
+              <Title size={'XXL'} className={'inline-block middle'}>
+                {v.displayName}{' '}
+              </Title>
+            </Block>
+            <Block className={'center VerifierDescription'}>
+              <Block className={'flex'}>
+                <span className={'center flex full-width'}>
+                  <FontAwesomeIcon icon={'envelope'} className={'margin-top-small'} />
+                  &emsp;
+                  {v.email}
+                </span>
+                <span className={'flex full-width'}>
+                  <FontAwesomeIcon icon={'phone'} className={'margin-top-small'} />
+                  &emsp;
+                  {v.phoneNumber}
+                </span>
+              </Block>
+              <Block className={'flex'}>
+                <span className={'flex full-width'}>
+                  <FontAwesomeIcon icon={'calendar'} className={'margin-top-small'} />
+                  &emsp;
+                  {new Date(v._at).toDateString()}
+                </span>
+                <span className={'flex full-width'}>
+                  <FontAwesomeIcon icon={'map-marker'} className={'margin-top-small'} />
+                  &emsp;
+                  {v.email}
+                </span>
+              </Block>
+            </Block>
+
+            <Block className={'center'}>
+              <Title size={'XL'}>
+                <b> Verified organizations </b>
+              </Title>
+              {verifier.verifiedOrganizations.length > 0 ? (
+                <Table>
+                  <TableHeader>
+                    <TableCell color={'white'}>Id</TableCell>
+                    <TableCell color={'white'}>Name</TableCell>
+                    <TableCell color={'white'}>Verified date</TableCell>
+                  </TableHeader>
+                  <TableBody>
+                    {verifier.verifiedOrganizations.map(org => (
+                      <TableRow>
+                        <TableCell>{org.id}</TableCell>
+                        <TableCell>{org.name}</TableCell>
+                        <TableCell>{org._at}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              ) : (
+                ''
+              )}
+            </Block>
+          </Content>
+        </>
+      ) : (
+        ''
+      )}
     </Page>
   )
 }

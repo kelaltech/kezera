@@ -1,4 +1,4 @@
-import { EventModel } from '../../models/event/event.model'
+import { EventModel, IEvent } from '../../models/event/event.model'
 import { add, edit, get, list, remove, search } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
 import { Grid } from '../../lib/grid'
@@ -86,12 +86,13 @@ export async function getComments(eventId: Schema.Types.ObjectId): Promise<IComm
   return comments
 }
 
-export async function addEvent(body: any, orgId: any, pic: Stream) {
+export async function addEvent(body: any, orgId: any, pic: Stream): Promise<IEvent> {
   body.organizationId = orgId
   const event = await add(EventModel, body)
   console.log(event)
   const grid = new Grid(serverApp, EventModel, event._id)
   await Promise.all([grid.set(pic)])
+  return event
 }
 
 export async function editEvent(
@@ -99,12 +100,13 @@ export async function editEvent(
   body: any,
   orgId: Schema.Types.ObjectId,
   pic: Stream
-): Promise<any> {
+): Promise<IEvent> {
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) {
-    await edit(EventModel, id, body)
+    let updated = await edit(EventModel, id, body)
     await new Grid(serverApp, EventModel, id).remove()
     await new Grid(serverApp, EventModel, id).set(pic)
+    return updated
   } else throw new KoaError('Not authorized', 401)
 }
 

@@ -10,7 +10,11 @@ export function SocketManager(io: Socket) {
     io.broadcast.emit('CommentAdded')
   })
   io.on('CommentDeleted', function() {
-    console.log('Added')
+    console.log('Deleted')
     io.broadcast.emit('CommentDeleted')
+  })
+  io.on('CommentReply', function() {
+    console.log('Reply added')
+    io.broadcast.emit('Replied')
   })
 }

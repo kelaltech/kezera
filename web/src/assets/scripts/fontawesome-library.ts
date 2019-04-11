@@ -9,6 +9,7 @@ import {
   faMapMarker,
   faComment,
   faHeart,
+  faUsers,
   faSmile,
   faPhone,
   faEnvelope,
@@ -21,11 +22,20 @@ import {
   faCheck,
   faQuestionCircle,
   faUserSecret,
+  faBuilding,
+  faHiking,
   faShareAlt,
   faExclamationCircle,
   faEllipsisV,
   faReply,
   faEye,
+  faThumbsUp,
+  faMoneyBill,
+  faHandHoldingHeart,
+  faTshirt,
+  faTasks,
+  faHome,
+  faUserShield,
   faBalanceScale,
   faFileContract,
   faUserTie,
@@ -52,22 +62,33 @@ export default function fontawesomeLibrary() {
 
   // solid
   library.add(
+    faThumbsUp,
+    faUserShield,
     faBars,
     faSignInAlt,
     faImage,
     faLocationArrow,
     faCalendar,
+    faMoneyBill,
+    faHome,
     faMapMarker,
     faComment,
     faHeart,
     faSmile,
     faPhone,
+    faHandHoldingHeart,
+    faHeart,
     faEnvelope,
     faPlus,
     faPencilAlt,
+    faTasks,
+    faTshirt,
     faTrash,
+    faUsers,
+    faNewspaper,
     faCheckCircle,
     faSearch,
+    faHiking,
     faCameraRetro,
     faCheck,
     faQuestionCircle,
@@ -85,15 +106,16 @@ export default function fontawesomeLibrary() {
     faDonate,
     faUserCircle,
     faHandsHelping,
+    faEye,
+    faBuilding,
     faBell,
     faBellSlash,
     faHandsHelping,
-    faEye
   )
 
   // brands
   library.add(faFacebook)
 
   // regular (free)
-  library.add(farUserCircle, farCommentAlt, farHeart)
+  library.add(faUserCircle, farCommentAlt, farHeart)
 }

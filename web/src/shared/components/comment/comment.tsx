@@ -24,7 +24,6 @@ interface ICommentProps {
 }
 
 export default function Comment(props: ICommentProps) {
-  let [comments, setComments] = useState([])
   let [open, setOpen] = useState(false)
   let [reply, setReply] = useState(false)
   let [replies, setReplies] = useState([])
@@ -38,6 +37,9 @@ export default function Comment(props: ICommentProps) {
     socket.on('CommentAltered', function() {
       FetchReplies(props.comment._id)
     })
+    socket.on('Replied', function() {
+      FetchReplies(props.comment._id)
+    })
   }
 
   let handleReply = function(e: any) {
@@ -47,6 +49,7 @@ export default function Comment(props: ICommentProps) {
     Axios.post(`/api/comment/${props.comment._id}/reply`, formData)
       .then(() => {
         FetchReplies(props.ParentId)
+        socket.emit('CommentReply')
       })
       .catch(console.error)
   }
@@ -59,7 +62,6 @@ export default function Comment(props: ICommentProps) {
     )
       .then(() => {
         FetchReplies(props.ParentId)
-        socket.emit('CommentAltered')
         socket.emit('CommentDeleted')
       })
       .catch()

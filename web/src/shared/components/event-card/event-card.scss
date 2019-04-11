@@ -1,15 +1,14 @@
 @import '../../../assets/styles/theme';
 .EventCard {
   border-radius: $radius / 4;
-  height: 400px;
+  max-height: 450px;
 }
 .EventImage {
   &:hover {
-    filter: blur(0px);
+    filter: blur(2px);
     transition: all 0.8s;
   }
   background-size: cover;
-  filter: blur(2px);
   transform: scale3d(1.02, 1.02, 1);
   width: 100%;
   height: 180px;

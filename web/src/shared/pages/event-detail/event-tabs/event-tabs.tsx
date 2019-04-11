@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import { Typography } from '@material-ui/core'
 import { Block } from 'gerami'
 import Comments from '../comments/comments'
 import Likes from '../likes/likes'

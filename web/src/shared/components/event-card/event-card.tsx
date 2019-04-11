@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
 import axios from 'axios'
 import { IOrganizationEventRequest } from '../../../apiv/event.apiv'
+import { useEventDispatch } from '../../../layout-organization/stores/events/events.provider'
+import { DeleteEvent } from '../../../layout-organization/stores/events/events.action'
 
 interface IEventProps {
   event: IOrganizationEventRequest
@@ -28,6 +30,7 @@ export default function EventCard(props: IEventProps) {
     'Nov.',
     'Dec.'
   ]
+  let eventDispatch = useEventDispatch()
 
   let handleLike = function(id: any) {
     axios
@@ -43,12 +46,9 @@ export default function EventCard(props: IEventProps) {
       .catch()
   }
 
-  let DeleteEvent = function(id: any) {
+  let RemoveEvent = function(id: string) {
     if (window.confirm('Are you sure you want to delete this event?')) {
-      axios
-        .delete(`/api/event/${id}`)
-        .then()
-        .catch(console.error)
+      DeleteEvent(id, eventDispatch)
     }
   }
 
@@ -131,7 +131,7 @@ export default function EventCard(props: IEventProps) {
           </span>
           <span className={'full-width flex'}>
             <Button
-              onClick={() => DeleteEvent(props.event._id)}
+              onClick={() => RemoveEvent(props.event._id.toString())}
               className={'ActionButton '}
             >
               <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />

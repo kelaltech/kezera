@@ -16,6 +16,7 @@ export type IOrganizationEventRequest = {
 }
 
 export type IOrganizationEventResponse = {
+  _id: string
   title: string
   description: string
   startDate: Date
