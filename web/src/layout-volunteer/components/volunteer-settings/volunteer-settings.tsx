@@ -58,15 +58,9 @@ function VolunteerSettings({ readonly }: Props) {
 
   const handleVisibility = (name: string) => (e: any) => {
      setVisibility({ ...visibility, [name]: e.target.checked })
-    console.log(visibility)
-    console.log(name)
-    console.log(e.target.checked)
     emitChange({visibility})
-    updateVolunteerPrivacy()
   }
-const updateVolunteerPrivacy = ()=>{
-    console.log('from Func : ', visibility)
-}
+
   const emitChange = (volunteerChanges: any): void => {
     if (readonly) return
     const data = { ...volunteer, ...volunteerChanges }
