@@ -1,34 +1,10 @@
-.search-bar-container {
-  width: 100%;
+.col-bar-container {
+/*  width: 100%;
   height: 100vh;
-  background-color: coral;
-  position: relative;
+  background-color: dodgerblue;*/
 }
 
-.search-bar-img {
-  background-image: url('https://source.unsplash.com/cAtzHUz7Z8g/1600x900');
-  background-attachment: fixed;
-  background-position: center center;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-}
-.search-bar-img-overlay {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #4558be;
-  opacity: 0.6;
-}
-
-.search-bar {
-}
-.task-label {
+.vol-task-container {
   width: 50%;
   margin: 0 auto;
-  position: sticky;
-  top: 55px;
-  padding: 5px;
-  background-color: #f5f6fa;
 }
