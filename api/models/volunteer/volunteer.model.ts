@@ -12,6 +12,13 @@ export interface IVolunteer extends Document {
   gender: string
   location: string
   username: string
+  privacy: {
+    certificate: boolean,
+    event: boolean,
+    material:boolean,
+    task:boolean,
+    money:boolean
+  }
 }
 
 export const volunteerModelFactory = new ModelFactory<IVolunteer>({
