@@ -9,10 +9,10 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  ListSubheader,
+  ListSubheader
 } from '@material-ui/core'
 import Slider from 'react-slick'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import {
   faCertificate,
@@ -29,8 +29,6 @@ import OrganizationCard from '../../../shared/components/organization-card/organ
 import axios from 'axios'
 import EventCard from '../../../shared/components/event-card/event-card'
 
-
-
 function Profile() {
   const Settings = {
     dots: false,
@@ -40,7 +38,7 @@ function Profile() {
     autoplay: true,
     speed: 2000,
     autoplaySpeed: 3000,
-    cssEase: "linear",
+    cssEase: 'linear',
     responsive: [
       {
         breakpoint: 1024,
@@ -68,28 +66,29 @@ function Profile() {
       }
     ]
   }
-  const {account} = useAccountState()
-  const {volunteer} = useVolunteerState()
+  const { account } = useAccountState()
+  const { volunteer } = useVolunteerState()
   const [events, setEvents] = useState([])
-  useEffect(()=>{
+  useEffect(() => {
     axios
       .get('/api/event/all')
-      .then(events=>{
+      .then(events => {
         setEvents(events.data)
       })
-      .catch(e=>console.log(e))
-  },[])
+      .catch(e => console.log(e))
+  }, [])
 
-  return(
+  return (
     <div className={'profile-container'}>
-      <Block first/>
-      <Content  className={'general-profile'}>
+      <Block first />
+      <Content className={'general-profile'}>
         <div>
           <div
             style={{
               backgroundImage: `url(${account!.photoUri})`
             }}
-            className={'pro-acc-pic-back'}/>
+            className={'pro-acc-pic-back'}
+          />
           <div
             style={{
               backgroundImage: `url(${account!.photoUri})`
@@ -99,131 +98,110 @@ function Profile() {
         </div>
 
         <div>
-          <div className={'account-head-display-name'} >
-          <span className={'account-head-display-name-text'}>
-            {account!.displayName}
-          </span>
+          <div className={'account-head-display-name'}>
+            <span className={'account-head-display-name-text'}>
+              {account!.displayName}
+            </span>
           </div>
         </div>
         <div className={'pro-general-info'}>
           <div>
-            <span>
-            {"Ethiopia"}
-          </span>
-            <span>
-            {'22 years old'}
-          </span>
+            <span>{'Ethiopia'}</span>
+            <span>{'22 years old'}</span>
           </div>
-         <div>
-            <span>
-            {account!.email}
-          </span>
-           <span>
-            {account!.phoneNumber}
-          </span>
-         </div>
+          <div>
+            <span>{account!.email}</span>
+            <span>{account!.phoneNumber}</span>
+          </div>
         </div>
-
       </Content>
 
       {/*<Block first />*/}
 
-      <Content  className={'general-profile'}>
+      <Content className={'general-profile'}>
         <div className={'pro-activity-header'}>
           <span>Activities</span>
         </div>
 
         <div className={'pro-act-stat-cont'}>
-       <div className={'pro-stat'}>
-         <div>
-           <List subheader={<ListSubheader>Achievements</ListSubheader>}>
-             <ListItem>
-               <ListItemIcon>
-                 <FontAwesomeIcon icon={faCertificate}/>
-               </ListItemIcon>
-               <ListItemText primary="Certificate Achieved" />
-               <ListItemSecondaryAction>
-                 {2}
-               </ListItemSecondaryAction>
-             </ListItem>
-             <ListItem>
-               <ListItemIcon>
-                 <FontAwesomeIcon icon={faCalendarCheck}/>
-               </ListItemIcon>
-               <ListItemText primary="Event Attended" />
-               <ListItemSecondaryAction>
-                 {12}
-               </ListItemSecondaryAction>
-             </ListItem>
-             <ListItem>
-               <ListItemIcon>
-                 <FontAwesomeIcon icon={faTasks}/>
-               </ListItemIcon>
-               <ListItemText primary="Task Accomplished" />
-               <ListItemSecondaryAction>
-                 {12}
-               </ListItemSecondaryAction>
-             </ListItem>
-             <ListItem>
-               <ListItemIcon>
-                 <FontAwesomeIcon icon={faToolbox}/>
-               </ListItemIcon>
-               <ListItemText primary="Material Donated" />
-               <ListItemSecondaryAction>
-                 {12}
-               </ListItemSecondaryAction>
-             </ListItem>
-             <ListItem>
-               <ListItemIcon>
-                 <FontAwesomeIcon icon={faHandHoldingUsd}/>
-               </ListItemIcon>
-               <ListItemText primary="Money Donated" />
-               <ListItemSecondaryAction>
-                 {12}
-               </ListItemSecondaryAction>
-             </ListItem>
-             <ListItem>
-               <ListItemIcon>
-                 <FontAwesomeIcon icon={faHandHoldingHeart}/>
-               </ListItemIcon>
-               <ListItemText primary="Organ Pledged" />
-               <ListItemSecondaryAction>
-                 {12}
-               </ListItemSecondaryAction>
-             </ListItem>
-           </List>
-         </div>
-       </div>
+          <div className={'pro-stat'}>
+            <div>
+              <List subheader={<ListSubheader>Achievements</ListSubheader>}>
+                <ListItem>
+                  <ListItemIcon>
+                    <FontAwesomeIcon icon={faCertificate} />
+                  </ListItemIcon>
+                  <ListItemText primary="Certificate Achieved" />
+                  <ListItemSecondaryAction>{2}</ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <FontAwesomeIcon icon={faCalendarCheck} />
+                  </ListItemIcon>
+                  <ListItemText primary="Event Attended" />
+                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <FontAwesomeIcon icon={faTasks} />
+                  </ListItemIcon>
+                  <ListItemText primary="Task Accomplished" />
+                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <FontAwesomeIcon icon={faToolbox} />
+                  </ListItemIcon>
+                  <ListItemText primary="Material Donated" />
+                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <FontAwesomeIcon icon={faHandHoldingUsd} />
+                  </ListItemIcon>
+                  <ListItemText primary="Money Donated" />
+                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <FontAwesomeIcon icon={faHandHoldingHeart} />
+                  </ListItemIcon>
+                  <ListItemText primary="Organ Pledged" />
+                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                </ListItem>
+              </List>
+            </div>
+          </div>
           <div className={'pro-icon-stat'}>
-            <span><FontAwesomeIcon icon={faParachuteBox} size={'10x'}/></span>
+            <span>
+              <FontAwesomeIcon icon={faParachuteBox} size={'10x'} />
+            </span>
           </div>
         </div>
       </Content>
 
       {/*<Block first />*/}
 
-      <Content  className={'general-profile'}>
+      <Content className={'general-profile'}>
         <div className={'pro-activity-header event-header'}>
           <span>Recent Events</span>
         </div>
         <div className={'pro-event-attended'}>
           <Slider {...Settings}>
-            {
-              events.map(e=>(
-                <div>
-                  <Block>
+            {events.map(e => (
+              <div>
+                <Block>
                   <EventCard event={e} role={'VOLUNTEER'} fetch={() => {}} />
-                  </Block>
-                </div>
-              ))
-            }
+                </Block>
+              </div>
+            ))}
           </Slider>
         </div>
       </Content>
 
       {/*<Block first />*/}
 
-      <Content  className={'general-profile'}>
+      <Content className={'general-profile'}>
         <div className={'pro-activity-header '}>
           <span>Certificates</span>
         </div>
@@ -233,5 +211,3 @@ function Profile() {
 }
 
 export default Profile
-
-

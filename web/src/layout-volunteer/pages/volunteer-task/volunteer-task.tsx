@@ -5,11 +5,14 @@ import RequestCard from '../../../shared/components/request/request-card'
 import {
   Checkbox,
   Collapse,
-  FormControlLabel, List,
+  FormControlLabel,
+  List,
   ListItem,
-  ListItemIcon, ListItemSecondaryAction,
+  ListItemIcon,
+  ListItemSecondaryAction,
   ListItemText,
-  ListSubheader, MenuItem
+  ListSubheader,
+  MenuItem
 } from '@material-ui/core'
 
 const taskTypes = [
@@ -33,7 +36,7 @@ const taskTypes = [
   'Women',
   'Sport & Recreation'
 ]
-import axios from 'axios';
+import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCertificate } from '@fortawesome/free-solid-svg-icons'
 import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons/faChevronCircleDown'
@@ -42,20 +45,22 @@ function VolunteerTask() {
   const [expanded, setExpanded] = useState(false)
   const [tasks, setTasks] = useState([])
 
-  useEffect(()=>{
+  useEffect(() => {
     axios
       .get('/api/task/list')
-      .then((task)=>{
+      .then(task => {
         setTasks(task.data)
       })
-      .catch(e=>{console.log(e)})
-  },[])
+      .catch(e => {
+        console.log(e)
+      })
+  }, [])
   return (
     <div className={'tasks-list-container'}>
       <div className={'col-bar-container'}>
-        <div className={'col-bar-img'}/>
+        <div className={'col-bar-img'} />
         <div className={'collapse-controller'}>
-        {/*  <div className={'before-expand'} >
+          {/*  <div className={'before-expand'} >
                <div className={'expand'}  onClick={() => setExpanded(!expanded)}>
                   <FontAwesomeIcon icon={faChevronCircleDown}/>
                 </div>
@@ -70,21 +75,21 @@ function VolunteerTask() {
           </div>*/}
 
           <div className={'bar-before-expand'}>
-             <span className={'expand-icon'} onClick={()=>setExpanded(!expanded)}>
-                <FontAwesomeIcon icon={faChevronCircleDown} />
-              </span>
+            <span className={'expand-icon'} onClick={() => setExpanded(!expanded)}>
+              <FontAwesomeIcon icon={faChevronCircleDown} />
+            </span>
             <div className={'header-expand-bar'}>
-              <Yoga  maxCol={3}>
+              <Yoga maxCol={3}>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Children & Youth
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Education & Literacy
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Environment
                 </MenuItem>
               </Yoga>
@@ -93,75 +98,74 @@ function VolunteerTask() {
 
           <div className={'bar-after-expanded'}>
             <Collapse in={expanded} timeout={'auto'} unmountOnExit>
-              <Yoga style={{padding: '20px'}}  maxCol={3}>
+              <Yoga style={{ padding: '20px' }} maxCol={3}>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Advocacy & Human Rights
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Animal
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Art & Culture
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Community
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Computer & Technology
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Crisis Support
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Disaster Relief
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Hunger
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Faith-Based
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Employment
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Emergency & Safety
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Media & Broadcasting
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   People with Disability
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Politics
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Women
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  <FontAwesomeIcon icon={faChevronCircleDown} />
                   Sport & Recreation
                 </MenuItem>
               </Yoga>
             </Collapse>
           </div>
-
         </div>
       </div>
 
@@ -172,8 +176,6 @@ function VolunteerTask() {
         {/*tasks.map((t:any)=>(
             <RequestCard request={...t} />
           ))*/}
-
-
       </div>
     </div>
   )

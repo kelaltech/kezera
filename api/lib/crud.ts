@@ -11,18 +11,15 @@ import { KoaError } from './koa-error'
 
 type ObjectId = Schema.Types.ObjectId | string
 
+export type IAddOptions<T extends Document> = {
+  session?: ClientSession
+  preSave?: (doc: T, session: ClientSession | null) => Promise<T>
+  postSave?: (doc: T, session: ClientSession | null) => Promise<T>
+}
 export async function add<T extends Document>(
   model: Model<T>,
   data: any,
-  {
-    session,
-    preSave,
-    postSave
-  }: {
-    session?: ClientSession
-    preSave?: (doc: T, session: ClientSession | null) => Promise<T>
-    postSave?: (doc: T, session: ClientSession | null) => Promise<T>
-  } = {},
+  { session, preSave, postSave }: IAddOptions<T> = {},
   options: SaveOptions = { session, validateBeforeSave: true }
 ): Promise<T> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')
@@ -36,23 +33,19 @@ export async function add<T extends Document>(
   return doc
 }
 
+export type IGetOptions<T extends Document> = {
+  conditions?: any
+  session?: ClientSession
+  preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
+  postQuery?: (
+    query: DocumentQuery<T | null, T>,
+    session: ClientSession | null
+  ) => DocumentQuery<T | null, T>
+}
 export async function get<T extends Document>(
   model: Model<T>,
   _id: ObjectId | null,
-  {
-    conditions = {},
-    session,
-    preQuery,
-    postQuery
-  }: {
-    conditions?: any
-    session?: ClientSession
-    preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
-    postQuery?: (
-      query: DocumentQuery<T | null, T>,
-      session: ClientSession | null
-    ) => DocumentQuery<T | null, T>
-  } = {}
+  { conditions = {}, session, preQuery, postQuery }: IGetOptions<T> = {}
 ): Promise<T> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')
   if (_id === undefined) throw new KoaError('"_id" parameter not found.', 400, 'NO_ID')
@@ -82,26 +75,20 @@ export async function get<T extends Document>(
   return doc
 }
 
+export type IListOptions<T extends Document> = {
+  conditions?: any
+  since?: Date | number | string
+  count?: number
+  session?: ClientSession
+  preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
+  postQuery?: (
+    query: DocumentQuery<T[], T>,
+    session: ClientSession | null
+  ) => DocumentQuery<T[], T>
+}
 export async function list<T extends Document>(
   model: Model<T>,
-  {
-    conditions = {},
-    since,
-    count,
-    session,
-    preQuery,
-    postQuery
-  }: {
-    conditions?: any
-    since?: Date | number | string
-    count?: number
-    session?: ClientSession
-    preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
-    postQuery?: (
-      query: DocumentQuery<T[], T>,
-      session: ClientSession | null
-    ) => DocumentQuery<T[], T>
-  } = {}
+  { conditions = {}, since, count, session, preQuery, postQuery }: IListOptions<T> = {}
 ): Promise<T[]> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')
 
@@ -126,27 +113,21 @@ export async function list<T extends Document>(
   return await query
 }
 
+export type ISearchOptions<T extends Document> = {
+  conditions?: any
+  since?: Date | number | string
+  count?: number
+  session?: ClientSession
+  preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
+  postQuery?: (
+    query: DocumentQuery<T[], T>,
+    session: ClientSession | null
+  ) => DocumentQuery<T[], T>
+}
 export async function search<T extends Document>(
   model: Model<T>,
   term: string,
-  {
-    conditions = {},
-    since,
-    count,
-    session,
-    preQuery,
-    postQuery
-  }: {
-    conditions?: any
-    since?: Date | number | string
-    count?: number
-    session?: ClientSession
-    preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
-    postQuery?: (
-      query: DocumentQuery<T[], T>,
-      session: ClientSession | null
-    ) => DocumentQuery<T[], T>
-  } = {}
+  { conditions = {}, since, count, session, preQuery, postQuery }: ISearchOptions<T> = {}
 ): Promise<T[]> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')
   if (!term) throw new KoaError('"term" parameter not found.', 400, 'NO_TERM')
@@ -179,6 +160,17 @@ export async function search<T extends Document>(
   return await query
 }
 
+export type IEditOptions<T extends Document> = {
+  conditions?: any
+  session?: ClientSession
+  preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
+  postQuery?: (
+    query: DocumentQuery<T | null, T>,
+    session: ClientSession | null
+  ) => DocumentQuery<T | null, T>
+  preUpdate?: (doc: T, session: ClientSession | null) => Promise<T>
+  postUpdate?: (raw: any, session: ClientSession | null) => Promise<any>
+}
 export async function edit<T extends Document>(
   model: Model<T>,
   _id: ObjectId | null,
@@ -190,17 +182,7 @@ export async function edit<T extends Document>(
     postQuery,
     preUpdate,
     postUpdate
-  }: {
-    conditions?: any
-    session?: ClientSession
-    preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
-    postQuery?: (
-      query: DocumentQuery<T | null, T>,
-      session: ClientSession | null
-    ) => DocumentQuery<T | null, T>
-    preUpdate?: (doc: T, session: ClientSession | null) => Promise<T>
-    postUpdate?: (raw: any, session: ClientSession | null) => Promise<any>
-  } = {},
+  }: IEditOptions<T> = {},
   options: ModelUpdateOptions = { session, runValidators: true }
 ): Promise<T> {
   let doc = await get(model, _id, { conditions, session, preQuery, postQuery })
@@ -222,6 +204,18 @@ export async function edit<T extends Document>(
   return ret
 }
 
+export type IRemoveOptions<T extends Document> = {
+  conditions?: any
+  check?: boolean | undefined
+  session?: ClientSession
+  preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
+  postQuery?: (
+    query: DocumentQuery<T | null, T>,
+    session: ClientSession | null
+  ) => DocumentQuery<T | null, T>
+  preRemove?: (doc: T, session: ClientSession | null) => Promise<T>
+  postRemove?: (doc: T, session: ClientSession | null) => Promise<T>
+}
 export async function remove<T extends Document>(
   model: Model<T>,
   _id: ObjectId | null,
@@ -233,18 +227,7 @@ export async function remove<T extends Document>(
     postQuery,
     preRemove,
     postRemove
-  }: {
-    conditions?: any
-    check?: boolean | undefined
-    session?: ClientSession
-    preQuery?: (model: Model<T>, session: ClientSession | null) => DocumentQuery<T[], T>
-    postQuery?: (
-      query: DocumentQuery<T | null, T>,
-      session: ClientSession | null
-    ) => DocumentQuery<T | null, T>
-    preRemove?: (doc: T, session: ClientSession | null) => Promise<T>
-    postRemove?: (doc: T, session: ClientSession | null) => Promise<T>
-  } = {}
+  }: IRemoveOptions<T> = {}
 ): Promise<T | null> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')
   if (_id === undefined) throw new KoaError('"_id" parameter not found.', 400, 'NO_ID')

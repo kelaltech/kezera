@@ -53,8 +53,8 @@ export async function accountDocumentToResponse(
   const response: IAccountResponse = {
     _id: document._id,
 
-    role: document.role,
     status: document.status,
+    role: document.role,
 
     email: document.email,
     passwordSetOn: new Date(document.passwordSetOn).getTime(),

@@ -166,4 +166,3 @@ DiscoveryPage.propTypes = {
 }
 
 export default DiscoveryPage
-
