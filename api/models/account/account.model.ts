@@ -38,3 +38,19 @@ export const accountModelFactory = new ModelFactory<IAccount, typeof accountMeth
 export const accountSchema = accountModelFactory.schema
 
 export const AccountModel = accountModelFactory.model
+
+AccountModel.collection.ensureIndex(
+  {
+    role: 'text',
+    email: 'text',
+    displayName: 'text',
+    phoneNumber: 'text'
+  },
+  {
+    name: 'account_search',
+    weights: {
+      // default is 1
+      displayName: 10
+    }
+  }
+)
