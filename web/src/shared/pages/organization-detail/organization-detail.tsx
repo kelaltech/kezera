@@ -16,7 +16,7 @@ import {
 } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import OrganizationDetailInfo from './components/organization-detail-info/organization-detail-info'
-import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-Requests'
+import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-requests'
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
 import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
 import { reloadSubscriptions } from '../../../layout-volunteer/stores/volunteer/volunteer-actions'

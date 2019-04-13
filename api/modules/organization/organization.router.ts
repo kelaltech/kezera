@@ -21,6 +21,9 @@ organizationRouter.get(
   handle(OrganizationController, (c, s) => c.me(s))
 )
 
+// GET /api/organization/list?since={Date.now()}&count={10}
+organizationRouter.get('/list', handle(OrganizationController, (c, s) => c.list(s)))
+
 // PUT /api/organization/edit-me *
 organizationRouter.put(
   '/edit-me',
@@ -53,19 +56,19 @@ organizationRouter.put(
 
 /* LINKS TO OTHER MODULES */
 
-// GET /api/organization/requests/:organization_id?since&count
+// GET /api/organization/requests/:organization_id?since={Date.now()}&count={10}
 organizationRouter.get(
   '/requests/:organization_id',
   handle(OrganizationController, (c, s) => c.requests(s))
 )
 
-// GET /api/organization/events/:organization_id?since&count
+// GET /api/organization/events/:organization_id?since={Date.now()}&count={10}
 organizationRouter.get(
   '/events/:organization_id',
   handle(OrganizationController, (c, s) => c.events(s))
 )
 
-// GET /api/organization/news/:organization_id?since&count
+// GET /api/organization/news/:organization_id?since={Date.now()}&count={10}
 organizationRouter.get(
   '/news/:organization_id',
   handle(OrganizationController, (c, s) => c.news(s))

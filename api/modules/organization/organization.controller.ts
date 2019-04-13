@@ -87,8 +87,8 @@ export class OrganizationController extends KoaController {
     session?: ClientSession,
     _id = super.getParam('_id')
   ): Promise<IOrganizationResponse> {
-    const document = await get(OrganizationModel, _id, { session })
-    return await organizationDocumentToResponse(document)
+    const organization = await get(OrganizationModel, _id, { session })
+    return await organizationDocumentToResponse(organization)
   }
 
   async me(
@@ -100,6 +100,17 @@ export class OrganizationController extends KoaController {
       session
     })
     return await organizationDocumentToResponse(organization)
+  }
+
+  async list(
+    session?: ClientSession,
+    since = Number(super.getParam('since')) || Date.now(),
+    count = Number(super.getParam('count')) || 10
+  ): Promise<IOrganizationResponse[]> {
+    const organizations = await list(OrganizationModel, { session, since, count })
+    return await Promise.all(
+      organizations.map(organization => organizationDocumentToResponse(organization))
+    )
   }
 
   async editMe(
@@ -176,8 +187,8 @@ export class OrganizationController extends KoaController {
   async requests(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
-    since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
-    count = super.getQuery('count') ? Number(super.getQuery('count')) : 42
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
   ): Promise<IRequest[]> {
     // todo: filter?
     // todo: attach type-specific fields using a refactored method from Request Module
@@ -192,8 +203,8 @@ export class OrganizationController extends KoaController {
   async events(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
-    since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
-    count = super.getQuery('count') ? Number(super.getQuery('count')) : 14
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
   ): Promise<IEvent[]> {
     // todo: remove the next line when Event.organizationId gets fixed
     const organization = await get(OrganizationModel, organization_id)
@@ -209,8 +220,8 @@ export class OrganizationController extends KoaController {
   async news(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
-    since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
-    count = super.getQuery('count') ? Number(super.getQuery('count')) : 14
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 14
   ): Promise<INews[]> {
     // todo: filter?
     return await list(NewsModel, {
