@@ -1,10 +1,57 @@
+@import "../../../assets/styles/theme";
+
+
+.tasks-list-container {
+  margin: 0 auto;
+}
 .col-bar-container {
-/*  width: 100%;
-  height: 100vh;
-  background-color: dodgerblue;*/
+  width: 100%;
+  position: relative;
+  .col-bar-img {
+    width: 100%;
+    height: 90vh;
+    background-color: #1a3c4d;
+    opacity: 0.5;
+  }
+
+  .collapse-controller {
+    padding: 0 $padding-L 0 $padding-L;
+    background-color: #3f51b5;
+    position: sticky;
+    top: 30px;
+    .bar-before-expand{
+      display: flex;
+      .header-expand-bar {
+        flex: 100%;
+        align-self: center;
+      }
+      .expand-icon {
+        z-index: 99;
+        align-self: center;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .bar-after-expanded {
+      position: absolute;
+      top: 40px;
+      padding-left: $padding-L;
+      background-color: $accent;
+    /*  z-index: 99999999999999;
+      *{
+        z-index: 999999999999;
+      }*/
+    }
+  }
 }
 
 .vol-task-container {
   width: 50%;
   margin: 0 auto;
 }
+
+
+
+

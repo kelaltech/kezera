@@ -2,7 +2,15 @@ import React, { useEffect, useState } from 'react'
 import './volunteer-task.scss'
 import { url } from 'koa-router'
 import RequestCard from '../../../shared/components/request/request-card'
-import { Checkbox, Collapse, FormControlLabel } from '@material-ui/core'
+import {
+  Checkbox,
+  Collapse,
+  FormControlLabel, List,
+  ListItem,
+  ListItemIcon, ListItemSecondaryAction,
+  ListItemText,
+  ListSubheader, MenuItem
+} from '@material-ui/core'
 
 const taskTypes = [
   'Advocacy & Human Rights ',
@@ -26,6 +34,10 @@ const taskTypes = [
   'Sport & Recreation'
 ]
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCertificate } from '@fortawesome/free-solid-svg-icons'
+import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons/faChevronCircleDown'
+import { Card, Yoga } from 'gerami'
 function VolunteerTask() {
   const [expanded, setExpanded] = useState(false)
   const [tasks, setTasks] = useState([])
@@ -39,43 +51,132 @@ function VolunteerTask() {
       .catch(e=>{console.log(e)})
   },[])
   return (
-    <div>
+    <div className={'tasks-list-container'}>
       <div className={'col-bar-container'}>
-        <span onClick={()=>setExpanded(!expanded)}>
-          expand
-        </span>
-       {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <FormControlLabel
-            control={
-              <Checkbox
-                // checked={true}
-                value="checkedG"
-              />
-            }
-            label="Children"
-          />
-        </Collapse>*/}
+        <div className={'col-bar-img'}/>
+        <div className={'collapse-controller'}>
+        {/*  <div className={'before-expand'} >
+               <div className={'expand'}  onClick={() => setExpanded(!expanded)}>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                </div>
+            <Yoga maxCol={3}
+              >
+            </Yoga>
+          </div>
+          <div className={'after-expand'}>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+
+            </Collapse>
+          </div>*/}
+
+          <div className={'bar-before-expand'}>
+             <span className={'expand-icon'} onClick={()=>setExpanded(!expanded)}>
+                <FontAwesomeIcon icon={faChevronCircleDown} />
+              </span>
+            <div className={'header-expand-bar'}>
+              <Yoga  maxCol={3}>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Children & Youth
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Education & Literacy
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Environment
+                </MenuItem>
+              </Yoga>
+            </div>
+          </div>
+
+          <div className={'bar-after-expanded'}>
+            <Collapse in={expanded} timeout={'auto'} unmountOnExit>
+              <Yoga style={{padding: '20px'}}  maxCol={3}>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Advocacy & Human Rights
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Animal
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Art & Culture
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Community
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Computer & Technology
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Crisis Support
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Disaster Relief
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Hunger
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Faith-Based
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Employment
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Emergency & Safety
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Media & Broadcasting
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  People with Disability
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Politics
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Women
+                </MenuItem>
+                <MenuItem>
+                  <FontAwesomeIcon icon={faChevronCircleDown}/>
+                  Sport & Recreation
+                </MenuItem>
+              </Yoga>
+            </Collapse>
+          </div>
+
+        </div>
       </div>
 
       <div className={'task-label'}>
         <h3>Upcoming tasks</h3>
       </div>
       <div className={'vol-task-container'}>
-        {
-          /*tasks.map((t:any)=>(
+        {/*tasks.map((t:any)=>(
             <RequestCard request={...t} />
-          ))*/
-        }
+          ))*/}
+
+
       </div>
     </div>
   )
 }
-const request = {
-  title: 'Help us Grow our organization',
-  startDate: 1553683870882,
-  endDate: 1553683870882,
-  description: `VolunteerMatch is the most effective way to recruit highly qualified volunteers for your nonprofit. We match you with people who are passionate about and committed to your cause, and who can help when and where you need them.
-      And because volunteers are often donors as well, we make it easy for them to contribute their time and money.`,
-  image: 'https://source.unsplash.com/featured/1600x900?nature,mountain'
-}
+
 export default VolunteerTask
