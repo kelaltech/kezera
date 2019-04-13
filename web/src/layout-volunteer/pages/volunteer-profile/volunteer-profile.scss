@@ -5,6 +5,10 @@
   margin: 0 auto;
   position: relative;
 
+  @media screen and (max-width: $mobile) {
+    width: 100%;
+  }
+
   .general-profile {
     width: 100%;
     padding: $padding-M $padding-M $space;
@@ -55,6 +59,12 @@
     display: flex;
     flex-direction: column;
   }
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+    width: 100%;
+    padding-left: $padding-M ;
+  }
 }
 
 
@@ -87,5 +97,9 @@
     padding: 10px;
     align-self: center;
     color: $primary;
+
+    @media (max-width: $mobile) {
+      display: none;
+    }
   }
 }
