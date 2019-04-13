@@ -44,7 +44,7 @@ export default function VerifierDescription(props: any) {
   let v: any = useFetch('/api/admin/verifier/' + props.match.params._id)
 
   return (
-    <Page>
+    <Block className={'flex full-width'}>
       {v ? (
         <>
           <Content size={'XXL'}>
@@ -116,6 +116,6 @@ export default function VerifierDescription(props: any) {
       ) : (
         ''
       )}
-    </Page>
+    </Block>
   )
 }

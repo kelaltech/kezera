@@ -23,7 +23,7 @@ export default function VerifierList() {
     }
   }
   return (
-    <Page>
+    <Block className={'flex full-width inline-block'}>
       <Block className={''}>
         <Title size={'3XL'}>
           <FontAwesomeIcon icon={'user-shield'} /> &emsp; Verifiers{' '}
@@ -99,6 +99,6 @@ export default function VerifierList() {
         <Button onClick={() => alert('ayseram')}> 6 </Button> &nbsp;
         <Button onClick={() => alert('ayseram')}> Next </Button> &nbsp;
       </Block>
-    </Page>
+    </Block>
   )
 }

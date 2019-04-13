@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import './comment.scss'
-import {
-  Button,
-  Content,
-  Block,
-  Image,
-  Title,
-  MenuDrop,
-  MenuItem,
-  TextArea
-} from 'gerami'
+import { Button, Content, Block, Image, Title, TextArea } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios from 'axios'
 import { Schema } from 'mongoose'
 import { socket } from '../../../app/app'
 import { ICommentRequest } from '../../../apiv/comment.apiv'
+import { Menu, MenuItem } from '@material-ui/core'
 
 interface ICommentProps {
   ParentId: Schema.Types.ObjectId
@@ -133,7 +125,7 @@ export default function Comment(props: ICommentProps) {
           <button onClick={() => setOpen(!open)} className={'ActionButtons'}>
             <FontAwesomeIcon size={'1x'} icon={'ellipsis-v'} />
           </button>
-          <MenuDrop open={open} onClose={() => setOpen(false)}>
+          <Menu open={open} onClose={() => setOpen(false)}>
             <MenuItem>
               {' '}
               <Button
@@ -151,7 +143,7 @@ export default function Comment(props: ICommentProps) {
               {' '}
               <Button className="ActionButtons">
                 {' '}
-                <FontAwesomeIcon icon={'reply'} /> &nbsp; Report{' '}
+                <FontAwesomeIcon icon={'reply'} /> &nbsp; Report
               </Button>{' '}
             </MenuItem>
             <MenuItem>
@@ -167,7 +159,7 @@ export default function Comment(props: ICommentProps) {
                 <FontAwesomeIcon icon={'trash'} /> &nbsp; Delete{' '}
               </Button>{' '}
             </MenuItem>
-          </MenuDrop>
+          </Menu>
         </div>
       </Block>
       <Block className={'CommentMessage'}>
@@ -231,4 +223,8 @@ export default function Comment(props: ICommentProps) {
       )}
     </Content>
   )
+}
+
+let CommentMenu = function(props: { open: boolean; onClose: () => void }) {
+  return <div />
 }

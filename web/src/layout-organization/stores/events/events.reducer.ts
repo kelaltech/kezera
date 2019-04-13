@@ -13,6 +13,7 @@ export type Action =
   | { type: 'GET_ATTENDED'; volunteers: IAccountResponse[] }
   | { type: 'GET_GOING'; volunteers: IAccountResponse[] }
   | { type: 'ADD_EVENT'; event: IOrganizationEventResponse }
+  | { type: 'EDIT_EVENT'; event: IOrganizationEventResponse }
 
 export const state: State = {
   events: [],
@@ -25,11 +26,24 @@ export const reducer = function(initialState = state, action: Action): State {
       return { ...initialState, events: action.events }
 
     case 'DELETE_EVENT':
-      initialState.events = initialState.events.filter(v => v._id !== action._id)
+      initialState.events = initialState.events.filter(
+        v => v._id.toString() !== action._id
+      )
       return { ...initialState }
 
     case 'ADD_EVENT':
       return { ...initialState, events: initialState.events.concat(action.event) }
+
+    case 'EDIT_EVENT':
+      let events = initialState.events
+      for (let i = 0; i < events.length; i++) {
+        if (events[i]._id == action.event._id) {
+          events[i] = action.event
+        }
+      }
+      console.group('Events')
+      console.log(events)
+      return { ...initialState, events: events }
 
     case 'GET_EVENT':
       //return {...initialState,verifiers:initialState.verifiers.concat(action.verifier)}

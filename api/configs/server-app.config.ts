@@ -20,13 +20,14 @@ import { EventModel } from '../models/event/event.model'
 import { MaterialModel } from '../models/material/material.model'
 import { commentModel } from '../models/comment/comment.model'
 import { commentRouter } from '../modules/comment/comment.route'
-import { RequestModel } from '../models/request/request.model'
 import { adminRouter } from '../modules/admin/admin.router'
 
 import { organizationRouter } from '../modules/organization/organization.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
 import { volunteerRouter } from '../modules/volunteer/volunteer.router'
+import { VolunteerModel } from '../models/volunteer/volunteer.model'
 import { organRouter } from '../modules/organ/organ.router'
+
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
@@ -39,7 +40,6 @@ export const serverAppConfig: IServerAppConfig = {
     }
   ],
 
-  models: [AccountModel, KeyModel, EventModel, MaterialModel, commentModel, RequestModel],
   models: [
     AccountModel,
     CertificateModel,
@@ -49,6 +49,7 @@ export const serverAppConfig: IServerAppConfig = {
     commentModel,
     OrganizationModel,
     OrganizationApplicationModel,
+    VolunteerModel,
     FundModel,
     TaskModel,
     RequestModel
@@ -57,14 +58,14 @@ export const serverAppConfig: IServerAppConfig = {
   routers: [
     adminRouter,
     accountRouter,
-    newsRouter,
     eventRouter,
-    organizationRouter,
+    newsRouter,
+    materialRouter,
     requestRouter,
+    organizationRouter,
     commentRouter,
     verifierRouter,
     volunteerRouter,
-    materialRouter,
     organRouter
   ],
 

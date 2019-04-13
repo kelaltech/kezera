@@ -20,19 +20,19 @@ function layoutOrganizationNavigation(
       },
       {
         to: '/organization/event',
-        icon: ['far', 'calendar-alt'],
+        icon: 'calendar',
         name: `Your Events`, // todo: translate
         shortName: `Events` // todo: translate
       },
       {
         to: '/organization/news',
-        icon: ['far', 'newspaper'],
+        icon: 'newspaper',
         name: `Your News`, // todo: translate
         shortName: `News` // todo: translate
       },
       {
         to: '/organization/account',
-        icon: ['far', 'user-circle'],
+        icon: 'user-circle',
         name: account.displayName,
         shortName: account.displayName
       }

@@ -1,6 +1,5 @@
 import { ModelFactory } from 'meseret'
 import { Document, Schema } from 'mongoose'
-
 import { VolunteerPaths } from './volunteer.path'
 
 type ObjectId = Schema.Types.ObjectId | string | number

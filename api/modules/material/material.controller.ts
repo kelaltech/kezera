@@ -5,8 +5,7 @@ import { RequestModel } from '../../models/request/request.model'
 import { KoaError } from '../../lib/koa-error'
 
 export async function AddMaterial(body: any, id: Schema.Types.ObjectId): Promise<void> {
-  body.organizationId = id
-  await add(MaterialModel, body)
+  await add(MaterialModel, { ...body, requestId: id })
 }
 
 export async function GetMaterial(id: Schema.Types.ObjectId): Promise<IMaterial> {

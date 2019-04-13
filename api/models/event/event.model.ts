@@ -26,7 +26,7 @@ export const eventModelFactory = new ModelFactory<IEvent>({
   paths: eventPaths
 })
 
-eventModelFactory.schema.index({
+eventModelFactory.model.collection.ensureIndex({
   title: 'text',
   description: 'text'
 })

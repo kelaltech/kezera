@@ -1,0 +1,21 @@
+//.progress{
+//  height: 15px;
+//}
+.percentage {
+  font-size: 10px;
+}
+.progressContainer {
+  width: 100%;
+  border-radius: 30px;
+  background-color: #eeeeee;
+}
+.progress {
+  &:hover {
+    color: white;
+    opacity: 1;
+    box-shadow: 1px 1px lightgray;
+    transition: 1s ease-in;
+  }
+  opacity: 0.8;
+  border-radius: 30px;
+}

@@ -16,13 +16,13 @@ export default function Comments(props: any) {
     Axios.post('/api/comment/add', formData)
       .then(() => {
         socket.emit('CommentAdded')
-        FetchComments()
       })
       .catch(console.error)
   }
 
   let ListenSocket = function() {
-    socket.on('CommentAdded', function() {
+    socket.on('COMMENT_ADDED', function() {
+      alert('comment altered')
       FetchComments()
     })
 

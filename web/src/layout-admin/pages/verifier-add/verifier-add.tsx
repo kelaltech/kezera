@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Dialog } from '@material-ui/core'
 import { AddVerifier } from '../../stores/admin-action'
 import { useAdminDispatch } from '../../stores/admin-provider'
+import useField from '../../../shared/hooks/use-field/use-field'
 
 interface IVerifierAddProps {
   open: boolean
@@ -12,19 +13,60 @@ interface IVerifierAddProps {
 }
 
 export default function VerifierAdd(props: IVerifierAddProps) {
-  let [name, setName] = useState()
-  let [phone, setPhone] = useState()
-  let [email, setEmail] = useState()
-  let [password, setPassword] = useState()
   let AdminDispatch = useAdminDispatch()
+  let [verifier, setVerifier] = useState({
+    displayName: '',
+    email: '',
+    phoneNumber: '',
+    password: ''
+  })
+
+  const emitChanges = (verifierChanges: any): void => {
+    setVerifier({ ...verifier, ...verifierChanges })
+  }
+  const displayName = useField<HTMLInputElement>({
+    minLength: 2,
+    maxLength: 50,
+    setValueHook: async value => {
+      emitChanges({ title: value })
+    }
+  })
+  const email = useField<HTMLInputElement>({
+    minLength: 2,
+    maxLength: 50,
+    setValueHook: async value => {
+      emitChanges({ title: value })
+    }
+  })
+  const phoneNumber = useField<HTMLInputElement>({
+    minLength: 2,
+    maxLength: 50,
+    setValueHook: async value => {
+      emitChanges({ title: value })
+    }
+  })
+  const password = useField<HTMLInputElement>({
+    minLength: 2,
+    maxLength: 50,
+    setValueHook: async value => {
+      emitChanges({ title: value })
+    }
+  })
+  const validationError = (error: string | null) =>
+    error === null ? null : (
+      <div
+        className={'font-L bold fg-accent margin-left-normal margin-auto'}
+        title={error}
+        style={{ color: 'red', cursor: 'default' }}
+      >
+        !
+      </div>
+    )
 
   let HandleAdd = function(e: any) {
     e.preventDefault()
     let data = new FormData()
-    name != undefined ? data.append('displayName', name) : undefined
-    email != undefined ? data.append('email', email) : undefined
-    phone != undefined ? data.append('phoneNumber', phone) : undefined
-    password != undefined ? data.append('password', password) : undefined
+    data.append('data', JSON.stringify(verifier))
     data.append('image', e.target.image.files[0])
     AddVerifier(AdminDispatch, data)
   }
@@ -47,9 +89,11 @@ export default function VerifierAdd(props: IVerifierAddProps) {
               <Input
                 name="displayName"
                 placeholder={'Full name'}
-                onChange={e => setName(e.target.value)}
+                {...displayName.inputProps}
+                inputRef={displayName.ref}
                 required
               />
+              {validationError(displayName.error)}
             </Flex>
           </Block>
 
@@ -58,16 +102,20 @@ export default function VerifierAdd(props: IVerifierAddProps) {
               name={'email'}
               className={'full-width'}
               placeholder={'E-mail address'}
-              onChange={e => setEmail(e.target.value)}
+              inputRef={email.ref}
+              {...email.inputProps}
             />
+            {validationError(email.error)}
           </Block>
           <Block>
             <Input
               name={'phone'}
               className={'full-width'}
               placeholder={'Phone number'}
-              onChange={e => setPhone(e.target.value)}
+              inputRef={phoneNumber.ref}
+              {...phoneNumber.inputProps}
             />
+            {validationError(phoneNumber.error)}
           </Block>
           <Block>
             <Input
@@ -75,8 +123,10 @@ export default function VerifierAdd(props: IVerifierAddProps) {
               name={'password'}
               className={'full-width'}
               placeholder={'Temporary password'}
-              onChange={e => setPassword(e.target.value)}
+              inputRef={password.ref}
+              {...password.inputProps}
             />
+            {validationError(password.error)}
           </Block>
           <Block last className={'right'}>
             <Button

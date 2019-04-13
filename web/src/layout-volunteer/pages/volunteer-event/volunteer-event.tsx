@@ -64,7 +64,7 @@ function VolunteerEvents() {
         <Slider {...settings}>
           {events.map((event: any) => (
             <div className={'slider-event-list'}>
-              <EventCard event={event} role={'VOLUNTEER'} fetch={() => {}} />
+              <EventCard event={event} role={'VOLUNTEER'} />
             </div>
           ))}
           {/* {nearEvents.map((event: any) => (//todo uncomment
@@ -79,7 +79,7 @@ function VolunteerEvents() {
         <h4>Upcoming </h4>
         {events.map((event: any) => (
           <Block>
-            <EventCard event={event} role={'VOLUNTEER'} fetch={() => {}} />
+            <EventCard event={event} role={'VOLUNTEER'} />
           </Block>
         ))}
       </div>

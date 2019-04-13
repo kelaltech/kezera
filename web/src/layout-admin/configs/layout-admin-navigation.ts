@@ -12,7 +12,7 @@ function layoutAdminNavigation(
 
   if (account) {
     items = items.concat([
-      {
+      /*{
         to: '/admin/statistics',
         icon: 'home',
         name: 'Dashboard',
@@ -24,10 +24,10 @@ function layoutAdminNavigation(
         name: 'Verifiers',
         shortName: 'Verifiers'
       },
-
+*/
       {
         to: '/account',
-        icon: ['far', 'user-circle'],
+        icon: 'user-circle',
         name: account.displayName,
         shortName: account.displayName
       }

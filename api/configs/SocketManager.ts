@@ -7,7 +7,7 @@ export function SocketManager(io: Socket) {
   })
   io.on('CommentAdded', function() {
     console.log('Added')
-    io.broadcast.emit('CommentAdded')
+    io.broadcast.emit('COMMENT_ADDED')
   })
   io.on('CommentDeleted', function() {
     console.log('Deleted')

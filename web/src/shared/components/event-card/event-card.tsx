@@ -5,12 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
 import axios from 'axios'
-import { IOrganizationEventRequest } from '../../../apiv/event.apiv'
+import {
+  IOrganizationEventRequest,
+  IOrganizationEventResponse
+} from '../../../apiv/event.apiv'
 import { useEventDispatch } from '../../../layout-organization/stores/events/events.provider'
 import { DeleteEvent } from '../../../layout-organization/stores/events/events.action'
 
 interface IEventProps {
-  event: IOrganizationEventRequest
+  event: IOrganizationEventResponse
   role: string
 }
 

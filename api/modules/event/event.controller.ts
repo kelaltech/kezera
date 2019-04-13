@@ -22,8 +22,26 @@ export async function getEvent(id: Schema.Types.ObjectId): Promise<any> {
   return await get(EventModel, id)
 }
 
-export async function searchEvent(term: any): Promise<any> {
-  return await search(EventModel, term)
+export async function searchEvent(term: string): Promise<any> {
+  let events = await search(EventModel, term)
+  console.log(events)
+  return events
+}
+
+export async function getRecentEvents(): Promise<IEvent[]> {
+  let events = await list(EventModel, {
+    since: 0,
+    count: 5
+  })
+  return events
+}
+
+export async function getOrganizationEvents(
+  id: Schema.Types.ObjectId
+): Promise<IEvent[]> {
+  return await list(EventModel, {
+    preQuery: model => model.find({ organizationId: id })
+  })
 }
 
 export async function listAllEvents(): Promise<any> {
@@ -87,8 +105,7 @@ export async function getComments(eventId: Schema.Types.ObjectId): Promise<IComm
 }
 
 export async function addEvent(body: any, orgId: any, pic: Stream): Promise<IEvent> {
-  body.organizationId = orgId
-  const event = await add(EventModel, body)
+  const event = await add(EventModel, { ...body, organizationId: orgId })
   console.log(event)
   const grid = new Grid(serverApp, EventModel, event._id)
   await Promise.all([grid.set(pic)])
@@ -103,7 +120,7 @@ export async function editEvent(
 ): Promise<IEvent> {
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) {
-    let updated = await edit(EventModel, id, body)
+    let updated = await edit(EventModel, id, { ...body })
     await new Grid(serverApp, EventModel, id).remove()
     await new Grid(serverApp, EventModel, id).set(pic)
     return updated

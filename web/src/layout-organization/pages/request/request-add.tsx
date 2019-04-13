@@ -28,6 +28,7 @@ import TaskAdd from '../task/task-add'
 import { IAccountStatus } from '../../../../../api/models/account/account.model'
 import FundAdd from '../fundraising/fund-add'
 import { Schema } from 'mongoose'
+import MaterialAdd from '../../components/material-add/material-add'
 
 function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
@@ -51,8 +52,9 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
       case 'Fundraising':
         data.append('Fundraising', JSON.stringify(specific))
         break
-      case 'Task':
-        data.append('Task', JSON.stringify(specific))
+      case 'Material':
+        data.append('Material', JSON.stringify(specific))
+        console.log(data)
         break
     }
 
@@ -62,7 +64,6 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
     axios
       .post('/api/request/add', data, { withCredentials: true })
       .then(res => {
-        console.log(res.data)
         id = res.data
         //history.push('/organization/request/' + res.data._id)
       })
@@ -153,7 +154,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
           {type == 'Fundraising' ? (
             <FundAdd onChange={setSpecific} />
           ) : (
-            type == 'Task' && <TaskAdd onChange={setSpecific} />
+            type == 'Material' && <MaterialAdd onChange={setSpecific} />
           )}
           <Block last className={'right'}>
             <Button type={'submit'}>Make the Request</Button>

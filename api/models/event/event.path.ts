@@ -16,5 +16,5 @@ export const eventPaths: SchemaDefinition = {
   endDate: { type: Date, required: true },
   likes: [{ type: ObjectId, refs: 'account' }], // Change these
   comments: [{ type: ObjectId, ref: 'comment' }],
-  organizationId: { type: ObjectId, refs: 'organization' }
+  organizationId: { type: ObjectId, refs: 'account' }
 }

@@ -27,8 +27,7 @@ import {
   faShareAlt,
   faExclamationCircle,
   faEllipsisV,
-  faReply,
-  faEye,
+  faNewspaper,
   faThumbsUp,
   faMoneyBill,
   faHandHoldingHeart,
@@ -36,17 +35,17 @@ import {
   faTasks,
   faHome,
   faUserShield,
+  faEye,
+  faReply,
   faBalanceScale,
   faFileContract,
   faUserTie,
   faGlobeAfrica,
   faInfoCircle,
-  faNewspaper,
   faDonate,
   faUserCircle,
   faHandsHelping,
-  faBell,
-  faBellSlash
+  faDoorOpen
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import {
@@ -62,6 +61,7 @@ export default function fontawesomeLibrary() {
 
   // solid
   library.add(
+    faDoorOpen,
     faThumbsUp,
     faUserShield,
     faBars,
@@ -107,10 +107,7 @@ export default function fontawesomeLibrary() {
     faUserCircle,
     faHandsHelping,
     faEye,
-    faBuilding,
-    faBell,
-    faBellSlash,
-    faHandsHelping,
+    faBuilding
   )
 
   // brands

@@ -22,7 +22,7 @@ function EventsSearchResult(props: IEventResult) {
       <h1>Events Search result</h1>
       <div>
         {events.map((e: any) => (
-          <EventCard event={e} />
+          <EventCard event={e} role={'VOLUNTEER'} />
         ))}
       </div>
     </div>
