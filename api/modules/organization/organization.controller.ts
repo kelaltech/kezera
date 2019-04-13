@@ -137,6 +137,32 @@ export class OrganizationController extends KoaController {
     )
   }
 
+  async subscribe(
+    session?: ClientSession,
+    _id = super.getParam('_id'),
+    account_id = super.getUser()!._id // volunteer account _id
+  ): Promise<void> {
+    const organization = await get(OrganizationModel, _id, { session })
+
+    if (!organization.subscribers.includes(account_id)) {
+      organization.subscribers.push(account_id)
+      await edit(OrganizationModel, _id, organization, { session })
+    }
+  }
+
+  async unsubscribe(
+    session?: ClientSession,
+    _id = super.getParam('_id'),
+    account_id = super.getUser()!._id // volunteer account _id
+  ): Promise<void> {
+    const organization = await get(OrganizationModel, _id, { session })
+
+    organization.subscribers = organization.subscribers.filter(
+      subscriber => subscriber != account_id
+    )
+    await edit(OrganizationModel, _id, organization, { session })
+  }
+
   /* LINKS TO OTHER MODULES */
 
   async requests(

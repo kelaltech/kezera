@@ -37,6 +37,20 @@ organizationRouter.get(
   handle(OrganizationController, (c, s) => c.subscriptions(s))
 )
 
+// PUT /api/organization/subscribe *
+organizationRouter.put(
+  '/subscribe',
+  authorize(['VOLUNTEER']),
+  handle(OrganizationController, (c, s) => c.subscribe(s))
+)
+
+// PUT /api/organization/unsubscribe *
+organizationRouter.put(
+  '/unsubscribe',
+  authorize(['VOLUNTEER']),
+  handle(OrganizationController, (c, s) => c.unsubscribe(s))
+)
+
 /* LINKS TO OTHER MODULES */
 
 // GET /api/organization/requests/:organization_id?since&count
