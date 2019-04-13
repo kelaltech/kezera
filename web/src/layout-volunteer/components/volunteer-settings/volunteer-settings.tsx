@@ -8,22 +8,39 @@ import {
   faCalendarCheck,
   faToolbox,
   faHandHoldingUsd,
-  faTasks
+  faTasks,
+  faUserTag,
+  faVenusMars,
+  faFlag,
+  faBirthdayCake,
+  faSearchLocation
 } from '@fortawesome/free-solid-svg-icons'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import {
+  useVolunteerDispatch,
+  useVolunteerState
+} from '../../stores/volunteer/volunteer-provider'
+import { updateSetting } from '../../stores/volunteer/volunteer-actions'
+interface Props {
+  /**
+   * @default false
+   */
+  readonly?: boolean
+}
 
-function VolunteerSettings() {
+function VolunteerSettings({ readonly }: Props) {
   const { loading, t } = useLocale([
     /* todo: use some namespace */
   ])
 
-  const [gender, setGender] = useState()
-  const [country, setCountry] = useState()
-  const [location, setLocation] = useState()
-  const [birthdate, setBirthdate] = useState()
-  const [username, setUsername] = useState()
-  const [userInfo, setUserInfo] = useState()
+  const volunteerDispatch = useVolunteerDispatch()
+  const { volunteer } = useVolunteerState()
+  const [gender, setGender] = useState(volunteer?volunteer.gender:'')
+  const [country, setCountry] = useState(volunteer?volunteer.country:'')
+  const [location, setLocation] = useState(volunteer?volunteer.location:'')
+  const [birthdate, setBirthdate] = useState(volunteer?volunteer.birthdate:'')
+  const [username, setUsername] = useState(volunteer?volunteer.username:'')
 
   const [editGender, setEditGender] = useState(false),
     [editCountry, setEditCountry] = useState(false),
@@ -32,31 +49,53 @@ function VolunteerSettings() {
     [editUsername, setEditUsername] = useState(false)
 
   const [visibility, setVisibility] = useState({
-    task: false,
-    money: false,
-    material: false,
-    event: false,
-    certificate: false
+    task: true,
+    money: true,
+    material:true,
+    event: true,
+    certificate:true
   })
 
   const handleVisibility = (name: string) => (e: any) => {
-    setVisibility({ ...visibility, [name]: e.target.checked })
+     setVisibility({ ...visibility, [name]: e.target.checked })
+    emitChange({visibility})
+  }
+
+  const emitChange = (volunteerChanges: any): void => {
+    if (readonly) return
+    const data = { ...volunteer, ...volunteerChanges }
+    updateSetting(volunteerDispatch, data, 0)
   }
 
   const handleUsernameChange = (e: any) => {
     e.preventDefault()
-    if (!username) return
-
-    //send data to back-end and update the volunteer-setting
-    //then fetch the new userInfo
+    console.log('username =' ,username)
+    emitChange({ username })
+    setEditUsername(false)
+  }
+  const handleGenderChange = (e: any) => {
+    e.preventDefault()
+    emitChange({ gender })
+    setEditGender(false)
+  }
+  const handleBirthdate = (e: any) => {
+    e.preventDefault()
+    emitChange({ birthdate })
+    setEditBirthdate(false)
+  }
+  const handleCountryChange = (e: any) => {
+    e.preventDefault()
+    emitChange({ country })
+    setEditCountry(false)
+  }
+  const handleLocationChange = (e: any) => {
+    e.preventDefault()
+    emitChange({ location })
+    setEditLocation(false)
   }
 
-  const handleGenderChange = () => {}
 
-  const handleBirthdate = () => {}
 
-  const handleCountryChange = () => {}
-  const handleLocationChange = () => {}
   return (
     loading || (
       <Block last>
@@ -75,7 +114,7 @@ function VolunteerSettings() {
                 editUsername ? 'setting-general-field-editing' : ''
               } setting-general-field`}
             >
-              <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+              <FontAwesomeIcon className={'margin-right-big'} icon={faUserTag} />
               {editUsername ? (
                 <Input
                   className={'full-width'}
@@ -88,7 +127,7 @@ function VolunteerSettings() {
               ) : (
                 <div className={'full-width'}>
                   <span className={'fg-blackish'}>{`username`}</span>
-                  <span>{'username'}</span>
+                  <span>{username}</span>
                 </div>
               )}
 
@@ -111,7 +150,7 @@ function VolunteerSettings() {
                 editGender ? 'setting-general-field-editing' : ''
               } setting-general-field`}
             >
-              <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+              <FontAwesomeIcon className={'margin-right-big'} icon={faVenusMars} />
               {editGender ? (
                 <Input
                   className={'full-width'}
@@ -124,7 +163,7 @@ function VolunteerSettings() {
               ) : (
                 <div className={'full-width'}>
                   <span className={'fg-blackish'}>{`Gender`}</span>
-                  <span>{'Gender'}</span>
+                  <span>{gender}</span>
                 </div>
               )}
 
@@ -147,7 +186,7 @@ function VolunteerSettings() {
                 editCountry ? 'setting-general-field-editing' : ''
               } setting-general-field`}
             >
-              <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+              <FontAwesomeIcon className={'margin-right-big'} icon={faFlag} />
               {editCountry ? (
                 <Input
                   className={'full-width'}
@@ -160,7 +199,7 @@ function VolunteerSettings() {
               ) : (
                 <div className={'full-width'}>
                   <span className={'fg-blackish'}>{`Country`}</span>
-                  <span>{'Country'}</span>
+                  <span>{country}</span>
                 </div>
               )}
 
@@ -183,7 +222,7 @@ function VolunteerSettings() {
                 editLocation ? 'setting-general-field-editing' : ''
               } setting-general-field`}
             >
-              <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+              <FontAwesomeIcon className={'margin-right-big'} icon={faSearchLocation} />
               {editLocation ? (
                 <Input
                   className={'full-width'}
@@ -196,7 +235,7 @@ function VolunteerSettings() {
               ) : (
                 <div className={'full-width'}>
                   <span className={'fg-blackish'}>{`Location`}</span>
-                  <span>{'Location'}</span>
+                  <span>{location}</span>
                 </div>
               )}
 
@@ -219,20 +258,21 @@ function VolunteerSettings() {
                 editBirthdate ? 'setting-general-field-editing' : ''
               } setting-general-field`}
             >
-              <FontAwesomeIcon className={'margin-right-big'} icon={'envelope'} />
+              <FontAwesomeIcon className={'margin-right-big'} icon={faBirthdayCake} />
               {editBirthdate ? (
                 <Input
                   className={'full-width'}
                   type={'text'}
                   label={`Birthdate`}
                   name={'birthdate'}
+                  // @ts-ignore
                   value={birthdate}
-                  onChange={e => setBirthdate(e.target.value)}
+                  onChange={e => setBirthdate(new Date(e.target.value))}
                 />
               ) : (
                 <div className={'full-width'}>
                   <span className={'fg-blackish'}>{`Birthdate`}</span>
-                  <span>{'Birthdate'}</span>
+                  <span>{birthdate}</span>
                 </div>
               )}
 

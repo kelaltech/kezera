@@ -11,43 +11,67 @@ import {
   Yoga
 } from 'gerami'
 
-export default function TaskAdd() {
+interface ITaskProps {
+  onChange: (task: any) => void
+}
+
+export default function TaskAdd(props: ITaskProps) {
+  const [task, setTask] = useState<any>({
+    numberNeeded: '',
+    startTime: '',
+    endTime: ''
+  })
+
+  let emitChange = function(changes: any): void {
+    props.onChange({ ...task, ...changes })
+    setTask({ ...task, ...changes })
+  }
+
   return (
-    <Page>
-      <Content size={'L'}>
-        <form action="/api/request/add" method={'POST'}>
-          <Block>
-            <Title size={'XL'}>Task Specific</Title>
-          </Block>
-          <hr />
-          <Block>
-            <Input
-              className={'full-width'}
-              name={'numberNeeded'}
-              type={'text'}
-              label={'Number of Participants'}
-            />
-          </Block>
+    <Content size={'L'}>
+      <Block>
+        <Title size={'XL'}>Task Specific</Title>
+      </Block>
+      <hr />
+      <Block>
+        <Input
+          required={true}
+          onChange={e => emitChange({ numberNeeded: e.target.value })}
+          className={'full-width'}
+          value={task.numberNeeded}
+          type={'text'}
+          label={'Number of Participants'}
+        />
+      </Block>
 
-          <Yoga maxCol={2}>
-            <Block>
-              <Title>Start Time</Title>
-            </Block>
-            <Block>
-              <Title>End Time</Title>
-            </Block>
-          </Yoga>
+      <Yoga maxCol={2}>
+        <Block>
+          <Title>Start Time</Title>
+        </Block>
+        <Block>
+          <Title>End Time</Title>
+        </Block>
+      </Yoga>
 
-          <Yoga maxCol={2}>
-            <Block>
-              <Input className={'full-width'} name={'startTime'} type={'time'} />
-            </Block>
-            <Block>
-              <Input className={'full-width'} name={'endTime'} type={'time'} />
-            </Block>
-          </Yoga>
-        </form>
-      </Content>
-    </Page>
+      <Yoga maxCol={2}>
+        <Block>
+          <Input
+            required={true}
+            className={'full-width'}
+            onChange={e => emitChange({ startTime: e.target.value })}
+            value={task.startTime}
+            type={'date'}
+          />
+        </Block>
+        <Block>
+          <Input
+            className={'full-width'}
+            onChange={e => emitChange({ endTime: e.target.value })}
+            value={task.endTime}
+            type={'date'}
+          />
+        </Block>
+      </Yoga>
+    </Content>
   )
 }

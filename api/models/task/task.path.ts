@@ -6,5 +6,6 @@ export const taskPaths: SchemaDefinition = {
   numberNeeded: { type: Number, ref: 'organization' },
   type: { type: ObjectId },
   startTime: { type: Date, required: true },
-  endTime: { type: Date, required: true }
+  endTime: { type: Date, required: true },
+  requestId: { type: ObjectId, refs: 'request', required: true }
 }

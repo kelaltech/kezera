@@ -1,34 +1,57 @@
-.search-bar-container {
+@import "../../../assets/styles/theme";
+
+
+.tasks-list-container {
+  margin: 0 auto;
+}
+.col-bar-container {
   width: 100%;
-  height: 100vh;
-  background-color: coral;
   position: relative;
+  .col-bar-img {
+    width: 100%;
+    height: 90vh;
+    background-color: #1a3c4d;
+    opacity: 0.5;
+  }
+
+  .collapse-controller {
+    padding: 0 $padding-L 0 $padding-L;
+    background-color: #3f51b5;
+    position: sticky;
+    top: 30px;
+    .bar-before-expand{
+      display: flex;
+      .header-expand-bar {
+        flex: 100%;
+        align-self: center;
+      }
+      .expand-icon {
+        z-index: 99;
+        align-self: center;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .bar-after-expanded {
+      position: absolute;
+      top: 40px;
+      padding-left: $padding-L;
+      background-color: $accent;
+    /*  z-index: 99999999999999;
+      *{
+        z-index: 999999999999;
+      }*/
+    }
+  }
 }
 
-.search-bar-img {
-  background-image: url('https://source.unsplash.com/cAtzHUz7Z8g/1600x900');
-  background-attachment: fixed;
-  background-position: center center;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-}
-.search-bar-img-overlay {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #4558be;
-  opacity: 0.6;
-}
-
-.search-bar {
-}
-.task-label {
+.vol-task-container {
   width: 50%;
   margin: 0 auto;
-  position: sticky;
-  top: 55px;
-  padding: 5px;
-  background-color: #f5f6fa;
 }
+
+
+
+

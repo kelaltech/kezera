@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import './volunteer-discovery.scss'
 import axios from 'axios'
-import { Block } from 'gerami'
 import PropTypes from 'prop-types'
 import NewsCard from '../../../shared/components/news-card/news-card'
 import { Input } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
-import newsTemp from '../../../assets/images/news-temp.jpg'
 import EventCard from '../../../shared/components/event-card/event-card'
 import OrganizationCard from '../../components/volunteer-my-organization/volunteer-my-organizattion'
-import logo from '../../../assets/images/kelal-tech-logo.svg'
-import tempNews from '../../../assets/images/news-temp.jpg'
 import Slider from 'react-slick'
 import RequestCard from '../../../shared/components/request/request-card'
 
@@ -62,7 +58,7 @@ function DiscoveryPage() {
 
   const fetchEvent = () => {
     axios
-      .get('/api/event/recent')
+      .get('/api/event/recent?count=5')
       .then((event: any) => {
         setEvent(event.data)
       })
@@ -70,7 +66,7 @@ function DiscoveryPage() {
   }
   const fetchNews = () => {
     axios
-      .get('/api/news/recent')
+      .get('/api/news/recent?count=5')
       .then((news: any) => {
         setNews(news.data)
       })
@@ -78,7 +74,7 @@ function DiscoveryPage() {
   }
   const fetchOrganization = () => {
     axios
-      .get('/api/organization/recent')
+      .get('/api/organization/recent?count=5')
       .then((o: any) => {
         setOrganization(o.data)
       })
@@ -86,7 +82,7 @@ function DiscoveryPage() {
   }
   const fetchRequest = () => {
     axios
-      .get('/api/request/recent')
+      .get('/api/request/recent?count=5')
       .then((r: any) => {
         setRequest(r.data)
       })
@@ -171,69 +167,3 @@ DiscoveryPage.propTypes = {
 
 export default DiscoveryPage
 
-/*
-const data = [
-  {
-  coverImg: tempNews,
-  profileImg: tempNews,
-  name: 'Marry Joy International',
-  type: 'Ngo',
-  motto: 'More Heart More Impact!,Humanity Movement',
-  location: 'Addis Ababa, Megegnagna',
-  website: 'https://merryjoy.org'
-},
-  {
-    coverImg: logo,
-    profileImg: tempNews,
-    name: 'Marry Joy International',
-    type: 'Ngo',
-    motto: 'More Heart More Impact!',
-    location: 'Addis Ababa, Megegnagna',
-    website: 'https://merryjoy.org'
-  },
-  {
-    coverImg: logo,
-    profileImg: tempNews,
-    name: 'Marry Joy International',
-    type: 'Ngo',
-    motto: 'More Heart More Impact!',
-    location: 'Addis Ababa, Megegnagna',
-    website: 'https://merryjoy.org'
-  },
-  {
-    coverImg: logo,
-    profileImg: tempNews,
-    name: 'Marry Joy International',
-    type: 'Ngo',
-    motto: 'More Heart More Impact!',
-    location: 'Addis Ababa, Megegnagna',
-    website: 'https://merryjoy.org'
-  },
-  {
-    coverImg: logo,
-    profileImg: tempNews,
-    name: 'Marry Joy International',
-    type: 'Ngo',
-    motto: 'More Heart More Impact!',
-    location: 'Addis Ababa, Megegnagna',
-    website: 'https://merryjoy.org'
-  },
-  {
-    coverImg: logo,
-    profileImg: tempNews,
-    name: 'Marry Joy International',
-    type: 'Ngo',
-    motto: 'More Heart More Impact!',
-    location: 'Addis Ababa, Megegnagna',
-    website: 'https://merryjoy.org'
-  },
-  {
-    coverImg: tempNews,
-    profileImg: logo,
-    name: 'Marry Joy International',
-    type: 'Ngo',
-    motto: 'More Heart More Impact!',
-    location: 'Addis Ababa, Megegnagna',
-    website: 'https://merryjoy.org'
-  }
-]*/

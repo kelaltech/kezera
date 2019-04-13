@@ -31,14 +31,16 @@ function Search({ history, to }: RouteComponentProps & ISearchProps) {
         <span className={'input-search-icon'}>
           <FontAwesomeIcon icon={faSearch} />
         </span>
-        <form onSubmit={handleSearch}>
-          <Input
-            onChange={handleSearchChange}
-            className={'input-search'}
-            placeholder={'search'}
-            disableUnderline={true}
-          />
-        </form>
+        <div className={'input-search'}>
+          <form onSubmit={handleSearch}>
+            <Input
+              onChange={handleSearchChange}
+              // className={'input-search'}
+              placeholder={'search'}
+              disableUnderline={true}
+            />
+          </form>
+        </div>
       </div>
     </div>
   )
