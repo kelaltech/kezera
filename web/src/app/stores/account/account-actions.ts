@@ -30,8 +30,8 @@ export function reloadAccount(
   }
 }
 
-let updateTimeout: NodeJS.Timeout | null = null
-let updateCancellation: CancelTokenSource | null = null
+let updateAccountTimeout: NodeJS.Timeout | null = null
+let updateAccountCancellation: CancelTokenSource | null = null
 export function updateAccount(
   accountDispatch: (action: Action) => void,
   account: IAccountResponse,
@@ -39,16 +39,16 @@ export function updateAccount(
   currentPassword?: string,
   newPassword?: string
 ): void {
-  if (updateTimeout !== null) clearTimeout(updateTimeout)
-  if (updateCancellation !== null) updateCancellation.cancel()
+  if (updateAccountTimeout !== null) clearTimeout(updateAccountTimeout)
+  if (updateAccountCancellation !== null) updateAccountCancellation.cancel()
 
-  updateTimeout = setTimeout(async () => {
-    updateCancellation = Axios.CancelToken.source()
+  updateAccountTimeout = setTimeout(async () => {
+    updateAccountCancellation = Axios.CancelToken.source()
 
     Axios.put<IAccountResponse>(
       '/api/account/edit-me',
       await accountResponseToRequest(account, undefined, currentPassword, newPassword),
-      { withCredentials: true, cancelToken: updateCancellation.token }
+      { withCredentials: true, cancelToken: updateAccountCancellation.token }
     )
       .then(response => response.data)
       .then(data => reloadAccount(accountDispatch, false, data))
@@ -59,7 +59,7 @@ export function updateAccount(
         }
       })
 
-    updateTimeout = null
+    updateAccountTimeout = null
   }, timeout)
 
   accountDispatch({ type: 'set', account })

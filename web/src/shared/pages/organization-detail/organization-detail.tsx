@@ -51,7 +51,7 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
 
       setOrganization(undefined)
 
-      Axios.get<IOrganizationResponse>(`/api/organization/${match.params._id}`)
+      Axios.get<IOrganizationResponse>(`/api/organization/get/${match.params._id}`)
         .then(response => {
           if (!response.data || !response.data._id)
             return setError(`Organization response is malformed.`)

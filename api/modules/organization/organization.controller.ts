@@ -19,6 +19,8 @@ import { EventModel, IEvent } from '../../models/event/event.model'
 import { INews, NewsModel } from '../../models/news/news.model'
 
 export class OrganizationController extends KoaController {
+  /* GENERAL */
+
   async apply(
     session?: ClientSession,
     data: IOrganizationRequest = JSON.parse(
@@ -79,6 +81,14 @@ export class OrganizationController extends KoaController {
     return await organizationDocumentToResponse(application, application.account)
   }
 
+  async get(
+    session?: ClientSession,
+    _id = super.getParam('_id')
+  ): Promise<IOrganizationResponse> {
+    const document = await get(OrganizationModel, _id, { session })
+    return await organizationDocumentToResponse(document)
+  }
+
   async me(
     session?: ClientSession,
     account_id = super.getUser()!._id
@@ -87,14 +97,6 @@ export class OrganizationController extends KoaController {
       conditions: { account: account_id },
       session
     })
-    return await organizationDocumentToResponse(document)
-  }
-
-  async get(
-    session?: ClientSession,
-    _id = super.getParam('_id')
-  ): Promise<IOrganizationResponse> {
-    const document = await get(OrganizationModel, _id, { session })
     return await organizationDocumentToResponse(document)
   }
 
@@ -119,6 +121,8 @@ export class OrganizationController extends KoaController {
     organization = await get(OrganizationModel, organization._id, { session })
     return await organizationDocumentToResponse(organization)
   }
+
+  /* LINKS TO OTHER MODULES */
 
   async requests(
     session?: ClientSession,

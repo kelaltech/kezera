@@ -6,25 +6,29 @@ import { authorize } from '../../lib/middlewares/authorize'
 
 export const organizationRouter = new Router({ prefix: '/api/organization' })
 
+/* GENERAL */
+
 // POST /api/organization/apply
 organizationRouter.post('/apply', handle(OrganizationController, (c, s) => c.apply(s)))
 
-// GET /api/organization/me
+// GET /api/organization/get/:_id
+organizationRouter.get('/get/:_id', handle(OrganizationController, (c, s) => c.get(s)))
+
+// GET /api/organization/me *
 organizationRouter.get(
   '/me',
   authorize(['ORGANIZATION']),
   handle(OrganizationController, (c, s) => c.me(s))
 )
 
-// GET /api/organization/:_id
-organizationRouter.get('/:_id', handle(OrganizationController, (c, s) => c.get(s)))
-
-// PUT /api/organization/edit-me
+// PUT /api/organization/edit-me *
 organizationRouter.put(
   '/edit-me',
   authorize(['ORGANIZATION']),
   handle(OrganizationController, (c, s) => c.editMe(s))
 )
+
+/* LINKS TO OTHER MODULES */
 
 // GET /api/organization/requests/:organization_id?since&count
 organizationRouter.get(
