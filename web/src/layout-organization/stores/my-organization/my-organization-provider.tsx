@@ -22,7 +22,11 @@ export function MyOrganizationProvider({ children }: { children: ReactNode }) {
     if (account === null) {
       clearMyOrganization(dispatch)
     } else {
-      reloadMyOrganization(dispatch)
+      reloadMyOrganization(
+        dispatch,
+        undefined,
+        account === undefined && state.myOrganization ? state.myOrganization : undefined
+      )
     }
   }, [account])
 

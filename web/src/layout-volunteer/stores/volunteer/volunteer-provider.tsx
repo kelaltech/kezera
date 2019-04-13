@@ -19,7 +19,15 @@ export function VolunteerProvider({ children }: { children: ReactNode }) {
 
   const { account } = useAccountState()
   useEffect(() => {
-    reloadSubscriptions(dispatch, undefined, account === null ? [] : undefined)
+    reloadSubscriptions(
+      dispatch,
+      undefined,
+      account === null
+        ? []
+        : account === undefined && state.subscriptions
+        ? state.subscriptions
+        : undefined
+    )
   }, [account])
 
   return (

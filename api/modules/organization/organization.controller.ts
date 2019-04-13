@@ -3,7 +3,7 @@ import { createReadStream } from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import { IOrganizationRequest, IOrganizationResponse } from './organization.apiv'
-import { add, edit, get, list } from '../../lib/crud'
+import { add, edit, get, list, search } from '../../lib/crud'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
 import {
@@ -104,10 +104,22 @@ export class OrganizationController extends KoaController {
 
   async list(
     session?: ClientSession,
-    since = Number(super.getParam('since')) || Date.now(),
-    count = Number(super.getParam('count')) || 10
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
   ): Promise<IOrganizationResponse[]> {
     const organizations = await list(OrganizationModel, { session, since, count })
+    return await Promise.all(
+      organizations.map(organization => organizationDocumentToResponse(organization))
+    )
+  }
+
+  async search(
+    session?: ClientSession,
+    term = super.getQuery('term'),
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
+  ): Promise<IOrganizationResponse[]> {
+    const organizations = await search(OrganizationModel, term, { session, since, count })
     return await Promise.all(
       organizations.map(organization => organizationDocumentToResponse(organization))
     )
