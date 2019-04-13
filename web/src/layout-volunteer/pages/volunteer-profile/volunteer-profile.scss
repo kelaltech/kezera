@@ -1,5 +1,5 @@
-@import "../../../assets/styles/theme";
-@import "../../../assets/styles/react-slick-slider";
+@import '../../../assets/styles/theme';
+@import '../../../assets/styles/react-slick-slider';
 .profile-container {
   width: 80%;
   margin: 0 auto;
@@ -18,12 +18,12 @@
       background-size: cover;
       background-repeat: no-repeat;
       height: $space * 5;
-      filter: blur($space+10 );
+      filter: blur($space + 10);
       opacity: 0.56;
       transform: scale3d(1.14, 1.14, 1);
     }
     .pro-acc-pic {
-      margin-top: -$space*4;
+      margin-top: -$space * 4;
       width: 200px;
       height: 200px;
       background-position: center center;
@@ -63,10 +63,9 @@
   @media (max-width: $mobile) {
     flex-direction: column;
     width: 100%;
-    padding-left: $padding-M ;
+    padding-left: $padding-M;
   }
 }
-
 
 .general-profile {
   .pro-activity-header {
@@ -91,7 +90,6 @@
   justify-content: space-evenly;
 
   .pro-stat {
-
   }
   .pro-icon-stat {
     padding: 10px;

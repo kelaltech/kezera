@@ -8,12 +8,12 @@ export type IVolunteerResponse = {
   gender: string
   location: string
   username: string
-  privacy : {
-    certificate: boolean,
-    event: boolean,
-    material:boolean,
-    task:boolean,
-    money:boolean
+  privacy: {
+    certificate: boolean
+    event: boolean
+    material: boolean
+    task: boolean
+    money: boolean
   }
 }
 
@@ -24,11 +24,11 @@ export type IVolunteerRequest = {
   gender?: string
   location?: string
   username?: string
-  privacy ?: {
-    certificate: boolean,
-    event: boolean,
-    material:boolean,
-    task:boolean,
-    money:boolean
+  privacy?: {
+    certificate: boolean
+    event: boolean
+    material: boolean
+    task: boolean
+    money: boolean
   }
 }

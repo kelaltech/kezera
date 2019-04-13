@@ -13,11 +13,11 @@ export interface IVolunteer extends Document {
   location: string
   username: string
   privacy: {
-    certificate: boolean,
-    event: boolean,
-    material:boolean,
-    task:boolean,
-    money:boolean
+    certificate: boolean
+    event: boolean
+    material: boolean
+    task: boolean
+    money: boolean
   }
 }
 

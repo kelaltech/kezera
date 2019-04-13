@@ -36,11 +36,11 @@ function VolunteerSettings({ readonly }: Props) {
 
   const volunteerDispatch = useVolunteerDispatch()
   const { volunteer } = useVolunteerState()
-  const [gender, setGender] = useState(volunteer?volunteer.gender:'')
-  const [country, setCountry] = useState(volunteer?volunteer.country:'')
-  const [location, setLocation] = useState(volunteer?volunteer.location:'')
-  const [birthdate, setBirthdate] = useState(volunteer?volunteer.birthdate:'')
-  const [username, setUsername] = useState(volunteer?volunteer.username:'')
+  const [gender, setGender] = useState(volunteer ? volunteer.gender : '')
+  const [country, setCountry] = useState(volunteer ? volunteer.country : '')
+  const [location, setLocation] = useState(volunteer ? volunteer.location : '')
+  const [birthdate, setBirthdate] = useState(volunteer ? volunteer.birthdate : '')
+  const [username, setUsername] = useState(volunteer ? volunteer.username : '')
 
   const [editGender, setEditGender] = useState(false),
     [editCountry, setEditCountry] = useState(false),
@@ -51,14 +51,14 @@ function VolunteerSettings({ readonly }: Props) {
   const [visibility, setVisibility] = useState({
     task: true,
     money: true,
-    material:true,
+    material: true,
     event: true,
-    certificate:true
+    certificate: true
   })
 
   const handleVisibility = (name: string) => (e: any) => {
-     setVisibility({ ...visibility, [name]: e.target.checked })
-    emitChange({visibility})
+    setVisibility({ ...visibility, [name]: e.target.checked })
+    emitChange({ visibility })
   }
 
   const emitChange = (volunteerChanges: any): void => {
@@ -69,7 +69,7 @@ function VolunteerSettings({ readonly }: Props) {
 
   const handleUsernameChange = (e: any) => {
     e.preventDefault()
-    console.log('username =' ,username)
+    console.log('username =', username)
     emitChange({ username })
     setEditUsername(false)
   }
@@ -93,8 +93,6 @@ function VolunteerSettings({ readonly }: Props) {
     emitChange({ location })
     setEditLocation(false)
   }
-
-
 
   return (
     loading || (

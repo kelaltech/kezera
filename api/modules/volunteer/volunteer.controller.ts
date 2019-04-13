@@ -14,14 +14,17 @@ export async function RegisterVolunteer(data: IAccountRequest): Promise<any> {
   })
 }
 
-export async function volunteerInfo (user: IAccount): Promise<any> {
+export async function volunteerInfo(user: IAccount): Promise<any> {
   console.log('volunteer Info /me Controller')
   return await VolunteerModel.findOne({ account: user._id })
 }
 
-export async function editVolunteerInfo (data:IVolunteerRequest, user:IAccount):Promise<any>{
+export async function editVolunteerInfo(
+  data: IVolunteerRequest,
+  user: IAccount
+): Promise<any> {
   console.log('volunteer Edit /edit Controller', data)
-  return await VolunteerModel.findOneAndUpdate({account: user._id}, data)
+  return await VolunteerModel.findOneAndUpdate({ account: user._id }, data)
 }
 export async function subscribedOrganization(account: IAccount) {
   return await OrganizationModel.find({ subscribers: account._id })

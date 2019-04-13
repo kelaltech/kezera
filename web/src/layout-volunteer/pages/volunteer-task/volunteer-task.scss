@@ -1,5 +1,4 @@
-@import "../../../assets/styles/theme";
-
+@import '../../../assets/styles/theme';
 
 .tasks-list-container {
   margin: 0 auto;
@@ -19,7 +18,7 @@
     background-color: #3f51b5;
     position: sticky;
     top: 30px;
-    .bar-before-expand{
+    .bar-before-expand {
       display: flex;
       .header-expand-bar {
         flex: 100%;
@@ -39,7 +38,7 @@
       top: 40px;
       padding-left: $padding-L;
       background-color: $accent;
-    /*  z-index: 99999999999999;
+      /*  z-index: 99999999999999;
       *{
         z-index: 999999999999;
       }*/
@@ -51,7 +50,3 @@
   width: 50%;
   margin: 0 auto;
 }
-
-
-
-
