@@ -63,7 +63,9 @@ export function updateMyOrganization(
   myOrganizationDispatch({ type: 'set', myOrganization })
 }
 
-export function clear(myOrganizationDispatch: (action: Action) => void): void {
+export function clearMyOrganization(
+  myOrganizationDispatch: (action: Action) => void
+): void {
   window.localStorage.removeItem('my-organization')
   myOrganizationDispatch({ type: 'unset' })
 }

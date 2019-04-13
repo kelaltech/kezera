@@ -20,7 +20,7 @@ export function reloadAccount(
   if (account) {
     reload(account)
   } else {
-    Axios.get('/api/account/me', { withCredentials: true })
+    Axios.get<IAccountResponse>('/api/account/me', { withCredentials: true })
       .then(response => response.data)
       .then(reload)
       .catch(e => {
@@ -45,7 +45,7 @@ export function updateAccount(
   updateTimeout = setTimeout(async () => {
     updateCancellation = Axios.CancelToken.source()
 
-    Axios.put(
+    Axios.put<IAccountResponse>(
       '/api/account/edit-me',
       await accountResponseToRequest(account, undefined, currentPassword, newPassword),
       { withCredentials: true, cancelToken: updateCancellation.token }

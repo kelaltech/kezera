@@ -1,6 +1,9 @@
+import axios, { CancelTokenSource } from 'axios'
+
 import { Action } from './volunteer-reducer'
 import { IVolunteerResponse } from '../../../../../api/modules/volunteer/volunteer.apiv'
-import axios, { CancelTokenSource } from 'axios'
+import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
+
 export function reloadVolunteer(
   volunteerDispatch: (action: Action) => void,
   silentFail = false,
@@ -54,4 +57,34 @@ export function updateSetting(
     updateTimeout = null
   }, timeout)
   volunteerDispatch({ type: 'setting', volunteer })
+}
+
+export function reloadSubscriptions(
+  volunteerDispatch: (action: Action) => void,
+  silentFail = false,
+  subscriptions?: IOrganizationResponse[]
+): void {
+  const reload = (subscriptions?: IOrganizationResponse[]): void => {
+    if (!subscriptions) throw Error('Subscriptions not found.')
+    if (!Array.isArray(subscriptions))
+      throw Error('Received subscriptions data is malformed.')
+
+    window.localStorage.setItem('subscriptions', JSON.stringify(subscriptions))
+    volunteerDispatch({ type: 'SUBSCRIPTIONS', subscriptions })
+  }
+
+  if (subscriptions) {
+    reload(subscriptions)
+  } else {
+    axios
+      .get<IOrganizationResponse[]>('/api/organization/subscriptions', {
+        withCredentials: true
+      })
+      .then(res => res.data)
+      .then(reload)
+      .catch(e => {
+        if (!silentFail) throw e
+        volunteerDispatch({ type: 'SUBSCRIPTIONS', subscriptions: [] })
+      })
+  }
 }
