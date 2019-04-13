@@ -3,8 +3,11 @@ import { ClientSession } from 'mongoose'
 import { KoaController } from '../../lib/koa-controller'
 import { add, get, remove } from '../../lib/crud'
 import { OrganizationApplicationModel } from '../../models/organization-application/organization-application.model'
-import { AccountModel } from '../../models/account/account.model'
-import { OrganizationModel } from '../../models/organization/organization.model'
+import { AccountModel, IAccount } from '../../models/account/account.model'
+import {
+  IOrganization,
+  OrganizationModel
+} from '../../models/organization/organization.model'
 import { email } from '../../lib/email'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
@@ -14,18 +17,20 @@ import { organizationDocumentToResponse } from '../organization/organization.fil
 export class VerifierController extends KoaController {
   async approveOrganizationApplication(
     session: ClientSession,
-    _id = super.getParam('_id')
+    _id = super.getParam('_id'),
+    verifier_account_id = super.getUser()!._id
   ): Promise<IOrganizationResponse> {
     const application = await get(OrganizationApplicationModel, _id, { session })
 
     // save account
-    const accountData = JSON.parse(JSON.stringify(application.account))
+    const accountData: IAccount = JSON.parse(JSON.stringify(application.account))
     delete accountData._id
     const account = await add(AccountModel, accountData, { session })
 
     // save organization
-    const applicationData = JSON.parse(JSON.stringify(application))
+    const applicationData: IOrganization = JSON.parse(JSON.stringify(application))
     applicationData.account = account._id
+    applicationData.verifier = verifier_account_id
     const organization = await add(OrganizationModel, applicationData, { session })
 
     // delete application

@@ -43,7 +43,9 @@ export class OrganizationController extends KoaController {
   ): Promise<IOrganizationResponse> {
     const application = await add(
       OrganizationApplicationModel,
-      new OrganizationApplicationModel(await organizationRequestToLeanDocument(data)),
+      new OrganizationApplicationModel(
+        await organizationRequestToLeanDocument(data, undefined as any)
+      ),
       {
         session,
         preSave: async (doc, session) => {
@@ -110,7 +112,11 @@ export class OrganizationController extends KoaController {
       session
     })
 
-    const request = await organizationRequestToLeanDocument(data, organization._id)
+    const request = await organizationRequestToLeanDocument(
+      data,
+      organization.verifier,
+      organization._id
+    )
     // no updates for:
     request.account = organization.account as any
     request.licensedNames = organization.licensedNames
@@ -144,7 +150,8 @@ export class OrganizationController extends KoaController {
   ): Promise<void> {
     const organization = await get(OrganizationModel, _id, { session })
 
-    if (!organization.subscribers.includes(account_id)) {
+    if (!(organization.subscribers || []).includes(account_id)) {
+      if (!organization.subscribers) organization.subscribers = []
       organization.subscribers.push(account_id)
       await edit(OrganizationModel, _id, organization, { session })
     }
@@ -157,6 +164,7 @@ export class OrganizationController extends KoaController {
   ): Promise<void> {
     const organization = await get(OrganizationModel, _id, { session })
 
+    if (!organization.subscribers) organization.subscribers = []
     organization.subscribers = organization.subscribers.filter(
       subscriber => subscriber.toString() !== account_id.toString()
     )

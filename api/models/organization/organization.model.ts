@@ -3,7 +3,7 @@ import { Schema } from 'mongoose'
 
 import { organizationPaths } from './organization.paths'
 
-type ObjectId = Schema.Types.ObjectId | string | number
+type ObjectId = Schema.Types.ObjectId | string
 
 export type IOrganizationType = 'NGO' | 'HOSPITAL' | 'GOVERNMENTAL' | 'PRIVATE'
 export const organizationTypes: IOrganizationType[] = [
@@ -14,9 +14,7 @@ export const organizationTypes: IOrganizationType[] = [
 ]
 
 export interface IOrganization {
-  __v: number
-  _id: ObjectId
-  _at: Date | number
+  _at?: Date | number
   _last: Date | number
 
   account: ObjectId // account
@@ -32,14 +30,15 @@ export interface IOrganization {
   }[]
   website?: string
 
-  subscribers: ObjectId[] // account
+  subscribers?: ObjectId[] // account
 
-  licensedNames: string[]
-  registrations: {
+  licensedNames?: string[]
+  registrations?: {
     issuer: string
     type: string
     id: string
   }[]
+  verifier: ObjectId // account
 }
 
 export const organizationModelFactory = new ModelFactory<IOrganization>({
