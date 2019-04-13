@@ -4,6 +4,7 @@ import React, { Component, useEffect, useState } from 'react'
 import axios from 'axios'
 import { RouteComponentProps, withRouter } from 'react-router'
 import RichPage from '../../components/rich-page/rich-page'
+import { Switch } from '@material-ui/core'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const [request, setRequest] = useState<any>()
@@ -27,26 +28,21 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
       documentTitle={request.name}
       title={<Title size={'XL'}>{request.name}</Title>}
       description={request.description}
+      actions={[<Switch>Participate</Switch>]}
     >
-      <Title size={'XL'}>{request.name}</Title>
       <Block>
-        <p>{request.description}</p>
+        <label className="flex padding-small">
+          <FontAwesomeIcon
+            className={'margin-top-small margin-right-big'}
+            icon={'calendar'}
+          />
+          <Content transparent>
+            {' '}
+            From {new Date(request.startDate).toDateString()} to{' '}
+            {new Date(request.endDate).toDateString()}{' '}
+          </Content>
+        </label>
       </Block>
-
-      <Yoga maxCol={2}>
-        <Block>
-          <label className="flex padding-small">
-            <FontAwesomeIcon
-              className={'margin-top-small margin-right-big'}
-              icon={'calendar'}
-            />
-            <Content transparent>
-              {' '}
-              From {request.startDate} to {request.endDate}{' '}
-            </Content>
-          </label>
-        </Block>
-      </Yoga>
     </RichPage>
   )
 }
