@@ -158,7 +158,7 @@ export class OrganizationController extends KoaController {
     const organization = await get(OrganizationModel, _id, { session })
 
     organization.subscribers = organization.subscribers.filter(
-      subscriber => subscriber != account_id
+      subscriber => subscriber.toString() !== account_id.toString()
     )
     await edit(OrganizationModel, _id, organization, { session })
   }

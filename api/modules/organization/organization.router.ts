@@ -37,16 +37,16 @@ organizationRouter.get(
   handle(OrganizationController, (c, s) => c.subscriptions(s))
 )
 
-// PUT /api/organization/subscribe *
+// PUT /api/organization/subscribe/:_id *
 organizationRouter.put(
-  '/subscribe',
+  '/subscribe/:_id',
   authorize(['VOLUNTEER']),
   handle(OrganizationController, (c, s) => c.subscribe(s))
 )
 
-// PUT /api/organization/unsubscribe *
+// PUT /api/organization/unsubscribe/:_id *
 organizationRouter.put(
-  '/unsubscribe',
+  '/unsubscribe/:_id',
   authorize(['VOLUNTEER']),
   handle(OrganizationController, (c, s) => c.unsubscribe(s))
 )
