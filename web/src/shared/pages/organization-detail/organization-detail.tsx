@@ -8,13 +8,14 @@ import Axios from 'axios'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../apiv/organization.apiv'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
+import { useVolunteerState } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import OrganizationDetailInfo from './components/organization-detail-info/organization-detail-info'
 import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-Requests'
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
 import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
-import { useAccountState } from '../../../app/stores/account/account-provider'
 
 type ITabName = 'info' | 'requests' | 'events' | 'news'
 
@@ -26,6 +27,7 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
 
   const { account } = useAccountState()
   const { myOrganization } = useMyOrganizationState()
+  const { subscriptions } = useVolunteerState()
 
   const [waitingForMe, setWaitingForMe] = useState(false)
   const [requestedId, setRequestedId] = useState<string>()
@@ -122,7 +124,7 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
       }
       actions={
         (account &&
-          ((account.role === 'ORGANIZATION' && [
+          ((account.role === 'VOLUNTEER' && [
             {
               to: '/account',
               primary: true,
@@ -137,9 +139,9 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
               )
             }
           ]) ||
-            (account.role === 'VOLUNTEER' && [
+            (account.role === 'ORGANIZATION' && [
               // todo: continue here...
-              { onClick: () => alert('hi'), value: 'TODO' }
+              { onClick: () => alert(subscriptions.length), value: 'TODO' }
             ]))) ||
         []
       }

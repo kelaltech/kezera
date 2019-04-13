@@ -91,18 +91,18 @@ export class OrganizationController extends KoaController {
 
   async me(
     session?: ClientSession,
-    account_id = super.getUser()!._id
+    account_id = super.getUser()!._id // organization account _id
   ): Promise<IOrganizationResponse> {
-    const document = await get(OrganizationModel, null, {
+    const organization = await get(OrganizationModel, null, {
       conditions: { account: account_id },
       session
     })
-    return await organizationDocumentToResponse(document)
+    return await organizationDocumentToResponse(organization)
   }
 
   async editMe(
     session?: ClientSession,
-    account_id = super.getUser()!._id,
+    account_id = super.getUser()!._id, // organization account _id
     data = super.getRequestBody<IOrganizationRequest>()
   ): Promise<IOrganizationResponse> {
     let organization = await get(OrganizationModel, null, {
@@ -120,6 +120,21 @@ export class OrganizationController extends KoaController {
 
     organization = await get(OrganizationModel, organization._id, { session })
     return await organizationDocumentToResponse(organization)
+  }
+
+  /* SUBSCRIPTIONS */
+
+  async subscriptions(
+    session?: ClientSession,
+    account_id = super.getUser()!._id // volunteer account _id
+  ): Promise<IOrganizationResponse[]> {
+    const organizations = await list(OrganizationModel, {
+      conditions: { subscribers: account_id },
+      session
+    })
+    return await Promise.all(
+      organizations.map(organization => organizationDocumentToResponse(organization))
+    )
   }
 
   /* LINKS TO OTHER MODULES */

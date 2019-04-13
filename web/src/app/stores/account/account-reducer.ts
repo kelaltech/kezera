@@ -6,7 +6,7 @@ export type State = {
 
 const accountStringFromStorage = window.localStorage.getItem('account')
 export const initialState: State = {
-  account: accountStringFromStorage ? JSON.parse(accountStringFromStorage) : null
+  account: accountStringFromStorage ? JSON.parse(accountStringFromStorage) : undefined
 }
 
 export type Action =

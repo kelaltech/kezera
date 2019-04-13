@@ -28,6 +28,15 @@ organizationRouter.put(
   handle(OrganizationController, (c, s) => c.editMe(s))
 )
 
+/* SUBSCRIPTIONS */
+
+// GET /api/organization/subscriptions *
+organizationRouter.get(
+  '/subscriptions',
+  authorize(['VOLUNTEER']),
+  handle(OrganizationController, (c, s) => c.subscriptions(s))
+)
+
 /* LINKS TO OTHER MODULES */
 
 // GET /api/organization/requests/:organization_id?since&count

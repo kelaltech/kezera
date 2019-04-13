@@ -71,7 +71,7 @@ export function reloadSubscriptions(
       throw Error('Received subscriptions data is malformed.')
 
     window.localStorage.setItem('subscriptions', JSON.stringify(subscriptions))
-    volunteerDispatch({ type: 'SUBSCRIPTIONS', subscriptions })
+    volunteerDispatch({ type: 'subscriptions', subscriptions })
   }
 
   if (subscriptions) {
@@ -86,7 +86,7 @@ export function reloadSubscriptions(
       .then(reload)
       .catch(e => {
         if (!silentFail) throw e
-        volunteerDispatch({ type: 'SUBSCRIPTIONS', subscriptions: [] })
+        volunteerDispatch({ type: 'subscriptions', subscriptions: [] })
       })
   }
 }

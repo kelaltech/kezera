@@ -1,7 +1,7 @@
 import { Schema, SchemaDefinition } from 'mongoose'
 
 const ObjectId = Schema.Types.ObjectId
-console.log(ObjectId) // todo: temp
+ObjectId // todo: temp
 
 export const certificateDesignPaths: SchemaDefinition = {
   _at: { type: Date, default: Date.now, index: true },

@@ -7,16 +7,21 @@ export type VolunteerState = {
 }
 
 const volunteerStringFromStorage = window.localStorage.getItem('volunteer')
+const subscriptionsStringFromStorage = window.localStorage.getItem('volunteer')
 
 export const initialVolState: VolunteerState = {
-  volunteer: volunteerStringFromStorage ? JSON.parse(volunteerStringFromStorage) : null,
-  subscriptions: []
+  volunteer: volunteerStringFromStorage
+    ? JSON.parse(volunteerStringFromStorage)
+    : undefined,
+  subscriptions: subscriptionsStringFromStorage
+    ? JSON.parse(subscriptionsStringFromStorage)
+    : []
 }
 
 export type Action =
   | { readonly type: 'setting'; readonly volunteer: IVolunteerResponse }
   | { readonly type: 'removeSetting' }
-  | { readonly type: 'SUBSCRIPTIONS'; readonly subscriptions: IOrganizationResponse[] }
+  | { readonly type: 'subscriptions'; readonly subscriptions: IOrganizationResponse[] }
 
 export function reducer(state: VolunteerState, action: Action): VolunteerState {
   switch (action.type) {
@@ -24,7 +29,7 @@ export function reducer(state: VolunteerState, action: Action): VolunteerState {
       return { ...state, volunteer: action.volunteer }
     case 'removeSetting':
       return { ...state, volunteer: null }
-    case 'SUBSCRIPTIONS':
+    case 'subscriptions':
       return { ...state, subscriptions: action.subscriptions }
     default:
       throw Error('Unknown Action')
