@@ -19,6 +19,13 @@ organizationRouter.get(
 // GET /api/organization/:_id
 organizationRouter.get('/:_id', handle(OrganizationController, (c, s) => c.get(s)))
 
+// PUT /api/organization/edit-me
+organizationRouter.put(
+  '/edit-me',
+  authorize(['ORGANIZATION']),
+  handle(OrganizationController, (c, s) => c.editMe(s))
+)
+
 // GET /api/organization/requests/:organization_id?since&count
 organizationRouter.get(
   '/requests/:organization_id',

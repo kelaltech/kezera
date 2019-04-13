@@ -18,3 +18,26 @@ export async function organizationResponseToRequest(
     registrations: response.registrations
   }
 }
+
+export function organizationRequestToResponse(
+  oldResponse: IOrganizationResponse,
+  request: IOrganizationRequest
+): IOrganizationResponse {
+  const { type, motto, bio, locations, website } = request
+
+  return {
+    ...oldResponse,
+
+    // account: override n/a
+
+    type,
+
+    motto,
+    bio,
+    locations,
+    website
+
+    // licensedNames: override n/a
+    // registrations: override n/a
+  }
+}

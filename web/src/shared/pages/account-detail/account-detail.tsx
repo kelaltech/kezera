@@ -6,6 +6,9 @@ import AccountHead from './components/account-head/account-head'
 import AccountGeneral from './components/account-general/account-general'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 
+const OrganizationSettings = lazy(() =>
+  import('./components/organization-settings/organization-settings')
+)
 const VolunteerSettings = lazy(() =>
   import('../../../layout-volunteer/components/volunteer-settings/volunteer-settings')
 )
@@ -27,6 +30,11 @@ function AccountDetail() {
             <AccountGeneral />
           </Block>
 
+          {account && account.role === 'ORGANIZATION' && (
+            <Block last>
+              <OrganizationSettings />
+            </Block>
+          )}
           {account && account.role === 'VOLUNTEER' && <VolunteerSettings />}
         </Content>
       </Page>
