@@ -1,4 +1,4 @@
-import { ClientSession } from 'mongoose'
+import { ClientSession, Document } from 'mongoose'
 
 import { KoaController } from '../../lib/koa-controller'
 import { add, get, remove } from '../../lib/crud'
@@ -23,12 +23,16 @@ export class VerifierController extends KoaController {
     const application = await get(OrganizationApplicationModel, _id, { session })
 
     // save account
-    const accountData: IAccount = JSON.parse(JSON.stringify(application.account))
+    const accountData: Document & IAccount = JSON.parse(
+      JSON.stringify(application.account)
+    )
     delete accountData._id
     const account = await add(AccountModel, accountData, { session })
 
     // save organization
-    const applicationData: IOrganization = JSON.parse(JSON.stringify(application))
+    const applicationData: Document & IOrganization = JSON.parse(
+      JSON.stringify(application)
+    )
     applicationData.account = account._id
     applicationData.verifier = verifier_account_id
     const organization = await add(OrganizationModel, applicationData, { session })

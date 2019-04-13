@@ -3,13 +3,13 @@ import { Grid } from '../../lib/grid'
 import { NewsModel } from '../../models/news/news.model'
 import { commentModel } from '../../models/comment/comment.model'
 import { IAccount } from '../../models/account/account.model'
-import { Schema } from 'mongoose'
+import { Document, Schema } from 'mongoose'
 import { serverApp } from '../../index'
 import { Stream } from 'stream'
 
 type ObjectId = Schema.Types.ObjectId | string
 
-export async function addNews(data: any, account: IAccount): Promise<any> {
+export async function addNews(data: any, account: Document & IAccount): Promise<any> {
   /*  if(account.role !== 'ORGANIZATION'){
     return "you dont have permission to publish this contente"
   }*/
@@ -30,7 +30,7 @@ export async function listAllNews() {
 }
 export async function addNewsWithPicture(
   data: any,
-  account: IAccount,
+  account: Document & IAccount,
   pic: Stream
 ): Promise<any> {
   data._by = await account._id
@@ -68,7 +68,7 @@ export async function getLikes(_newsId: ObjectId): Promise<any> {
 }
 export async function toggleLike(
   _newsId: ObjectId,
-  account: IAccount
+  account: Document & IAccount
 ): Promise<{
   likes: number
 }> {
@@ -129,7 +129,7 @@ export async function recentNews(count: Number): Promise<any> {
 }*/
 
 export async function addComment(
-  account: IAccount,
+  account: Document & IAccount,
   _newsId: ObjectId,
   data: any
 ): Promise<any> {
