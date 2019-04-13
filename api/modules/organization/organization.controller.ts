@@ -3,7 +3,7 @@ import { createReadStream } from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import { IOrganizationRequest, IOrganizationResponse } from './organization.apiv'
-import { add, get, list } from '../../lib/crud'
+import { add, edit, get, list } from '../../lib/crud'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
 import {
@@ -96,6 +96,28 @@ export class OrganizationController extends KoaController {
   ): Promise<IOrganizationResponse> {
     const document = await get(OrganizationModel, _id, { session })
     return await organizationDocumentToResponse(document)
+  }
+
+  async editMe(
+    session?: ClientSession,
+    account_id = super.getUser()!._id,
+    data = super.getRequestBody<IOrganizationRequest>()
+  ): Promise<IOrganizationResponse> {
+    let organization = await get(OrganizationModel, null, {
+      conditions: { account: account_id },
+      session
+    })
+
+    const request = await organizationRequestToLeanDocument(data, organization._id)
+    // no updates for:
+    request.account = organization.account as any
+    request.licensedNames = organization.licensedNames
+    request.registrations = organization.registrations
+
+    await edit(OrganizationModel, organization._id, request, { session })
+
+    organization = await get(OrganizationModel, organization._id, { session })
+    return await organizationDocumentToResponse(organization)
   }
 
   async requests(

@@ -3,21 +3,22 @@ import React, { useState } from 'react'
 import './side-nav.scss'
 import { Button } from 'gerami'
 
-function Sidenav(props:any) {
+function Sidenav(props: any) {
   const [wide, setWide] = useState(true)
 
-
-
-  return(
+  return (
     <div>
-      <div className={'drawer-container'} >
-        <div className={'small-nav'}/>
-        <div style={{
-          width: wide?'78%':'0%'
-        }} className={`${wide?'wide-nav':'min-nav'}`}>
+      <div className={'drawer-container'}>
+        <div className={'small-nav'} />
+        <div
+          style={{
+            width: wide ? '78%' : '0%'
+          }}
+          className={`${wide ? 'wide-nav' : 'min-nav'}`}
+        >
           Drawer
         </div>
-        <span  className={'open-close'} onClick={()=> setWide(!wide)} >
+        <span className={'open-close'} onClick={() => setWide(!wide)}>
           >>
         </span>
       </div>
@@ -25,4 +26,4 @@ function Sidenav(props:any) {
   )
 }
 
-export default Sidenav;
+export default Sidenav

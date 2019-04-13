@@ -9,11 +9,11 @@ import {
   TextField
 } from '@material-ui/core'
 
-import useLocale from '../../../../../shared/hooks/use-locale/use-locale'
-import { IOrganizationRequest } from '../../../../../../../api/modules/organization/organization.apiv'
+import useLocale from '../../hooks/use-locale/use-locale'
+import { IOrganizationRequest } from '../../../../../api/modules/organization/organization.apiv'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import useField from '../../../../../shared/hooks/use-field/use-field'
-import { IOrganizationType } from '../../../../../../../api/models/organization/organization.model'
+import useField from '../../hooks/use-field/use-field'
+import { IOrganizationType } from '../../../../../api/models/organization/organization.model'
 
 interface Props {
   organization: IOrganizationRequest
@@ -27,27 +27,37 @@ const organizationTypes: IOrganizationType[] = [
   'PRIVATE'
 ] // todo: update these manually or go full dynamic
 
-function OrganizationApplyAbout({ organization, setOrganization }: Props) {
+function OrganizationFormAbout({ organization, setOrganization }: Props) {
   const { loading, t } = useLocale(['organization'])
 
   const emitChanges = (organizationChanges: any): void => {
     setOrganization({ ...organization, ...organizationChanges })
   }
 
-  const type = useField({
-    initialValue: organization.type,
-    setValueHook: async value => {
-      emitChanges({ type: value })
-    }
-  })
+  const type = useField(
+    {
+      initialValue: organization.type,
+      setValueHook: async value => {
+        emitChanges({ type: value })
+      }
+    },
+    undefined,
+    [organization.type]
+  )
 
-  const address = useField({
-    initialValue: organization.locations.length ? organization.locations[0].address : '',
-    optional: true,
-    setValueHook: async value => {
-      emitChanges({ locations: value ? [{ address: value }] : [] })
-    }
-  })
+  const address = useField(
+    {
+      initialValue: organization.locations.length
+        ? organization.locations[0].address
+        : '',
+      optional: true,
+      setValueHook: async value => {
+        emitChanges({ locations: value ? [{ address: value }] : [] })
+      }
+    },
+    undefined,
+    [organization.locations, organization.locations.length]
+  )
 
   return (
     loading || (
@@ -101,4 +111,4 @@ function OrganizationApplyAbout({ organization, setOrganization }: Props) {
   )
 }
 
-export default OrganizationApplyAbout
+export default OrganizationFormAbout

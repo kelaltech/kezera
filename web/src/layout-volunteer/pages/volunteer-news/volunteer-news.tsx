@@ -39,7 +39,7 @@ function VolunteerNews() {
   }, [])
   return (
     <div>
-      <Sidenav/>
+      <Sidenav />
       <div className={'volunteer-news-container'}>
         <span>
           <Block />
