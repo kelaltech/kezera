@@ -3,7 +3,7 @@ import { createReadStream } from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import { IOrganizationRequest, IOrganizationResponse } from './organization.apiv'
-import { add, edit, get, list } from '../../lib/crud'
+import { add, edit, get, list, search } from '../../lib/crud'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
 import {
@@ -19,6 +19,8 @@ import { EventModel, IEvent } from '../../models/event/event.model'
 import { INews, NewsModel } from '../../models/news/news.model'
 
 export class OrganizationController extends KoaController {
+  /* GENERAL */
+
   async apply(
     session?: ClientSession,
     data: IOrganizationRequest = JSON.parse(
@@ -41,7 +43,9 @@ export class OrganizationController extends KoaController {
   ): Promise<IOrganizationResponse> {
     const application = await add(
       OrganizationApplicationModel,
-      new OrganizationApplicationModel(await organizationRequestToLeanDocument(data)),
+      new OrganizationApplicationModel(
+        await organizationRequestToLeanDocument(data, undefined as any)
+      ),
       {
         session,
         preSave: async (doc, session) => {
@@ -79,28 +83,51 @@ export class OrganizationController extends KoaController {
     return await organizationDocumentToResponse(application, application.account)
   }
 
-  async me(
-    session?: ClientSession,
-    account_id = super.getUser()!._id
-  ): Promise<IOrganizationResponse> {
-    const document = await get(OrganizationModel, null, {
-      conditions: { account: account_id },
-      session
-    })
-    return await organizationDocumentToResponse(document)
-  }
-
   async get(
     session?: ClientSession,
     _id = super.getParam('_id')
   ): Promise<IOrganizationResponse> {
-    const document = await get(OrganizationModel, _id, { session })
-    return await organizationDocumentToResponse(document)
+    const organization = await get(OrganizationModel, _id, { session })
+    return await organizationDocumentToResponse(organization)
+  }
+
+  async me(
+    session?: ClientSession,
+    account_id = super.getUser()!._id // organization account _id
+  ): Promise<IOrganizationResponse> {
+    const organization = await get(OrganizationModel, null, {
+      conditions: { account: account_id },
+      session
+    })
+    return await organizationDocumentToResponse(organization)
+  }
+
+  async list(
+    session?: ClientSession,
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
+  ): Promise<IOrganizationResponse[]> {
+    const organizations = await list(OrganizationModel, { session, since, count })
+    return await Promise.all(
+      organizations.map(organization => organizationDocumentToResponse(organization))
+    )
+  }
+
+  async search(
+    session?: ClientSession,
+    term = super.getQuery('term'),
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
+  ): Promise<IOrganizationResponse[]> {
+    const organizations = await search(OrganizationModel, term, { session, since, count })
+    return await Promise.all(
+      organizations.map(organization => organizationDocumentToResponse(organization))
+    )
   }
 
   async editMe(
     session?: ClientSession,
-    account_id = super.getUser()!._id,
+    account_id = super.getUser()!._id, // organization account _id
     data = super.getRequestBody<IOrganizationRequest>()
   ): Promise<IOrganizationResponse> {
     let organization = await get(OrganizationModel, null, {
@@ -108,7 +135,11 @@ export class OrganizationController extends KoaController {
       session
     })
 
-    const request = await organizationRequestToLeanDocument(data, organization._id)
+    const request = await organizationRequestToLeanDocument(
+      data,
+      organization.verifier,
+      organization._id
+    )
     // no updates for:
     request.account = organization.account as any
     request.licensedNames = organization.licensedNames
@@ -120,11 +151,56 @@ export class OrganizationController extends KoaController {
     return await organizationDocumentToResponse(organization)
   }
 
+  /* SUBSCRIPTIONS */
+
+  async subscriptions(
+    session?: ClientSession,
+    account_id = super.getUser()!._id // volunteer account _id
+  ): Promise<IOrganizationResponse[]> {
+    const organizations = await list(OrganizationModel, {
+      conditions: { subscribers: account_id },
+      session
+    })
+    return await Promise.all(
+      organizations.map(organization => organizationDocumentToResponse(organization))
+    )
+  }
+
+  async subscribe(
+    session?: ClientSession,
+    _id = super.getParam('_id'),
+    account_id = super.getUser()!._id // volunteer account _id
+  ): Promise<void> {
+    const organization = await get(OrganizationModel, _id, { session })
+
+    if (!(organization.subscribers || []).includes(account_id)) {
+      if (!organization.subscribers) organization.subscribers = []
+      organization.subscribers.push(account_id)
+      await edit(OrganizationModel, _id, organization, { session })
+    }
+  }
+
+  async unsubscribe(
+    session?: ClientSession,
+    _id = super.getParam('_id'),
+    account_id = super.getUser()!._id // volunteer account _id
+  ): Promise<void> {
+    const organization = await get(OrganizationModel, _id, { session })
+
+    if (!organization.subscribers) organization.subscribers = []
+    organization.subscribers = organization.subscribers.filter(
+      subscriber => subscriber.toString() !== account_id.toString()
+    )
+    await edit(OrganizationModel, _id, organization, { session })
+  }
+
+  /* LINKS TO OTHER MODULES */
+
   async requests(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
-    since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
-    count = super.getQuery('count') ? Number(super.getQuery('count')) : 42
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
   ): Promise<IRequest[]> {
     // todo: filter?
     // todo: attach type-specific fields using a refactored method from Request Module
@@ -139,8 +215,8 @@ export class OrganizationController extends KoaController {
   async events(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
-    since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
-    count = super.getQuery('count') ? Number(super.getQuery('count')) : 14
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
   ): Promise<IEvent[]> {
     // todo: remove the next line when Event.organizationId gets fixed
     const organization = await get(OrganizationModel, organization_id)
@@ -156,8 +232,8 @@ export class OrganizationController extends KoaController {
   async news(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
-    since = super.getQuery('since') ? Number(super.getQuery('since')) : undefined,
-    count = super.getQuery('count') ? Number(super.getQuery('count')) : 14
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 14
   ): Promise<INews[]> {
     // todo: filter?
     return await list(NewsModel, {

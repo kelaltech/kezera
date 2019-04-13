@@ -14,9 +14,7 @@ export const certificatePurposes: ICertificatePurpose[] = [
 ]
 
 export interface ICertificate {
-  __v: number
-  _id: ObjectId
-  _at: Date | number
+  _at?: Date | number
   _last: Date | number
 
   purpose: ICertificatePurpose

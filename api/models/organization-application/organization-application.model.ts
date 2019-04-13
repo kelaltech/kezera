@@ -8,6 +8,7 @@ import { IAccount } from '../account/account.model'
 
 export type IOrganizationApplication = IOrganization & {
   account: Document & IAccount
+  verifier: undefined
 }
 
 export const organizationApplicationModelFactory = new ModelFactory<
