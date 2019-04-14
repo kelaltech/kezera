@@ -18,7 +18,7 @@ import { eventRouter } from '../modules/event/event.router'
 import { organizationRouter } from '../modules/organization/organization.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
 import { volunteerRouter } from '../modules/volunteer/volunteer.router'
-import { organRouter} from '../modules/organ/organ.router'
+import { organRouter } from '../modules/organ/organ.router'
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',

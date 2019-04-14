@@ -1,10 +1,11 @@
-import React, { Component, ReactNode } from 'react'
-import { Page, Warning } from 'gerami'
+import React, { PropsWithChildren, ReactNode, Suspense, useEffect, useState } from 'react'
 import { MinHeightProperty } from 'csstype'
+import { Loading, Page, Warning } from 'gerami'
+
 import Header, { IHeaderProps } from './header/header'
 import Footer from './footer/footer'
 
-interface ILayoutProps {
+type ILayoutProps = PropsWithChildren<{
   error?: any
   nonContentHeight?: MinHeightProperty<string | number>
   noShell?: boolean
@@ -12,61 +13,54 @@ interface ILayoutProps {
   overrideHeader?: ReactNode
   overrideFooter?: ReactNode
   preHeader?: ReactNode
-}
+}>
 
-interface ILayoutState {
-  noShell: boolean
-}
+function Layout({
+  children,
+  nonContentHeight: nch,
+  noShell: noShellProp,
+  error,
+  headerOptions,
+  overrideHeader,
+  overrideFooter,
+  preHeader
+}: ILayoutProps) {
+  const [noShellState, setNoShellState] = useState(true)
 
-export default class Layout extends Component<ILayoutProps, ILayoutState> {
-  state: ILayoutState = {
-    noShell: true
-  }
-
-  componentDidMount() {
-    let { noShell } = this.props
-
-    if (noShell === undefined) {
+  useEffect(() => {
+    if (noShellProp === undefined) {
       const fromStorage = window.sessionStorage.getItem('noShell')
-      noShell = fromStorage === null ? false : fromStorage === 'true'
-      this.setState({ noShell })
+      setNoShellState(fromStorage === null ? false : fromStorage === 'true')
     } else {
-      window.sessionStorage.setItem('noShell', String(noShell))
-      this.setState({ noShell })
+      window.sessionStorage.setItem('noShell', String(noShellProp))
+      setNoShellState(noShellProp)
     }
-  }
+  }, [])
 
-  render() {
-    const {
-      children,
-      nonContentHeight: nch,
-      error,
-      headerOptions,
-      overrideHeader,
-      overrideFooter,
-      preHeader
-    } = this.props
-    const { noShell } = this.state
+  const contentMinHeight = nch
+    ? `calc(100vh - ${nch}${typeof nch === 'number' ? 'px' : ''})`
+    : `100vh`
 
-    const contentMinHeight = nch
-      ? `calc(100vh - ${nch}${typeof nch === 'number' ? 'px' : ''})`
-      : `100vh`
+  return error ? (
+    <Page>
+      <Warning problem={error} size={'XXL'} />
+    </Page>
+  ) : (
+    <>
+      {!noShellState && (
+        <>
+          {preHeader}
+          {overrideHeader || <Header {...headerOptions} />}
+        </>
+      )}
 
-    return error ? (
-      <Page>
-        <Warning problem={error} size={'XXL'} />
-      </Page>
-    ) : (
-      <>
-        {!noShell && (
-          <>
-            {preHeader}
-            {overrideHeader || <Header {...headerOptions} />}
-          </>
-        )}
-        <div style={{ minHeight: contentMinHeight }}>{children}</div>
-        {!noShell && (overrideFooter || <Footer />)}
-      </>
-    )
-  }
+      <div style={{ minHeight: contentMinHeight }}>
+        <Suspense fallback={<Loading delay />}>{children}</Suspense>
+      </div>
+
+      {!noShellState && (overrideFooter || <Footer />)}
+    </>
+  )
 }
+
+export default Layout

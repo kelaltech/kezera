@@ -90,3 +90,8 @@ export function reloadSubscriptions(
       })
   }
 }
+
+export function clearSubscriptions(volunteerDispatch: (action: Action) => void): void {
+  window.localStorage.removeItem('my-organization')
+  volunteerDispatch({ type: 'subscriptions', subscriptions: [] })
+}

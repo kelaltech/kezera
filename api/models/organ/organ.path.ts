@@ -14,6 +14,6 @@ const ORGAN_TYPE: IOrganType[] = [
 ]
 export const organPaths: SchemaDefinition = {
   _at: { type: Date, default: Date.now },
-  request: {type: ObjectId, ref:'request' },
+  request: { type: ObjectId, ref: 'request' },
   type: { type: String, enum: ORGAN_TYPE, required: true }
 }

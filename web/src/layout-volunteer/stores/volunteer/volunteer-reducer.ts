@@ -7,7 +7,7 @@ export type VolunteerState = {
 }
 
 const volunteerStringFromStorage = window.localStorage.getItem('volunteer')
-const subscriptionsStringFromStorage = window.localStorage.getItem('volunteer')
+const subscriptionsStringFromStorage = window.localStorage.getItem('subscriptions')
 
 export const initialVolState: VolunteerState = {
   volunteer: volunteerStringFromStorage

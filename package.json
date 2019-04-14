@@ -17,7 +17,7 @@
     "ios": "cd mobile & run-s ios",
     "build": "run-s clean tsc",
     "clean": "./node_modules/.bin/del-cli ./dist",
-    "dev": "nodemon dist",
+    "dev": "set EMAIL_FROM=spva.dev@gmail.com& set EMAIL_PASS=uY3gYisZRC6CKga& nodemon -w dist dist",
     "lint": "prettier {.,**}/*.{css,md,js,json,jsx,sass,scss,ts,tsx}",
     "format": "prettier --write {.,**}/*.{css,md,js,json,jsx,sass,scss,ts,tsx}",
     "precommit": "run-s prod && cd web && run-s prod && cd ../mobile && run-s prod && cd .. && git update-index --again",

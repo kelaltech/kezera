@@ -9,7 +9,7 @@ import React, {
 
 import { Action, initialVolState, reducer, VolunteerState } from './volunteer-reducer'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import { reloadSubscriptions } from './volunteer-actions'
+import { clearSubscriptions, reloadSubscriptions } from './volunteer-actions'
 
 const contextForVolunteer = createContext<VolunteerState>(initialVolState)
 const contextForVolunteerDispatch = createContext<Dispatch<Action>>(() => {})
@@ -19,15 +19,16 @@ export function VolunteerProvider({ children }: { children: ReactNode }) {
 
   const { account } = useAccountState()
   useEffect(() => {
-    reloadSubscriptions(
-      dispatch,
-      undefined,
-      account === null
-        ? []
-        : account === undefined && state.subscriptions
-        ? state.subscriptions
-        : undefined
-    )
+    if (account === null) {
+      clearSubscriptions(dispatch)
+    } else {
+      console.log(state.subscriptions)
+      reloadSubscriptions(
+        dispatch,
+        undefined,
+        account === undefined && state.subscriptions ? state.subscriptions : undefined
+      )
+    }
   }, [account])
 
   return (

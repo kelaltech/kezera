@@ -69,9 +69,11 @@ function AccountPhoto({ readonly }: Props) {
           onClick={() => inputRef.current && inputRef.current.click()}
           style={{
             backgroundImage: submitting
-              ? 'linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95))'
+              ? 'linear-gradient(rgba(245,245,245,1), rgba(245,245,245,1))'
               : account.photoUri
-              ? `url(${account.photoUri})`
+              ? `url(${
+                  account.photoUri
+                }), linear-gradient(rgba(255,255,255,1), rgba(255,255,255,1))`
               : 'linear-gradient(to top right, transparent, rgba(255,255,255,0.42))',
             color: account.photoUri ? undefined : 'rgba(255,255,255,0.95)'
           }}

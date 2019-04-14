@@ -94,14 +94,13 @@ export class AccountController extends KoaController {
     await edit(
       AccountModel,
       user!._id,
-      { ...document, ...request },
+      { ...document.toObject(), ...request },
       {
         session,
         postUpdate: async () => {
           document = await get(AccountModel, user!._id, { session })
 
           if (data.currentPassword && data.newPassword) {
-            console.log(document.passwordSetOn)
             await document.changePassword(data.currentPassword, data.newPassword, session)
           }
           return document

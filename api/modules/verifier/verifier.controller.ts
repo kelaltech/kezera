@@ -17,7 +17,7 @@ import { KoaError } from '../../lib/koa-error'
 
 export class VerifierController extends KoaController {
   async approveOrganizationApplication(
-    session: ClientSession,
+    session?: ClientSession,
     _id = super.getParam('_id'),
     verifier_account = super.getUser()!
   ): Promise<IOrganizationResponse> {
@@ -83,5 +83,43 @@ export class VerifierController extends KoaController {
 
     // return organization response
     return await organizationDocumentToResponse(organization)
+  }
+
+  async rejectOrganizationApplication(
+    session?: ClientSession,
+    _id = super.getParam('_id'),
+    verifier_account = super.getUser()!
+  ): Promise<void> {
+    const allowedRoles: IAccountRole[] = ['VERIFIER', 'ADMIN']
+    if (!allowedRoles.includes(verifier_account.role))
+      throw new KoaError(
+        `Role "${
+          verifier_account.role
+        }" is not allowed to approve Organization application requests.`,
+        500,
+        'ACCOUNT_ROLE_NOT_ALLOWED'
+      )
+
+    const application = await get(OrganizationApplicationModel, _id, { session })
+
+    // delete logo?
+    const applicationGrid = new Grid(
+      serverApp,
+      OrganizationApplicationModel,
+      application._id,
+      'logo',
+      false
+    )
+    await applicationGrid.remove()
+
+    // delete application
+    await remove(OrganizationApplicationModel, application._id, { session })
+
+    // email rejection
+    await email({
+      subject: 'Regarding Your Application to SPVA',
+      to: application.account.email,
+      text: `Hello,\n\nWe regret to inform you that, after thoroughly reviewing your application, we have decided not to accept it onto our system. You can forward any questions you may have regarding this or any other matter to our team at any time. You will find our contact information on the official website.\n\nSincerely,\nThe SPVA Team`
+    })
   }
 }

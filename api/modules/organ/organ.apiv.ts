@@ -1,5 +1,5 @@
-import { IOrganType,ObjectId } from '../../models/organ/organ.model'
-import { IRequestResponse,  } from '../request/request.apiv'
+import { IOrganType, ObjectId } from '../../models/organ/organ.model'
+import { IRequestResponse } from '../request/request.apiv'
 
 export type IOrganRequest = {
   type: IOrganType

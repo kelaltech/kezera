@@ -1,6 +1,5 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Loading } from 'gerami'
 import * as qs from 'qs'
 
 import useLocale from '../shared/hooks/use-locale/use-locale'
@@ -34,9 +33,7 @@ function LayoutVolunteer({ error, match }: Props) {
         error={error}
         nonContentHeight={164}
       >
-        <Suspense fallback={<Loading delay />}>
-          <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
-        </Suspense>
+        <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
       </Layout>
     </LayoutVolunteerProviders>
   )
