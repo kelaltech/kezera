@@ -185,7 +185,7 @@ export async function edit<T extends Document>(
   }: IEditOptions<T> = {},
   options: ModelUpdateOptions = { session, runValidators: true }
 ): Promise<T> {
-  data = data instanceof model ? data : new model(data)
+  data = data instanceof model ? data.toObject() : data
 
   let doc = await get(model, _id, { conditions, session, preQuery, postQuery })
 
