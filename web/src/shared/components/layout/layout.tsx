@@ -1,6 +1,6 @@
-import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
-import { Page, Warning } from 'gerami'
+import React, { PropsWithChildren, ReactNode, Suspense, useEffect, useState } from 'react'
 import { MinHeightProperty } from 'csstype'
+import { Loading, Page, Warning } from 'gerami'
 
 import Header, { IHeaderProps } from './header/header'
 import Footer from './footer/footer'
@@ -53,7 +53,11 @@ function Layout({
           {overrideHeader || <Header {...headerOptions} />}
         </>
       )}
-      <div style={{ minHeight: contentMinHeight }}>{children}</div>
+
+      <div style={{ minHeight: contentMinHeight }}>
+        <Suspense fallback={<Loading delay />}>{children}</Suspense>
+      </div>
+
       {!noShellState && (overrideFooter || <Footer />)}
     </>
   )
