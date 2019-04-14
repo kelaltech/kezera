@@ -1,7 +1,8 @@
-import { SchemaDefinition } from 'mongoose'
+import { SchemaDefinition, Schema } from 'mongoose'
 
 import { IOrganType } from './organ.model'
 
+const ObjectId = Schema.Types.ObjectId
 const ORGAN_TYPE: IOrganType[] = [
   'LUNGS',
   'HEART',
@@ -13,5 +14,6 @@ const ORGAN_TYPE: IOrganType[] = [
 ]
 export const organPaths: SchemaDefinition = {
   _at: { type: Date, default: Date.now },
+  request: {type: ObjectId, ref:'request' },
   type: { type: String, enum: ORGAN_TYPE, required: true }
 }

@@ -1,7 +1,9 @@
 import { ModelFactory } from 'meseret'
-import { Document } from 'mongoose'
+import { Document, Schema } from 'mongoose'
 import { organPaths } from './organ.path'
 
+
+export type ObjectId = Schema.Types.ObjectId
 export type IOrganType =
   | 'LUNGS'
   | 'HEART'
@@ -13,6 +15,7 @@ export type IOrganType =
 
 export interface IOrgan extends Document {
   _at: Date | number
+  request: ObjectId,
   type: IOrganType
 }
 
@@ -21,4 +24,4 @@ export const organModelFactory = new ModelFactory<IOrgan>({
   paths: organPaths
 })
 
-export const OrgnaModel = organModelFactory.model
+export const OrganModel = organModelFactory.model
