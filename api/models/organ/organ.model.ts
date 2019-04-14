@@ -2,7 +2,6 @@ import { ModelFactory } from 'meseret'
 import { Document, Schema } from 'mongoose'
 import { organPaths } from './organ.path'
 
-
 export type ObjectId = Schema.Types.ObjectId
 export type IOrganType =
   | 'LUNGS'
@@ -15,7 +14,7 @@ export type IOrganType =
 
 export interface IOrgan extends Document {
   _at: Date | number
-  request: ObjectId,
+  request: ObjectId
   type: IOrganType
 }
 
