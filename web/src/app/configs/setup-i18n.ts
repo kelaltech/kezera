@@ -4,20 +4,18 @@ import { initReactI18next } from 'react-i18next'
 import {
   defaultLanguage,
   defaultNamespaces,
-  loadNamespaces,
+  getLanguage,
   setLanguage
 } from '../../lib/language'
 
 i18n
   .use(initReactI18next)
   .init({
-    interpolation: { escapeValue: false },
+    lng: getLanguage(),
     fallbackLng: defaultLanguage,
     fallbackNS: defaultNamespaces,
-    lng: defaultLanguage
+    interpolation: { escapeValue: false },
+    parseMissingKeyHandler: () => ''
   })
-  .then(async () => {
-    await setLanguage()
-    loadNamespaces(defaultNamespaces, defaultLanguage).catch() // just a backup/fallback
-  })
+  .then(() => setLanguage())
   .catch(console.error)

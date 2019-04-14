@@ -1,12 +1,15 @@
+import { getI18n } from 'react-i18next'
 import i18n from 'i18next'
 import { NativeModules, Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 
-// todo: until dynamic imports gets supported by react native
+// am
 import amCommon from '../locales/am/common.json'
+
+// en
 import enCommon from '../locales/en/common.json'
 
-// note line 4
+// until dynamic imports gets supported by react native
 const translations: any = {
   am: {
     common: amCommon
@@ -15,8 +18,6 @@ const translations: any = {
     common: enCommon
   }
 }
-
-let lngHasBeenSetAtLeastOnce = false
 
 export type Language = 'am' | 'en'
 export const supportedLanguages = ['am', 'en']
@@ -59,8 +60,11 @@ export async function getLanguage(): Promise<Language> {
 
 export async function loadNamespaces(
   namespaces: Namespace[],
-  otherLng?: Language
+  otherLng?: Language,
+  i18nInstance?: i18n.i18n
 ): Promise<void> {
+  const i18n = i18nInstance || getI18n()
+
   await checkNamespaces(namespaces)
 
   const lng = otherLng || (await getLanguage())
@@ -71,6 +75,7 @@ export async function loadNamespaces(
       try {
         const resource = translations[`${lng}`][`${namespace}`] // note line 4
         i18n.addResourceBundle(lng, namespace, resource)
+        return i18n.loadNamespaces(namespace)
       } catch (e) {
         throw Error(
           `Unable to load or add "${lng}" translation resource using namespace: "${namespace}"`
@@ -78,12 +83,20 @@ export async function loadNamespaces(
       }
     })
   )
+
+  if (lng !== defaultLanguage) {
+    // fallback resource
+    loadNamespaces(namespaces, defaultLanguage, i18n).catch()
+  }
 }
 
 export async function setLanguage(
   lng?: Language,
-  namespaces = defaultNamespaces
+  namespaces = defaultNamespaces,
+  i18nInstance?: i18n.i18n
 ): Promise<void> {
+  const i18n = i18nInstance || getI18n()
+
   if (lng) await checkLanguage(lng)
   else lng = await getLanguage()
 
@@ -91,21 +104,18 @@ export async function setLanguage(
 
   await AsyncStorage.setItem('lng', lng)
   await i18n.changeLanguage(lng)
-
-  lngHasBeenSetAtLeastOnce = false
 }
 
-export function _(key: TemplateStringsArray | string, namespaces?: Namespace[]) {
+export function _(
+  key: TemplateStringsArray | string,
+  namespaces?: Namespace[],
+  i18nInstance?: i18n.i18n
+) {
+  const i18n = i18nInstance || getI18n()
+
   if (namespaces) checkNamespaces(namespaces).catch(console.error)
 
   return i18n.t(key.toString(), {
-    defaultValue: ((): string => {
-      if (lngHasBeenSetAtLeastOnce) console.warn(`missing translation for key "${key}"`)
-
-      return key.toString()
-    })(),
     ns: namespaces || defaultNamespaces
   })
 }
-
-export default _

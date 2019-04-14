@@ -1,4 +1,5 @@
 import './configs/axios-interceptors'
+import './configs/setup-i18n'
 
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -18,4 +19,4 @@ function App() {
   )
 }
 
-export default withTranslation(supportedNamespaces)(App) // for lib/languages' _
+export default withTranslation(supportedNamespaces)(App) // for (lib/languages)._
