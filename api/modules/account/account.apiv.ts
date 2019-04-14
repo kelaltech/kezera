@@ -28,6 +28,20 @@ export type IAccountResponse = {
   photoUri?: string
 }
 
+export type IAccountPublicResponse = {
+  _id: string
+
+  role: IAccountRole
+  status: IAccountStatus
+
+  email: string
+
+  displayName: string
+  phoneNumber?: string
+
+  photoUri?: string
+}
+
 import {
   IPasswordResetStartRequest,
   IPasswordResetFinishRequest

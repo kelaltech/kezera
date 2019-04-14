@@ -1,8 +1,9 @@
-@import "../../../assets/styles/theme";
+@import '../../../assets/styles/theme';
 
 .search-bar-container {
   flex-grow: 1;
   display: flex;
+  flex-direction: row;
   justify-content: flex-end;
 }
 .search-bar-input {
@@ -14,6 +15,8 @@
   display: flex;
   .input-search {
     flex: 80%;
+    line-height: 0.5px;
+    height: 20px !important;
   }
   .input-search-icon {
     text-align: center;
@@ -23,7 +26,7 @@
     padding-left: 3px;
     color: #cccccc;
 
-    *{
+    * {
       align-self: center;
     }
   }

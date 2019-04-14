@@ -14,7 +14,7 @@ import {
   IAccountRole,
   IAccountStatus
 } from '../../models/account/account.model'
-import { add, edit, get } from '../../lib/crud'
+import { add, edit, get, search } from '../../lib/crud'
 import {
   finishPasswordReset,
   IPasswordResetFinishRequest,
@@ -60,6 +60,18 @@ export class AccountController extends KoaController {
     return accountDocumentToResponse(document)
   }
 
+  async search(
+    session?: ClientSession,
+    term = super.getQuery('term'),
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
+  ): Promise<IAccountResponse[]> {
+    const organizations = await search(AccountModel, term, { session, since, count })
+    return await Promise.all(
+      organizations.map(organization => accountDocumentToResponse(organization))
+    )
+  }
+
   async editMe(
     session?: ClientSession,
     data = super.getRequestBody<IAccountRequest>(),
@@ -82,7 +94,7 @@ export class AccountController extends KoaController {
     await edit(
       AccountModel,
       user!._id,
-      Object.assign(document, request),
+      { ...document, ...request },
       {
         session,
         postUpdate: async () => {

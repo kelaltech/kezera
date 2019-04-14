@@ -1,7 +1,7 @@
 import { IOrganizationRequest, IOrganizationResponse } from '../organization.apiv'
 import { accountResponseToRequest } from './account.filter'
 
-export async function organizationPrivateResponseToRequest(
+export async function organizationResponseToRequest(
   response: IOrganizationResponse
 ): Promise<IOrganizationRequest> {
   return {

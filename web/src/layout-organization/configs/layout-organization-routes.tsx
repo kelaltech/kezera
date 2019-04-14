@@ -1,14 +1,11 @@
 import React, { lazy } from 'react'
-import { Route, Switch } from 'react-router'
+import { Redirect, Route, Switch } from 'react-router'
 
 import { useAccountState } from '../../app/stores/account/account-provider'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
 
-const OrganizationApply = lazy(() =>
-  import('../pages/organization-apply/organization-apply')
-)
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
 )
@@ -38,13 +35,22 @@ const RequestInformation = lazy(() =>
   import('../../shared/pages/request-detail/request-information')
 )
 
+const OrganizationCertificateDesign = lazy(() =>
+  import('../pages/certificate-design/certificate-design')
+)
+const OrganizationDetail = lazy(() =>
+  import('../../shared/pages/organization-detail/organization-detail')
+)
+
 export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
 
   return (
     <Switch>
-      <Route exact path={`${p}/apply`} component={OrganizationApply} />
       <Route exact path={`${p}/account`} component={AccountDetail} />
+
+      <Redirect exact from={`${p}/apply`} to={'/login/apply'} />
+      <Redirect exact from={`${p}/`} to={'/organization/me'} />
 
       <Route exact path={`${p}/news`} component={News} />
       <Route exact path={`${p}/news/create`} component={NewsAddPage} />
@@ -64,6 +70,14 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/request/list`} component={RequestList} />
       <Route exact path={`${p}/request/add`} component={RequestAdd} />
       <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
+
+      <Route
+        exact
+        path={`${p}/certificate-design`}
+        component={OrganizationCertificateDesign}
+      />
+      <Route exact path={`${p}/:_id`} component={OrganizationDetail} />
+      {/* exact path={`${p}/me`} is a specially supported Route by OrganizationDetail */}
 
       <Route component={NotFound} />
     </Switch>

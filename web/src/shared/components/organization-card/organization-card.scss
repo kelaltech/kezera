@@ -1,0 +1,56 @@
+@import '../../../assets/styles/theme';
+
+.organization-card {
+  box-shadow: $shade-L !important;
+
+  .gerami-card-img {
+    height: $space * 8;
+
+    filter: blur($space * 2);
+    opacity: 0.56;
+
+    transform: scale3d(1.14, 1.14, 1);
+  }
+}
+
+.organization-card-logo-anchor {
+  display: block;
+  position: relative;
+  z-index: 2;
+
+  box-shadow: none !important;
+}
+
+.organization-card-logo {
+  margin: (-$space * 7 - $space) auto (-$space);
+
+  border-radius: 50%;
+
+  width: $space * 8;
+  height: $space * 8;
+
+  background-position: center center;
+  background-size: cover;
+  box-shadow: $shade-S, $shade-M, $shade-L;
+}
+
+.organization-card-content {
+  position: relative;
+  z-index: 1;
+
+  margin: (-$space * 1.5) auto (-$space);
+  padding: ($space * 2) ($space / 2) ($space);
+
+  border-top-right-radius: $space / 2;
+  border-top-left-radius: $space / 2;
+
+  background-color: transparent;
+  background-image: linear-gradient(
+    to bottom,
+    transparentize($bg, 0.42) 0%,
+    transparentize($bg, 0.05) 50%
+  );
+  box-shadow: $shade-M;
+
+  transform: scale3d(1, 1, 0.8);
+}

@@ -4,30 +4,28 @@ import axios from 'axios'
 import RequestCard from '../../../../../shared/components/request/request-card'
 
 interface ITaskResult {
-  term?:string
+  term?: string
 }
-function TaskSearchResult(props:ITaskResult) {
-  const {term} = props
+function TaskSearchResult(props: ITaskResult) {
+  const { term } = props
   const [tasks, setTasks] = useState([])
 
-  useEffect(()=>{
+  useEffect(() => {
     axios
-      .get('/api/task/search?term='+term)
-      .then((tasks:any)=>{
+      .get('/api/task/search?term=' + term)
+      .then((tasks: any) => {
         setTasks(tasks.data)
       })
-      .catch((e:any)=>console.log(e))
+      .catch((e: any) => console.log(e))
   })
 
   return (
     <div>
       <h1>Task Search result</h1>
       <div>
-        {
-          tasks.map((t:any)=>(
-            <RequestCard request={t}/>
-          ))
-        }
+        {tasks.map((t: any) => (
+          <RequestCard request={t} />
+        ))}
       </div>
     </div>
   )

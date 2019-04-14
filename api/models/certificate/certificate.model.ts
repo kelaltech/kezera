@@ -1,7 +1,7 @@
 import { ModelFactory } from 'meseret'
 import { Schema } from 'mongoose'
 
-import { certificatePaths } from './certificate.path'
+import { certificatePaths } from './certificate.paths'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -14,9 +14,7 @@ export const certificatePurposes: ICertificatePurpose[] = [
 ]
 
 export interface ICertificate {
-  __v: number
-  _id: ObjectId
-  _at: Date | number
+  _at?: Date | number
   _last: Date | number
 
   purpose: ICertificatePurpose

@@ -1,5 +1,4 @@
 import { ModelFactory } from 'meseret'
-import { Schema } from 'mongoose'
 
 import { keyPaths } from './key.paths'
 import { keyStatics } from './key.statics'
@@ -7,12 +6,8 @@ import { keyStatics } from './key.statics'
 export type IKeyPurpose = 'PASSWORD_RESET'
 export const keyPurposes: IKeyPurpose[] = ['PASSWORD_RESET']
 
-type ObjectId = Schema.Types.ObjectId | string
-
 export interface IKey {
-  __v: number
-  _id: ObjectId
-  _at: Date | number
+  _at?: Date | number
 
   purpose: IKeyPurpose
   email?: string

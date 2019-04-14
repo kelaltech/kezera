@@ -19,12 +19,38 @@ export default function AppRoutes() {
     <Switch>
       <Redirect exact path={`/index.html`} to={`/`} />
 
-      <Route path={'/admin'} component={LayoutAdmin} />
+      {account && account.role === 'ADMIN' ? (
+        <Route path={'/admin'} component={LayoutAdmin} />
+      ) : null}
+      {account && account.role === 'ORGANIZATION' ? (
+        <Route path={'/organization'} component={LayoutOrganization} />
+      ) : null}
+      {account && account.role === 'VERIFIER' ? (
+        <Route path={'/verifier'} component={LayoutVerifier} />
+      ) : null}
+      {
+        /* todo: create LayoutDefault, refactor, and secure this */
+        <Route path={'/volunteer'} component={LayoutVolunteer} />
+      }
+
       <Route path={'/login'} component={LayoutLogin} />
-      <Route path={'/organization'} component={LayoutOrganization} />
-      <Route path={'/verifier'} component={LayoutVerifier} />
-      <Route path={'/volunteer'} component={LayoutVolunteer} />
-      <Route path={''} component={LayoutVolunteer} />
+
+      <Route
+        path={''}
+        component={
+          !account
+            ? LayoutVolunteer /* todo: change to LayoutDefault */
+            : account.role === 'VOLUNTEER'
+            ? LayoutVolunteer
+            : account.role === 'ORGANIZATION'
+            ? LayoutOrganization
+            : account.role === 'VERIFIER'
+            ? LayoutVerifier
+            : account.role === 'ADMIN'
+            ? LayoutAdmin
+            : NotFound
+        }
+      />
 
       <Route component={NotFound} />
     </Switch>

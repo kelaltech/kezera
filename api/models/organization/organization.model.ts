@@ -1,9 +1,9 @@
 import { ModelFactory } from 'meseret'
 import { Schema } from 'mongoose'
 
-import { organizationPaths } from './organization.path'
+import { organizationPaths } from './organization.paths'
 
-type ObjectId = Schema.Types.ObjectId | string | number
+type ObjectId = Schema.Types.ObjectId | string
 
 export type IOrganizationType = 'NGO' | 'HOSPITAL' | 'GOVERNMENTAL' | 'PRIVATE'
 export const organizationTypes: IOrganizationType[] = [
@@ -14,9 +14,7 @@ export const organizationTypes: IOrganizationType[] = [
 ]
 
 export interface IOrganization {
-  __v: number
-  _id: ObjectId
-  _at: Date | number
+  _at?: Date | number
   _last: Date | number
 
   account: ObjectId // account
@@ -32,14 +30,15 @@ export interface IOrganization {
   }[]
   website?: string
 
-  subscribers: ObjectId[] // account
+  subscribers?: ObjectId[] // account
 
-  licensedNames: string[]
-  registrations: {
+  licensedNames?: string[]
+  registrations?: {
     issuer: string
     type: string
     id: string
   }[]
+  verifier: ObjectId // account
 }
 
 export const organizationModelFactory = new ModelFactory<IOrganization>({
@@ -50,3 +49,27 @@ export const organizationModelFactory = new ModelFactory<IOrganization>({
 export const organizationSchema = organizationModelFactory.schema
 
 export const OrganizationModel = organizationModelFactory.model
+
+OrganizationModel.collection.ensureIndex(
+  {
+    'account.email': 'text',
+    'account.displayName': 'text',
+    'account.phoneNumber': 'text',
+    type: 'text',
+    motto: 'text',
+    bio: 'text',
+    'locations.address': 'text',
+    website: 'text',
+    licensedNames: 'text',
+    'registrations.id': 'text'
+  },
+  {
+    name: 'organization_search',
+    weights: {
+      // default is 1
+      'account.displayName': 10,
+      type: 8,
+      licensedNames: 5
+    }
+  }
+)

@@ -155,7 +155,7 @@ function AccountLogin({ history }: RouteComponentProps<{}>) {
                     <Flex>
                       <Anchor
                         className={'account-login-links margin-right-normal'}
-                        to={`/volunteer/register?${qs.stringify({ email })}`}
+                        to={`/login/register?${qs.stringify({ email })}`}
                         tabIndex={4}
                       >
                         {t`account:create-new-account`}

@@ -1,7 +1,7 @@
 import { IOrganizationRequest, IOrganizationResponse } from '../organization.apiv'
 import { accountResponseToRequest } from './account.filter'
 
-export async function organizationPrivateResponseToRequest(
+export async function organizationResponseToRequest(
   response: IOrganizationResponse
 ): Promise<IOrganizationRequest> {
   return {
@@ -16,5 +16,28 @@ export async function organizationPrivateResponseToRequest(
 
     licensedNames: response.licensedNames,
     registrations: response.registrations
+  }
+}
+
+export function organizationRequestToResponse(
+  oldResponse: IOrganizationResponse,
+  request: IOrganizationRequest
+): IOrganizationResponse {
+  const { type, motto, bio, locations, website } = request
+
+  return {
+    ...oldResponse,
+
+    // account: override n/a
+
+    type,
+
+    motto,
+    bio,
+    locations,
+    website
+
+    // licensedNames: override n/a
+    // registrations: override n/a
   }
 }

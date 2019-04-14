@@ -1,4 +1,4 @@
-  @import '../fonts/fonts';
+@import '../fonts/fonts';
 
 @import 'theme';
 @import '~gerami/src/styles/index';
@@ -16,13 +16,20 @@ body {
   );
 }
 
-a {
+// todo: make these overrides the default in gerami v0.1.3
+.gerami-anchor,
+.gerami-anchor:visited {
+  outline: 0 !important;
   text-decoration: none !important;
 
-  &:active,
-  &:focus,
+  &:active {
+    color: $accent;
+  }
+  &:focus {
+    color: $accent;
+  }
   &:hover {
-    text-decoration: underline !important;
+    box-shadow: inset 0 -1.07em 0 -1em currentColor;
   }
 }
 
@@ -42,14 +49,14 @@ a {
     color: rgb(255, 75, 135);
   }
 }
-.gerami-input {
-  &:active {
-    background-color: transparent;
-  }
-  &:focus {
-    background-color: transparent;
-  }
+
+.gerami-input,
+.gerami-textarea {
+  &:active,
+  &:focus,
   &:hover {
+    margin-bottom: -$border;
+    border-bottom-width: $border * 2;
     background-color: transparent;
   }
 }

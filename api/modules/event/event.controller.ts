@@ -1,6 +1,6 @@
 import { EventModel } from '../../models/event/event.model'
 import { add, edit, get, list, remove, search } from '../../lib/crud'
-import { Schema } from 'mongoose'
+import { Document, Schema } from 'mongoose'
 import { Grid } from '../../lib/grid'
 import { Stream } from 'stream'
 import { serverApp } from '../../index'
@@ -127,7 +127,7 @@ export async function getEventPicture(id: Schema.Types.ObjectId): Promise<Stream
 
 export async function toggleLike(
   _newsId: Schema.Types.ObjectId,
-  account: IAccount
+  account: Document & IAccount
 ): Promise<{
   likes: number
 }> {
@@ -155,7 +155,7 @@ export async function toggleLike(
 
 export async function toggleAttend(
   _id: Schema.Types.ObjectId,
-  account: IAccount
+  account: Document & IAccount
 ): Promise<{
   interestedVolunteers: number
 }> {
@@ -184,7 +184,7 @@ export async function toggleAttend(
 
 export async function going(
   _id: Schema.Types.ObjectId,
-  account: IAccount
+  account: Document & IAccount
 ): Promise<{
   goingVolunteers: number
 }> {

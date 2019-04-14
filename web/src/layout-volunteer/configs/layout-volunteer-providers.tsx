@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react'
-
-import { OrganizationsProvider } from '../../shared/stores/organizations/organizations-provider'
+import { VolunteerProvider } from '../stores/volunteer/volunteer-provider'
 
 export default function LayoutVolunteerProviders({ children }: PropsWithChildren<{}>) {
-  return <OrganizationsProvider>{children}</OrganizationsProvider>
+  return <VolunteerProvider>{children}</VolunteerProvider>
 }

@@ -82,6 +82,22 @@ export class Grid {
     return this._gfs.createReadStream({ filename: this._getPath(filename) })
   }
 
+  async getType(filename = 'default'): Promise<string> {
+    await this._checkDocument()
+
+    return new Promise<string>((resolve, reject) => {
+      this._gfs
+        .collection()
+        .findOne({ filename: this._getPath(filename) }, (err, record) => {
+          try {
+            err ? reject(err) : resolve(record.contentType)
+          } catch (e) {
+            reject(e)
+          }
+        })
+    })
+  }
+
   async has(filename = 'default'): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       this._gfs.exist({ filename: this._getPath(filename) }, (err, found) =>

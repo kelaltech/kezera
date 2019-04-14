@@ -60,6 +60,11 @@ export async function loadNamespaces(
       }
     })
   )
+
+  if (lng !== defaultLanguage) {
+    // fallback resource
+    loadNamespaces(namespaces, defaultLanguage, i18n).catch()
+  }
 }
 
 export async function setLanguage(

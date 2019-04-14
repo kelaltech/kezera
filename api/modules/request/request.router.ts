@@ -6,7 +6,8 @@ import {
   getRequest,
   goingVolunteers,
   addRequestWithPicture,
-  getPicture
+  getPicture,
+  editRequest
 } from './request.controller'
 
 import * as fs from 'fs'
@@ -47,4 +48,14 @@ requestRouter.post('/add', async ctx => {
 
 requestRouter.get('/:_id/attended', async ctx => {
   ctx.body = await goingVolunteers(ctx.params._id)
+})
+
+// /api/request/:_id"
+requestRouter.put('/:_id', async ctx => {
+  ctx.body = await editRequest(
+    ctx.request.body,
+    ctx.request.type,
+    ctx.state.user._id,
+    fs.createReadStream(ctx.request.files!.image.path)
+  )
 })

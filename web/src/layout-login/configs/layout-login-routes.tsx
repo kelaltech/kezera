@@ -12,6 +12,12 @@ const AccountResetStart = lazy(() =>
 const AccountResetFinish = lazy(() =>
   import('../pages/account-reset-finish/account-reset-finish')
 )
+const OrganizationApply = lazy(() =>
+  import('../pages/organization-apply/organization-apply')
+)
+const VolunteerRegister = lazy(() =>
+  import('../pages/volunteer-register/volunteer-register')
+)
 
 export default function LayoutLoginRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
@@ -41,6 +47,9 @@ export default function LayoutLoginRoutes({ prefix: p }: { prefix: string }) {
         <Route exact path={`${p}/reset/start`} component={AccountResetStart} />
       )}
       <Route exact path={`${p}/reset/finish`} component={AccountResetFinish} />
+
+      <Route exact path={`${p}/apply`} component={OrganizationApply} />
+      <Route exact path={`${p}/register`} component={VolunteerRegister} />
 
       <Route component={NotFound} />
     </Switch>

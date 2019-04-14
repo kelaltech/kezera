@@ -6,7 +6,7 @@ import {
   IAccountRole,
   IAccountStatus
 } from '../../models/account/account.model'
-import { IAccountRequest, IAccountResponse } from './account.apiv'
+import { IAccountPublicResponse, IAccountRequest, IAccountResponse } from './account.apiv'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
 
@@ -53,8 +53,8 @@ export async function accountDocumentToResponse(
   const response: IAccountResponse = {
     _id: document._id,
 
-    role: document.role,
     status: document.status,
+    role: document.role,
 
     email: document.email,
     passwordSetOn: new Date(document.passwordSetOn).getTime(),
@@ -78,5 +78,17 @@ export async function accountDocumentToResponse(
       // i.e. all account photos are public
     }
   }
+  return response
+}
+
+export async function accountDocumentToPublicResponse(
+  document: Document & IAccount,
+  photoUri?: string | null
+): Promise<IAccountPublicResponse> {
+  const response = await accountDocumentToResponse(document, photoUri)
+
+  // !!! blacklist
+  delete response.passwordSetOn
+
   return response
 }

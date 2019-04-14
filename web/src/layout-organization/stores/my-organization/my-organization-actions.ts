@@ -2,13 +2,16 @@ import Axios, { CancelTokenSource } from 'axios'
 
 import { Action } from './my-organization-reducer'
 import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
-import { organizationPrivateResponseToRequest } from '../../../apiv/filters/organization.filter'
+import { organizationResponseToRequest } from '../../../apiv/filters/organization.filter'
 
+let reloadMyOrganizationCancellation: CancelTokenSource | null = null
 export function reloadMyOrganization(
   myOrganizationDispatch: (action: Action) => void,
   silentFail = false,
   myOrganization?: IOrganizationResponse
 ): void {
+  if (reloadMyOrganizationCancellation !== null) reloadMyOrganizationCancellation.cancel()
+
   const reload = (myOrganization?: IOrganizationResponse): void => {
     if (!myOrganization) throw Error('My Organization not found.')
     if (!myOrganization._id) throw Error('Received My Organization data is malformed.')
@@ -20,7 +23,11 @@ export function reloadMyOrganization(
   if (myOrganization) {
     reload(myOrganization)
   } else {
-    Axios.get('/api/organization/me', { withCredentials: true })
+    reloadMyOrganizationCancellation = Axios.CancelToken.source()
+    Axios.get<IOrganizationResponse>('/api/organization/me', {
+      withCredentials: true,
+      cancelToken: reloadMyOrganizationCancellation.token
+    })
       .then(response => response.data)
       .then(reload)
       .catch(e => {
@@ -30,23 +37,23 @@ export function reloadMyOrganization(
   }
 }
 
-let updateTimeout: NodeJS.Timeout | null = null
-let updateCancellation: CancelTokenSource | null = null
+let updateMyOrganizationTimeout: NodeJS.Timeout | null = null
+let updateMyOrganizationCancellation: CancelTokenSource | null = null
 export function updateMyOrganization(
   myOrganizationDispatch: (action: Action) => void,
   myOrganization: IOrganizationResponse,
   timeout = 0
 ): void {
-  if (updateTimeout !== null) clearTimeout(updateTimeout)
-  if (updateCancellation !== null) updateCancellation.cancel()
+  if (updateMyOrganizationTimeout !== null) clearTimeout(updateMyOrganizationTimeout)
+  if (updateMyOrganizationCancellation !== null) updateMyOrganizationCancellation.cancel()
 
-  updateTimeout = setTimeout(async () => {
-    updateCancellation = Axios.CancelToken.source()
+  updateMyOrganizationTimeout = setTimeout(async () => {
+    updateMyOrganizationCancellation = Axios.CancelToken.source()
 
     Axios.put(
       '/api/organization/edit-me',
-      await organizationPrivateResponseToRequest(myOrganization),
-      { withCredentials: true, cancelToken: updateCancellation.token }
+      await organizationResponseToRequest(myOrganization),
+      { withCredentials: true, cancelToken: updateMyOrganizationCancellation.token }
     )
       .then(response => response.data)
       .then(data => reloadMyOrganization(myOrganizationDispatch, false, data))
@@ -57,13 +64,15 @@ export function updateMyOrganization(
         }
       })
 
-    updateTimeout = null
+    updateMyOrganizationTimeout = null
   }, timeout)
 
   myOrganizationDispatch({ type: 'set', myOrganization })
 }
 
-export function clear(myOrganizationDispatch: (action: Action) => void): void {
+export function clearMyOrganization(
+  myOrganizationDispatch: (action: Action) => void
+): void {
   window.localStorage.removeItem('my-organization')
   myOrganizationDispatch({ type: 'unset' })
 }

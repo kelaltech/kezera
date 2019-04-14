@@ -12,13 +12,13 @@ export interface INewsCardProps {
   description: string
   imgSrc: string
   _id: string
-  style?:CSSProperties
-  flex?:CSSProperties
+  style?: CSSProperties
+  flex?: CSSProperties
 }
 
-function  NewsCard(props: INewsCardProps) {
+function NewsCard(props: INewsCardProps) {
   const [likeClicked, setLikeClicked] = useState(0)
-  let { description, commentCount, likeCount, title, imgSrc, _id, style,flex } = props
+  let { description, commentCount, likeCount, title, imgSrc, _id } = props
 
   function handleClick() {
     axios
@@ -31,8 +31,8 @@ function  NewsCard(props: INewsCardProps) {
       })
   }
   return (
-    <div className={'news-card-container'} style={style}>
-      <Content className={'news-card-box'} style={flex}>
+    <div className={'news-card-container'}>
+      <Content className={'news-card-box'}>
         <div
           className={'news-card-image'}
           style={{
@@ -42,7 +42,9 @@ function  NewsCard(props: INewsCardProps) {
         <div className={'news-card-content'}>
           {/*Content*/}
           <div className={'news-card-content-title'}>{title}</div>
-          <div className={'news-card-content-desc'}>{description}</div>
+          <div className={'news-card-content-desc'}>
+            {description.toString().slice(0, 200)}
+          </div>
           <div className={'news-card-content-stat'}>
             <span>
               <FontAwesomeIcon icon={['fas', 'heart']} />

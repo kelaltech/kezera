@@ -1,9 +1,9 @@
 import React from 'react'
 import { Anchor, Block, Flex, FlexSpacer } from 'gerami'
 
+import './footer.scss'
 import useLocale from '../../../hooks/use-locale/use-locale'
 import { setLanguage } from '../../../../lib/language'
-import './footer.scss'
 
 export default function Footer() {
   const { loading, t } = useLocale([], { loading: null })
@@ -13,9 +13,13 @@ export default function Footer() {
       <Block first last className="footer font-S fg-blackish">
         <Flex>
           <div className="footer-left">
-            <Anchor onClick={() => setLanguage('am')}>አማርኛ</Anchor>
+            <Anchor to={'#'} onClick={() => setLanguage('am')}>
+              አማርኛ
+            </Anchor>
             <br />
-            <Anchor onClick={() => setLanguage('en')}>English</Anchor>
+            <Anchor to={'#'} onClick={() => setLanguage('en')}>
+              English
+            </Anchor>
           </div>
 
           <FlexSpacer />
@@ -37,10 +41,10 @@ export default function Footer() {
 
           <div className="footer-right">
             {/* todo: licenses */}
-            <Anchor onClick={() => alert('TODO')}>{t`Licenses`}</Anchor>
+            <Anchor to={'#'} onClick={() => alert('TODO')}>{t`Licenses`}</Anchor>
             <br />
             {/* todo: terms */}
-            <Anchor onClick={() => alert('TODO')}>{t`Terms`}</Anchor>
+            <Anchor to={'#'} onClick={() => alert('TODO')}>{t`Terms`}</Anchor>
           </div>
         </Flex>
       </Block>
