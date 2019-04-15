@@ -46,7 +46,7 @@ requestRouter.post('/add', async ctx => {
   )
 })
 
-requestRouter.get('/:_id/attended', async ctx => {
+requestRouter.get('/:_id/supporting', async ctx => {
   ctx.body = await goingVolunteers(ctx.params._id)
 })
 

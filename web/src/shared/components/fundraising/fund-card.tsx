@@ -53,7 +53,11 @@ export default function FundCard({ request }: IFundProps) {
         </Flex>
         <h5 className={'center'}>{request.type}</h5>
         <Title className={'center'} size={'S'}>
-          {request.fundraising.amount} {request.fundraising.currency}
+          {request.fundraising.amount}{' '}
+          {request.fundraising.currency === 'ETB' ? 'ETB' : null}
+          {request.fundraising.currency === 'EURO' ? '€' : null}
+          {request.fundraising.currency === 'POUND' ? '£' : null}
+          {request.fundraising.currency === 'DOLLAR' ? '$' : null}
         </Title>
         <hr />
         <Flex>

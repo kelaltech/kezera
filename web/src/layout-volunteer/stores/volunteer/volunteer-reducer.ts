@@ -1,5 +1,4 @@
 import { IVolunteerResponse } from '../../../../../api/modules/volunteer/volunteer.apiv'
-import { reloadVolunteer } from './volunteer-actions'
 
 export type VolunteerState = {
   readonly volunteer?: IVolunteerResponse | null

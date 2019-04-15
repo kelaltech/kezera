@@ -8,6 +8,8 @@ import { serverApp } from '../../index'
 import { AddTask, getTask } from '../task/task.controller'
 import { AddFund, editFund, getFund } from '../fundraising/fundraising.controller'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
+import { organizationDocumentToResponse } from '../organization/organization.filter'
+import { OrganizationModel } from '../../models/organization/organization.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -16,7 +18,9 @@ export async function removeRequest(id: Schema.Types.ObjectId): Promise<void> {
 }
 
 export async function getRequest(_id: ObjectId): Promise<any> {
-  const request = (await get(RequestModel, _id)) as any
+  const request = (await get(RequestModel, _id, {
+    postQuery: (async (doc: any) => doc.populate('_by')) as any
+  })) as any
   const ret = request.toJSON()
   ret.picture = '/api/request/picture/' + request._id
 
@@ -28,6 +32,8 @@ export async function getRequest(_id: ObjectId): Promise<any> {
       ret.fundraising = await getFund(request._id)
       break
   }
+
+  request._by = await organizationDocumentToResponse(request._by)
 
   return ret
 }
@@ -82,7 +88,11 @@ export async function addRequestWithPicture(
   account: IAccount,
   pic: Stream
 ): Promise<ObjectId> {
-  data._by = await account._id
+  const organization = await get(OrganizationModel, null, {
+    conditions: { account: account!._id }
+  })
+
+  data._by = await organization._id
   const request = await add(RequestModel, data)
 
   switch (data.type) {

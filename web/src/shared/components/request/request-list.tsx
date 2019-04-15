@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Button, Content, Flex, FlexSpacer, Page, Title, Yoga } from 'gerami'
+import {
+  Block,
+  Button,
+  Content,
+  Flex,
+  FlexSpacer,
+  Input,
+  Page,
+  Title,
+  Yoga
+} from 'gerami'
 import axios from 'axios'
 
 import './request-card.scss'
@@ -8,10 +18,14 @@ import promo from '../../../assets/images/login/promo-1.jpg'
 import FundCard from '../fundraising/fund-card'
 import TaskCard from '../task/task-card'
 import RichPage from '../rich-page/rich-page'
+import Search from '../search/search'
+import { useAccountState } from '../../../app/stores/account/account-provider'
+import RequestSearch from '../../pages/request-search/request-search'
 
 export default function RequestList() {
   const [requests, setRequests] = useState<any[]>([])
 
+  const { account } = useAccountState()
   useEffect(() => {
     axios
       .get('/api/request/list')
@@ -25,13 +39,29 @@ export default function RequestList() {
       })
   }, [])
 
+  const handleSearch = () => {
+    ;<>
+      <RequestSearch />
+    </>
+  }
+
   return (
     <Page>
       <Block>
         <Flex>
           <Title size={'XL'}>Requests</Title>
           <FlexSpacer />
-          <Button to={`/organization/request/add`}>Make a Request</Button>
+          {(account &&
+            (account.role === 'VOLUNTEER' && (
+              <Button to={`/organization/request/add`}>Make a Request</Button>
+            ))) ||
+            (account && account.role === 'ORGANIZATION' && (
+              <Input
+                onChange={handleSearch}
+                placeholder={'Search Requests'}
+                className={'white'}
+              />
+            ))}
         </Flex>
       </Block>
 

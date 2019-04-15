@@ -48,8 +48,8 @@ export default function TaskCard({ request }: ITaskProps) {
           <FlexSpacer />
           <label>{new Date(request.endDate).toDateString()}</label>
         </Flex>
-        <h5>{request.type}</h5>
-        <label>{request.task.numberNeeded}</label>
+        <h5 className={'center'}>{request.type}</h5>
+        <Title className={'center'}>{request.task.numberNeeded}</Title>
         <hr />
         <Flex>
           <Anchor
