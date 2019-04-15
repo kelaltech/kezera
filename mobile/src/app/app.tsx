@@ -1,4 +1,4 @@
-import './configs/setup-language'
+import './configs/setup-i18n'
 
 import * as React from 'react'
 import { createAppContainer } from 'react-navigation'

@@ -1,6 +1,9 @@
+import Axios, { CancelTokenSource } from 'axios'
+
 import { Action } from './volunteer-reducer'
 import { IVolunteerResponse } from '../../../../../api/modules/volunteer/volunteer.apiv'
-import axios, { CancelTokenSource } from 'axios'
+import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
+
 export function reloadVolunteer(
   volunteerDispatch: (action: Action) => void,
   silentFail = false,
@@ -17,8 +20,7 @@ export function reloadVolunteer(
   if (volunteer) {
     reload(volunteer)
   } else {
-    axios
-      .get('/api/volunteer/me', { withCredentials: true })
+    Axios.get('/api/volunteer/me', { withCredentials: true })
       .then(res => res.data)
       .then(reload)
       .catch(e => {
@@ -39,14 +41,13 @@ export function updateSetting(
   if (updateCancellation !== null) updateCancellation.cancel()
 
   updateTimeout = setTimeout(async () => {
-    updateCancellation = axios.CancelToken.source()
+    updateCancellation = Axios.CancelToken.source()
 
-    axios
-      .put('/api/volunteer/edit', volunteer)
+    Axios.put('/api/volunteer/edit', volunteer)
       .then(res => res.data)
       .then(data => reloadVolunteer(volunteerDispatch, false, data))
       .catch(err => {
-        if (!axios.isCancel(err)) {
+        if (!Axios.isCancel(err)) {
           reloadVolunteer(volunteerDispatch)
         }
       })
@@ -54,4 +55,43 @@ export function updateSetting(
     updateTimeout = null
   }, timeout)
   volunteerDispatch({ type: 'setting', volunteer })
+}
+
+let reloadSubscriptionsCancellation: CancelTokenSource | null = null
+export function reloadSubscriptions(
+  volunteerDispatch: (action: Action) => void,
+  silentFail = false,
+  subscriptions?: IOrganizationResponse[]
+): void {
+  if (reloadSubscriptionsCancellation !== null) reloadSubscriptionsCancellation.cancel()
+
+  const reload = (subscriptions?: IOrganizationResponse[]): void => {
+    if (!subscriptions) throw Error('Subscriptions not found.')
+    if (!Array.isArray(subscriptions))
+      throw Error('Received subscriptions data is malformed.')
+
+    window.localStorage.setItem('subscriptions', JSON.stringify(subscriptions))
+    volunteerDispatch({ type: 'subscriptions', subscriptions })
+  }
+
+  if (subscriptions) {
+    reload(subscriptions)
+  } else {
+    reloadSubscriptionsCancellation = Axios.CancelToken.source()
+    Axios.get<IOrganizationResponse[]>('/api/organization/subscriptions', {
+      withCredentials: true,
+      cancelToken: reloadSubscriptionsCancellation.token
+    })
+      .then(res => res.data)
+      .then(reload)
+      .catch(e => {
+        if (!silentFail) throw e
+        volunteerDispatch({ type: 'subscriptions', subscriptions: [] })
+      })
+  }
+}
+
+export function clearSubscriptions(volunteerDispatch: (action: Action) => void): void {
+  window.localStorage.removeItem('my-organization')
+  volunteerDispatch({ type: 'subscriptions', subscriptions: [] })
 }

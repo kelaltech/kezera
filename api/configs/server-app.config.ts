@@ -4,7 +4,6 @@ import * as path from 'path'
 
 import { AccountModel } from '../models/account/account.model'
 import { CertificateModel } from '../models/certificate/certificate.model'
-import { CertificateDesignModel } from '../models/certificate-design/certificate-design.model'
 import { KeyModel } from '../models/key/key.model'
 import { OrganizationModel } from '../models/organization/organization.model'
 import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
@@ -19,6 +18,8 @@ import { eventRouter } from '../modules/event/event.router'
 import { organizationRouter } from '../modules/organization/organization.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
 import { volunteerRouter } from '../modules/volunteer/volunteer.router'
+import { organRouter } from '../modules/organ/organ.router'
+
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
 
@@ -33,7 +34,6 @@ export const serverAppConfig: IServerAppConfig = {
   models: [
     AccountModel,
     CertificateModel,
-    CertificateDesignModel,
     KeyModel,
     OrganizationModel,
     OrganizationApplicationModel,
@@ -49,7 +49,8 @@ export const serverAppConfig: IServerAppConfig = {
     organizationRouter,
     requestRouter,
     verifierRouter,
-    volunteerRouter
+    volunteerRouter,
+    organRouter
   ],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],

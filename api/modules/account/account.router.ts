@@ -2,6 +2,7 @@ import * as Router from 'koa-router'
 
 import { handle } from '../../lib/middlewares/handle'
 import { authenticate } from '../../lib/middlewares/authenticate'
+import { authorize } from '../../lib/middlewares/authorize'
 import { AccountController } from './account.controller'
 import { login } from '../../lib/middlewares/login'
 import { logout } from '../../lib/middlewares/logout'
@@ -15,6 +16,13 @@ accountRouter.get(
   '/me',
   authenticate({ allowedAccountStatuses: ['ACTIVE', 'DISABLED'] }),
   handle(AccountController, (c, s) => c.me(s))
+)
+
+// GET /api/account/search?term=&since={Date.now()}&count={10} *
+accountRouter.get(
+  '/search',
+  authorize(['ADMIN']),
+  handle(AccountController, (c, s) => c.search(s))
 )
 
 // PUT /api/account/edit-me *

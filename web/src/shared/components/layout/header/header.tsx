@@ -104,7 +104,7 @@ export default function Header({
               <div className="header-nav-min-view">
                 <Button
                   className="header-nav-btn middle"
-                  onClick={() => setIsNavOpen(true)}
+                  onClick={() => setIsNavOpen(!isNavOpen)}
                 >
                   <FontAwesomeIcon icon="bars" />
                 </Button>

@@ -8,7 +8,7 @@ const myOrganizationStringFromStorage = window.localStorage.getItem('my-organiza
 export const initialState: State = {
   myOrganization: myOrganizationStringFromStorage
     ? JSON.parse(myOrganizationStringFromStorage)
-    : null
+    : undefined
 }
 
 export type Action =

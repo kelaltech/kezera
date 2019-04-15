@@ -1,6 +1,5 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Loading } from 'gerami'
 import * as qs from 'qs'
 
 import useLocale from '../shared/hooks/use-locale/use-locale'
@@ -30,9 +29,7 @@ function LayoutAdmin({ error, match }: Props) {
         error={error}
         nonContentHeight={164}
       >
-        <Suspense fallback={<Loading delay />}>
-          <LayoutAdminRoutes prefix={match.url.replace(/\/$/, '')} />
-        </Suspense>
+        <LayoutAdminRoutes prefix={match.url.replace(/\/$/, '')} />
       </Layout>
     </LayoutAdminProviders>
   )

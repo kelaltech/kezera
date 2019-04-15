@@ -109,8 +109,8 @@ function OrganizationDetailInfo({ organization }: Props) {
                 </div>
                 {organization.locations && organization.locations.length ? (
                   <div style={{ flex: 5 }}>
-                    {(organization.locations || []).map(location => (
-                      <div>
+                    {(organization.locations || []).map((location, i) => (
+                      <div key={i}>
                         {location.address}
                       </div> /* todo: (latitude, longitude) => google maps in new tab */
                     ))}

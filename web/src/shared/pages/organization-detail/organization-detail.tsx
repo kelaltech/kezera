@@ -8,13 +8,18 @@ import Axios from 'axios'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../apiv/organization.apiv'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
+import {
+  useVolunteerDispatch,
+  useVolunteerState
+} from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import OrganizationDetailInfo from './components/organization-detail-info/organization-detail-info'
-import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-Requests'
+import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-requests'
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
 import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
-import { useAccountState } from '../../../app/stores/account/account-provider'
+import { reloadSubscriptions } from '../../../layout-volunteer/stores/volunteer/volunteer-actions'
 
 type ITabName = 'info' | 'requests' | 'events' | 'news'
 
@@ -26,9 +31,25 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
 
   const { account } = useAccountState()
   const { myOrganization } = useMyOrganizationState()
+  const { subscriptions } = useVolunteerState()
+  const volunteerDispatch = useVolunteerDispatch()
 
   const [waitingForMe, setWaitingForMe] = useState(false)
   const [requestedId, setRequestedId] = useState<string>()
+
+  const loadBy_id = async (_id: string): Promise<void> => {
+    try {
+      const response = await Axios.get<IOrganizationResponse>(
+        `/api/organization/get/${match.params._id}`
+      )
+      if (!response.data || !response.data._id)
+        return setError(`Organization response is malformed.`)
+
+      setOrganization(response.data)
+    } catch (e) {
+      setError(e)
+    }
+  }
 
   useEffect(() => {
     if (requestedId === match.params._id) {
@@ -51,13 +72,7 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
 
       setOrganization(undefined)
 
-      Axios.get<IOrganizationResponse>(`/api/organization/${match.params._id}`)
-        .then(response => {
-          if (!response.data || !response.data._id)
-            return setError(`Organization response is malformed.`)
-          setOrganization(response.data)
-        })
-        .catch(setError)
+      loadBy_id(match.params._id).catch(setError)
     }
   }, [match.params._id, myOrganization])
 
@@ -77,6 +92,24 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
         return setTab('news')
     }
   }, [query.tab])
+
+  const handleSubscribe = (): void => {
+    Axios.put(`/api/organization/subscribe/${organization!._id}`, undefined, {
+      withCredentials: true
+    })
+      .then(() => reloadSubscriptions(volunteerDispatch))
+      .then(() => loadBy_id(organization!._id))
+      .catch(setError)
+  }
+
+  const handleUnsubscribe = (): void => {
+    Axios.put(`/api/organization/unsubscribe/${organization!._id}`, undefined, {
+      withCredentials: true
+    })
+      .then(() => reloadSubscriptions(volunteerDispatch))
+      .then(() => loadBy_id(organization!._id))
+      .catch(setError)
+  }
 
   return (
     <RichPage
@@ -122,6 +155,7 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
       }
       actions={
         (account &&
+          organization &&
           ((account.role === 'ORGANIZATION' && [
             {
               to: '/account',
@@ -137,10 +171,40 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
               )
             }
           ]) ||
-            (account.role === 'VOLUNTEER' && [
-              // todo: continue here...
-              { onClick: () => alert('hi'), value: 'TODO' }
-            ]))) ||
+            (account.role === 'VOLUNTEER' &&
+              (subscriptions
+                .map(subscription => subscription._id)
+                .includes(organization._id)
+                ? [
+                    {
+                      onClick: handleUnsubscribe,
+                      primary: false,
+                      children: (
+                        <>
+                          <FontAwesomeIcon
+                            icon={'bell-slash'}
+                            className={'margin-right-normal font-S'}
+                          />
+                          Unsubscribe
+                        </>
+                      )
+                    }
+                  ]
+                : [
+                    {
+                      onClick: handleSubscribe,
+                      primary: true,
+                      children: (
+                        <>
+                          <FontAwesomeIcon
+                            icon={'bell'}
+                            className={'margin-right-normal font-S'}
+                          />
+                          Subscribe
+                        </>
+                      )
+                    }
+                  ])))) ||
         []
       }
     >

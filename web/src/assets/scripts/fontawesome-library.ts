@@ -30,7 +30,9 @@ import {
   faNewspaper,
   faDonate,
   faUserCircle,
-  faHandsHelping
+  faHandsHelping,
+  faBell,
+  faBellSlash
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import {
@@ -75,7 +77,9 @@ export default function fontawesomeLibrary() {
     faNewspaper,
     faDonate,
     faUserCircle,
-    faHandsHelping
+    faHandsHelping,
+    faBell,
+    faBellSlash
   )
 
   // brands

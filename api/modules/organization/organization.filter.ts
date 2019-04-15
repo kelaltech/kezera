@@ -15,15 +15,25 @@ type ObjectId = Schema.Types.ObjectId | string
 
 export async function organizationRequestToLeanDocument(
   request: IOrganizationRequest,
+  verifier: ObjectId,
   _id?: ObjectId,
   _last: Date | number = Date.now()
-): Promise<any> {
+): Promise<
+  IOrganization & {
+    _id?: ObjectId
+    account: Document & IAccount
+  }
+> {
   return {
     _id,
     _last,
 
     // handle account manually
-    account: await accountRequestToDocument(request.account, 'ACTIVE', 'ORGANIZATION'),
+    account: (await accountRequestToDocument(
+      request.account,
+      'ACTIVE',
+      'ORGANIZATION'
+    )) as any,
 
     type: request.type,
 
@@ -33,17 +43,19 @@ export async function organizationRequestToLeanDocument(
     website: request.website,
 
     licensedNames: request.licensedNames,
-    registrations: request.registrations
+    registrations: request.registrations,
+    verifier
   }
 }
 
 export async function organizationRequestToDocument(
   request: IOrganizationRequest,
+  verifier: ObjectId,
   _id?: ObjectId,
   _last: Date | number = Date.now()
 ): Promise<Document & IOrganization> {
   return new OrganizationModel(
-    await organizationRequestToLeanDocument(request, _id, _last)
+    await organizationRequestToLeanDocument(request, verifier, _id, _last)
   )
 }
 
@@ -68,9 +80,9 @@ export async function organizationDocumentToResponse(
     locations: document.locations,
     website: document.website,
 
-    subscribersCount: document.subscribers.length,
+    subscribersCount: (document.subscribers || []).length,
 
-    licensedNames: document.licensedNames,
-    registrations: document.registrations
+    licensedNames: document.licensedNames || [],
+    registrations: document.registrations || []
   }
 }

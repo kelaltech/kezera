@@ -1,6 +1,6 @@
 import { RequestModel } from '../../models/request/request.model'
 import { add, get, list, remove, search } from '../../lib/crud'
-import { Schema } from 'mongoose'
+import { Document, Schema } from 'mongoose'
 import { IAccount } from '../../models/account/account.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
@@ -78,14 +78,14 @@ export async function goingVolunteers(requestId: Schema.Types.ObjectId): Promise
   return volunteers
 }
 
-export async function addRequest(data: any, account: IAccount): Promise<any> {
+export async function addRequest(data: any, account: Document & IAccount): Promise<any> {
   data._by = await account._id
   return await add(RequestModel, data)
 }
 
 export async function addRequestWithPicture(
   data: any,
-  account: IAccount,
+  account: Document & IAccount,
   pic: Stream
 ): Promise<ObjectId> {
   const organization = await get(OrganizationModel, null, {
@@ -114,7 +114,7 @@ export async function addRequestWithPicture(
 export async function editRequest(
   _id: Schema.Types.ObjectId,
   data: any,
-  account: IAccount,
+  account: Document & IAccount,
   pic: Stream
 ): Promise<any> {
   data._by = await account._id

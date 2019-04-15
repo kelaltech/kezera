@@ -38,5 +38,6 @@ export const organizationPaths: SchemaDefinition = {
       type: { type: String, required: true, maxlength: 50 },
       id: { type: String, required: true, maxlength: 50 }
     }
-  ]
+  ],
+  verifier: { type: ObjectId, required: true, ref: 'account' }
 }
