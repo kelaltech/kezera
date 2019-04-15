@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import RichPage from '../../components/rich-page/rich-page'
 import { Switch } from '@material-ui/core'
 import { useAccountState } from '../../../app/stores/account/account-provider'
+import OrganizationCard from '../../components/organization-card/organization-card'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const [request, setRequest] = useState<any>()
@@ -36,14 +37,13 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
     <RichPage
       ready={true}
       documentTitle={request.name}
-      title={<Title size={'XL'}>{request.name}</Title>}
+      title={request.name}
       description={request.description}
       covers={[request.picture]}
       actions={
         (account &&
           ((account.role === 'ORGANIZATION' && [
             {
-              children: <></>
             }
           ]) ||
             (account.role === 'VOLUNTEER' && [
@@ -64,28 +64,23 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
         []
       }
     >
-      <Block>
+      <Block first className={'padding-horizontal-none'}>
         <label className="flex padding-small">
           <FontAwesomeIcon
-            className={'margin-top-large margin-right-big'}
+            className={'middle margin-top-large margin-right-big'}
             icon={'calendar'}
           />
-          <Content transparent>
-            {' '}
-            <Title size={'L'}>
-              {' '}
+          <div className={'middle'}>
               {new Date(request.startDate).toDateString()} -{' '}
               {new Date(request.endDate).toDateString()}
-            </Title>{' '}
-          </Content>
+          </div>
         </label>
       </Block>
-      <Content>
-        <div style={{ backgroundImage: `${request.picture}` }} />
-      </Content>
 
-      <Block>
-        <h4>Requested by</h4>
+      <hr />
+      <Block last className={'padding-horizontal-none'}>
+        <div className={'fg-blackish padding-bottom-normal'}>Requested by: </div>
+        <OrganizationCard organization={request._by} />
       </Block>
     </RichPage>
   )

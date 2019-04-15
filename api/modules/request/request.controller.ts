@@ -33,7 +33,7 @@ export async function getRequest(_id: ObjectId): Promise<any> {
       break
   }
 
-  request._by = await organizationDocumentToResponse(request._by)
+  ret._by = await organizationDocumentToResponse(request._by)
 
   return ret
 }
