@@ -1,0 +1,36 @@
+@import '../../../../assets/styles/theme';
+.AdminEventLike {
+}
+
+.Attend {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: #ffbb28;
+}
+.Interest {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: #00c49f;
+}
+.Going {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: #0088fe;
+}
+
+.TotalEvents {
+  border-left: 1px solid $primary;
+  float: right;
+}
+.primary {
+  color: $primary;
+}
+.Events-Title {
+  font-size: 12px;
+  font-weight: lighter;
+  font-style: italic;
+  padding: 5%;
+}

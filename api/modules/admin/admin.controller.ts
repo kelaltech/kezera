@@ -197,12 +197,12 @@ export async function GetOrganizationLocation(term: string): Promise<Number> {
   return percent
 }
 export async function GetJoinedDates(): Promise<Number[]> {
-  let vol = await list(AccountModel, {
+  let vol: IAccount[] = await list(AccountModel, {
     preQuery: model => model.find({ role: 'VOLUNTEER' })
   })
   let months = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   for (let i = 0; i < vol.length; i++) {
-    months[new Date(vol[i]._at).getMonth()]++
+    months[new Date(vol[i]._at!).getMonth()]++
   }
   return months
 }
