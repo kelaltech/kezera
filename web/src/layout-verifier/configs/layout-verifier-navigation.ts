@@ -13,6 +13,18 @@ function layoutVerifierNavigation(
   if (account) {
     items = items.concat([
       {
+        to: '/applications',
+        icon: 'question-circle',
+        name: `Organization Applications`,
+        shortName: `Applications`
+      },
+      {
+        to: '/organizations',
+        icon: 'file-archive',
+        name: `Approved Organizations`,
+        shortName: `Organizations`
+      },
+      {
         to: '/account',
         icon: ['far', 'user-circle'],
         name: account.displayName,

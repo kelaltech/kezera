@@ -6,7 +6,7 @@ import { authorize } from '../../lib/middlewares/authorize'
 
 export const organizationRouter = new Router({ prefix: '/api/organization' })
 
-/* GENERAL */
+/* GENERAL: */
 
 // POST /api/organization/apply
 organizationRouter.post('/apply', handle(OrganizationController, (c, s) => c.apply(s)))
@@ -34,7 +34,7 @@ organizationRouter.put(
   handle(OrganizationController, (c, s) => c.editMe(s))
 )
 
-/* SUBSCRIPTIONS */
+/* SUBSCRIPTIONS: */
 
 // GET /api/organization/subscriptions *
 organizationRouter.get(
@@ -57,7 +57,7 @@ organizationRouter.put(
   handle(OrganizationController, (c, s) => c.unsubscribe(s))
 )
 
-/* LINKS TO OTHER MODULES */
+/* LINKS TO OTHER MODULES: */
 
 // GET /api/organization/requests/:organization_id?since={Date.now()}&count={10}
 organizationRouter.get(

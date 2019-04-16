@@ -19,7 +19,7 @@ import { EventModel, IEvent } from '../../models/event/event.model'
 import { INews, NewsModel } from '../../models/news/news.model'
 
 export class OrganizationController extends KoaController {
-  /* GENERAL */
+  /* GENERAL: */
 
   async apply(
     session?: ClientSession,
@@ -151,7 +151,7 @@ export class OrganizationController extends KoaController {
     return await organizationDocumentToResponse(organization)
   }
 
-  /* SUBSCRIPTIONS */
+  /* SUBSCRIPTIONS: */
 
   async subscriptions(
     session?: ClientSession,
@@ -194,7 +194,7 @@ export class OrganizationController extends KoaController {
     await edit(OrganizationModel, _id, organization, { session })
   }
 
-  /* LINKS TO OTHER MODULES */
+  /* LINKS TO OTHER MODULES: */
 
   async requests(
     session?: ClientSession,

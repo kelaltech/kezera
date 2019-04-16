@@ -45,6 +45,9 @@ import {
   faDonate,
   faUserCircle,
   faHandsHelping,
+  faBell,
+  faBellSlash,
+  faFileArchive,
   faDoorOpen
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
@@ -106,6 +109,9 @@ export default function fontawesomeLibrary() {
     faDonate,
     faUserCircle,
     faHandsHelping,
+    faBell,
+    faBellSlash,
+    faFileArchive,
     faEye,
     faBuilding
   )

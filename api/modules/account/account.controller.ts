@@ -26,7 +26,7 @@ import { serverApp } from '../../index'
 import { Grid } from '../../lib/grid'
 
 export class AccountController extends KoaController {
-  /* GENERAL */
+  /* GENERAL: */
 
   async add(
     session?: ClientSession,
@@ -112,7 +112,7 @@ export class AccountController extends KoaController {
     return accountDocumentToResponse(document)
   }
 
-  /* PHOTO */
+  /* PHOTO: */
 
   async addPhoto(
     session?: ClientSession,
@@ -146,7 +146,7 @@ export class AccountController extends KoaController {
     return this.me(session, user)
   }
 
-  /* PASSWORD RESET */
+  /* PASSWORD RESET: */
 
   async startPasswordReset(
     session?: ClientSession,

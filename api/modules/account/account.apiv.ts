@@ -30,6 +30,7 @@ export type IAccountResponse = {
 }
 
 export type IAccountPublicResponse = {
+  _at: number
   _id: string
 
   role: IAccountRole
