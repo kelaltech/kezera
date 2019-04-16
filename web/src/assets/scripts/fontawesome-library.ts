@@ -47,7 +47,7 @@ import {
   faHandsHelping,
   faBell,
   faBellSlash,
-  faFileArchive
+  faFileArchive,
   faDoorOpen
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
@@ -111,7 +111,7 @@ export default function fontawesomeLibrary() {
     faHandsHelping,
     faBell,
     faBellSlash,
-    faFileArchive
+    faFileArchive,
     faEye,
     faBuilding
   )
