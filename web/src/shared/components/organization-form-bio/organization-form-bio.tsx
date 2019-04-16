@@ -23,7 +23,7 @@ function OrganizationFormBio({ organization, setOrganization }: Props) {
     {
       initialValue: organization.bio,
       validateOnChange: true,
-      maxLength: 10000,
+      maxLength: 5000,
       setValueHook: async value => {
         emitChanges({ bio: value })
       }
@@ -66,7 +66,7 @@ function OrganizationFormBio({ organization, setOrganization }: Props) {
             {validationError(bio.error)}
           </Flex>
           <div className={'right font-S light fg-blackish'}>
-            {10000 - bio.value.length} / 10000
+            {Number(bio.config.maxLength) - bio.value.length} / {bio.config.maxLength}
           </div>
         </Block>
       </Content>

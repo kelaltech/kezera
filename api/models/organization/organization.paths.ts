@@ -13,7 +13,7 @@ export const organizationPaths: SchemaDefinition = {
   type: { type: String, enum: organizationTypes, index: true },
 
   motto: { type: String, minlength: 1, maxlength: 50 },
-  bio: { type: String, required: true, minlength: 1, maxlength: 10000 },
+  bio: { type: String, required: true, minlength: 1, maxlength: 5000 },
   locations: [
     {
       latitude: {
