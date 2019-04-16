@@ -1,4 +1,5 @@
 import { ClientSession, Document } from 'mongoose'
+import { Stream } from 'stream'
 
 import { KoaController } from '../../lib/koa-controller'
 import { add, get, remove, search } from '../../lib/crud'
@@ -18,9 +19,27 @@ import { KoaError } from '../../lib/koa-error'
 export class VerifierController extends KoaController {
   /* GENERAL: */
 
-  async getOrganizationApplication(session?: ClientSession, _id = super.getParam('_id')) {
+  async getOrganizationApplication(
+    session?: ClientSession,
+    _id = super.getParam('_id')
+  ): Promise<IOrganizationResponse> {
     const application = await get(OrganizationApplicationModel, _id, { session })
-    return await organizationDocumentToResponse(application, application.account)
+    return await organizationDocumentToResponse(application, application.account, true)
+  }
+
+  async getOrganizationApplicationLogo(
+    session?: ClientSession,
+    _id = super.getParam('_id')
+  ): Promise<Stream> {
+    const application = await get(OrganizationApplicationModel, _id, { session })
+    const applicationGrid = new Grid(
+      serverApp,
+      OrganizationApplicationModel,
+      application._id,
+      'logo',
+      false
+    )
+    return await applicationGrid.get()
   }
 
   async searchOrganizationApplications(
@@ -36,7 +55,7 @@ export class VerifierController extends KoaController {
     })
     return await Promise.all(
       applications.map(application =>
-        organizationDocumentToResponse(application, application.account)
+        organizationDocumentToResponse(application, application.account, true)
       )
     )
   }

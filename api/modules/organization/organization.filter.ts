@@ -61,7 +61,8 @@ export async function organizationRequestToDocument(
 
 export async function organizationDocumentToResponse(
   document: Document & IOrganization,
-  account?: Document & IAccount
+  account?: Document & IAccount,
+  isApplication = false
 ): Promise<IOrganizationResponse> {
   const populatedAccount: Document & IAccount =
     account ||
@@ -75,7 +76,9 @@ export async function organizationDocumentToResponse(
 
     type: document.type,
 
-    logoUri: `/api/account/get-photo/${populatedAccount._id}`,
+    logoUri: !isApplication
+      ? `/api/account/get-photo/${populatedAccount._id}`
+      : `/api/verifier/get-organization-application-logo/${document._id}`,
     motto: document.motto,
     bio: document.bio,
     locations: document.locations,
