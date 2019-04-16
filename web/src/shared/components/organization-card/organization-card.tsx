@@ -19,7 +19,9 @@ interface Props {
 function OrganizationCard({ organization, isApplication = false }: Props) {
   const { loading, t } = useLocale(['organization'])
 
-  const detailUrl = `/application/${organization._id}`
+  const detailUrl = !isApplication
+    ? `/organization/${organization._id}`
+    : `/application/${organization._id}`
 
   return (
     loading || (

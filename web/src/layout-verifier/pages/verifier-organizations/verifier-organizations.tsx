@@ -13,13 +13,13 @@ import OrganizationCard from '../../../shared/components/organization-card/organ
 const count = 12
 let searchCancellation: CancelTokenSource | null = null
 
-function VerifierApplications() {
+function VerifierOrganizations() {
   const { loading, t } = useLocale([])
 
   const term = useField<HTMLInputElement>()
 
   const [error, setError] = useState()
-  const [applications, setApplications] = useState<IOrganizationResponse[]>([])
+  const [organizations, setOrganizations] = useState<IOrganizationResponse[]>([])
 
   const load = async (since?: number): Promise<void> => {
     try {
@@ -27,16 +27,12 @@ function VerifierApplications() {
 
       searchCancellation = Axios.CancelToken.source()
       const response = await Axios.get<IOrganizationResponse[]>(
-        `/api/verifier/search-organization-applications?${qs.stringify({
-          term: term.value,
-          count,
-          since
-        })}`,
+        `/api/organization/search?${qs.stringify({ term: term.value, count, since })}`,
         { withCredentials: true, cancelToken: searchCancellation.token }
       )
 
       setError(undefined)
-      setApplications(response.data)
+      setOrganizations(response.data)
     } catch (e) {
       if (!Axios.isCancel(error)) setError(error)
     }
@@ -55,9 +51,9 @@ function VerifierApplications() {
     loading || (
       <RichPage
         ready={true}
-        documentTitle={`Organization Applications`}
-        title={`Organization Applications`}
-        description={`Open to view these applications in detail, and then approve or reject them after a thorough investigation of each application to register as an organization on the system.`}
+        documentTitle={`Approved Organizations`}
+        title={`Approved Organizations`}
+        description={`These are the verifier-approved organization on the system.`}
         error={error}
         onErrorClose={setError}
       >
@@ -74,7 +70,7 @@ function VerifierApplications() {
                 <Input
                   {...term.inputProps}
                   inputRef={term.ref}
-                  placeholder={`Search for Organization Applications`}
+                  placeholder={`Search for Approved Organizations`}
                   className={'margin-vertical-auto full-width'}
                   type={'search'}
                 />
@@ -83,28 +79,24 @@ function VerifierApplications() {
           </label>
         </Content>
 
-        {!applications.length ? (
+        {!organizations.length ? (
           <Block first className={'center fg-blackish'}>
-            No organization application found
+            No organization found
             {term.value && ` using the term "${term.value}"`}.
           </Block>
         ) : (
           <>
             <Yoga maxCol={3} className={'yoga-in-rich-page'}>
-              {applications.map((application, i) => (
-                <OrganizationCard
-                  key={i}
-                  organization={application}
-                  isApplication={true}
-                />
+              {organizations.map((organization, i) => (
+                <OrganizationCard key={i} organization={organization} />
               ))}
             </Yoga>
 
-            {applications.length % count === 0 && (
+            {organizations.length % count === 0 && (
               <Block className={'center fg-blackish'}>
                 <Button
                   className={''}
-                  onClick={() => load(applications[applications.length - 1]._at)}
+                  onClick={() => load(organizations[organizations.length - 1]._at)}
                 >
                   Load more...
                 </Button>
@@ -117,4 +109,4 @@ function VerifierApplications() {
   )
 }
 
-export default VerifierApplications
+export default VerifierOrganizations

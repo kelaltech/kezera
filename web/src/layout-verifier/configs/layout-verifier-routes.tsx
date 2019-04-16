@@ -14,6 +14,12 @@ const VerifierApplications = lazy(() =>
 const VerifierApplicationDetail = lazy(() =>
   import('../pages/verifier-application-detail/verifier-application-detail')
 )
+const VerifierOrganizations = lazy(() =>
+  import('../pages/verifier-organizations/verifier-organizations')
+)
+const OrganizationDetail = lazy(() =>
+  import('../../shared/pages/organization-detail/organization-detail')
+)
 
 export default function LayoutVerifierRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
@@ -30,6 +36,9 @@ export default function LayoutVerifierRoutes({ prefix: p }: { prefix: string }) 
             path={`${p}/application/:_id`}
             component={VerifierApplicationDetail}
           />
+
+          <Route exact path={`${p}/organizations`} component={VerifierOrganizations} />
+          <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
         </>
       )}
 

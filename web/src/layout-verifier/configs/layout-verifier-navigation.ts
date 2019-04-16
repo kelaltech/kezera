@@ -15,8 +15,14 @@ function layoutVerifierNavigation(
       {
         to: '/applications',
         icon: 'question-circle',
-        name: 'Organization Applications',
-        shortName: 'Applications'
+        name: `Organization Applications`,
+        shortName: `Applications`
+      },
+      {
+        to: '/organizations',
+        icon: 'file-archive',
+        name: `Approved Organizations`,
+        shortName: `Organizations`
       },
       {
         to: '/account',
