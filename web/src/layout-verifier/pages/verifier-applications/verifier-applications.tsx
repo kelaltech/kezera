@@ -93,7 +93,11 @@ function VerifierApplications() {
           <>
             <Yoga maxCol={3} className={'yoga-in-rich-page'}>
               {applications.map((application, i) => (
-                <OrganizationCard key={i} organization={application} />
+                <OrganizationCard
+                  key={i}
+                  organization={application}
+                  isApplication={true}
+                />
               ))}
             </Yoga>
 
