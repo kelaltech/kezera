@@ -1,7 +1,7 @@
 import { ClientSession, Document } from 'mongoose'
 
 import { KoaController } from '../../lib/koa-controller'
-import { add, get, remove } from '../../lib/crud'
+import { add, get, remove, search } from '../../lib/crud'
 import { OrganizationApplicationModel } from '../../models/organization-application/organization-application.model'
 import { AccountModel, IAccount, IAccountRole } from '../../models/account/account.model'
 import {
@@ -16,6 +16,33 @@ import { organizationDocumentToResponse } from '../organization/organization.fil
 import { KoaError } from '../../lib/koa-error'
 
 export class VerifierController extends KoaController {
+  /* GENERAL: */
+
+  async getOrganizationApplication(session?: ClientSession, _id = super.getParam('_id')) {
+    const application = await get(OrganizationApplicationModel, _id, { session })
+    return await organizationDocumentToResponse(application, application.account)
+  }
+
+  async searchOrganizationApplications(
+    session?: ClientSession,
+    term = super.getQuery('term'),
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
+  ): Promise<IOrganizationResponse[]> {
+    const applications = await search(OrganizationApplicationModel, term, {
+      session,
+      since,
+      count
+    })
+    return await Promise.all(
+      applications.map(application =>
+        organizationDocumentToResponse(application, application.account)
+      )
+    )
+  }
+
+  /* APPLICATION REVIEW: */
+
   async approveOrganizationApplication(
     session?: ClientSession,
     _id = super.getParam('_id'),

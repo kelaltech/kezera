@@ -9,7 +9,7 @@ import { logout } from '../../lib/middlewares/logout'
 
 export const accountRouter = new Router({ prefix: '/api/account' })
 
-/* GENERAL */
+/* GENERAL: */
 
 // GET /api/account/me
 accountRouter.get(
@@ -32,7 +32,7 @@ accountRouter.put(
   handle(AccountController, (c, s) => c.editMe(s))
 )
 
-/* PHOTO */
+/* PHOTO: */
 
 // POST /api/account/add-photo *
 accountRouter.post(
@@ -51,7 +51,7 @@ accountRouter.get(
   handle(AccountController, (c, s) => c.removePhoto(s))
 )
 
-/* PASSWORD RESET */
+/* PASSWORD RESET: */
 
 // POST /api/account/reset/start
 accountRouter.post(
@@ -65,7 +65,7 @@ accountRouter.post(
   handle(AccountController, (c, s) => c.finishPasswordReset(s))
 )
 
-/* BASIC AUTH */
+/* BASIC AUTH: */
 
 // POST /api/account/login
 accountRouter.post('/login', login({ strategyName: 'local' }))
