@@ -9,6 +9,7 @@ import Table, {
   TableRow
 } from '../../../shared/components/Table/Table'
 import { useFetch } from '../../hooks/Fetch'
+import { Timeline } from '../../../shared/components/timeline/timeline'
 
 const verifier = {
   displayName: 'Anteneh Ashenafi',
@@ -111,6 +112,7 @@ export default function VerifierDescription(props: any) {
                 ''
               )}
             </Block>
+            <Timeline />
           </Content>
         </>
       ) : (
