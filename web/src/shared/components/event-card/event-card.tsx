@@ -5,8 +5,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
 import axios from 'axios'
+import {
+  IOrganizationEventRequest,
+  IOrganizationEventResponse
+} from '../../../apiv/event.apiv'
+import { useEventDispatch } from '../../../layout-organization/stores/events/events.provider'
+import { DeleteEvent } from '../../../layout-organization/stores/events/events.action'
 
-export default function EventCard(props: any) {
+interface IEventProps {
+  event: IOrganizationEventResponse
+  role: string
+}
+
+export default function EventCard(props: IEventProps) {
   let [open, setOpen] = useState(false)
   let months = [
     'Jan.',
@@ -22,6 +33,7 @@ export default function EventCard(props: any) {
     'Nov.',
     'Dec.'
   ]
+  let eventDispatch = useEventDispatch()
 
   let handleLike = function(id: any) {
     axios
@@ -29,6 +41,7 @@ export default function EventCard(props: any) {
       .then()
       .catch()
   }
+
   let handleInterested = function(id: any) {
     axios
       .put(`/api/event/${id}/interest`)
@@ -36,23 +49,15 @@ export default function EventCard(props: any) {
       .catch()
   }
 
-  let DeleteEvent = function(id: any) {
+  let RemoveEvent = function(id: string) {
     if (window.confirm('Are you sure you want to delete this event?')) {
-      axios
-        .delete(`/api/event/${id}`)
-        .then(res => props.fetch())
-        .catch(console.error)
+      DeleteEvent(id, eventDispatch)
     }
   }
 
   return (
     <Content className={'EventCard'}>
-      <EventEdit
-        open={open}
-        onClose={() => setOpen(false)}
-        event={props.event}
-        fetch={props.fetch()}
-      />
+      <EventEdit open={open} onClose={() => setOpen(false)} event={props.event} />
       <div className={'EventCardImage'}>
         <div className={'BlurryImage'}>
           <Image className={'EventImage'} src={`/api/event/${props.event._id}/picture`} />
@@ -129,7 +134,7 @@ export default function EventCard(props: any) {
           </span>
           <span className={'full-width flex'}>
             <Button
-              onClick={() => DeleteEvent(props.event._id)}
+              onClick={() => RemoveEvent(props.event._id.toString())}
               className={'ActionButton '}
             >
               <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />

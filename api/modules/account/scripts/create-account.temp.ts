@@ -4,18 +4,18 @@ import { transact } from '../../../lib/transact'
 import { AccountController } from '../account.controller'
 
 const data: IAccountRequest = {
-  email: 'Kaleab@gmail.com',
-  password: 'Kaleab1234',
+  email: 'Temp@gmail.com',
+  password: 'Temp1234',
 
-  displayName: 'Kaleab Sereke',
-  phoneNumber: '+251 924 322 656'
+  displayName: 'Temp Account',
+  phoneNumber: '+251 914 857496'
 }
 
 setTimeout(() => {
   // db should be connected by now
 
   transact(session => {
-    return new AccountController().add(session, data, 'ACTIVE', 'VOLUNTEER')
+    return new AccountController().add(session, data, 'ACTIVE', 'VERIFIER')
   })
     .then(() => {
       console.log(`\nTransaction completed successfully.`)

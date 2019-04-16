@@ -191,7 +191,7 @@ function Profile() {
             {events.map(e => (
               <div>
                 <Block>
-                  <EventCard event={e} role={'VOLUNTEER'} fetch={() => {}} />
+                  <EventCard event={e} role={'VOLUNTEER'} />
                 </Block>
               </div>
             ))}

@@ -9,17 +9,25 @@ import { OrganizationModel } from '../models/organization/organization.model'
 import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
 import { FundModel } from '../models/fundraising/fundraising.model'
 import { TaskModel } from '../models/task/task.model'
-import { RequestModel } from '../models/request/request.model'
 
 import { accountRouter } from '../modules/account/account.router'
 import { newsRouter } from '../modules/news/news.route'
-import { requestRouter } from '../modules/request/request.router'
 import { eventRouter } from '../modules/event/event.router'
+import { materialRouter } from '../modules/material/material.router'
+import { requestRouter } from '../modules/request/request.router'
+import { EventModel } from '../models/event/event.model'
+import { MaterialModel } from '../models/material/material.model'
+import { commentModel } from '../models/comment/comment.model'
+import { commentRouter } from '../modules/comment/comment.route'
+import { RequestModel } from '../models/request/request.model'
+import { adminRouter } from '../modules/admin/admin.router'
+
 import { organizationRouter } from '../modules/organization/organization.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
 import { volunteerRouter } from '../modules/volunteer/volunteer.router'
-import { organRouter } from '../modules/organ/organ.router'
-
+import { VolunteerModel } from '../models/volunteer/volunteer.model'
+import { ActivityModel } from '../models/activity/activity.model'
+import { activityRouter } from '../modules/activity/activity.router'
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
 
@@ -32,25 +40,33 @@ export const serverAppConfig: IServerAppConfig = {
   ],
 
   models: [
+    ActivityModel,
     AccountModel,
     CertificateModel,
     KeyModel,
+    EventModel,
+    MaterialModel,
+    commentModel,
     OrganizationModel,
     OrganizationApplicationModel,
+    VolunteerModel,
     FundModel,
     TaskModel,
     RequestModel
   ],
 
   routers: [
+    adminRouter,
+    activityRouter,
     accountRouter,
-    newsRouter,
     eventRouter,
-    organizationRouter,
+    newsRouter,
+    materialRouter,
     requestRouter,
+    commentRouter,
     verifierRouter,
-    volunteerRouter,
-    organRouter
+    organizationRouter,
+    volunteerRouter
   ],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],

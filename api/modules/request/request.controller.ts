@@ -5,9 +5,10 @@ import { IAccount } from '../../models/account/account.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
-import { AddTask, getTask } from '../task/task.controller'
+import { getTask } from '../task/task.controller'
 import { AddFund, editFund, getFund } from '../fundraising/fundraising.controller'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
+import { AddMaterial, UpdateMaterial } from '../material/material.controller'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -89,8 +90,8 @@ export async function addRequestWithPicture(
     case 'Fundraising':
       await AddFund(JSON.parse(data.Fundraising), request._id)
       break
-    case 'Task':
-      await AddTask(JSON.parse(data.Task), request._id)
+    case 'Material':
+      await AddMaterial(JSON.parse(data.Material), request._id)
       break
   }
 
@@ -114,8 +115,8 @@ export async function editRequest(
     case 'Fundraising':
       await editFund(JSON.parse(data.Fundraising), request._id, pic)
       break
-    case 'Task':
-      await AddTask(JSON.parse(data.Task), request._id)
+    case 'Material':
+      await UpdateMaterial(request._id, JSON.parse(data.Task))
       break
   }
   const grid = new Grid(serverApp, RequestModel, request._id)

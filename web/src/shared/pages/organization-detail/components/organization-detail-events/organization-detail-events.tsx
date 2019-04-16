@@ -57,7 +57,7 @@ function OrganizationDetailEvent({ organization }: Props) {
               <>
                 <Yoga maxCol={4} className={'padding-normal'}>
                   {events.map((e, i) => (
-                    <EventCard key={i} event={e} fetch={() => {}} />
+                    <EventCard key={i} event={e} role={'ORGANIZATION'} />
                   ))}
                 </Yoga>
                 {events.length && events.length % count === 0 && (
