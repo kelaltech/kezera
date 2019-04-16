@@ -15,9 +15,9 @@ verifierRouter.get(
   handle(VerifierController, (c, s) => c.getOrganizationApplication(s))
 )
 
-// GET /api/organization/search-organization-application?term=&since={Date.now()}&count={10}
+// GET /api/organization/search-organization-applications?term=&since={Date.now()}&count={10}
 verifierRouter.get(
-  '/search-organization-application',
+  '/search-organization-applications',
   authorize(['VERIFIER', 'ADMIN']),
   handle(VerifierController, (c, s) => c.searchOrganizationApplications(s))
 )

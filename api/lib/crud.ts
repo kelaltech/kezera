@@ -130,7 +130,10 @@ export async function search<T extends Document>(
   { conditions = {}, since, count, session, preQuery, postQuery }: ISearchOptions<T> = {}
 ): Promise<T[]> {
   if (!model) throw new KoaError('"model" parameter not found.', 500, 'NO_MODEL')
-  if (!term) throw new KoaError('"term" parameter not found.', 400, 'NO_TERM')
+
+  if (!term) {
+    return list(model, { conditions, since, count, session, preQuery, postQuery })
+  }
 
   conditions = { $text: { $search: term }, ...conditions }
 

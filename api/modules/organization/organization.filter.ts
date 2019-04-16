@@ -68,6 +68,7 @@ export async function organizationDocumentToResponse(
     ((await document.populate('account').execPopulate()).account as any).toJSON()
 
   return {
+    _at: new Date(document._at!).getTime(),
     _id: document._id,
 
     account: await accountDocumentToPublicResponse(populatedAccount),

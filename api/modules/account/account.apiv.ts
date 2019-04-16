@@ -14,6 +14,7 @@ export type IAccountRequest = {
 }
 
 export type IAccountResponse = {
+  _at: number
   _id: string
 
   role: IAccountRole
@@ -29,6 +30,7 @@ export type IAccountResponse = {
 }
 
 export type IAccountPublicResponse = {
+  _at: number
   _id: string
 
   role: IAccountRole
