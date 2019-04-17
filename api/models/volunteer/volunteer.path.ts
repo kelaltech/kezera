@@ -16,5 +16,12 @@ export const VolunteerPaths: SchemaDefinition = {
     material: { type: Boolean, default: true },
     task: { type: Boolean, default: true },
     money: { type: Boolean, default: true }
+  },
+  portfolio: {
+    events: [{ type: ObjectId, ref: 'event' }],
+    tasks: [{ type: ObjectId, ref: 'task' }],
+    certificate: [{ type: ObjectId, ref: 'certificate' }],
+    material: [{ type: ObjectId, ref: 'material' }],
+    money: [{ type: ObjectId, ref: 'fundraising' }]
   }
 }

@@ -18,6 +18,13 @@ export interface IVolunteer extends Document {
     task: boolean
     money: boolean
   }
+  portfolio: {
+    events: ObjectId[]
+    tasks: ObjectId[]
+    certificate: ObjectId[]
+    material: ObjectId[]
+    money: ObjectId[]
+  }
 }
 
 export const volunteerModelFactory = new ModelFactory<IVolunteer>({
