@@ -17,6 +17,7 @@ const VerifierApplicationDetail = lazy(() =>
 const VerifierOrganizations = lazy(() =>
   import('../pages/verifier-organizations/verifier-organizations')
 )
+const EventDetail = lazy(() => import('../../shared/pages/event-detail/event-detail'))
 const OrganizationDetail = lazy(() =>
   import('../../shared/pages/organization-detail/organization-detail')
 )
@@ -32,6 +33,8 @@ export default function LayoutVerifierRoutes({ prefix: p }: { prefix: string }) 
 
       <Route exact path={`${p}/applications`} component={VerifierApplications} />
       <Route exact path={`${p}/application/:_id`} component={VerifierApplicationDetail} />
+
+      <Route exact path={`${p}/event/:_id`} component={EventDetail} />
 
       <Route exact path={`${p}/organizations`} component={VerifierOrganizations} />
       <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
