@@ -68,7 +68,7 @@ export default function EventCard(props: IEventProps) {
       <div className={'padding-horizontal-big'}>
         <Title className="EventTitle" size={'M'}>
           {' '}
-          <Link className="EventTitle" to={`/organization/event/${props.event._id}`}>
+          <Link className="EventTitle" to={`/event/${props.event._id}`}>
             {props.event.title}
           </Link>{' '}
         </Title>
@@ -78,7 +78,7 @@ export default function EventCard(props: IEventProps) {
           {' '}
           {props.event.description.substr(0, 90)}...
           {/* //todo add id */}
-          <Link to={`/organization/event/${props.event._id}`}>view</Link>{' '}
+          <Link to={`/event/${props.event._id}`}>view</Link>{' '}
         </p>
       </div>
       <div className="EventField ">
