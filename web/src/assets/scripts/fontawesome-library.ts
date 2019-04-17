@@ -1,6 +1,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 import {
+  faUser,
   faBars,
   faSignInAlt,
   faImage,
@@ -64,6 +65,7 @@ export default function fontawesomeLibrary() {
 
   // solid
   library.add(
+    faUser,
     faDoorOpen,
     faThumbsUp,
     faUserShield,

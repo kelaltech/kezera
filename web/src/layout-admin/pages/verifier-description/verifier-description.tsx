@@ -10,40 +10,11 @@ import Table, {
 } from '../../../shared/components/Table/Table'
 import { useFetch } from '../../hooks/Fetch'
 import { Timeline } from '../../../shared/components/timeline/timeline'
-
-const verifier = {
-  displayName: 'Anteneh Ashenafi',
-  email: 'anteneh845@gmail.com',
-  phone: '+251913055885',
-  _at: '2/2/2019',
-  location: 'Addis Ababa',
-  verifiedOrganizations: [
-    {
-      id: 'MJ2114',
-      _at: '2/5/2002',
-      name: 'Merry joy'
-    },
-    {
-      id: 'MEC58456',
-      _at: '2/2/2011',
-      name: 'Mecodenia'
-    },
-    {
-      id: 'AG32123',
-      _at: '2/6/2014',
-      name: 'Abebech gobena'
-    },
-    {
-      id: 'SC32134',
-      _at: '6/5/2011',
-      name: 'Save the children'
-    }
-  ]
-}
+import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 
 export default function VerifierDescription(props: any) {
   let v: any = useFetch('/api/admin/verifier/' + props.match.params._id)
-
+  let org = useFetch(`/api/admin/verifier/organizations/${props.match.params._id}`)
   return (
     <Block className={'flex full-width'}>
       {v ? (
@@ -79,10 +50,11 @@ export default function VerifierDescription(props: any) {
                   &emsp;
                   {new Date(v._at).toDateString()}
                 </span>
+
                 <span className={'flex full-width'}>
-                  <FontAwesomeIcon icon={'map-marker'} className={'margin-top-small'} />
+                  <FontAwesomeIcon icon={'user'} className={'margin-top-small'} />
                   &emsp;
-                  {v.email}
+                  {v.status}
                 </span>
               </Block>
             </Block>
@@ -91,25 +63,28 @@ export default function VerifierDescription(props: any) {
               <Title size={'XL'}>
                 <b> Verified organizations </b>
               </Title>
-              {verifier.verifiedOrganizations.length > 0 ? (
+              {org.length > 0 ? (
                 <Table>
                   <TableHeader>
-                    <TableCell color={'white'}>Id</TableCell>
                     <TableCell color={'white'}>Name</TableCell>
+                    <TableCell color={'white'}>Phone no.</TableCell>
                     <TableCell color={'white'}>Verified date</TableCell>
                   </TableHeader>
                   <TableBody>
-                    {verifier.verifiedOrganizations.map(org => (
-                      <TableRow>
-                        <TableCell>{org.id}</TableCell>
-                        <TableCell>{org.name}</TableCell>
-                        <TableCell>{org._at}</TableCell>
-                      </TableRow>
-                    ))}
+                    {org &&
+                      org.map((organization: IAccountResponse) => (
+                        <TableRow>
+                          <TableCell>{organization.displayName}</TableCell>
+                          <TableCell>{organization.phoneNumber}</TableCell>
+                          <TableCell>
+                            {new Date(organization._at).toDateString()}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               ) : (
-                ''
+                <Title> No organizations verified </Title>
               )}
             </Block>
             <Timeline />

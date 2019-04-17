@@ -26,8 +26,7 @@ export default function AccountSettings() {
       </Block>
       {events && events.length > 0 ? (
         <Yoga maxCol={5}>
-          {events &&
-            events.map((e: any) => <EventCard event={e} role={'ORGANIZATION'} />)}
+          {events && events.map((e: any) => <EventCard event={e} />)}
         </Yoga>
       ) : (
         <Title size={'3XL'}> No events found</Title>

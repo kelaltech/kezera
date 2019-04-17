@@ -126,7 +126,7 @@ function DiscoveryPage() {
               <Slider {...settings}>
                 {event.map((n: any) => (
                   <div className={'slider-list'}>
-                    <EventCard event={n} role={'ORGANIZATION'} />
+                    <EventCard event={n} />
                   </div>
                 ))}
               </Slider>

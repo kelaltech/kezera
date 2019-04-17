@@ -5,20 +5,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
 import axios from 'axios'
-import {
-  IOrganizationEventRequest,
-  IOrganizationEventResponse
-} from '../../../apiv/event.apiv'
+import { IOrganizationEventResponse } from '../../../apiv/event.apiv'
 import { useEventDispatch } from '../../../layout-organization/stores/events/events.provider'
 import { DeleteEvent } from '../../../layout-organization/stores/events/events.action'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 
 interface IEventProps {
   event: IOrganizationEventResponse
-  role: string
 }
 
 export default function EventCard(props: IEventProps) {
   let [open, setOpen] = useState(false)
+  let account = useAccountState()
   let months = [
     'Jan.',
     'Feb.',
@@ -123,7 +121,7 @@ export default function EventCard(props: IEventProps) {
           </Link>
         </span>
       </div>
-      {props.role == 'ORGANIZATION' ? (
+      {account && account!.account!.role == 'ORGANIZATION' ? (
         <Block last className={'ActionContainer flex'}>
           <Flex className={'full-width '} />
           <Flex className={'full-width '} />

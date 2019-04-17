@@ -4,10 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import EventTabs from './event-tabs/event-tabs'
 import axios from 'axios'
 import { Switch } from '@material-ui/core'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 
 export default function EventDetail(props: any) {
   let [event, setEvent] = useState()
   let [toggle, setToggle] = useState(false)
+  let account = useAccountState()
   let months = [
     'Jan.',
     'Feb.',
@@ -63,27 +65,39 @@ export default function EventDetail(props: any) {
                 {event.title}
               </Title>
               <div className="inline-block" style={{ float: 'right' }}>
-                <label>
-                  <Title className="inline-block">
-                    {' '}
-                    <b> I'm going </b>{' '}
-                  </Title>
-                  <Switch checked={toggle} onChange={() => handleGoing()} />
-                </label>
-                <Anchor
-                  to={`/organization/event/${props.match.params._id}/attendance/verify`}
-                  button
-                >
-                  <FontAwesomeIcon icon={['far', 'user-circle']} />
-                  &nbsp; Attendance{' '}
-                </Anchor>
-                &emsp;
-                <Anchor
-                  to={`/organization/event/${props.match.params._id}/attended`}
-                  button
-                >
-                  <FontAwesomeIcon icon={'check-circle'} /> &nbsp;Attended{' '}
-                </Anchor>
+                {account && account!.account!.role == 'VOLUNTEER' ? (
+                  <label>
+                    <Title className="inline-block">
+                      {' '}
+                      <b> I'm going </b>{' '}
+                    </Title>
+                    <Switch checked={toggle} onChange={() => handleGoing()} />
+                  </label>
+                ) : (
+                  ''
+                )}
+                {account && account!.account!.role == 'ORGANIZATION' ? (
+                  <>
+                    <Anchor
+                      to={`/organization/event/${
+                        props.match.params._id
+                      }/attendance/verify`}
+                      button
+                    >
+                      <FontAwesomeIcon icon={['far', 'user-circle']} />
+                      &nbsp; Attendance{' '}
+                    </Anchor>
+                    &emsp;
+                    <Anchor
+                      to={`/organization/event/${props.match.params._id}/attended`}
+                      button
+                    >
+                      <FontAwesomeIcon icon={'check-circle'} /> &nbsp;Attended{' '}
+                    </Anchor>
+                  </>
+                ) : (
+                  ''
+                )}
               </div>
             </Block>
             <Block>

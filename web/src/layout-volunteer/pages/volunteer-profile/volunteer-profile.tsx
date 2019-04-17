@@ -191,7 +191,7 @@ function Profile() {
             {events.map(e => (
               <div>
                 <Block>
-                  <EventCard event={e} role={'VOLUNTEER'} />
+                  <EventCard event={e} />
                 </Block>
               </div>
             ))}

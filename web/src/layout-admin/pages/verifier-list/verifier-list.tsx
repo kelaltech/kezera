@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './verifier-list.scss'
-import { Block, Button, Page, Title, Content, Image } from 'gerami'
+import { Block, Button, Page, Title, Content, Image, Input } from 'gerami'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -11,11 +11,33 @@ import { Link } from 'react-router-dom'
 import VerifierAdd from '../verifier-add/verifier-add'
 import { useAdminDispatch, useAdminState } from '../../stores/admin-provider'
 import { DeleteVerifiers } from '../../stores/admin-action'
+import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 
 export default function VerifierList() {
   let [open, setOpen] = useState(false)
   let { verifiers } = useAdminState()
   const AdminDispatch = useAdminDispatch()
+  let searchData: IAccountResponse[] = []
+
+  let SearchEvent = function(e: any) {
+    try {
+      let term = e.target.value
+      if (searchData.length == 0) {
+        searchData = verifiers
+      }
+      if (term === null || term.match(/^ *$/) !== null) {
+        searchData = verifiers
+      } else {
+        verifiers = searchData.filter((d: IAccountResponse) => {
+          const regex = new RegExp(e.target.value, 'gi')
+          let name = d.displayName
+          return name.match(regex)
+        })
+        // verifiers=result;
+        console.log(verifiers)
+      }
+    } catch (e) {}
+  }
 
   let handleDelete = function(id: string) {
     if (window.confirm('Are you sure you want to remove this user?')) {
@@ -30,6 +52,12 @@ export default function VerifierList() {
         </Title>
       </Block>
       <Block className={'right'}>
+        <Input
+          type={'search'}
+          name={'Search'}
+          onKeyUp={e => SearchEvent(e)}
+          placeholder={'Search Verifiers...'}
+        />
         <Button onClick={() => setOpen(true)}>
           {' '}
           <FontAwesomeIcon icon={'user-shield'} /> &emsp; Create Verifier{' '}
@@ -91,13 +119,7 @@ export default function VerifierList() {
         </Table>
       </Content>
       <Block className="center">
-        <Button onClick={() => alert('ayseram')}> 1 </Button> &nbsp;
-        <Button onClick={() => alert('ayseram')}> 2 </Button> &nbsp;
-        <Button onClick={() => alert('ayseram')}> 3 </Button> &nbsp;
-        <Button onClick={() => alert('ayseram')}> 4 </Button> &nbsp;
-        <Button onClick={() => alert('ayseram')}> 5 </Button> &nbsp;
-        <Button onClick={() => alert('ayseram')}> 6 </Button> &nbsp;
-        <Button onClick={() => alert('ayseram')}> Next </Button> &nbsp;
+        <Button onClick={() => alert('ayseram')}> View more </Button> &nbsp;
       </Block>
     </Block>
   )

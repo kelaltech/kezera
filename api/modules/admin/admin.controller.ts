@@ -6,7 +6,10 @@ import { TaskModel } from '../../models/task/task.model'
 import { MaterialModel } from '../../models/material/material.model'
 import { Schema } from 'mongoose'
 import { IAccountRequest, IAccountResponse } from '../account/account.apiv'
-import { OrganizationModel } from '../../models/organization/organization.model'
+import {
+  IOrganization,
+  OrganizationModel
+} from '../../models/organization/organization.model'
 import { AccountController } from '../account/account.controller'
 import { ClientSession } from 'mongodb'
 import { FundModel } from '../../models/fundraising/fundraising.model'
@@ -49,6 +52,7 @@ export async function UpdateVerifier(
 export async function GetVerifier(id: Schema.Types.ObjectId): Promise<IAccount> {
   return get(AccountModel, id)
 }
+
 export async function GetAllOrganizations(): Promise<Number> {
   const organizations = await list(AccountModel, {
     preQuery: model => model.find({ role: 'ORGANIZATION' })
@@ -205,4 +209,18 @@ export async function GetJoinedDates(): Promise<Number[]> {
     months[new Date(vol[i]._at!).getMonth()]++
   }
   return months
+}
+
+export async function GetVerifiedOrganization(
+  id: Schema.Types.ObjectId
+): Promise<IAccount[]> {
+  const org: IOrganization[] = await list(OrganizationModel, {
+    preQuery: model => model.find({ verifier: id })
+  })
+  let acc: IAccount[] = []
+  for (let i = 0; i < org.length; i++) {
+    acc.push(await get(AccountModel, org[i].account))
+  }
+  console.log(acc)
+  return acc
 }

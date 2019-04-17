@@ -27,7 +27,8 @@ import {
   GetEventsComments,
   SearchVerifier,
   GetJoinedDates,
-  GetVerifierPicture
+  GetVerifierPicture,
+  GetVerifiedOrganization
 } from './admin.controller'
 import { transact } from '../../lib/transact'
 import * as fs from 'fs'
@@ -66,7 +67,14 @@ adminRouter.get('/verifier/search', authorize(['ADMIN']), async ctx => {
 
 // /api/admin/verifier/:_id
 adminRouter.get('/verifier/:_id', authorize(['ADMIN']), async ctx => {
+  console.log('ID ')
   ctx.body = await GetVerifier(ctx.params._id)
+})
+
+// /api/admin/verifier/:_id/verified
+adminRouter.get('/verifier/organizations/:_id', async ctx => {
+  console.log('was here')
+  ctx.body = await GetVerifiedOrganization(ctx.params._id)
 })
 
 // /api/admin/verifier/:_id

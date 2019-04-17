@@ -57,7 +57,7 @@ export default function Comments(props: any) {
       </Content>
       <div>
         <Title size={'3XL'}> Comments </Title>
-        {comments.length >= 0 ? (
+        {comments.length > 0 ? (
           <>
             {comments.map((comment: any) => (
               <Comment

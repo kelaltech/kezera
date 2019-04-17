@@ -12,10 +12,10 @@ export default function EventAttended(props: any) {
   }, [])
   return (
     <Page>
-      <Block className="center">
-        <Title size={'3XL'}> Users who attended the event </Title>
+      <Block>
+        <Title size={'XXL'}> Volunteers attended</Title>
       </Block>
-      {volunteers && volunteers.length >= 0 ? (
+      {volunteers && volunteers.length > 0 ? (
         <>
           {volunteers &&
             volunteers.map((u: any) => (
@@ -27,7 +27,7 @@ export default function EventAttended(props: any) {
             ))}
         </>
       ) : (
-        <Title size={'3XL'}> No users attended </Title>
+        <Title size={'M'}> No users attended </Title>
       )}
     </Page>
   )
