@@ -9,7 +9,8 @@ import Layout from '../shared/components/layout/layout'
 import layoutVolunteerNavigation from './configs/layout-volunteer-navigation'
 import LayoutVolunteerRoutes from './configs/layout-volunteer-routes'
 import Search from '../shared/components/search/search'
-
+import './layout-volunteer.scss'
+import Sidenav from '../shared/components/volunteer-side-nav/side-nav'
 interface Props extends RouteComponentProps<{}> {
   error?: any
 }
@@ -33,7 +34,14 @@ function LayoutVolunteer({ error, match }: Props) {
         error={error}
         nonContentHeight={164}
       >
-        <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
+        <div className={'volunteer-layout-container'}>
+          <div className={'vol-sidenav-container'}>
+            <Sidenav />
+          </div>
+          <div className={'vol-content-container'}>
+            <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
+          </div>
+        </div>
       </Layout>
     </LayoutVolunteerProviders>
   )

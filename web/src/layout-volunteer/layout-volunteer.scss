@@ -1,0 +1,13 @@
+.volunteer-layout-container {
+  display: flex;
+}
+
+.vol-sidenav-container {
+  width: 230px;
+  height: auto;
+  background-color: #00b478;
+  position: relative;
+}
+.vol-content-container {
+  flex-grow: 1;
+}
