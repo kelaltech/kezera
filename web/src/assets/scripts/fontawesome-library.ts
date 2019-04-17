@@ -120,5 +120,5 @@ export default function fontawesomeLibrary() {
   library.add(faFacebook)
 
   // regular (free)
-  library.add(faUserCircle, farCommentAlt, farHeart)
+  library.add(farUserCircle, farCommentAlt, farHeart, farNewspaper, farCalendarAlt)
 }
