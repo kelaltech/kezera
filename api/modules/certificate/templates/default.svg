@@ -1,0 +1,44 @@
+<svg width="842" height="595" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <defs>
+  <filter height="200%" width="200%" y="-50%" x="-50%" id="svg_15_blur">
+   <feGaussianBlur stdDeviation="0" in="SourceGraphic"/>
+  </filter>
+  <filter height="200%" width="200%" y="-50%" x="-50%" id="svg_25_blur">
+   <feGaussianBlur stdDeviation="0" in="SourceGraphic"/>
+  </filter>
+  <filter height="200%" width="200%" y="-50%" x="-50%" id="svg_20_blur">
+   <feGaussianBlur stdDeviation="10" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="844" height="597" id="canvas_background" fill="#3f51b5"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_4" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path filter="url(#svg_20_blur)" stroke="#ffffff" fill="none" stroke-width="99" d="m256.876716,418.678408c274.28635,-93.909095 274.28635,-93.909095 274.006418,-94.89302c0.279932,0.983924 38.34416,115.640377 38.34416,115.640377c0,0 -313.470112,78.621565 -313.470112,78.621565c0,0 -165.691348,-203.105713 -164.85173,-204.089638c-0.839619,0.983924 454.811581,-161.719031 454.811581,-161.719031c0,0 -97.399642,365.808669 -97.399642,365.808669c0,0 285.481709,-187.818183 285.481709,-187.818183c0,0 -331.382688,-193.278017 -331.382688,-193.278017c0,0 -251.895623,27.299155 -251.895623,27.299155c0,0 567.604801,-43.678649 567.604801,-43.678649c0,0 -43.661904,407.30339 -43.941836,406.319458c0.279932,0.983933 -593.074205,-415.055183 -592.234586,-416.039115c-0.839619,0.983933 646.252248,313.286256 646.252248,313.286256c0,0 69.41124,-253.336152 69.131308,-254.320076c0.279932,0.983924 -228.105431,-124.592188 -228.385362,-124.484149c0.279932,-0.108039 -98.239252,209.549472 -98.239252,209.549472c0,0 -255.254231,-176.898522 -255.254231,-176.898522c0,0 -91.801958,367.992604 -91.801958,367.992604c0,0 88.44335,96.093023 88.163435,95.10909c0.279915,0.983933 152.536829,-183.558351 152.536829,-183.558351c0,0 25.749327,156.151166 25.749327,156.151166c0,0 -361.610157,7.643761 -360.770539,6.659829c-0.839619,0.983933 216.350384,-159.535096 216.350384,-159.535096c0,0 154.495981,173.622624 154.216057,172.638691c0.279923,0.983933 -147.49884,19.547354 -147.778763,18.563421c0.279923,0.983933 77.527914,-189.018185 77.527914,-189.018185c0,0 246.297939,179.082458 246.018016,178.098525" id="svg_20" opacity="0.14"/>
+  <rect rx="100" filter="url(#svg_25_blur)" fill="none" stroke-width="99" stroke-dasharray="2,2" x="474.968142" y="208.275512" width="559.778816" height="178.448933" id="svg_25" transform="rotate(-80 754.8575439453124,297.4999694824218) " opacity="0.14" stroke="#ffffff"/>
+  <rect rx="100" fill="none" stroke-width="99" stroke-dasharray="2,2" x="-147.563463" y="126.193148" width="737.127469" height="202.01957" id="svg_24" transform="rotate(-54 221.00025939941412,227.20294189453134) " stroke="#ffffff" opacity="0.14"/>
+  <rect fill="#ffffff" stroke="#ff5722" stroke-width="10" x="25" y="25" width="792" height="545" id="svg_1" rx="50" opacity="0.91"/>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="95" y="150" id="svg_2" font-size="72" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" font-weight="bold" font-style="normal" opacity="0.84">CERTIFICATE</text>
+  <text fill="#000000" stroke-width="0" x="100" y="190" id="svg_3" font-size="18" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" stroke="#ff5722" font-weight="bold" opacity="0.84">OF {PURPOSE}</text>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="255.179009" id="svg_6" font-size="14" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" font-style="italic" font-weight="normal" opacity="0.6">Proudly Awarded on this Date {DATE} to:</text>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100.186724" y="314.038384" id="svg_7" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">{DISPLAY_NAME}</text>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100.186724" y="380" id="svg_8" font-size="14" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">{DESCRIPTION}</text>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="514" id="svg_9" font-size="12" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">SIGNATURE</text>
+  <line fill="none" stroke="#ff5722" stroke-width="3" stroke-opacity="null" fill-opacity="null" x1="100" y1="500" x2="400" y2="500" id="svg_10" stroke-linejoin="null" stroke-linecap="null"/>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="531.788885" id="svg_11" font-size="12" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">{ORGANIZATION_NAME}</text>
+  <path fill="#3f51b5" stroke="#ff5722" stroke-width="3" d="m685.99277,311.93503l-71.48551,152.47473l46.35822,-28.83411l7.48956,54.08132l71.48551,-152.48104l-53.84778,-25.2409zm10.95648,46.68651c-3.54902,-1.66715 -5.08356,-5.89186 -3.4164,-9.44087c1.67346,-3.54901 5.89818,-5.08354 9.4472,-3.41639s5.08355,5.89817 3.4164,9.44718s-5.89187,5.07723 -9.4472,3.41008z" id="svg_13" transform="rotate(-6 677.1739501953134,400.7960205078127) "/>
+  <path fill="#3f51b5" stroke="#ff5722" stroke-width="3" d="m731.91719,311.93725l-71.48551,152.47473l46.35822,-28.83411l7.48956,54.08133l71.48551,-152.48105l-53.84778,-25.24089l0,-0.00001zm10.95648,46.68651c-3.54902,-1.66715 -5.08356,-5.89186 -3.4164,-9.44087c1.67346,-3.549 5.89818,-5.08354 9.4472,-3.41639s5.08355,5.89817 3.4164,9.44718s-5.89187,5.07723 -9.4472,3.41008z" id="svg_12" transform="rotate(-45 723.0983276367186,400.7982177734375) "/>
+  <path fill="#ffffff" stroke-width="3" d="m622.66544,279.18708l20.76697,-36.34602l35.96681,-20.98593l41.53395,0l35.96681,20.98593l20.76696,36.34602l0,41.97185l-20.76696,36.34602l-35.96681,20.98592l-41.53395,0l-35.96681,-20.98592l-20.76697,-36.34602l0,-41.97185z" id="svg_16" stroke="#ff5722"/>
+  <path fill="#ffffff" stroke-width="3" d="m621.74108,278.61264l20.97745,-36.61942l36.33136,-21.14379l41.95491,0l36.33135,21.14379l20.97745,36.61942l0,42.28757l-20.97745,36.61942l-36.33135,21.14378l-41.95491,0l-36.33136,-21.14378l-20.97745,-36.61942l0,-42.28757z" id="svg_17" transform="rotate(45 700.0273437500002,299.75640869140614) " stroke="#ff5722"/>
+  <ellipse fill="#3f51b5" stroke="#ff5722" stroke-width="3" cx="700" cy="299.722211" id="svg_14" rx="70" ry="70"/>
+  <path filter="url(#svg_15_blur)" fill="#ff5722" d="m652.77922,286.032489l35.58215,0l10.99516,-37.11009l10.99516,37.11009l35.58214,0l-28.78651,22.93504l10.99573,37.11009l-28.78652,-22.93566l-28.78652,22.93566l10.99573,-37.11009l-28.78652,-22.93504z" id="svg_15" stroke="#ffffff"/>
+  <text fill="#000000" stroke="#ffffff" stroke-width="0" x="670" y="114" id="svg_18" font-size="14" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" font-style="italic" font-weight="bold" opacity="0.28">SPVA.org</text>
+  <text fill="#000000" stroke="#ffffff" stroke-width="0" x="670" y="140" id="svg_26" font-size="14" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" font-style="italic" font-weight="bold" opacity="0.28">kelal tech.</text>
+ </g>
+</svg>
