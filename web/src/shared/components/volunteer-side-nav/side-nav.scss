@@ -1,7 +1,78 @@
+@import '../../../assets/styles/theme';
 .sidenav-container {
   position: sticky;
-  top: 100px;
+  top: 60px;
   width: 100%;
   height: auto;
-  background-color: darkorange;
+  //background-color: darkorange;
+  padding: 15px;
+  @media screen and (max-width: $mobile) {
+    display: none;
+  }
+}
+
+.btn-link {
+  text-align: center;
+  margin-bottom: $padding-M;
+}
+.sidenav-links {
+  .sid-link {
+    padding: $padding-S;
+    margin: 2px;
+    display: flex;
+    &:hover {
+      background-color: #d6d6d6;
+      border-radius: $radius;
+      cursor: pointer;
+    }
+    font-size: $font-S;
+
+    .icon-link {
+      margin-right: 3px;
+    }
+
+    .discovery {
+      color: #177be6;
+    }
+    .news {
+      color: #177be6;
+    }
+
+    .event {
+      color: #ffb53a;
+    }
+    .task {
+      color: dodgerblue;
+    }
+    .organization {
+      color: lightcoral;
+    }
+  }
+}
+
+.sid-link-sub {
+  padding: $padding-S;
+  margin: 2px;
+  display: flex;
+  font-size: $font-S;
+  .task-sub-title {
+    h5 {
+      font-weight: lighter;
+      font-size: $font-S;
+    }
+  }
+
+  .task-sub-links {
+    margin-left: $space;
+    a {
+      display: block;
+      margin: 2px;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        color: $primary;
+      }
+    }
+  }
 }

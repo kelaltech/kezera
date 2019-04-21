@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import * as qs from 'qs'
 
@@ -10,7 +10,10 @@ import layoutVolunteerNavigation from './configs/layout-volunteer-navigation'
 import LayoutVolunteerRoutes from './configs/layout-volunteer-routes'
 import Search from '../shared/components/search/search'
 import './layout-volunteer.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import Sidenav from '../shared/components/volunteer-side-nav/side-nav'
+import MiniNav from './components/volunteer-mini-nav/volunteer-mini-nav'
 interface Props extends RouteComponentProps<{}> {
   error?: any
 }
@@ -19,8 +22,23 @@ function LayoutVolunteer({ error, match }: Props) {
   const { t } = useLocale()
   const { account } = useAccountState()
 
+  const [iconRight, setIcon] = useState(false)
+  const [mini, setMini] = useState(false)
   const q = qs.parse(window.location.search, { ignoreQueryPrefix: true })['no-shell']
   const noShell = q ? q == 'true' : undefined
+
+  const handleSidenavWidth = () => {
+    const sidenav = document.getElementById('sidenav-vol')
+    if (sidenav!.style.width == '220px') {
+      sidenav!.style.width = '50px'
+      setMini(true)
+      setIcon(true)
+    } else {
+      sidenav!.style.width = '220px'
+      setMini(false)
+      setIcon(false)
+    }
+  }
 
   return (
     <LayoutVolunteerProviders>
@@ -35,8 +53,17 @@ function LayoutVolunteer({ error, match }: Props) {
         nonContentHeight={164}
       >
         <div className={'volunteer-layout-container'}>
-          <div className={'vol-sidenav-container'}>
-            <Sidenav />
+          <div className={'vol-sidenav-container'} id={'sidenav-vol'}>
+            <div className={'arrow-sidenav'} onClick={handleSidenavWidth}>
+              <span>
+                {iconRight ? (
+                  <FontAwesomeIcon icon={faChevronLeft} />
+                ) : (
+                  <FontAwesomeIcon icon={faChevronRight} />
+                )}
+              </span>
+            </div>
+            {mini ? <MiniNav /> : <Sidenav />}
           </div>
           <div className={'vol-content-container'}>
             <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />

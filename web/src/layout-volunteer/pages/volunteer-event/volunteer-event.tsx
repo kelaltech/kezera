@@ -46,33 +46,33 @@ function VolunteerEvents() {
     axios
       .get('/api/event/all')
       .then(events => {
+        console.log(events.data)
         setEvents(events.data)
       })
       .catch(e => console.log(e))
-
-    axios
+    /* axios
       .get('/api/event/around/me') //todo change the api request
       .then(events => {
         setNearEvents(events.data)
       })
-      .catch(e => console.log(e))
+      .catch(e => console.log(e))*/
   }, [])
   return (
     <div className={'events-container'}>
       <div className={'e-slider events-list-container'}>
         <h4>Events around you </h4>
-        <Slider {...settings}>
+        {/*      <Slider {...settings}>
           {events.map((event: any) => (
             <div className={'slider-event-list'}>
               <EventCard event={event} />
             </div>
           ))}
-          {/* {nearEvents.map((event: any) => (//todo uncomment
+           {nearEvents.map((event: any) => (//todo uncomment
               <div className={'slider-event-list'}>
-                <EventCard  event={event} role={'VOLUNTEER'} fetch={() => {}} />
+                <EventCard  event={event}  />
               </div>
-            ))}*/}
-        </Slider>
+            ))}
+        </Slider>*/}
       </div>
       <Block />
       <div className={'events-list-container'}>
