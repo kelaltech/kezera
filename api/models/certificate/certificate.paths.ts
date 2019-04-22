@@ -9,9 +9,10 @@ export const certificatePaths: SchemaDefinition = {
   _last: { type: Date, index: true },
 
   purpose: { type: String, required: true, enum: certificatePurposes },
+  description: { type: String, required: true, maxlength: 1000 },
 
   issuedBy: { type: ObjectId, required: true, ref: 'organization' },
   issuedTo: { type: ObjectId, required: true, ref: 'volunteer' },
 
-  description: { type: String, required: true, maxlength: 1000 }
+  public: { type: Boolean, required: true, default: true }
 }

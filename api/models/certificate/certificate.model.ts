@@ -18,11 +18,12 @@ export interface ICertificate {
   _last: Date | number
 
   purpose: ICertificatePurpose
+  description: string
 
   issuedBy: ObjectId // organization
   issuedTo: ObjectId // volunteer
 
-  description: string
+  public?: boolean // true by default
 }
 
 export const certificateModelFactory = new ModelFactory<ICertificate>({
