@@ -13,6 +13,5 @@ export const certificatePaths: SchemaDefinition = {
   issuedBy: { type: ObjectId, required: true, ref: 'organization' },
   issuedTo: { type: ObjectId, required: true, ref: 'volunteer' },
 
-  design: { type: ObjectId, required: true, ref: 'certificate-design' },
-  message: { type: String, required: true, maxlength: 1000 }
+  description: { type: String, required: true, maxlength: 1000 }
 }

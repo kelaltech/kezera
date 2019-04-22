@@ -22,8 +22,7 @@ export interface ICertificate {
   issuedBy: ObjectId // organization
   issuedTo: ObjectId // volunteer
 
-  design: ObjectId // certificate-design
-  message: string
+  description: string
 }
 
 export const certificateModelFactory = new ModelFactory<ICertificate>({
