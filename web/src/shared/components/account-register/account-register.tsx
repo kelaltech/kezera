@@ -9,9 +9,13 @@ import useField from '../../hooks/use-field/use-field'
 interface Props {
   account: IAccountRequest
   setAccount: (account: IAccountRequest) => void
+  /**
+   * @default true
+   */
+  showTitle?: boolean
 }
 
-function AccountRegister({ account, setAccount }: Props) {
+function AccountRegister({ account, setAccount, showTitle = true }: Props) {
   const { loading, t } = useLocale(['account'])
 
   const emitChanges = (accountChanges: any): void => {
@@ -19,6 +23,7 @@ function AccountRegister({ account, setAccount }: Props) {
   }
 
   const displayName = useField<HTMLInputElement>({
+    initialValue: account.displayName,
     validateOnChange: true,
     minLength: [1, 'Required.'],
     maxLength: [50, 'Your display name cannot be longer than 50 characters.'],
@@ -27,6 +32,7 @@ function AccountRegister({ account, setAccount }: Props) {
     }
   })
   const email = useField<HTMLInputElement>({
+    initialValue: account.email,
     validation: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     validateOnChange: true,
     setValueHook: async value => {
@@ -34,6 +40,7 @@ function AccountRegister({ account, setAccount }: Props) {
     }
   })
   const password = useField<HTMLInputElement>({
+    initialValue: '',
     validation: [
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
       'Password needs to be at least 8 characters long and contain at least one of capital letters, small letters and numbers each.'
@@ -47,17 +54,19 @@ function AccountRegister({ account, setAccount }: Props) {
   })
   const repeatPassword = useField<HTMLInputElement>(
     {
+      initialValue: '',
       validation: async value => value === password.value,
       validateOnChange: true
     },
     [password.value]
   )
   const phoneNumber = useField<HTMLInputElement>({
+    initialValue: account.phoneNumber || '',
     validation: /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/,
     validateOnChange: true,
     optional: true,
     setValueHook: async value => {
-      emitChanges({ phoneNumber: value })
+      emitChanges({ phoneNumber: value || null })
     }
   })
 
@@ -79,13 +88,17 @@ function AccountRegister({ account, setAccount }: Props) {
   return (
     loading || (
       <Content className={'top margin-bottom-big'}>
-        <Block first className={'bold'}>
-          {t`account:account`}
-        </Block>
+        {showTitle && (
+          <>
+            <Block first className={'bold'}>
+              {t`account:account`}
+            </Block>
 
-        <hr />
+            <hr />
+          </>
+        )}
 
-        <Block>
+        <Block first={!showTitle}>
           <Flex>
             <div style={{ margin: 'auto auto 12px 0', width: 40 }}>
               <FontAwesomeIcon icon={['far', 'user-circle']} />

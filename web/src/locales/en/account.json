@@ -30,5 +30,7 @@
   "new-password": "New Password",
   "repeat-new-password": "Repeat New Password",
   "phone-number": "Phone Number",
-  "n-a": "n/a"
+  "n-a": "n/a",
+
+  "are-you-an-organization": "Are you an organization?"
 }
