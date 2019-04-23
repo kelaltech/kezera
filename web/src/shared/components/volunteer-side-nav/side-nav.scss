@@ -14,9 +14,6 @@
 .btn-link {
   text-align: center;
   margin-bottom: $padding-M;
-  //box-shadow: 0 3px 5px 2px rgba(255, 105, 135, .3),0 3px 5px 2px rgba(33, 203, 243, .3);
-  /*  box-shadow:  '0 3px 5px 2px rgba(255, 105, 135, .3)',
-  blue: '0 3px 5px 2px rgba(33, 203, 243, .3)',;*/
 }
 .sidenav-links {
   .sid-link {
@@ -30,6 +27,11 @@
     }
     font-size: $font-S;
 
+    .a {
+      all: unset;
+      width: 100%;
+      height: inherit;
+    }
     .icon-link {
       margin-right: 3px;
     }

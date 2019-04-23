@@ -30,28 +30,36 @@ function Sidenav(props: any) {
       </div>
       <div className={'sidenav-links'}>
         <div className={'sid-link'}>
-          <span className={'icon-link discovery '}>
-            <FontAwesomeIcon icon={faNewspaper} />
-          </span>
-          <a>Discover</a>
+          <a href="/discovery" className={'a'}>
+            <span className={'icon-link discovery '}>
+              <FontAwesomeIcon icon={faNewspaper} />
+            </span>
+            <span>Discover</span>
+          </a>
         </div>
         <div className={'sid-link'}>
-          <span className={'icon-link news'}>
-            <FontAwesomeIcon icon={faNewspaper} />
-          </span>
-          <a>News</a>
+          <a href="/news" className={'a'}>
+            <span className={'icon-link news'}>
+              <FontAwesomeIcon icon={faNewspaper} />
+            </span>
+            <span>News</span>
+          </a>
         </div>
         <div className={'sid-link'}>
-          <span className={'icon-link event'}>
-            <FontAwesomeIcon icon={faCalendarCheck} />
-          </span>
-          <a>Events</a>
+          <a href="/events" className={'a'}>
+            <span className={'icon-link event'}>
+              <FontAwesomeIcon icon={faCalendarCheck} />
+            </span>
+            <span>Events</span>
+          </a>
         </div>
         <div className={'sid-link'} onClick={handleTaskExpand}>
-          <span className={'icon-link task'}>
-            <FontAwesomeIcon icon={faTasks} />
-          </span>
-          <a>Tasks</a>
+          <a href="/tasks" className={'a'}>
+            <span className={'icon-link task'}>
+              <FontAwesomeIcon icon={faTasks} />
+            </span>
+            <span>Tasks</span>
+          </a>
         </div>
         <div className={'sid-link-sub'}>
           <Collapse in={open.task} timeout="auto" unmountOnExit>

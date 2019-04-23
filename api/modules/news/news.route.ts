@@ -24,7 +24,7 @@ export const newsRouter = new Route({
 
 //POST /api/news/new
 newsRouter.post('/new', async ctx => {
-  ctx.body = await addNews(ctx.request.body, ctx.state.user)
+  ctx.body = await addNews(ctx.request.body)
 })
 
 newsRouter.get('/allnews', async ctx => {
