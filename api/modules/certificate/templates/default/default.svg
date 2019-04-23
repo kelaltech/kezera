@@ -1,0 +1,32 @@
+<svg width="842" height="595" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="844" height="597" id="canvas_background" fill="#3f51b5"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_4" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect rx="100" fill="none" stroke-width="99" stroke-dasharray="2,2" x="584.902284" y="207.577392" width="508.037302" height="191.299978" id="svg_33" transform="rotate(-79 838.9209594726562,303.2273864746093) " opacity="0.28" stroke="#ffffff"/>
+  <rect rx="100" fill="none" stroke-width="99" stroke-dasharray="2,2" x="214.233186" y="203.577366" width="508.037302" height="191.299978" id="svg_32" transform="rotate(-79 468.25186157226557,299.2273559570312) " opacity="0.28" stroke="#ffffff"/>
+  <rect rx="100" fill="none" stroke-width="99" stroke-dasharray="2,2" x="-164.435973" y="204.910708" width="508.037302" height="191.299978" id="svg_28" transform="rotate(-79 89.58268737792963,300.56069946289057) " opacity="0.28" stroke="#ffffff"/>
+  <rect fill="#ffffff" stroke-width="10" x="21" y="25" width="792" height="545" id="svg_1" rx="50" opacity="0.91" stroke="#ff5722"/>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="95" y="140" id="svg_2" font-size="56" font-family="Serif" text-anchor="start" xml:space="preserve" font-weight="bold" font-style="normal" opacity="0.84">CERTIFICATE</text>
+  <text fill="#000000" stroke-width="0" x="100" y="180" id="svg_3" font-size="18" font-family="Serif" text-anchor="start" xml:space="preserve" stroke="#ff5722" font-weight="bold" opacity="0.84">OF {PURPOSE}</text>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="260" id="svg_6" font-size="14" font-family="Serif" text-anchor="start" xml:space="preserve" font-style="italic" font-weight="normal" opacity="0.6">Proudly, awarded on this date, {DATE}, to:</text>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="95" y="311.718072" id="svg_7" font-size="42" font-family="Serif" text-anchor="start" xml:space="preserve" font-weight="normal">{DISPLAY_NAME}</text>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100.186724" y="400" id="svg_8" font-size="14" font-family="Serif" text-anchor="start" xml:space="preserve">{DESCRIPTION}</text>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="520" id="svg_9" font-size="12" font-family="Serif" text-anchor="start" xml:space="preserve" font-weight="bold" opacity="0.7">{ORGANIZATION_NAME}</text>
+  <line fill="none" stroke="#ff5722" stroke-width="3" stroke-opacity="null" fill-opacity="null" x1="100" y1="500" x2="400" y2="500" id="svg_10"/>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="540" id="svg_11" font-size="12" font-family="Serif" text-anchor="start" xml:space="preserve" font-weight="normal" opacity="0.7">SIGNATURE</text>
+  <path fill="#3f51b5" stroke="#ff5722" d="m685.99277,311.93503l-71.48551,152.47473l46.35822,-28.83411l7.48956,54.08132l71.48551,-152.48104l-53.84778,-25.2409zm10.95648,46.68651c-3.54902,-1.66715 -5.08356,-5.89186 -3.4164,-9.44087c1.67346,-3.54901 5.89818,-5.08354 9.4472,-3.41639s5.08355,5.89817 3.4164,9.44718s-5.89187,5.07723 -9.4472,3.41008z" id="svg_13" transform="rotate(-6 677.1739501953134,400.7960205078127) "/>
+  <path fill="#3f51b5" stroke="#ff5722" d="m731.91719,311.93725l-71.48551,152.47473l46.35822,-28.83411l7.48956,54.08133l71.48551,-152.48105l-53.84778,-25.24089l0,-0.00001zm10.95648,46.68651c-3.54902,-1.66715 -5.08356,-5.89186 -3.4164,-9.44087c1.67346,-3.549 5.89818,-5.08354 9.4472,-3.41639s5.08355,5.89817 3.4164,9.44718s-5.89187,5.07723 -9.4472,3.41008z" id="svg_12" transform="rotate(-45 723.0983276367186,400.7982177734375) "/>
+  <path fill="#ffffff" stroke-width="3" d="m622.66544,279.18708l20.76697,-36.34602l35.96681,-20.98593l41.53395,0l35.96681,20.98593l20.76696,36.34602l0,41.97185l-20.76696,36.34602l-35.96681,20.98592l-41.53395,0l-35.96681,-20.98592l-20.76697,-36.34602l0,-41.97185z" id="svg_16" stroke="#ff5722"/>
+  <path fill="#ffffff" stroke-width="3" d="m621.74108,278.61264l20.97745,-36.61942l36.33136,-21.14379l41.95491,0l36.33135,21.14379l20.97745,36.61942l0,42.28757l-20.97745,36.61942l-36.33135,21.14378l-41.95491,0l-36.33136,-21.14378l-20.97745,-36.61942l0,-42.28757z" id="svg_17" transform="rotate(45 700.0273437500002,299.75640869140614) " stroke="#ff5722"/>
+  <ellipse fill="#3f51b5" stroke="#ff5722" stroke-width="3" cx="700" cy="299.722211" id="svg_14" rx="70" ry="70"/>
+  <path fill="#ff5722" d="m652.77922,286.03249l35.58215,0l10.99516,-37.11009l10.99516,37.11009l35.58214,0l-28.78651,22.93504l10.99573,37.11009l-28.78652,-22.93566l-28.78652,22.93566l10.99573,-37.11009l-28.78652,-22.93504z" id="svg_15" stroke="#ffffff"/>
+  <text fill="#000000" stroke="#ffffff" stroke-width="0" x="670" y="114" id="svg_18" font-size="14" font-family="Serif" text-anchor="start" xml:space="preserve" font-style="italic" font-weight="normal" opacity="0.28">SPVA.org</text>
+  <text fill="#000000" stroke="#ffffff" stroke-width="0" x="670" y="140" id="svg_26" font-size="14" font-family="Serif" text-anchor="start" xml:space="preserve" font-style="italic" font-weight="normal" opacity="0.28">kelal tech.</text>
+ </g>
+</svg>

@@ -21,6 +21,7 @@ import { commentModel } from '../models/comment/comment.model'
 import { commentRouter } from '../modules/comment/comment.route'
 import { RequestModel } from '../models/request/request.model'
 import { adminRouter } from '../modules/admin/admin.router'
+import { certificateRouter } from '../modules/certificate/certificate.router'
 
 import { organizationRouter } from '../modules/organization/organization.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
@@ -59,13 +60,14 @@ export const serverAppConfig: IServerAppConfig = {
     adminRouter,
     activityRouter,
     accountRouter,
+    commentRouter,
+    certificateRouter,
     eventRouter,
     newsRouter,
     materialRouter,
-    requestRouter,
-    commentRouter,
-    verifierRouter,
     organizationRouter,
+    requestRouter,
+    verifierRouter,
     volunteerRouter
   ],
 
