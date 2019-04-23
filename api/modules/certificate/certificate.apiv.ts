@@ -12,7 +12,6 @@ export type ICertificateRequest = {
 export type ICertificateResponse = {
   _id: string
   _at?: number
-  _last: number
 
   purpose: ICertificatePurpose
   description: string
