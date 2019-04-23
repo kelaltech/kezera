@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import Sidenav from '../shared/components/volunteer-side-nav/side-nav'
 import MiniNav from './components/volunteer-mini-nav/volunteer-mini-nav'
+import { Page } from 'gerami'
 interface Props extends RouteComponentProps<{}> {
   error?: any
 }
@@ -65,9 +66,9 @@ function LayoutVolunteer({ error, match }: Props) {
             </div>
             {mini ? <MiniNav /> : <Sidenav />}
           </div>
-          <div className={'vol-content-container'}>
+          <Page className={'vol-content-container'}>
             <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
-          </div>
+          </Page>
         </div>
       </Layout>
     </LayoutVolunteerProviders>
