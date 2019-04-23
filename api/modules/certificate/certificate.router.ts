@@ -4,6 +4,11 @@ import * as fs from 'fs'
 
 export const certificateRouter = new Router({ prefix: '/api/certificate' })
 
+/* GENERAL */
+
+/* TODO: TEMP */
+
+// GET /api/certificate/test-print
 certificateRouter.get('/test-print', async ctx => {
   let svg = fs
     .readFileSync('api/modules/certificate/templates/default/default.svg')
