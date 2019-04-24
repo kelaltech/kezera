@@ -1,12 +1,16 @@
 import { ClientSession } from 'mongoose'
 import { Stream } from 'stream'
+import * as sharp from 'sharp'
+import * as fs from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import { ICertificateResponse } from './certificate.apiv'
 import { get, list } from '../../lib/crud'
 import { CertificateModel } from '../../models/certificate/certificate.model'
-import { VolunteerModel } from '../../models/volunteer/volunteer.model'
+import { IVolunteer, VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { certificateDocumentToResponse } from './certificate.filter'
+import { IAccount } from '../../models/account/account.model'
+import { IOrganization } from '../../models/organization/organization.model'
 
 export class CertificateController extends KoaController {
   /* ISSUES */
@@ -37,9 +41,39 @@ export class CertificateController extends KoaController {
     )
   }
 
-  async print(session?: ClientSession): Promise<Stream> {
-    // todo
-    throw Error(JSON.stringify(session))
+  async print(
+    session?: ClientSession,
+    _id = super.getParam('_id'),
+    ctx = this.getContext()
+  ): Promise<Stream> {
+    const certificate = await get(CertificateModel, _id, {
+      session,
+      postQuery: query =>
+        query
+          .populate({ path: 'issuedBy', populate: { path: 'account' } })
+          .populate({ path: 'issuedTo', populate: { path: 'account' } })
+    })
+
+    const svg = fs
+      .readFileSync('api/modules/certificate/templates/default/default.svg')
+      .toString('utf8')
+      // data entry...
+      .replace(/{PURPOSE}/g, certificate.purpose.replace(/_/g, ' ').toUpperCase())
+      .replace(/{DATE}/g, new Date(certificate._at!).toDateString().substr(3))
+      .replace(
+        /{DISPLAY_NAME}/,
+        ((((certificate.issuedBy as any) as IVolunteer).account as any) as IAccount)
+          .displayName
+      )
+      .replace(/{DESCRIPTION}/, certificate.description)
+      .replace(
+        /{ORGANIZATION_NAME}/,
+        ((((certificate.issuedBy as any) as IOrganization).account as any) as IAccount)
+          .displayName
+      )
+
+    if (ctx) ctx.type = 'png'
+    return sharp(Buffer.from(svg, 'utf8')).png()
   }
 
   async setPrivacy(session?: ClientSession): Promise<ICertificateResponse[]> {
