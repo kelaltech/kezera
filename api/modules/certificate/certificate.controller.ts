@@ -48,6 +48,10 @@ export class CertificateController extends KoaController {
       ),
       { session }
     )
+
+    volunteer.portfolio.certificate.push(certificate._id)
+    await edit(VolunteerModel, volunteer._id, volunteer, { session })
+
     return await certificateDocumentToResponse(certificate)
   }
 
