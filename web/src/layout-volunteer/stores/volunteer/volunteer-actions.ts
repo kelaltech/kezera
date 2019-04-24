@@ -20,7 +20,7 @@ export function reloadVolunteer(
   if (volunteer) {
     reload(volunteer)
   } else {
-    Axios.get('/api/volunteer/me', { withCredentials: true })
+    Axios.get<IVolunteerResponse>('/api/volunteer/me', { withCredentials: true })
       .then(res => res.data)
       .then(reload)
       .catch(e => {
