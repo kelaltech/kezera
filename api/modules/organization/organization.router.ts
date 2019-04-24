@@ -27,6 +27,12 @@ organizationRouter.get('/list', handle(OrganizationController, (c, s) => c.list(
 // GET /api/organization/search?term=&since={Date.now()}&count={10}
 organizationRouter.get('/search', handle(OrganizationController, (c, s) => c.search(s)))
 
+// GET /api/organization/discover?since={Date.now()}&count={10}
+organizationRouter.get(
+  '/discover',
+  handle(OrganizationController, (c, s) => c.discover(s))
+)
+
 // PUT /api/organization/edit-me *
 organizationRouter.put(
   '/edit-me',
