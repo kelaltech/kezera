@@ -5,12 +5,16 @@ import * as fs from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import { ICertificateResponse } from './certificate.apiv'
-import { get, list } from '../../lib/crud'
-import { CertificateModel } from '../../models/certificate/certificate.model'
+import { edit, get, list } from '../../lib/crud'
+import {
+  CertificateModel,
+  ICertificatePrivacy
+} from '../../models/certificate/certificate.model'
 import { IVolunteer, VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { certificateDocumentToResponse } from './certificate.filter'
 import { IAccount } from '../../models/account/account.model'
 import { IOrganization } from '../../models/organization/organization.model'
+import { KoaError } from '../../lib/koa-error'
 
 export class CertificateController extends KoaController {
   /* ISSUES */
@@ -76,8 +80,33 @@ export class CertificateController extends KoaController {
     return sharp(Buffer.from(svg, 'utf8')).png()
   }
 
-  async setPrivacy(session?: ClientSession): Promise<ICertificateResponse[]> {
-    // todo
-    throw Error(JSON.stringify(session))
+  async setPrivacy(
+    privacy: ICertificatePrivacy,
+    session?: ClientSession,
+    _id = super.getParam('_id'),
+    account_id = super.getUser()!._id
+  ): Promise<ICertificateResponse> {
+    let certificate = await get(CertificateModel, _id, { session })
+
+    await edit(
+      CertificateModel,
+      certificate._id,
+      { ...certificate, privacy },
+      {
+        session,
+        preUpdate: async doc => {
+          if (certificate.issuedTo.toString() !== account_id)
+            throw new KoaError(
+              `Cannot update somebody else's certificate privacy options.`,
+              403,
+              'NOT_AUTHORIZED'
+            )
+          return doc
+        }
+      }
+    )
+
+    certificate = await get(CertificateModel, _id, { session })
+    return await certificateDocumentToResponse(certificate)
   }
 }

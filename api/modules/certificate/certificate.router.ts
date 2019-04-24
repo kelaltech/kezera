@@ -23,11 +23,18 @@ certificateRouter.get(
 // GET /api/certificate/print/:_id
 certificateRouter.get('/print/:_id', handle(CertificateController, (c, s) => c.print(s)))
 
-// PUT /api/certificate/set-privacy/:_id
+// PUT /api/certificate/set-privacy/:_id/public
 certificateRouter.get(
-  '/set-privacy/:_id',
+  '/set-privacy/:_id/public',
   authorize(['VOLUNTEER']),
-  handle(CertificateController, (c, s) => c.setPrivacy(s))
+  handle(CertificateController, (c, s) => c.setPrivacy('PUBLIC', s))
+)
+
+// PUT /api/certificate/set-privacy/:_id/private
+certificateRouter.get(
+  '/set-privacy/:_id/private',
+  authorize(['VOLUNTEER']),
+  handle(CertificateController, (c, s) => c.setPrivacy('PRIVATE', s))
 )
 
 /* TODO: TEMP */
