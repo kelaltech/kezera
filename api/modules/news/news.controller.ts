@@ -105,8 +105,11 @@ export async function editNews(data: any, _newsId: ObjectId): Promise<any> {
 export async function searchNews(term: string): Promise<any> {
   return search(NewsModel, term)
 }
-export async function recentNews(count: Number): Promise<any> {
-  return await NewsModel.find({}).count(count)
+export async function recentNews(count: number): Promise<any> {
+  return await list(NewsModel, {
+    since: Date.now(),
+    count
+  })
 }
 /*export async function addNewsWithPicture(
   data: any,

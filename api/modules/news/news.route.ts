@@ -22,6 +22,11 @@ export const newsRouter = new Route({
   prefix: '/api/news'
 })
 
+//GET /api/news/recent?count=5
+newsRouter.get('/recent', async ctx => {
+  ctx.body = await recentNews(Number(ctx.query.count))
+})
+
 //POST /api/news/new
 newsRouter.post('/new', async ctx => {
   ctx.body = await addNews(ctx.request.body)
@@ -94,9 +99,4 @@ newsRouter.get('/search', async ctx => {
 
 newsRouter.post('/:_newsId/comment/new', async ctx => {
   ctx.body = await addComment(ctx.state.user, ctx.params._newsId, ctx.request.body)
-})
-
-//GET /api/news/recent?count=5
-newsRouter.get('/recent', async ctx => {
-  ctx.body = await recentNews(ctx.query.count)
 })

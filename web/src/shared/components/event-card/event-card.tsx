@@ -16,7 +16,7 @@ interface IEventProps {
 
 export default function EventCard(props: IEventProps) {
   let [open, setOpen] = useState(false)
-  let account = useAccountState()
+  let { account } = useAccountState()
   let months = [
     'Jan.',
     'Feb.',
@@ -121,7 +121,7 @@ export default function EventCard(props: IEventProps) {
           </Link>
         </span>
       </div>
-      {account && account!.account!.role == 'ORGANIZATION' ? (
+      {account && account!.role == 'ORGANIZATION' ? (
         <Block last className={'ActionContainer flex'}>
           <Flex className={'full-width '} />
           <Flex className={'full-width '} />
