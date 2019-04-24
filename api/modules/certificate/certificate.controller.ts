@@ -4,24 +4,51 @@ import * as sharp from 'sharp'
 import * as fs from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
-import { ICertificateResponse } from './certificate.apiv'
-import { edit, get, list } from '../../lib/crud'
+import { ICertificateRequest, ICertificateResponse } from './certificate.apiv'
+import { add, edit, get, list } from '../../lib/crud'
 import {
   CertificateModel,
-  ICertificatePrivacy
+  ICertificatePrivacy,
+  ICertificatePurpose
 } from '../../models/certificate/certificate.model'
 import { IVolunteer, VolunteerModel } from '../../models/volunteer/volunteer.model'
-import { certificateDocumentToResponse } from './certificate.filter'
+import {
+  certificateDocumentToResponse,
+  certificateRequestToDocument
+} from './certificate.filter'
 import { IAccount } from '../../models/account/account.model'
-import { IOrganization } from '../../models/organization/organization.model'
+import {
+  IOrganization,
+  OrganizationModel
+} from '../../models/organization/organization.model'
 import { KoaError } from '../../lib/koa-error'
 
 export class CertificateController extends KoaController {
   /* ISSUES */
 
-  async issue(session?: ClientSession): Promise<ICertificateResponse> {
-    // todo
-    throw Error(JSON.stringify(session))
+  async issue(
+    purpose: ICertificatePurpose,
+    session?: ClientSession,
+    data = super.getRequestBody<ICertificateRequest>(),
+    account_id = super.getUser()!._id
+  ): Promise<ICertificateResponse> {
+    const organization = await get(OrganizationModel, null, {
+      session,
+      conditions: { account: account_id }
+    })
+    const volunteer = await get(VolunteerModel, data.issuedTo, { session })
+
+    const certificate = await add(
+      CertificateModel,
+      await certificateRequestToDocument(
+        data,
+        organization._id,
+        purpose,
+        volunteer.privacy.certificate ? 'PUBLIC' : 'PRIVATE'
+      ),
+      { session }
+    )
+    return await certificateDocumentToResponse(certificate)
   }
 
   /* GENERAL */
@@ -79,6 +106,8 @@ export class CertificateController extends KoaController {
     if (ctx) ctx.type = 'png'
     return sharp(Buffer.from(svg, 'utf8')).png()
   }
+
+  /* PRIVACY */
 
   async setPrivacy(
     privacy: ICertificatePrivacy,

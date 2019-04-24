@@ -10,7 +10,26 @@ export const certificateRouter = new Router({ prefix: '/api/certificate' })
 
 /* ISSUES */
 
-// todo
+// POST /api/certificate/issue-donation-certificate *
+certificateRouter.post(
+  '/issue-donation-certificate',
+  authorize(['ORGANIZATION']),
+  handle(CertificateController, (c, s) => c.issue('DONATION', s))
+)
+
+// POST /api/certificate/issue-event-certificate *
+certificateRouter.post(
+  '/issue-event-certificate',
+  authorize(['ORGANIZATION']),
+  handle(CertificateController, (c, s) => c.issue('EVENT_ATTENDANCE', s))
+)
+
+// POST /api/certificate/issue-membership-certificate *
+certificateRouter.post(
+  '/issue-membership-certificate',
+  authorize(['ORGANIZATION']),
+  handle(CertificateController, (c, s) => c.issue('MEMBERSHIP', s))
+)
 
 /* GENERAL */
 
@@ -23,14 +42,16 @@ certificateRouter.get(
 // GET /api/certificate/print/:_id
 certificateRouter.get('/print/:_id', handle(CertificateController, (c, s) => c.print(s)))
 
-// PUT /api/certificate/set-privacy/:_id/public
+/* PRIVACY */
+
+// PUT /api/certificate/set-privacy/:_id/public *
 certificateRouter.get(
   '/set-privacy/:_id/public',
   authorize(['VOLUNTEER']),
   handle(CertificateController, (c, s) => c.setPrivacy('PUBLIC', s))
 )
 
-// PUT /api/certificate/set-privacy/:_id/private
+// PUT /api/certificate/set-privacy/:_id/private *
 certificateRouter.get(
   '/set-privacy/:_id/private',
   authorize(['VOLUNTEER']),

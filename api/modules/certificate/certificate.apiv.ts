@@ -4,12 +4,10 @@ import {
 } from '../../models/certificate/certificate.model'
 
 export type ICertificateRequest = {
-  purpose: ICertificatePurpose
+  // purpose (manual)
   description: string
 
   issuedTo: string // volunteer
-
-  privacy?: ICertificatePrivacy
 }
 
 export type ICertificateResponse = {

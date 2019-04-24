@@ -3,7 +3,8 @@ import { Document, Schema } from 'mongoose'
 import {
   CertificateModel,
   ICertificate,
-  ICertificatePrivacy
+  ICertificatePrivacy,
+  ICertificatePurpose
 } from '../../models/certificate/certificate.model'
 import { ICertificateRequest, ICertificateResponse } from './certificate.apiv'
 
@@ -12,11 +13,12 @@ type ObjectId = Schema.Types.ObjectId | string
 export async function certificateRequestToLeanDocument(
   request: ICertificateRequest,
   issuedBy: ObjectId, // organization
-  defaultPrivacy: ICertificatePrivacy,
+  purpose: ICertificatePurpose,
+  privacy: ICertificatePrivacy,
   _id?: ObjectId, // certificate
   _last: Date | number = Date.now()
 ): Promise<ICertificate & { _id?: ObjectId }> {
-  const { purpose, description, issuedTo, privacy } = request
+  const { description, issuedTo } = request
   return {
     _id,
     _last,
@@ -27,19 +29,27 @@ export async function certificateRequestToLeanDocument(
     issuedBy,
     issuedTo,
 
-    privacy: privacy || defaultPrivacy
+    privacy
   }
 }
 
 export async function certificateRequestToDocument(
   request: ICertificateRequest,
   issuedBy: ObjectId, // organization
-  defaultPrivacy: ICertificatePrivacy,
+  purpose: ICertificatePurpose,
+  privacy: ICertificatePrivacy,
   _id?: ObjectId, // certificate
   _last: Date | number = Date.now()
 ): Promise<Document & ICertificate> {
   return new CertificateModel(
-    await certificateRequestToLeanDocument(request, issuedBy, defaultPrivacy, _id, _last)
+    await certificateRequestToLeanDocument(
+      request,
+      issuedBy,
+      purpose,
+      privacy,
+      _id,
+      _last
+    )
   )
 }
 
