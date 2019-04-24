@@ -16,7 +16,7 @@
   <text fill="#000000" stroke-width="0" x="100" y="180" id="svg_3" font-size="18" font-family="Serif" text-anchor="start" xml:space="preserve" stroke="#ff5722" font-weight="bold" opacity="0.84">OF {PURPOSE}</text>
   <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="260" id="svg_6" font-size="14" font-family="Serif" text-anchor="start" xml:space="preserve" font-style="italic" font-weight="normal" opacity="0.6">Proudly, awarded on this date, {DATE}, to:</text>
   <text fill="#000000" stroke="#ff5722" stroke-width="0" x="95" y="311.718072" id="svg_7" font-size="42" font-family="Serif" text-anchor="start" xml:space="preserve" font-weight="normal">{DISPLAY_NAME}</text>
-  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100.186724" y="400" id="svg_8" font-size="14" font-family="Serif" text-anchor="start" xml:space="preserve">{DESCRIPTION}</text>
+  <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="360" id="svg_8" font-size="14" font-family="Serif" text-anchor="start" xml:space="preserve">{DESCRIPTION}</text>
   <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="520" id="svg_9" font-size="12" font-family="Serif" text-anchor="start" xml:space="preserve" font-weight="bold" opacity="0.7">{ORGANIZATION_NAME}</text>
   <line fill="none" stroke="#ff5722" stroke-width="3" stroke-opacity="null" fill-opacity="null" x1="100" y1="500" x2="400" y2="500" id="svg_10"/>
   <text fill="#000000" stroke="#ff5722" stroke-width="0" x="100" y="540" id="svg_11" font-size="12" font-family="Serif" text-anchor="start" xml:space="preserve" font-weight="normal" opacity="0.7">SIGNATURE</text>

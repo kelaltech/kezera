@@ -1,12 +1,11 @@
-import { ICertificatePurpose } from '../../models/certificate/certificate.model'
+import {
+  ICertificatePrivacy,
+  ICertificatePurpose
+} from '../../models/certificate/certificate.model'
 
 export type ICertificateRequest = {
-  purpose: ICertificatePurpose
-  description: string
-
   issuedTo: string // volunteer
-
-  public?: boolean // true by default
+  description: string
 }
 
 export type ICertificateResponse = {
@@ -19,5 +18,7 @@ export type ICertificateResponse = {
   issuedBy: string // organization
   issuedTo: string // volunteer
 
-  public?: boolean // true by default
+  privacy: ICertificatePrivacy // true by default
+
+  printUri: string
 }

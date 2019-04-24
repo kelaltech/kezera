@@ -2,7 +2,9 @@ import { Document, Schema } from 'mongoose'
 
 import {
   CertificateModel,
-  ICertificate
+  ICertificate,
+  ICertificatePrivacy,
+  ICertificatePurpose
 } from '../../models/certificate/certificate.model'
 import { ICertificateRequest, ICertificateResponse } from './certificate.apiv'
 
@@ -11,10 +13,12 @@ type ObjectId = Schema.Types.ObjectId | string
 export async function certificateRequestToLeanDocument(
   request: ICertificateRequest,
   issuedBy: ObjectId, // organization
+  purpose: ICertificatePurpose,
+  privacy: ICertificatePrivacy,
   _id?: ObjectId, // certificate
   _last: Date | number = Date.now()
 ): Promise<ICertificate & { _id?: ObjectId }> {
-  const { purpose, description, issuedTo, ...rest } = request
+  const { description, issuedTo } = request
   return {
     _id,
     _last,
@@ -25,25 +29,34 @@ export async function certificateRequestToLeanDocument(
     issuedBy,
     issuedTo,
 
-    public: rest.public
+    privacy
   }
 }
 
 export async function certificateRequestToDocument(
   request: ICertificateRequest,
   issuedBy: ObjectId, // organization
+  purpose: ICertificatePurpose,
+  privacy: ICertificatePrivacy,
   _id?: ObjectId, // certificate
   _last: Date | number = Date.now()
 ): Promise<Document & ICertificate> {
   return new CertificateModel(
-    await certificateRequestToLeanDocument(request, issuedBy, _id, _last)
+    await certificateRequestToLeanDocument(
+      request,
+      issuedBy,
+      purpose,
+      privacy,
+      _id,
+      _last
+    )
   )
 }
 
 export async function certificateDocumentToResponse(
   document: Document & ICertificate
 ): Promise<ICertificateResponse> {
-  const { _id, _at, purpose, description, issuedBy, issuedTo, ...rest } = document
+  const { _id, _at, purpose, description, issuedBy, issuedTo, privacy } = document
   return {
     _id,
     _at: new Date(_at!).getTime(),
@@ -54,6 +67,8 @@ export async function certificateDocumentToResponse(
     issuedBy: issuedBy.toString(),
     issuedTo: issuedTo.toString(),
 
-    public: rest.public
+    privacy,
+
+    printUri: `/api/certificate/print/${_id}`
   }
 }
