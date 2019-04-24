@@ -136,7 +136,7 @@ export class OrganizationController extends KoaController {
     if (account) {
       const volunteer = await VolunteerModel.findOne({ account: account._id })
       if (volunteer) {
-        conditions.subscribers = { $not: volunteer._id }
+        conditions.subscribers = { $ne: account._id }
       }
     }
 
