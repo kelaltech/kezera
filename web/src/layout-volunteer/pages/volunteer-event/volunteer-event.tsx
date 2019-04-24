@@ -61,18 +61,19 @@ function VolunteerEvents() {
     <div className={'events-container'}>
       <div className={'e-slider events-list-container'}>
         <h4>Events around you </h4>
-        {/*      <Slider {...settings}>
-          {events.map((event: any) => (
+        <Slider {...settings}>
+          {/*  {events.map((event: any) => (
             <div className={'slider-event-list'}>
               <EventCard event={event} />
+              <h1>Bituk</h1>
             </div>
           ))}
            {nearEvents.map((event: any) => (//todo uncomment
               <div className={'slider-event-list'}>
                 <EventCard  event={event}  />
               </div>
-            ))}
-        </Slider>*/}
+            ))}*/}
+        </Slider>
       </div>
       <Block />
       <div className={'events-list-container'}>
