@@ -60,13 +60,11 @@ export class CertificateController extends KoaController {
   ): Promise<ICertificateResponse[]> {
     const volunteer = await get(VolunteerModel, volunteer_id, { session })
 
-    const certificates = await list(CertificateModel, {
-      session,
-      conditions: {
-        issuedTo: volunteer._id,
-        public: !(account && account._id.toString() === volunteer.account.toString())
-      }
-    })
+    const conditions: any = { issuedTo: volunteer._id }
+    if (!(account && account._id.toString() === volunteer.account.toString()))
+      conditions.privacy = 'PUBLIC'
+
+    const certificates = await list(CertificateModel, { session, conditions })
     return await Promise.all(
       certificates.map(certificate => certificateDocumentToResponse(certificate))
     )
@@ -85,6 +83,13 @@ export class CertificateController extends KoaController {
           .populate({ path: 'issuedTo', populate: { path: 'account' } })
     })
 
+    let description = ''
+    const descriptionWords = certificate.description.split(' ')
+    for (let i = 0; i < descriptionWords.length; i++) {
+      description += descriptionWords[i] + ' '
+      if ((i + 1) % 13 == 0) description += '\n'
+    }
+
     const svg = fs
       .readFileSync('api/modules/certificate/templates/default/default.svg')
       .toString('utf8')
@@ -93,10 +98,10 @@ export class CertificateController extends KoaController {
       .replace(/{DATE}/g, new Date(certificate._at!).toDateString().substr(3))
       .replace(
         /{DISPLAY_NAME}/,
-        ((((certificate.issuedBy as any) as IVolunteer).account as any) as IAccount)
+        ((((certificate.issuedTo as any) as IVolunteer).account as any) as IAccount)
           .displayName
       )
-      .replace(/{DESCRIPTION}/, certificate.description)
+      .replace(/{DESCRIPTION}/, description)
       .replace(
         /{ORGANIZATION_NAME}/,
         ((((certificate.issuedBy as any) as IOrganization).account as any) as IAccount)

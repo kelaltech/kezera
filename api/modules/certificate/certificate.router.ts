@@ -33,9 +33,9 @@ certificateRouter.post(
 
 /* GENERAL */
 
-// GET /api/certificate/list/:account_id
+// GET /api/certificate/list/:volunteer_id
 certificateRouter.get(
-  '/list/:account_id',
+  '/list/:volunteer_id',
   handle(CertificateController, (c, s) => c.list(s))
 )
 

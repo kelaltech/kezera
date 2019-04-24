@@ -26,7 +26,7 @@ export interface ICertificate {
   issuedBy: ObjectId // organization
   issuedTo: ObjectId // volunteer
 
-  privacy?: ICertificatePrivacy
+  privacy: ICertificatePrivacy
 }
 
 export const certificateModelFactory = new ModelFactory<ICertificate>({

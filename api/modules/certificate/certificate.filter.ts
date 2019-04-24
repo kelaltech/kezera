@@ -67,6 +67,8 @@ export async function certificateDocumentToResponse(
     issuedBy: issuedBy.toString(),
     issuedTo: issuedTo.toString(),
 
-    privacy: privacy!
+    privacy,
+
+    printUri: `/api/certificate/print/${_id}`
   }
 }
