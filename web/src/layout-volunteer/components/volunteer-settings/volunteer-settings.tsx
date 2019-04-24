@@ -22,6 +22,7 @@ import {
   useVolunteerState
 } from '../../stores/volunteer/volunteer-provider'
 import { updateSetting } from '../../stores/volunteer/volunteer-actions'
+import { MenuItem, TextField } from '@material-ui/core'
 interface Props {
   /**
    * @default false
@@ -29,6 +30,16 @@ interface Props {
   readonly?: boolean
 }
 
+const genderTypes = [
+  {
+    value: 'MALE',
+    label: 'M'
+  },
+  {
+    value: 'FEMALE',
+    label: 'F'
+  }
+]
 function VolunteerSettings({ readonly }: Props) {
   const { loading, t } = useLocale([
     /* todo: use some namespace */
@@ -150,14 +161,22 @@ function VolunteerSettings({ readonly }: Props) {
             >
               <FontAwesomeIcon className={'margin-right-big'} icon={faVenusMars} />
               {editGender ? (
-                <Input
-                  className={'full-width'}
-                  type={'text'}
-                  label={`Username`}
-                  name={'username'}
+                <TextField
+                  id="standard-select-gender"
+                  select
+                  label="Select"
                   value={gender}
                   onChange={e => setGender(e.target.value)}
-                />
+                  helperText="Please select your gender"
+                  margin="normal"
+                  className={'full-width'}
+                >
+                  {genderTypes.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
               ) : (
                 <div className={'full-width'}>
                   <span className={'fg-blackish'}>{`Gender`}</span>
@@ -189,8 +208,8 @@ function VolunteerSettings({ readonly }: Props) {
                 <Input
                   className={'full-width'}
                   type={'text'}
-                  label={`Username`}
-                  name={'username'}
+                  label={`Country`}
+                  name={'country'}
                   value={country}
                   onChange={e => setCountry(e.target.value)}
                 />

@@ -4,7 +4,7 @@ import { IAccountRequest } from '../account/account.apiv'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { IAccount } from '../../models/account/account.model'
 import { OrganizationModel } from '../../models/organization/organization.model'
-import { IVolunteerRequest } from './volunteer.apiv'
+import { IVolunteerRequest, IVolunteerResponse } from './volunteer.apiv'
 import { Document } from 'mongoose'
 
 export async function RegisterVolunteer(data: IAccountRequest): Promise<any> {
@@ -16,8 +16,9 @@ export async function RegisterVolunteer(data: IAccountRequest): Promise<any> {
 }
 
 export async function volunteerInfo(user: Document & IAccount): Promise<any> {
-  console.log('volunteer Info /me Controller')
-  return await VolunteerModel.findOne({ account: user._id })
+  return ((await VolunteerModel.findOne({
+    account: user._id
+  })) as any) as IVolunteerResponse
 }
 
 export async function editVolunteerInfo(

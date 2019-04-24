@@ -28,7 +28,15 @@
 .slider-list {
   padding: 0 5px;
 }
+.inline {
+  display: inline-block;
+}
 .dis-slider {
-  width: 80%;
+  width: 80vw;
+  height: auto;
   margin: 0 auto;
+
+  @media screen and (max-width: 580px) {
+    width: 90vw;
+  }
 }

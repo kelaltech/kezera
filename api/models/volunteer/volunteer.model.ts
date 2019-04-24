@@ -24,6 +24,7 @@ export interface IVolunteer extends Document {
     certificate: ObjectId[]
     material: ObjectId[]
     money: ObjectId[]
+    organ: ObjectId[]
   }
 }
 

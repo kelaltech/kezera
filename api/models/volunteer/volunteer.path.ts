@@ -22,6 +22,7 @@ export const VolunteerPaths: SchemaDefinition = {
     tasks: [{ type: ObjectId, ref: 'task' }],
     certificate: [{ type: ObjectId, ref: 'certificate' }],
     material: [{ type: ObjectId, ref: 'material' }],
-    money: [{ type: ObjectId, ref: 'fundraising' }]
+    money: [{ type: ObjectId, ref: 'fundraising' }],
+    organ: [{ type: ObjectId, ref: 'organ' }]
   }
 }
