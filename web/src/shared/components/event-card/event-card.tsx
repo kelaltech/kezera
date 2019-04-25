@@ -7,7 +7,11 @@ import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
 import axios from 'axios'
 import { IOrganizationEventResponse } from '../../../apiv/event.apiv'
 import { useEventDispatch } from '../../../layout-organization/stores/events/events.provider'
-import { DeleteEvent } from '../../../layout-organization/stores/events/events.action'
+import {
+  DeleteEvent,
+  HandleInterested,
+  HandleLike
+} from '../../../layout-organization/stores/events/events.action'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 
 interface IEventProps {
@@ -32,20 +36,6 @@ export default function EventCard(props: IEventProps) {
     'Dec.'
   ]
   let eventDispatch = useEventDispatch()
-
-  let handleLike = function(id: any) {
-    axios
-      .put('/api/event/' + id + '/like')
-      .then()
-      .catch()
-  }
-
-  let handleInterested = function(id: any) {
-    axios
-      .put(`/api/event/${id}/interest`)
-      .then()
-      .catch()
-  }
 
   let RemoveEvent = function(id: string) {
     if (window.confirm('Are you sure you want to delete this event?')) {
@@ -99,7 +89,7 @@ export default function EventCard(props: IEventProps) {
       <div className="EventField flex">
         <span className={'full-width flex'}>
           <Button
-            onClick={() => handleInterested(props.event._id)}
+            onClick={() => HandleInterested(props.event._id.toString(), eventDispatch)}
             className={'ActionButton'}
           >
             <FontAwesomeIcon icon={'smile'} size={'1x'} className={'InterestedIcon'} />{' '}
@@ -109,13 +99,16 @@ export default function EventCard(props: IEventProps) {
           </Button>
         </span>
         <span className={'full-width flex'}>
-          <Button onClick={() => handleLike(props.event._id)} className={'ActionButton'}>
+          <Button
+            onClick={() => HandleLike(props.event._id.toString(), eventDispatch)}
+            className={'ActionButton'}
+          >
             <FontAwesomeIcon icon={'heart'} size={'1x'} className="LikeIcon" />{' '}
             {props.event.likes.length == 0 ? '' : props.event.likes.length}
           </Button>
         </span>
         <span className={'full-width flex'}>
-          <Link to={`/organization/event/${props.event._id}`}>
+          <Link to={`/event/${props.event._id}`}>
             {' '}
             <FontAwesomeIcon icon={['far', 'comment-alt']} />
           </Link>

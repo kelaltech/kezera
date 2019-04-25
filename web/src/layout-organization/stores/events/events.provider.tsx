@@ -11,6 +11,7 @@ export function EventProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     ListEvents(dispatch)
   }, [])
+
   return (
     <EventContextState.Provider value={EventState}>
       <EventContextDispatch.Provider value={dispatch}>

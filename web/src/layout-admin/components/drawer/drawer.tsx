@@ -24,31 +24,31 @@ export default function AdminDrawer(props: any) {
             className={'primary margin-top-small flex'}
           />
           &emsp;
-          <a href={'/#ORGANIZATION'} className={'no-decoration flex'}>
+          <Anchor href={'/#ORGANIZATION'} className={'no-decoration flex'}>
             {' '}
             Organizations{' '}
-          </a>
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>
           <FontAwesomeIcon icon={'users'} className={'primary margin-top-small flex'} />
           &emsp;
-          <a
+          <Anchor
             href={'/#VOLUNTEER'}
             className={'no-decoration no-decoration no-decoration flex'}
           >
             {' '}
             Volunteers{' '}
-          </a>
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>
           <FontAwesomeIcon icon={'donate'} className={'primary margin-top-small flex'} />
           &emsp;
-          <a href={'/#DONATION'} className={'no-decoration flex'}>
+          <Anchor href={'/#DONATION'} className={'no-decoration flex'}>
             {' '}
             Donations{' '}
-          </a>
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>
@@ -57,10 +57,10 @@ export default function AdminDrawer(props: any) {
             className={'primary margin-top-small flex'}
           />
           &emsp;
-          <a href={'/#NEWS'} className={'no-decoration flex'}>
+          <Anchor href={'/#NEWS'} className={'no-decoration flex'}>
             {' '}
             News{' '}
-          </a>
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>
@@ -69,10 +69,10 @@ export default function AdminDrawer(props: any) {
             className={'primary margin-top-small flex'}
           />
           &emsp;
-          <a href={'/#NEWS'} className={'no-decoration flex'}>
+          <Anchor href={'/#NEWS'} className={'no-decoration flex'}>
             {' '}
             Events
-          </a>
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>

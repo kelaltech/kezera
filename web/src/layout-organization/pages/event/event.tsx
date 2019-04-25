@@ -29,7 +29,7 @@ export default function AccountSettings() {
           {events && events.map((e: any) => <EventCard event={e} />)}
         </Yoga>
       ) : (
-        <Title size={'3XL'}> No events found</Title>
+        <Title size={'L'}> No events found</Title>
       )}
     </Page>
   )

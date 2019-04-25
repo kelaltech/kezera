@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './volunteer.scss'
 import { Block, Content, Flex, Title, Yoga } from 'gerami'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
@@ -6,6 +6,7 @@ import { curveCardinal } from 'd3-shape'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useFetch } from '../../../hooks/Fetch'
 import { ProgressBar } from '../../../components/progress-bar/progress-bar'
+import Axios from 'axios'
 const months = [
   'January',
   'February',
@@ -74,24 +75,9 @@ const data = [
 const cardinal = curveCardinal.tension(0.2)
 
 export default function Volunteer() {
-  let stat: any = []
-  let res = useFetch('/api/admin/volunteer/joined')
-  let pop = async function() {
-    for (let i = 0; i < months.length; i++) {
-      stat[i] = {
-        name: months[i],
-        Joined_Volunteers: res[i]
-      }
-    }
-    console.log(stat)
-  }
-  useEffect(() => {
-    pop()
-  })
-
   return (
     <Content transparent>
-      <div className={''}>{data.length > 0 ? <Chart data={stat} /> : ''}</div>
+      <div className={''}>{data.length > 0 ? <Chart /> : ''}</div>
       <Content>
         <Yoga maxCol={2}>
           <Total />
@@ -103,21 +89,51 @@ export default function Volunteer() {
   )
 }
 
+interface IJoinedVolunteer {
+  name?: string
+  Joined_Volunteers: number
+}
 let Chart = function(props: any) {
+  let statistics: IJoinedVolunteer[] = []
+  let [stat, setStat] = useState([])
+
+  useEffect(() => {
+    Axios.get('/api/admin/volunteer/joined')
+      .then(resp => {
+        for (let i = 0; i < months.length; i++) {
+          statistics[i] = {
+            name: months[i],
+            Joined_Volunteers: resp.data[i]
+          }
+        }
+        // @ts-ignore
+        setStat(statistics)
+        console.log(stat)
+      })
+      .catch()
+  }, [])
   return (
-    <AreaChart width={950} height={400} data={data}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Area
-        type="monotone"
-        dataKey="Joined_Volunteers"
-        stroke="#8884d8"
-        fill="#8884d8"
-        fillOpacity={0.2}
-      />
-    </AreaChart>
+    <>
+      {stat.length > 0 ? (
+        <>
+          <AreaChart width={950} height={400} data={stat}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey="Joined_Volunteers"
+              stroke="#8884d8"
+              fill="#8884d8"
+              fillOpacity={0.2}
+            />
+          </AreaChart>
+        </>
+      ) : (
+        ''
+      )}
+    </>
   )
 }
 

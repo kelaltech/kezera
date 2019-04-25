@@ -119,10 +119,11 @@ export async function editEvent(
 ): Promise<IEvent> {
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) {
-    let updated = await edit(EventModel, id, { ...body })
+    let updated = await edit(EventModel, id, body)
     await new Grid(serverApp, EventModel, id).remove()
     await new Grid(serverApp, EventModel, id).set(pic)
-    return updated
+    console.log(updated)
+    return await get(EventModel, id)
   } else throw new KoaError('Not authorized', 401)
 }
 
@@ -146,17 +147,13 @@ export async function getEventPicture(id: Schema.Types.ObjectId): Promise<Stream
 export async function toggleLike(
   _newsId: Schema.Types.ObjectId,
   account: Document & IAccount
-): Promise<{
-  likes: number
-}> {
+): Promise<IEvent> {
   const doc = await get(EventModel, _newsId)
 
   if (doc.likes.length == 0) {
     doc.likes.push(account._id)
     await doc.save()
-    return {
-      likes: doc.likes.length
-    }
+    return doc
   }
 
   for (let i = 0; i < doc.likes.length; i++) {
@@ -167,24 +164,19 @@ export async function toggleLike(
     }
   }
   await doc.save()
-
-  return { likes: doc.likes.length }
+  return doc
 }
 
 export async function toggleAttend(
   _id: Schema.Types.ObjectId,
   account: Document & IAccount
-): Promise<{
-  interestedVolunteers: number
-}> {
+): Promise<IEvent> {
   const doc = await get(EventModel, _id)
 
   if (doc.interestedVolunteers.length == 0) {
     doc.interestedVolunteers.push(account._id)
     await doc.save()
-    return {
-      interestedVolunteers: doc.interestedVolunteers.length
-    }
+    return doc
   }
 
   for (let i = 0; i < doc.interestedVolunteers.length; i++) {
@@ -196,8 +188,7 @@ export async function toggleAttend(
     }
   }
   await doc.save()
-
-  return { interestedVolunteers: doc.interestedVolunteers.length }
+  return doc
 }
 
 export async function going(
