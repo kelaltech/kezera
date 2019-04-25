@@ -6,6 +6,7 @@
     "run-s": "run-s",
     "run-p": "run-p",
     "prod": "run-s format tsc",
+    "clean-android": "cd android && gradlew clean",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -22,7 +23,9 @@
     "react": "16.8.3",
     "react-i18next": "^10.5.1",
     "react-native": "0.59.1",
+    "react-native-elements": "^1.1.0",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-vector-icons": "^6.4.2",
     "react-native-webview": "^5.3.1",
     "react-navigation": "^3.3.2"
   },
