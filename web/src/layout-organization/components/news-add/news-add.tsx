@@ -7,6 +7,7 @@ import './news-add.scss'
 import 'medium-draft/lib/index.css'
 import { Button, ImageInput } from 'gerami'
 import { withRouter } from 'react-router'
+import { useMyOrganizationState } from '../../stores/my-organization/my-organization-provider'
 // import 'https://unpkg.com/medium-draft@0.3.10/dist/medium-draft.js'
 
 interface INewsAddState {
@@ -35,10 +36,15 @@ function NewsAdd({
   const [article, setArticle] = useState(createEditorState())
   const [error, setError] = useState('')
 
+  let refsEditor = React.createRef()
+
+  const { myOrganization } = useMyOrganizationState()
   useEffect(() => {
     if (edit) {
       getNews()
     }
+    // @ts-ignore
+    refsEditor.current.focus()
   }, [])
 
   const sideButtons = [
@@ -67,7 +73,8 @@ function NewsAdd({
     const publication = {
       title: JSON.stringify(convertToRaw(title.getCurrentContent())),
       description: JSON.stringify(convertToRaw(description.getCurrentContent())),
-      article: JSON.stringify(convertToRaw(article.getCurrentContent()))
+      article: JSON.stringify(convertToRaw(article.getCurrentContent())),
+      _by: myOrganization!._id
     }
 
     axios
@@ -136,6 +143,7 @@ function NewsAdd({
           sideButtons={[]}
         />
         <Editor
+          ref={refsEditor}
           placeholder={'Description'}
           className={'news-card-add-title'}
           editorState={description}
@@ -166,7 +174,6 @@ class CustomImageSideButton extends ImageSideButton<any, any> {
       // This is a post request to server endpoint with image as `image`
       const formData = new FormData()
       formData.append('file', file)
-
       axios
         .post(`/api/news/${newsid}/addpic`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },

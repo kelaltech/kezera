@@ -11,12 +11,13 @@ interface Props {
    * @default false
    */
   isApplication?: boolean
+  className?: string
 }
 
 /**
  * The recommended Yoga maxCol (for a size XXL) is 3.
  */
-function OrganizationCard({ organization, isApplication = false }: Props) {
+function OrganizationCard({ organization, className, isApplication = false }: Props) {
   const { loading, t } = useLocale(['organization'])
 
   const detailUrl = !isApplication
@@ -25,7 +26,10 @@ function OrganizationCard({ organization, isApplication = false }: Props) {
 
   return (
     loading || (
-      <Card className={'organization-card top'} imgSrc={organization.logoUri}>
+      <Card
+        className={` ${className} organization-card top `}
+        imgSrc={organization.logoUri}
+      >
         {organization.logoUri && (
           <Anchor to={detailUrl} className={'organization-card-logo-anchor'}>
             <Content

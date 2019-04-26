@@ -28,12 +28,11 @@ export async function searchEvent(term: string): Promise<any> {
   return events
 }
 
-export async function getRecentEvents(): Promise<IEvent[]> {
-  let events = await list(EventModel, {
-    since: 0,
-    count: 5
+export async function getRecentEvents(count: number): Promise<IEvent[]> {
+  return await list(EventModel, {
+    since: Date.now(),
+    count
   })
-  return events
 }
 
 export async function getOrganizationEvents(

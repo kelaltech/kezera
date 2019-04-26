@@ -8,47 +8,52 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 import EventCard from '../../../shared/components/event-card/event-card'
-import OrganizationCard from '../../components/volunteer-my-organization/volunteer-my-organizattion'
 import Slider from 'react-slick'
 import RequestCard from '../../../shared/components/request/request-card'
+import { Block, Yoga } from 'gerami'
+import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 
-const settings = {
-  infinite: true,
-  slidesToShow: 4,
-  speed: 500,
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 3,
-        slidesToScroll: 3,
-        infinite: true,
-        dots: true
-      }
-    },
-    {
-      breakpoint: 600,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2,
-        initialSlide: 2
-      }
-    },
-    {
-      breakpoint: 580,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
-      }
-    }
-  ]
-}
 function DiscoveryPage() {
   const [news, setNews] = useState([])
   const [event, setEvent] = useState([])
   const [organization, setOrganization] = useState([])
   const [request, setRequest] = useState([])
 
+  const settings = {
+    infinite: true,
+    slidesToShow: 3,
+    speed: 500,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 580,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  }
+  const settingsNews = { infinite: news.length > 1 }
+  const settingsOrganization = { infinite: organization.length > 1, slidesToShow: 1 }
+  const settingsRequest = { infinite: request.length > 1 }
+  const settingsEvents = { infinite: event.length > 1 }
   useEffect(() => {
     fetchOrganization()
     fetchEvent()
@@ -68,13 +73,31 @@ function DiscoveryPage() {
     axios
       .get('/api/news/recent?count=5')
       .then((news: any) => {
+        let article = ''
+        let description = ''
+        let title = ''
+        //for mapping the stored Editor state in to plain text/string
+        for (let d of news.data) {
+          JSON.parse(d.article).blocks.map((block: any) => (article += block.text))
+          JSON.parse(d.title).blocks.map((block: any) => (title += block.text))
+          JSON.parse(d.description).blocks.map(
+            (block: any) => (description += block.text)
+          )
+          d.article = article
+          d.title = title
+          d.description = description
+
+          article = ''
+          description = ''
+          title = ''
+        }
         setNews(news.data)
       })
       .catch(e => console.log(e))
   }
   const fetchOrganization = () => {
     axios
-      .get('/api/organization/recent?count=5')
+      .get('/api/organization/search?count=5')
       .then((o: any) => {
         setOrganization(o.data)
       })
@@ -91,69 +114,81 @@ function DiscoveryPage() {
   return (
     <div>
       <div className={'discovery-container'}>
-        <div className={'discovery-search-box'}>
-          <div className={'discovery-search'}>
-            <div className={'search-box'}>
-              <Input
-                type={'type'}
-                disableUnderline={true}
-                autoComplete={'something'}
-                placeholder={'Search'}
-              />
-              <span>
-                <FontAwesomeIcon icon={faSearch} />
-              </span>
-            </div>
-          </div>
-        </div>
-
         <div className={'discovery-result-container'}>
           <div>
             <h1>News</h1>
             <div className={'dis-slider'}>
-              <Slider {...settings}>
-                {news.map((n: any) => (
-                  <div className={'slider-list'}>
-                    <NewsCard {...n} />
-                  </div>
-                ))}
-              </Slider>
+              {news.length === 0 ? (
+                <Block className={'fg-blackish'}>There is no News ..!</Block>
+              ) : (
+                <div>
+                  Most recent...
+                  <Slider {...settings} {...settingsNews}>
+                    {news.map((n: any) => (
+                      <div className={'slider-list'}>
+                        <NewsCard
+                          _id={n._id}
+                          commentCount={n.comments.length}
+                          imgSrc={`/api/news/${n._id}/pic`}
+                          title={n.title}
+                          likeCount={n.likes.length}
+                          description={n.description}
+                        />
+                      </div>
+                    ))}
+                  </Slider>
+                </div>
+              )}
             </div>
           </div>
           <div className={'result '}>
             <h1>Event</h1>
             <div className={'dis-slider'}>
-              <Slider {...settings}>
-                {event.map((n: any) => (
-                  <div className={'slider-list'}>
-                    <EventCard event={n} />
-                  </div>
-                ))}
-              </Slider>
+              {event.length === 0 ? (
+                <Block className={'fg-blackish'}>There are no events ..!</Block>
+              ) : (
+                <Slider {...settings} {...settingsEvents}>
+                  {event.map((n: any) => (
+                    <div className={'slider-list'}>
+                      <h1>Anteneh is responsible for this </h1>
+                      {/*<EventCard event={n} />*/}
+                      {/*<EventCard event={n} />*/}
+                    </div>
+                  ))}
+                </Slider>
+              )}
             </div>
           </div>
           <div className={'result'}>
             <h1>Organization</h1>
             <div className={'dis-slider'}>
-              <Slider {...settings}>
-                {organization.map((o: any) => (
+              {organization.length === 0 ? (
+                <Block className={'fg-blackish'}>There are no organizations ..!</Block>
+              ) : (
+                <Slider {...settings} {...settingsOrganization}>
                   <div className={'slider-list'}>
-                    <OrganizationCard {...o} />
+                    {organization.map((o: any) => (
+                      <OrganizationCard organization={o} />
+                    ))}
                   </div>
-                ))}
-              </Slider>
+                </Slider>
+              )}
             </div>
           </div>
           <div className={'result-request'}>
             <h1>Request</h1>
             <div className={'dis-slider'}>
-              <Slider {...settings}>
-                {request.map((r: any) => (
-                  <div className={'slider-list'}>
-                    <RequestCard {...r} />
-                  </div>
-                ))}
-              </Slider>
+              {request.length === 0 ? (
+                <Block className={'fg-blackish'}>There are no requests ..!</Block>
+              ) : (
+                <Slider {...settings} {...settingsRequest}>
+                  {request.map((r: any) => (
+                    <div className={'slider-list'}>
+                      <RequestCard {...r} />
+                    </div>
+                  ))}
+                </Slider>
+              )}
             </div>
           </div>
         </div>

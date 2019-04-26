@@ -17,7 +17,6 @@ volunteerRouter.post('/register', async (ctx: any) => {
 })
 
 volunteerRouter.get('/me', async ctx => {
-  console.log('This is from /me route')
   ctx.body = await volunteerInfo(ctx.state.user)
 })
 

@@ -13,17 +13,20 @@ export const certificatePurposes: ICertificatePurpose[] = [
   'OTHER'
 ]
 
+export type ICertificatePrivacy = 'PUBLIC' | 'PRIVATE'
+export const certificatePrivacy: ICertificatePrivacy[] = ['PUBLIC', 'PRIVATE']
+
 export interface ICertificate {
   _at?: Date | number
   _last: Date | number
 
   purpose: ICertificatePurpose
+  description: string
 
   issuedBy: ObjectId // organization
   issuedTo: ObjectId // volunteer
 
-  design: ObjectId // certificate-design
-  message: string
+  privacy: ICertificatePrivacy
 }
 
 export const certificateModelFactory = new ModelFactory<ICertificate>({

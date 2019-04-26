@@ -1,0 +1,58 @@
+@import '../../../assets/styles/theme';
+.min-sidenav-container {
+  position: sticky;
+  top: 60px;
+  width: 100%;
+  height: auto;
+  //background-color: darkorange;
+  padding: 15px;
+  @media screen and (max-width: $mobile) {
+    display: none;
+  }
+}
+
+.mini-sidenav-links {
+  .sid-link {
+    padding: $padding-S;
+    margin: 2px;
+    display: flex;
+    &:hover {
+      background-color: #d6d6d6;
+      border-radius: $radius;
+      cursor: pointer;
+    }
+
+    .icon-link {
+      margin-right: 3px;
+      width: 100%;
+      text-align: center;
+
+      a {
+        text-decoration: none !important;
+        -moz-appearance: none;
+        all: unset;
+
+        &:active {
+          color: $primary;
+        }
+      }
+    }
+
+    .discovery {
+      color: #177be6 !important;
+    }
+    .news {
+      color: #177be6 !important;
+    }
+
+    .event {
+      color: #ffb53a !important;
+    }
+    .task {
+      color: dodgerblue !important;
+    }
+    .organization {
+      color: lightcoral !important;
+    }
+  }
+}

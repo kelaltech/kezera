@@ -38,8 +38,11 @@ const taskTypes = [
 ]
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCertificate } from '@fortawesome/free-solid-svg-icons'
-import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons/faChevronCircleDown'
+import {
+  faCertificate,
+  faChevronCircleDown,
+  faChild
+} from '@fortawesome/free-solid-svg-icons'
 import { Card, Yoga } from 'gerami'
 function VolunteerTask() {
   const [expanded, setExpanded] = useState(false)
@@ -58,22 +61,7 @@ function VolunteerTask() {
   return (
     <div className={'tasks-list-container'}>
       <div className={'col-bar-container'}>
-        <div className={'col-bar-img'} />
         <div className={'collapse-controller'}>
-          {/*  <div className={'before-expand'} >
-               <div className={'expand'}  onClick={() => setExpanded(!expanded)}>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
-                </div>
-            <Yoga maxCol={3}
-              >
-            </Yoga>
-          </div>
-          <div className={'after-expand'}>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-
-            </Collapse>
-          </div>*/}
-
           <div className={'bar-before-expand'}>
             <span className={'expand-icon'} onClick={() => setExpanded(!expanded)}>
               <FontAwesomeIcon icon={faChevronCircleDown} />
@@ -81,15 +69,15 @@ function VolunteerTask() {
             <div className={'header-expand-bar'}>
               <Yoga maxCol={3}>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown} />
+                  <FontAwesomeIcon icon={faChild} />
                   Children & Youth
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown} />
+                  {/*<FontAwesomeIcon icon={faChevronCircleDown} />*/}
                   Education & Literacy
                 </MenuItem>
                 <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown} />
+                  {/*<FontAwesomeIcon icon={faChevronCircleDown} />*/}
                   Environment
                 </MenuItem>
               </Yoga>

@@ -38,7 +38,7 @@ eventRouter.get('/mine', async ctx => {
 })
 
 eventRouter.get('/recent', async ctx => {
-  ctx.body = await getRecentEvents()
+  ctx.body = await getRecentEvents(Number(ctx.query.count))
 })
 
 // /api/event/search/term
