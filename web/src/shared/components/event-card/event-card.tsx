@@ -4,7 +4,6 @@ import './event-card.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EventEdit from '../../../layout-organization/pages/event-edit/event-edit'
-import axios from 'axios'
 import { IOrganizationEventResponse } from '../../../apiv/event.apiv'
 import { useEventDispatch } from '../../../layout-organization/stores/events/events.provider'
 import {
@@ -45,7 +44,13 @@ export default function EventCard(props: IEventProps) {
 
   return (
     <Content className={'EventCard'}>
-      <EventEdit open={open} onClose={() => setOpen(false)} event={props.event} />
+      {account && account!.role == 'ORGANIZATION' ? (
+        <>
+          <EventEdit open={open} onClose={() => setOpen(false)} event={props.event} />
+        </>
+      ) : (
+        ''
+      )}
       <div className={'EventCardImage'}>
         <div className={'BlurryImage'}>
           <Image className={'EventImage'} src={`/api/event/${props.event._id}/picture`} />

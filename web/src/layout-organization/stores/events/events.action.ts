@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import { Action } from './events.reducer'
+import { addActivity } from '../../../shared/methods/methods'
 
 export function AddEvents(data: FormData, dispatch: (action: Action) => void) {
   Axios.post('/api/event/create', data, {
@@ -8,6 +9,7 @@ export function AddEvents(data: FormData, dispatch: (action: Action) => void) {
   })
     .then(resp => {
       dispatch({ type: 'ADD_EVENT', event: resp.data })
+      addActivity('created an event', `/event/${resp.data._id}`, 'CREATE_EVENT')
     })
     .catch()
 }

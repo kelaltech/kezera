@@ -29,6 +29,7 @@ interface IEventEditProps {
 export default function EventEdit(props: IEventEditProps) {
   let [newEvent, setNewEvent] = useState(event)
   let eventDispatch = useEventDispatch()
+
   const emitChanges = (eventChanges: any): void => {
     setNewEvent({ ...newEvent, ...eventChanges })
     console.log(props.event)
@@ -57,6 +58,7 @@ export default function EventEdit(props: IEventEditProps) {
       emitChanges({ startDate: value })
     }
   })
+
   const EndDateInput = useField<HTMLTimeElement>({
     minLength: 5,
     maxLength: 25,
@@ -64,6 +66,7 @@ export default function EventEdit(props: IEventEditProps) {
       emitChanges({ endDate: value })
     }
   })
+
   const PeopleInput = useField<HTMLInputElement>({
     minLength: 1,
     maxLength: 10,
@@ -71,6 +74,7 @@ export default function EventEdit(props: IEventEditProps) {
       emitChanges({ amountOfPeople: value })
     }
   })
+
   const LocationInput = useField<HTMLInputElement>({
     minLength: 3,
     maxLength: 200,
@@ -78,6 +82,7 @@ export default function EventEdit(props: IEventEditProps) {
       emitChanges({ location: value })
     }
   })
+
   const image = useField<HTMLInputElement>()
 
   let HandleUpdate = function(e: any, id: string) {
@@ -87,6 +92,7 @@ export default function EventEdit(props: IEventEditProps) {
     body.append('image', e.target.image.files[0])
     EditEvent(id, body, eventDispatch)
   }
+
   const validationError = (error: string | null) =>
     error === null ? null : (
       <div

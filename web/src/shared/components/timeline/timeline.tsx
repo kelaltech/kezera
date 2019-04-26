@@ -68,7 +68,7 @@ export function Timeline(props: any) {
           <div>
             {activity.map((data: IActivityResponse) => (
               <section className="timelineYear">
-                <h3>{new Date(data.date).getUTCFullYear()}</h3>
+                <h3>{new Date(data._at).getUTCFullYear()}</h3>
                 <section>
                   <ul>
                     <li>{data.data}</li>
@@ -76,8 +76,8 @@ export function Timeline(props: any) {
                   <Block />
                   <h4>
                     {' '}
-                    {months[new Date(data.date).getMonth()]}&nbsp;
-                    {new Date(data.date).getDate()}
+                    {months[new Date(data._at).getMonth()]}&nbsp;
+                    {new Date(data._at).getDate()}
                   </h4>
                 </section>
               </section>

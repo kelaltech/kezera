@@ -1,12 +1,12 @@
 import { Schema, SchemaDefinition } from 'mongoose'
-import { activityTypes } from './activity.model'
+// import { organizationActivity, verifierActivity, volunteerActivity } from './activity.model'
 
 const ObjectId = Schema.Types.ObjectId
 
 export const ActivityPaths: SchemaDefinition = {
   _at: { type: Date, default: Date.now, index: true },
-  activityType: { type: String, enum: activityTypes, required: true },
-  data: { type: String },
-  date: { type: Date, required: true, default: Date.now() },
+  activityType: { type: String, required: true },
+  data: { type: String, required: true },
+  link: { type: String, required: true },
   accountId: { type: ObjectId, refs: 'account' }
 }
