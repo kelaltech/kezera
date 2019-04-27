@@ -3,6 +3,7 @@ import * as Router from 'koa-router'
 import { authenticate } from '../../lib/middlewares/authenticate'
 import { handle } from '../../lib/middlewares/handle'
 import { SpamController } from './spam.controller'
+import { authorize } from '../../lib/middlewares/authorize'
 
 export const spamRouter = new Router({ prefix: '/api/spam' })
 
@@ -38,7 +39,12 @@ spamRouter.post(
 
 /* GENERAL */
 
-// GET /api/spam/list-reports?count={10}&since={Date.now()} *
+// GET /api/spam/search-reports?term={''}&count={10}&since={Date.now()} *
+spamRouter.post(
+  '/search-reports',
+  authorize(['VERIFIER']),
+  handle(SpamController, (c, s) => c.searchReports(s))
+)
 
 // GET /api/spam/get-report/:_id *
 

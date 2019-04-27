@@ -6,7 +6,7 @@ import {
   SpamReportModel
 } from '../../models/spam-report/spam-report.model'
 import { ISpamReportRequest, ISpamReportResponseBase } from './spam.apiv'
-import { add } from '../../lib/crud'
+import { add, search } from '../../lib/crud'
 import { spamReportDocumentToResponse, spamReportRequestToDocument } from './spam.filter'
 
 export class SpamController extends KoaController {
@@ -31,8 +31,16 @@ export class SpamController extends KoaController {
 
   /* GENERAL */
 
-  async listReports(session?: ClientSession): Promise<void> {
-    session // todo
+  async searchReports(
+    session?: ClientSession,
+    term = super.getQuery('term'),
+    count = super.getQuery('count') ? Number(super.getQuery('count')) : 10,
+    since = super.getQuery('since') ? Number(super.getQuery('since')) : Date.now()
+  ): Promise<ISpamReportResponseBase[]> {
+    const spamReports = await search(SpamReportModel, term, { session, count, since })
+    return await Promise.all(
+      spamReports.map(spamReport => spamReportDocumentToResponse(spamReport))
+    )
   }
 
   async getReport(session?: ClientSession): Promise<void> {
