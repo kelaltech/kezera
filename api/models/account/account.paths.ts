@@ -3,11 +3,17 @@ import { SchemaDefinition } from 'mongoose'
 import { accountRoles, accountStatuses } from './account.model'
 
 export const accountPaths: SchemaDefinition = {
-  _at: { type: Date, default: Date.now, index: true },
-  _last: { type: Date, index: true },
+  _at: { type: Date, required: true, default: Date.now, index: true },
+  _last: { type: Date, required: true, index: true },
 
-  role: { type: String, enum: accountRoles, index: true },
-  status: { type: String, enum: accountStatuses, default: 1, index: true },
+  role: { type: String, required: true, enum: accountRoles, index: true },
+  status: {
+    type: String,
+    required: true,
+    enum: accountStatuses,
+    default: 1,
+    index: true
+  },
 
   email: {
     type: String,
