@@ -16,7 +16,7 @@ export const certificatePurposes: ICertificatePurpose[] = [
 export type ICertificatePrivacy = 'PUBLIC' | 'PRIVATE'
 export const certificatePrivacy: ICertificatePrivacy[] = ['PUBLIC', 'PRIVATE']
 
-export interface ICertificate {
+export type ICertificate = {
   _at?: Date | number
   _last: Date | number
 
