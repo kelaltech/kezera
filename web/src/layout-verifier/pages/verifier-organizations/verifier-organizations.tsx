@@ -53,7 +53,7 @@ function VerifierOrganizations() {
         ready={true}
         documentTitle={`Approved Organizations`}
         title={`Approved Organizations`}
-        description={`These are the verifier-approved organization on the system.`}
+        description={`These are the verifier-approved organizations on the system.`}
         error={error}
         onErrorClose={setError}
       >
