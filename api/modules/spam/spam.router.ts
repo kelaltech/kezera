@@ -60,4 +60,9 @@ spamRouter.put(
   handle(SpamController, (c, s) => c.handle(s))
 )
 
-// PUT /api/spam/ignore-report *
+// DELETE /api/spam/ignore-report *
+spamRouter.delete(
+  '/ignore-report/:_id',
+  authorize(['VERIFIER']),
+  handle(SpamController, (c, s) => c.ignoreReport(s))
+)

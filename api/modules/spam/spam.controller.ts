@@ -91,9 +91,11 @@ export class SpamController extends KoaController {
     // todo: log activity
   }
 
-  async ignoreReport(session?: ClientSession): Promise<void> {
-    session // todo
-
+  async ignoreReport(
+    session?: ClientSession,
+    _id = super.getParam('_id')
+  ): Promise<void> {
+    await remove(SpamReportModel, _id, { check: true, session })
     // todo: log activity
   }
 }
