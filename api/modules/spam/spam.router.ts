@@ -48,11 +48,16 @@ spamRouter.get(
 
 // GET /api/spam/get-report/:_id *
 spamRouter.get(
-  '/get-report',
+  '/get-report/:_id',
   authorize(['VERIFIER']),
   handle(SpamController, (c, s) => c.getReport(s))
 )
 
 // PUT /api/spam/handle/:_id *
+spamRouter.put(
+  '/handle/:_id',
+  authorize(['VERIFIER']),
+  handle(SpamController, (c, s) => c.handle(s))
+)
 
 // PUT /api/spam/ignore-report *

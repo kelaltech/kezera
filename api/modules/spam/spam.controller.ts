@@ -6,8 +6,15 @@ import {
   SpamReportModel
 } from '../../models/spam-report/spam-report.model'
 import { ISpamReportRequest, ISpamReportResponseBase } from './spam.apiv'
-import { add, get, search } from '../../lib/crud'
+import { add, edit, get, remove, search } from '../../lib/crud'
 import { spamReportDocumentToResponse, spamReportRequestToDocument } from './spam.filter'
+import { KoaError } from '../../lib/koa-error'
+import { OrganizationModel } from '../../models/organization/organization.model'
+import { AccountModel } from '../../models/account/account.model'
+import { removeRequest } from '../request/request.controller'
+import { removeEvent } from '../event/event.controller'
+import { EventModel } from '../../models/event/event.model'
+import { removeNews } from '../news/news.controller'
 
 export class SpamController extends KoaController {
   /* REPORT */
@@ -51,11 +58,42 @@ export class SpamController extends KoaController {
     return await spamReportDocumentToResponse(spamReport)
   }
 
-  async handle(session?: ClientSession): Promise<void> {
-    session // todo
+  async handle(session?: ClientSession, _id = super.getParam('_id')): Promise<void> {
+    const spamReport = await get(SpamReportModel, _id, { session })
+
+    switch (spamReport.type) {
+      case 'ORGANIZATION':
+        const organization = await get(OrganizationModel, spamReport.ids[0], { session })
+        const account = await get(AccountModel, organization.account, { session })
+        account.status = 'BLOCKED'
+        await edit(AccountModel, account._id, account.toJSON(), { session })
+        break
+
+      case 'REQUEST':
+        await removeRequest(spamReport.ids[0])
+        break
+
+      case 'EVENT':
+        const event = await get(EventModel, spamReport.ids[0])
+        await removeEvent(event._id, event.organizationId)
+        break
+
+      case 'NEWS':
+        await removeNews(spamReport.ids[0])
+        break
+
+      default:
+        // @ts-ignore
+        throw new KoaError(`Cannot handle spam report of type "${spamReport.type}".`)
+    }
+
+    await remove(SpamReportModel, spamReport._id, { session })
+    // todo: log activity
   }
 
   async ignoreReport(session?: ClientSession): Promise<void> {
     session // todo
+
+    // todo: log activity
   }
 }
