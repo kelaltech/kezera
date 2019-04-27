@@ -40,13 +40,18 @@ spamRouter.post(
 /* GENERAL */
 
 // GET /api/spam/search-reports?term={''}&count={10}&since={Date.now()} *
-spamRouter.post(
+spamRouter.get(
   '/search-reports',
   authorize(['VERIFIER']),
   handle(SpamController, (c, s) => c.searchReports(s))
 )
 
 // GET /api/spam/get-report/:_id *
+spamRouter.get(
+  '/get-report',
+  authorize(['VERIFIER']),
+  handle(SpamController, (c, s) => c.getReport(s))
+)
 
 // PUT /api/spam/handle/:_id *
 

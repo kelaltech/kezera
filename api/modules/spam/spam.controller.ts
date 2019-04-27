@@ -6,7 +6,7 @@ import {
   SpamReportModel
 } from '../../models/spam-report/spam-report.model'
 import { ISpamReportRequest, ISpamReportResponseBase } from './spam.apiv'
-import { add, search } from '../../lib/crud'
+import { add, get, search } from '../../lib/crud'
 import { spamReportDocumentToResponse, spamReportRequestToDocument } from './spam.filter'
 
 export class SpamController extends KoaController {
@@ -43,8 +43,12 @@ export class SpamController extends KoaController {
     )
   }
 
-  async getReport(session?: ClientSession): Promise<void> {
-    session // todo
+  async getReport(
+    session?: ClientSession,
+    _id = super.getParam('_id')
+  ): Promise<ISpamReportResponseBase> {
+    const spamReport = await get(SpamReportModel, _id, { session })
+    return await spamReportDocumentToResponse(spamReport)
   }
 
   async handle(session?: ClientSession): Promise<void> {
