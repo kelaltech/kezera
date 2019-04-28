@@ -1,4 +1,5 @@
 import { ISpamReportType } from '../../models/spam-report/spam-report.model'
+import { IAccountPublicResponse } from '../account/account.apiv'
 
 export type ISpamReportRequestBase = {
   type: ISpamReportType // only used for differentiating by types; always, overridden
@@ -20,7 +21,7 @@ export type ISpamReportResponseBase = {
   type: ISpamReportType
   ids: string[]
 
-  reporter: string // account
+  reporter: IAccountPublicResponse
   description: string
 }
 export type ISpamReportResponse =

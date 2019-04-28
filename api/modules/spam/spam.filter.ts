@@ -1,4 +1,4 @@
-import { Document, Schema } from 'mongoose'
+import { ClientSession, Document, Schema } from 'mongoose'
 
 import {
   ISpamReport,
@@ -6,6 +6,9 @@ import {
   SpamReportModel
 } from '../../models/spam-report/spam-report.model'
 import { ISpamReportRequest, ISpamReportResponseBase } from './spam.apiv'
+import { accountDocumentToPublicResponse } from '../account/account.filter'
+import { AccountModel } from '../../models/account/account.model'
+import { get } from '../../lib/crud'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -40,9 +43,15 @@ export async function spamReportRequestToDocument(
 }
 
 export async function spamReportDocumentToResponse(
-  document: Document & ISpamReport
+  document: Document & ISpamReport,
+  session?: ClientSession
 ): Promise<ISpamReportResponseBase> {
-  const { _id, _at, _last, type, ids, reporter, description } = document
+  const { _id, _at, _last, type, ids, reporter: reporter_id, description } = document
+
+  const reporter = await accountDocumentToPublicResponse(
+    await get(AccountModel, reporter_id, { session })
+  )
+
   return {
     _id: _id.toString(),
     _at: new Date(_at!).getTime(),
@@ -51,7 +60,7 @@ export async function spamReportDocumentToResponse(
     type,
     ids: ids.map(id => id.toString()),
 
-    reporter: reporter.toString(),
+    reporter,
     description
   }
 }

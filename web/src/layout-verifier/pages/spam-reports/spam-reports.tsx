@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Button, Content, Flex, Input, Loading, Yoga } from 'gerami'
+import { Block, Button, Content, Flex, Input, Loading } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios, { CancelTokenSource } from 'axios'
 import * as qs from 'qs'
@@ -8,8 +8,9 @@ import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import useField from '../../../shared/hooks/use-field/use-field'
 import { ISpamReportResponse } from '../../../../../api/modules/spam/spam.apiv'
+import SpamCard from '../../../shared/components/spam-card/spam-card'
 
-const count = 50
+const count = 10
 let searchCancellation: CancelTokenSource | null = null
 
 function SpamReports() {
@@ -81,7 +82,7 @@ function SpamReports() {
                   <Input
                     {...term.inputProps}
                     inputRef={term.ref}
-                    placeholder={`Search for Organization Applications`}
+                    placeholder={`Search for Spam Reports`}
                     className={'margin-vertical-auto full-width'}
                     type={'search'}
                   />
@@ -95,7 +96,7 @@ function SpamReports() {
           <Loading delay />
         ) : !spamReports.length ? (
           <Block first className={'center fg-blackish'}>
-            No organization application found
+            No spam report found
             {term.value && (
               <>
                 {' '}
@@ -106,15 +107,15 @@ function SpamReports() {
           </Block>
         ) : (
           <>
-            <Yoga maxCol={3} className={'yoga-in-rich-page'}>
-              {spamReports.map((application, i) => ({
-                /*<OrganizationCard
+            <>
+              {spamReports.map((spamReport, i) => (
+                <SpamCard
                   key={i}
-                  organization={application}
-                  isApplication={true}
-                />todo*/
-              }))}
-            </Yoga>
+                  spamReport={spamReport}
+                  className={'margin-bottom-normal'}
+                />
+              ))}
+            </>
 
             {spamReports.length % count === 0 && (
               <Block className={'center fg-blackish'}>

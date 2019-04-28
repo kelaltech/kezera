@@ -33,7 +33,7 @@ export class SpamController extends KoaController {
       await spamReportRequestToDocument(body, account_id),
       { session }
     )
-    return await spamReportDocumentToResponse(spamReport)
+    return await spamReportDocumentToResponse(spamReport, session)
   }
 
   /* GENERAL */
@@ -55,7 +55,7 @@ export class SpamController extends KoaController {
     _id = super.getParam('_id')
   ): Promise<ISpamReportResponseBase> {
     const spamReport = await get(SpamReportModel, _id, { session })
-    return await spamReportDocumentToResponse(spamReport)
+    return await spamReportDocumentToResponse(spamReport, session)
   }
 
   async handle(session?: ClientSession, _id = super.getParam('_id')): Promise<void> {
