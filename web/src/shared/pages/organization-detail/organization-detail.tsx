@@ -21,6 +21,7 @@ import OrganizationDetailRequests from './components/organization-detail-request
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
 import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
 import { reloadSubscriptions } from '../../../layout-volunteer/stores/volunteer/volunteer-actions'
+import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
 
 type ITabName = 'info' | 'requests' | 'events' | 'news'
 
@@ -48,6 +49,8 @@ function OrganizationDetail({
   const [organization, setOrganization] = useState<IOrganizationResponse | undefined>(
     organizationOverride
   )
+
+  const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
 
   const { account } = useAccountState()
   const { myOrganization } = useMyOrganizationState()
@@ -174,10 +177,33 @@ function OrganizationDetail({
             )}
             <FlexSpacer />
             {organization.account.status !== 'ACTIVE' || !organization.website ? null : (
-              <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
-                {organization.website}
-              </Anchor>
+              <>
+                <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
+                  {organization.website}
+                </Anchor>
+                <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
+                  |
+                </span>
+              </>
             )}
+            <span>
+              <Anchor
+                onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                title={`Report Organization as Spam`}
+              >
+                <FontAwesomeIcon icon={'user-slash'} />
+              </Anchor>
+              <SpamReportDrop
+                type={'ORGANIZATION'}
+                ids={[organization._id]}
+                open={isSpamReportDropOpen}
+                onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                align={'right'}
+                anchorOffset={18}
+              >
+                hi
+              </SpamReportDrop>
+            </span>
           </Flex>
         ))
       }
