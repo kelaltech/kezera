@@ -53,8 +53,8 @@ spamRouter.get(
   handle(SpamController, (c, s) => c.getReport(s))
 )
 
-// PUT /api/spam/handle/:_id *
-spamRouter.put(
+// DELETE /api/spam/handle/:_id *
+spamRouter.delete(
   '/handle/:_id',
   authorize(['VERIFIER']),
   handle(SpamController, (c, s) => c.handle(s))

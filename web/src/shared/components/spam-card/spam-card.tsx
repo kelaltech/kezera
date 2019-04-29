@@ -20,7 +20,7 @@ function SpamCard({ spamReport, className }: Props) {
             <div className={'font-S bold'}>
               <small>
                 <Anchor
-                  to={`${spamReport.type.toLowerCase()}/${spamReport._id}`}
+                  to={`${spamReport.type.toLowerCase()}/${spamReport.ids[0]}`}
                   target={'_blank'}
                   rel={'noopener'}
                   className={'fg-accent'}
