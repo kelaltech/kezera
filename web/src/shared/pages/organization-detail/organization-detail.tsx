@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { Anchor, Content, Flex, FlexSpacer } from 'gerami'
+import { Anchor, Content, Flex, FlexSpacer, Warning } from 'gerami'
 import { IButtonProps } from 'gerami/src/components/Button/Button'
 import { Tab, Tabs } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -173,7 +173,7 @@ function OrganizationDetail({
               </>
             )}
             <FlexSpacer />
-            {!organization.website ? null : (
+            {organization.account.status !== 'ACTIVE' || !organization.website ? null : (
               <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
                 {organization.website}
               </Anchor>
@@ -237,34 +237,37 @@ function OrganizationDetail({
         []
       }
     >
-      {organization && (
-        <Content className={'bg-whitish'} style={{ overflow: 'visible' }}>
-          <Content>
-            <Tabs
-              value={tab}
-              onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
-            >
-              <Tab label={`Info.`} value={'info'} />
-              {!isApplication && <Tab label={`Requests`} value={'requests'} />}
-              {!isApplication && <Tab label={`Events`} value={'events'} />}
-              {!isApplication && <Tab label={`News`} value={'news'} />}
-            </Tabs>
-          </Content>
+      {organization &&
+        (organization.account.status !== 'ACTIVE' ? (
+          <Warning problem={`Sorry, this organization's account is not active.`} />
+        ) : (
+          <Content className={'bg-whitish'} style={{ overflow: 'visible' }}>
+            <Content>
+              <Tabs
+                value={tab}
+                onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
+              >
+                <Tab label={`Info.`} value={'info'} />
+                {!isApplication && <Tab label={`Requests`} value={'requests'} />}
+                {!isApplication && <Tab label={`Events`} value={'events'} />}
+                {!isApplication && <Tab label={`News`} value={'news'} />}
+              </Tabs>
+            </Content>
 
-          {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
-          {!isApplication && (
-            <>
-              {tab === 'requests' && (
-                <OrganizationDetailRequests organization={organization} />
-              )}
-              {tab === 'events' && (
-                <OrganizationDetailEvents organization={organization} />
-              )}
-              {tab === 'news' && <OrganizationDetailNews organization={organization} />}
-            </>
-          )}
-        </Content>
-      )}
+            {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
+            {!isApplication && (
+              <>
+                {tab === 'requests' && (
+                  <OrganizationDetailRequests organization={organization} />
+                )}
+                {tab === 'events' && (
+                  <OrganizationDetailEvents organization={organization} />
+                )}
+                {tab === 'news' && <OrganizationDetailNews organization={organization} />}
+              </>
+            )}
+          </Content>
+        ))}
     </RichPage>
   )
 }
