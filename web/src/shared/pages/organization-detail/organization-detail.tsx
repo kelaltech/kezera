@@ -200,9 +200,7 @@ function OrganizationDetail({
                 onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
                 align={'right'}
                 anchorOffset={18}
-              >
-                hi
-              </SpamReportDrop>
+              />
             </span>
           </Flex>
         ))

@@ -9,7 +9,7 @@ type Props = {
   className?: string
 }
 
-function SpamCard({ spamReport, className }: Props) {
+function SpamReportCard({ spamReport, className }: Props) {
   const { t, loading } = useLocale([])
 
   return (
@@ -73,4 +73,4 @@ function SpamCard({ spamReport, className }: Props) {
   )
 }
 
-export default SpamCard
+export default SpamReportCard

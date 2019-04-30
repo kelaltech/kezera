@@ -8,7 +8,7 @@ import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import useField from '../../../shared/hooks/use-field/use-field'
 import { ISpamReportResponse } from '../../../../../api/modules/spam/spam.apiv'
-import SpamCard from '../../../shared/components/spam-card/spam-card'
+import SpamReportCard from '../../../shared/components/spam-report-card/spam-report-card'
 
 const count = 10
 let searchCancellation: CancelTokenSource | null = null
@@ -109,7 +109,7 @@ function SpamReports() {
           <>
             <>
               {spamReports.map((spamReport, i) => (
-                <SpamCard
+                <SpamReportCard
                   key={i}
                   spamReport={spamReport}
                   className={'margin-bottom-normal'}
