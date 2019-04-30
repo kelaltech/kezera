@@ -1,3 +1,4 @@
+import './configs/setup-axios'
 import './configs/setup-i18n'
 
 import * as React from 'react'

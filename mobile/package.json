@@ -18,6 +18,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.2.1",
     "@types/qs": "^6.5.2",
+    "axios": "^0.18.0",
     "i18next": "^15.0.7",
     "qs": "^6.6.0",
     "react": "16.8.3",

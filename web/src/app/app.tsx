@@ -1,4 +1,4 @@
-import './configs/axios-interceptors'
+import './configs/setup-axios'
 import './configs/setup-i18n'
 
 import React from 'react'
