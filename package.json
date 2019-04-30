@@ -9,7 +9,6 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "temp:create-account": "run-s prod && node dist/modules/account/scripts/create-account.temp.js",
     "create-admin": "run-s prod && node dist/modules/account/scripts/create-admin.js",
     "all": "run-s build \"run-p web dev watch\"",
     "web": "cd web & run-s start",

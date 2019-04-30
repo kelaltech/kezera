@@ -16,7 +16,7 @@ import { OrganModel } from '../models/organ/organ.model'
 import { OrganizationModel } from '../models/organization/organization.model'
 import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
 import { RequestModel } from '../models/request/request.model'
-import { SpamModel } from '../models/spam/spam.model'
+import { SpamReportModel } from '../models/spam-report/spam-report.model'
 import { TaskModel } from '../models/task/task.model'
 import { VolunteerModel } from '../models/volunteer/volunteer.model'
 
@@ -31,6 +31,7 @@ import { materialRouter } from '../modules/material/material.router'
 import { newsRouter } from '../modules/news/news.route'
 import { organizationRouter } from '../modules/organization/organization.router'
 import { requestRouter } from '../modules/request/request.router'
+import { spamRouter } from '../modules/spam/spam.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
 import { volunteerRouter } from '../modules/volunteer/volunteer.router'
 
@@ -59,7 +60,7 @@ export const serverAppConfig: IServerAppConfig = {
     OrganizationModel,
     OrganizationApplicationModel,
     RequestModel,
-    SpamModel,
+    SpamReportModel,
     TaskModel,
     VolunteerModel
   ],
@@ -75,6 +76,7 @@ export const serverAppConfig: IServerAppConfig = {
     materialRouter,
     organizationRouter,
     requestRouter,
+    spamRouter,
     verifierRouter,
     volunteerRouter
   ],

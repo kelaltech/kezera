@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { Anchor, Content, Flex, FlexSpacer } from 'gerami'
+import { Anchor, Content, Flex, FlexSpacer, Warning } from 'gerami'
 import { IButtonProps } from 'gerami/src/components/Button/Button'
 import { Tab, Tabs } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -21,6 +21,7 @@ import OrganizationDetailRequests from './components/organization-detail-request
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
 import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
 import { reloadSubscriptions } from '../../../layout-volunteer/stores/volunteer/volunteer-actions'
+import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
 
 type ITabName = 'info' | 'requests' | 'events' | 'news'
 
@@ -48,6 +49,8 @@ function OrganizationDetail({
   const [organization, setOrganization] = useState<IOrganizationResponse | undefined>(
     organizationOverride
   )
+
+  const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
 
   const { account } = useAccountState()
   const { myOrganization } = useMyOrganizationState()
@@ -173,11 +176,32 @@ function OrganizationDetail({
               </>
             )}
             <FlexSpacer />
-            {!organization.website ? null : (
-              <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
-                {organization.website}
-              </Anchor>
+            {organization.account.status !== 'ACTIVE' || !organization.website ? null : (
+              <>
+                <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
+                  {organization.website}
+                </Anchor>
+                <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
+                  |
+                </span>
+              </>
             )}
+            <span>
+              <Anchor
+                onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                title={`Report Organization as Spam`}
+              >
+                <FontAwesomeIcon icon={'user-slash'} />
+              </Anchor>
+              <SpamReportDrop
+                type={'ORGANIZATION'}
+                ids={[organization._id]}
+                open={isSpamReportDropOpen}
+                onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                align={'right'}
+                anchorOffset={18}
+              />
+            </span>
           </Flex>
         ))
       }
@@ -237,34 +261,37 @@ function OrganizationDetail({
         []
       }
     >
-      {organization && (
-        <Content className={'bg-whitish'} style={{ overflow: 'visible' }}>
-          <Content>
-            <Tabs
-              value={tab}
-              onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
-            >
-              <Tab label={`Info.`} value={'info'} />
-              {!isApplication && <Tab label={`Requests`} value={'requests'} />}
-              {!isApplication && <Tab label={`Events`} value={'events'} />}
-              {!isApplication && <Tab label={`News`} value={'news'} />}
-            </Tabs>
-          </Content>
+      {organization &&
+        (organization.account.status !== 'ACTIVE' ? (
+          <Warning problem={`Sorry, this organization's account is not active.`} />
+        ) : (
+          <Content className={'bg-whitish'} style={{ overflow: 'visible' }}>
+            <Content>
+              <Tabs
+                value={tab}
+                onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
+              >
+                <Tab label={`Info.`} value={'info'} />
+                {!isApplication && <Tab label={`Requests`} value={'requests'} />}
+                {!isApplication && <Tab label={`Events`} value={'events'} />}
+                {!isApplication && <Tab label={`News`} value={'news'} />}
+              </Tabs>
+            </Content>
 
-          {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
-          {!isApplication && (
-            <>
-              {tab === 'requests' && (
-                <OrganizationDetailRequests organization={organization} />
-              )}
-              {tab === 'events' && (
-                <OrganizationDetailEvents organization={organization} />
-              )}
-              {tab === 'news' && <OrganizationDetailNews organization={organization} />}
-            </>
-          )}
-        </Content>
-      )}
+            {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
+            {!isApplication && (
+              <>
+                {tab === 'requests' && (
+                  <OrganizationDetailRequests organization={organization} />
+                )}
+                {tab === 'events' && (
+                  <OrganizationDetailEvents organization={organization} />
+                )}
+                {tab === 'news' && <OrganizationDetailNews organization={organization} />}
+              </>
+            )}
+          </Content>
+        ))}
     </RichPage>
   )
 }

@@ -1,40 +1,44 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Button, Content, Flex, Input, Loading, Yoga } from 'gerami'
+import { Block, Button, Content, Flex, Input, Loading } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios, { CancelTokenSource } from 'axios'
 import * as qs from 'qs'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import RichPage from '../../../shared/components/rich-page/rich-page'
-import { IOrganizationResponse } from '../../../apiv/organization.apiv'
 import useField from '../../../shared/hooks/use-field/use-field'
-import OrganizationCard from '../../../shared/components/organization-card/organization-card'
+import { ISpamReportResponse } from '../../../../../api/modules/spam/spam.apiv'
+import SpamReportCard from '../../../shared/components/spam-report-card/spam-report-card'
 
-const count = 12
+const count = 10
 let searchCancellation: CancelTokenSource | null = null
 
-function VerifierOrganizations() {
+function SpamReports() {
   const { loading, t } = useLocale([])
 
   const term = useField<HTMLInputElement>()
 
   const [ready, setReady] = useState(false)
   const [error, setError] = useState()
-  const [organizations, setOrganizations] = useState<IOrganizationResponse[]>([])
+  const [spamReports, setSpamReports] = useState<ISpamReportResponse[]>([])
 
   const load = async (since?: number): Promise<void> => {
     try {
-      if (!organizations.length) setReady(false)
+      if (!spamReports.length) setReady(false)
 
       if (searchCancellation) searchCancellation.cancel()
       searchCancellation = Axios.CancelToken.source()
-      const response = await Axios.get<IOrganizationResponse[]>(
-        `/api/organization/search?${qs.stringify({ term: term.value, count, since })}`,
+      const response = await Axios.get<ISpamReportResponse[]>(
+        `/api/spam/search-reports?${qs.stringify({
+          term: term.value,
+          count,
+          since
+        })}`,
         { withCredentials: true, cancelToken: searchCancellation.token }
       )
 
       setError(undefined)
-      setOrganizations(response.data)
+      setSpamReports(response.data)
       setReady(true)
     } catch (e) {
       if (!Axios.isCancel(error)) setError(error)
@@ -54,9 +58,9 @@ function VerifierOrganizations() {
     loading || (
       <RichPage
         ready={true}
-        documentTitle={`Approved Organizations`}
-        title={`Approved Organizations`}
-        description={`These are the verifier-approved organizations on the system.`}
+        documentTitle={`Spam Reports`}
+        title={`Spam Reports`}
+        description={`Open to view these spam reports in detail, and then handle or ignore after thorough investigation of each.`}
         error={error}
         onErrorClose={setError}
       >
@@ -78,8 +82,8 @@ function VerifierOrganizations() {
                   <Input
                     {...term.inputProps}
                     inputRef={term.ref}
-                    placeholder={`Search for Approved Organizations`}
-                    className={'full-width'}
+                    placeholder={`Search for Spam Reports`}
+                    className={'margin-vertical-auto full-width'}
                     type={'search'}
                   />
                 </form>
@@ -90,9 +94,9 @@ function VerifierOrganizations() {
 
         {!ready ? (
           <Loading delay />
-        ) : !organizations.length ? (
+        ) : !spamReports.length ? (
           <Block first className={'center fg-blackish'}>
-            No organization found
+            No spam report found
             {term.value && (
               <>
                 {' '}
@@ -103,17 +107,21 @@ function VerifierOrganizations() {
           </Block>
         ) : (
           <>
-            <Yoga maxCol={3} className={'yoga-in-rich-page'}>
-              {organizations.map((organization, i) => (
-                <OrganizationCard key={i} organization={organization} />
+            <>
+              {spamReports.map((spamReport, i) => (
+                <SpamReportCard
+                  key={i}
+                  spamReport={spamReport}
+                  className={'margin-bottom-normal'}
+                />
               ))}
-            </Yoga>
+            </>
 
-            {organizations.length % count === 0 && (
+            {spamReports.length % count === 0 && (
               <Block className={'center fg-blackish'}>
                 <Button
                   className={''}
-                  onClick={() => load(organizations[organizations.length - 1]._at)}
+                  onClick={() => load(spamReports[spamReports.length - 1]._at)}
                 >
                   Load more...
                 </Button>
@@ -126,4 +134,4 @@ function VerifierOrganizations() {
   )
 }
 
-export default VerifierOrganizations
+export default SpamReports

@@ -2,7 +2,7 @@ import { ModelFactory } from 'meseret'
 import { Document, Schema } from 'mongoose'
 import { eventPaths } from './event.path'
 
-type ObjectId = Schema.Types.ObjectId | string | number
+type ObjectId = Schema.Types.ObjectId | string
 
 export interface IEvent extends Document {
   _at: Date | number

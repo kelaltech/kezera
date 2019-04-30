@@ -19,6 +19,12 @@ function layoutVerifierNavigation(
         shortName: `Applications`
       },
       {
+        to: '/spam-reports',
+        icon: 'question-circle',
+        name: `Spam Reports`,
+        shortName: `Spam Reports`
+      },
+      {
         to: '/organizations',
         icon: 'file-archive',
         name: `Approved Organizations`,
