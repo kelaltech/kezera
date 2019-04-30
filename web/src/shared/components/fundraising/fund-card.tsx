@@ -16,7 +16,6 @@ import {
 } from 'gerami'
 import axios from 'axios'
 
-import './fund-card.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import RequestEdit from '../../../layout-organization/pages/request/request-edit'
@@ -38,18 +37,17 @@ export default function FundCard({ request }: IFundProps) {
 
   return (
     <Content className={'fund-card'}>
-      <RequestEdit request={request} open={open} onClose={() => setOpen(false)} />
       <Card imgSrc={request.picture}>
         <Title size={'L'} className={'center'}>
           {request.name}
         </Title>
         <hr />
         <Flex>
-          <label>{new Date(request.startDate).toDateString()}</label>
+          <label>{new Date(request.startDate).toDateString().substr(3)}</label>
           <FlexSpacer />
           <label>-</label>
           <FlexSpacer />
-          <label>{new Date(request.endDate).toDateString()}</label>
+          <label>{new Date(request.endDate).toDateString().substr(3)}</label>
         </Flex>
         <h5 className={'center'}>{request.type}</h5>
         <Title className={'center'} size={'S'}>
@@ -57,35 +55,31 @@ export default function FundCard({ request }: IFundProps) {
           {request.fundraising.currency === 'ETB' ? 'ETB' : null}
           {request.fundraising.currency === 'EURO' ? '€' : null}
           {request.fundraising.currency === 'POUND' ? '£' : null}
-          {request.fundraising.currency === 'DOLLAR' ? '$' : null}
+          {request.fundraising.currency === 'USD' ? '$' : null}
         </Title>
         <hr />
         <Flex>
+          {account && account.role === 'ORGANIZATION' ? (
+            <Flex>
+              <span className={'full-width flex'}>
+                <Button
+                  onClick={() => DeleteRequest(request._id)}
+                  className={'ActionButton12 '}
+                >
+                  <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
+                </Button>
+              </span>
+            </Flex>
+          ) : (
+            <Button>Donate</Button>
+          )}
+          <FlexSpacer />
           <Anchor
             className={'margin-top-normal'}
             to={`/organization/request/${request._id}`}
           >
             Details
           </Anchor>
-          <FlexSpacer />
-          <Flex>
-            {account && account.role === 'ORGANIZATION' ? (
-              <Flex>
-                <Button onClick={() => setOpen(true)} className={'ActionButton'}>
-                  <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
-                </Button>
-                <FlexSpacer />
-                <Button
-                  onClick={() => DeleteRequest(request._id)}
-                  className={'ActionButton'}
-                >
-                  <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
-                </Button>
-              </Flex>
-            ) : (
-              <Button>Donate</Button>
-            )}
-          </Flex>
         </Flex>
       </Card>
     </Content>

@@ -25,7 +25,7 @@ import RequestSearch from '../../pages/request-search/request-search'
 export default function RequestList() {
   const [requests, setRequests] = useState<any[]>([])
 
-  const { account } = useAccountState()
+  let { account } = useAccountState()
   useEffect(() => {
     axios
       .get('/api/request/list')
@@ -39,36 +39,20 @@ export default function RequestList() {
       })
   }, [])
 
-  const handleSearch = () => {
-    ;<>
-      <RequestSearch />
-    </>
-  }
-
   return (
-    <Page>
-      <Block>
-        <Flex>
-          <Title size={'XL'}>Requests</Title>
-          <FlexSpacer />
-          {(account &&
-            (account.role === 'VOLUNTEER' && (
-              <Button to={`/organization/request/add`}>Make a Request</Button>
-            ))) ||
-            (account && account.role === 'ORGANIZATION' && (
-              <Input
-                onChange={handleSearch}
-                placeholder={'Search Requests'}
-                className={'white'}
-              />
-            ))}
-        </Flex>
-      </Block>
-
-      <Content transparent size={'3XL'}>
-        <hr />
-      </Content>
-
+    <RichPage
+      title={<Title size={'XL'}>Requests</Title>}
+      actions={
+        (account &&
+          ((account.role === 'VOLUNTEER' && [{}]) ||
+            (account.role === 'ORGANIZATION' && [
+              {
+                children: <>Make a Request</>
+              }
+            ]))) ||
+        []
+      }
+    >
       {!requests.length && <Content size={'3XL'}>No requests found.</Content>}
 
       <Yoga size={'3XL'} maxCol={3} className={'request-list-yoga'}>
@@ -81,6 +65,6 @@ export default function RequestList() {
           }
         })}
       </Yoga>
-    </Page>
+    </RichPage>
   )
 }
