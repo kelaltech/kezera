@@ -3,7 +3,7 @@
   display: flex;
 }
 
-.vol-sidenav-container {
+/*.vol-sidenav-container {
   width: 220px;
   height: auto;
   position: relative;
@@ -20,7 +20,12 @@
   right: -15px;
   padding: 3px;
   background-color: #e2e2e2;
-}
+}*/
 .vol-content-container {
   flex-grow: 1;
+}
+
+.vol-sidenav-container {
+  //width: 220px;
+  position: relative;
 }

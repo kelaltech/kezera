@@ -2,13 +2,21 @@
 .sidenav-container {
   position: sticky;
   top: 60px;
-  width: 100%;
-  height: auto;
+  width: 220px;
+  min-height: 90vh;
   //background-color: darkorange;
+  border-right: 1px solid #d6d6d6;
+  transition: 0.2s all;
   padding: 15px;
   @media screen and (max-width: $mobile) {
     display: none;
   }
+}
+.mini-width {
+  width: 50px !important;
+}
+.wide-width {
+  width: 220px !important;
 }
 
 .btn-link {
@@ -79,5 +87,17 @@
         color: $primary;
       }
     }
+  }
+}
+
+.sidenav-close-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: $padding-L;
+  text-align: center;
+  &:hover {
+    background-color: #d6d6d6;
   }
 }

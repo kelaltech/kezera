@@ -35,6 +35,10 @@ newsRouter.post('/new', async ctx => {
 newsRouter.get('/allnews', async ctx => {
   ctx.body = await listAllNews()
 })
+//GET /api/news/search?term=:term
+newsRouter.get('/search', async ctx => {
+  ctx.body = await searchNews(ctx.query.term)
+})
 
 //GET /api/news/:_newsId
 newsRouter.get('/:_newsId', async ctx => {
@@ -91,10 +95,6 @@ newsRouter.put('/:_newsId', async ctx => {
   ctx.body = await editNews(ctx.request.body, ctx.params._newsId)
 })
 
-//GET /api/news/search?term=:term
-newsRouter.get('/search', async ctx => {
-  ctx.body = await searchNews(ctx.params.term)
-})
 //POST /api/news/:_newsId/comment/new
 
 newsRouter.post('/:_newsId/comment/new', async ctx => {

@@ -34,7 +34,7 @@ function VolunteerSearchResult() {
     setSearchTerm(
       qs.parse(window.location.search, {
         ignoreQueryPrefix: true
-      })
+      }).term
     )
     fetchAllResult()
   }, [])
@@ -49,9 +49,8 @@ function VolunteerSearchResult() {
   }
 
   return (
-    <div>
-      <div className="search-result-container">
-        <div className={'search-filter-container'}>
+    <div className="search-result-container">
+      {/* <div className={'search-filter-container'}>
           <div className={'search-filter-top'}>
             <h4>Filter</h4>
             <span onClick={collapseFilter}>
@@ -92,65 +91,61 @@ function VolunteerSearchResult() {
               />
             </div>
           </div>
-        </div>
-        <div>
-          <Tabs
-            style={{
-              position: 'sticky',
-              top: '55px'
-            }}
-            value={value}
-            onChange={(e, v) => setValue(v)}
-            indicatorColor={'primary'}
-            textColor={'primary'}
-            variant="scrollable"
-            scrollButtons="on"
-          >
-            <Tab label={'All'} />
-            <Tab label={'News'} />
-            <Tab label={'Event'} />
-            <Tab label={'Task'} />
-            <Tab label={'Donations'} />
-            <Tab label={'Organization'} />
-            <Tab label={'Volunteer'} />
-          </Tabs>
+        </div>*/}
+      <div className={'tabs-container'}>
+        <Tabs
+          className={'tabs-cont '}
+          value={value}
+          onChange={(e, v) => setValue(v)}
+          indicatorColor={'primary'}
+          textColor={'primary'}
+          variant="fullWidth"
+          scrollButtons="on"
+        >
+          <Tab label={'All'} />
+          <Tab label={'News'} />
+          <Tab label={'Event'} />
+          <Tab label={'Task'} />
+          <Tab label={'Donations'} />
+          <Tab label={'Organization'} />
+          <Tab label={'Volunteer'} />
+        </Tabs>
 
-          {value === 0 && (
-            <div>
-              <h1>All results </h1>
-            </div>
-          )}
-          {value === 1 && (
-            <Block>
-              <NewsSearchResult term={searchTerm} />
-            </Block>
-          )}
-          {value === 2 && (
-            <Block>
-              <EventsSearchResult term={searchTerm} />
-            </Block>
-          )}
-          {value === 3 && (
-            <Block>
-              <TaskSearchResult term={searchTerm} />
-            </Block>
-          )}
-          {value === 4 && (
-            <Block>
-              <DonationSearchResult term={searchTerm} />
-            </Block>
-          )}
-          {value === 5 && (
-            <Block>
-              <OrganizationSearchResult term={searchTerm} />
-            </Block>
-          )}
-          {value === 6 && (
-            <Block>
-              <VolSearchResult term={searchTerm} />
-            </Block>
-          )}
-        </div>
+        {value === 0 && (
+          <div>
+            <h1>All Search Results!</h1>
+          </div>
+        )}
+        {value === 1 && (
+          <Block>
+            <NewsSearchResult term={searchTerm} />
+          </Block>
+        )}
+        {value === 2 && (
+          <Block>
+            <EventsSearchResult term={searchTerm} />
+          </Block>
+        )}
+        {value === 3 && (
+          <Block>
+            <TaskSearchResult term={searchTerm} />
+          </Block>
+        )}
+        {value === 4 && (
+          <Block>
+            <DonationSearchResult term={searchTerm} />
+          </Block>
+        )}
+        {value === 5 && (
+          <Block>
+            <OrganizationSearchResult term={searchTerm} />
+          </Block>
+        )}
+        {value === 6 && (
+          <Block>
+            <VolSearchResult term={searchTerm} />
+          </Block>
+        )}
       </div>
     </div>
   )
