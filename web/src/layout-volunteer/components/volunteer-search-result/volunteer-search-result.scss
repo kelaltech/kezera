@@ -7,8 +7,13 @@
   width: 80%;
   margin: 0 auto;
 }
+.tabs-container {
+  margin: 0 !important;
+}
 .tabs-cont {
+  margin: 0 !important;
   position: sticky;
   top: 55px;
-  background-color: #f6f6f9;
+  width: 50%;
+  background-color: dodgerblue;
 }
