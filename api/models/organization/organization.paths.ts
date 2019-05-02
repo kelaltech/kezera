@@ -5,12 +5,12 @@ import { organizationTypes } from './organization.model'
 const ObjectId = Schema.Types.ObjectId
 
 export const organizationPaths: SchemaDefinition = {
-  _at: { type: Date, default: Date.now, index: true },
-  _last: { type: Date, index: true },
+  _at: { type: Date, required: true, default: Date.now, index: true },
+  _last: { type: Date, required: true, index: true },
 
   account: { type: ObjectId, required: true, ref: 'account', index: true, unique: true },
 
-  type: { type: String, enum: organizationTypes, index: true },
+  type: { type: String, required: true, enum: organizationTypes, index: true },
 
   motto: { type: String, minlength: 1, maxlength: 50 },
   bio: { type: String, required: true, minlength: 1, maxlength: 5000 },

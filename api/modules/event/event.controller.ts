@@ -10,8 +10,8 @@ import { AccountModel, IAccount } from '../../models/account/account.model'
 import { getComment } from '../comment/comment.methods'
 
 export async function removeEvent(
-  id: Schema.Types.ObjectId,
-  orgId: Schema.Types.ObjectId
+  id: Schema.Types.ObjectId | string,
+  orgId: Schema.Types.ObjectId | string
 ): Promise<void> {
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) await remove(EventModel, id)

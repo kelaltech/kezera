@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Button, Content, Flex, Input, Yoga } from 'gerami'
+import { Block, Button, Content, Flex, Input, Loading, Yoga } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios, { CancelTokenSource } from 'axios'
 import * as qs from 'qs'
@@ -18,13 +18,15 @@ function VerifierOrganizations() {
 
   const term = useField<HTMLInputElement>()
 
+  const [ready, setReady] = useState(false)
   const [error, setError] = useState()
   const [organizations, setOrganizations] = useState<IOrganizationResponse[]>([])
 
   const load = async (since?: number): Promise<void> => {
     try {
-      if (searchCancellation) searchCancellation.cancel()
+      if (!organizations.length) setReady(false)
 
+      if (searchCancellation) searchCancellation.cancel()
       searchCancellation = Axios.CancelToken.source()
       const response = await Axios.get<IOrganizationResponse[]>(
         `/api/organization/search?${qs.stringify({ term: term.value, count, since })}`,
@@ -33,6 +35,7 @@ function VerifierOrganizations() {
 
       setError(undefined)
       setOrganizations(response.data)
+      setReady(true)
     } catch (e) {
       if (!Axios.isCancel(error)) setError(error)
     }
@@ -53,36 +56,50 @@ function VerifierOrganizations() {
         ready={true}
         documentTitle={`Approved Organizations`}
         title={`Approved Organizations`}
-        description={`These are the verifier-approved organization on the system.`}
+        description={`These are the verifier-approved organizations on the system.`}
         error={error}
         onErrorClose={setError}
       >
-        <Content
-          className={'margin-bottom-normal bg-whitish'}
-          style={{ borderRadius: '999px' }}
-        >
+        <Content className={'margin-bottom-normal'}>
           <label>
-            <Block className={'padding-bottom-big'}>
+            <Block className={'padding-bottom-big padding-horizontal-big'}>
               <Flex>
-                <div className={'margin-top-auto padding-right-big fg-blackish'}>
+                <div className={'margin-top-auto padding-right-big fg-accent'}>
                   <FontAwesomeIcon icon={'search'} />
                 </div>
-                <Input
-                  {...term.inputProps}
-                  inputRef={term.ref}
-                  placeholder={`Search for Approved Organizations`}
+                <form
                   className={'margin-vertical-auto full-width'}
-                  type={'search'}
-                />
+                  onSubmit={e => {
+                    e.preventDefault()
+                    setReady(false)
+                    load().catch(setError)
+                  }}
+                >
+                  <Input
+                    {...term.inputProps}
+                    inputRef={term.ref}
+                    placeholder={`Search for Approved Organizations`}
+                    className={'full-width'}
+                    type={'search'}
+                  />
+                </form>
               </Flex>
             </Block>
           </label>
         </Content>
 
-        {!organizations.length ? (
+        {!ready ? (
+          <Loading delay />
+        ) : !organizations.length ? (
           <Block first className={'center fg-blackish'}>
             No organization found
-            {term.value && ` using the term "${term.value}"`}.
+            {term.value && (
+              <>
+                {' '}
+                using the term <q>{term.value}</q>
+              </>
+            )}
+            .
           </Block>
         ) : (
           <>

@@ -9,7 +9,6 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "temp:create-account": "run-s prod && node dist/modules/account/scripts/create-account.temp.js",
     "create-admin": "run-s prod && node dist/modules/account/scripts/create-admin.js",
     "all": "run-s build \"run-p web dev watch\"",
     "web": "cd web & run-s start",
@@ -17,7 +16,7 @@
     "ios": "cd mobile & run-s ios",
     "build": "run-s clean tsc",
     "clean": "./node_modules/.bin/del-cli ./dist",
-    "dev": "set EMAIL_FROM=spva.dev@gmail.com& set EMAIL_PASS=uY3gYisZRC6CKga& nodemon -w dist dist",
+    "dev": "set EMAIL_FROM=spva.dev@gmail.com& set EMAIL_PASS=uY3gYisZRC6CKga& set HOSTNAME=0.0.0.0& nodemon -w dist dist",
     "lint": "prettier {.,**}/*.{css,md,js,json,jsx,sass,scss,ts,tsx}",
     "format": "prettier --write {.,**}/*.{css,md,js,json,jsx,sass,scss,ts,tsx}",
     "precommit": "run-s prod && cd web && run-s prod && cd ../mobile && run-s prod && cd .. && git update-index --again",

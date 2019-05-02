@@ -12,7 +12,7 @@ import { AddMaterial, UpdateMaterial } from '../material/material.controller'
 
 type ObjectId = Schema.Types.ObjectId | string
 
-export async function removeRequest(id: Schema.Types.ObjectId): Promise<void> {
+export async function removeRequest(id: Schema.Types.ObjectId | string): Promise<void> {
   await remove(RequestModel, id)
 }
 
