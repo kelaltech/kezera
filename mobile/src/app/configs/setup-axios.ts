@@ -1,3 +1,3 @@
 import Axios from 'axios'
 
-Axios.defaults.baseURL = process.env.BASE_URL || 'http://192.168.232.2:8900' // the default android emulator IP
+Axios.defaults.baseURL = process.env.BASE_URL || 'http://10.0.2.2:8900' // default android emulator IP for PC localhost
