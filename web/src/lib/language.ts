@@ -5,8 +5,45 @@ export type Language = 'am' | 'en'
 export const supportedLanguages = ['am', 'en']
 export const defaultLanguage: Language = 'en'
 
-export type Namespace = 'common' | 'account' | 'not-found' | 'organization'
-export const supportedNamespaces = ['common', 'account', 'not-found', 'organization']
+export type Namespace =
+  | 'common'
+  | 'account'
+  | 'activity'
+  | 'admin'
+  | 'certificate'
+  | 'comment'
+  | 'event'
+  | 'fundraising'
+  | 'material-donation'
+  | 'news'
+  | 'not-found'
+  | 'organ-donation'
+  | 'organization'
+  | 'request'
+  | 'spam'
+  | 'task'
+  | 'verifier'
+  | 'volunteer'
+export const supportedNamespaces: Namespace[] = [
+  'common',
+  'account',
+  'activity',
+  'admin',
+  'certificate',
+  'comment',
+  'event',
+  'fundraising',
+  'material-donation',
+  'news',
+  'not-found',
+  'organ-donation',
+  'organization',
+  'request',
+  'spam',
+  'task',
+  'verifier',
+  'volunteer'
+]
 export const defaultNamespaces: Namespace[] = ['common']
 
 export async function checkLanguage(lng: string): Promise<void> {
@@ -15,7 +52,7 @@ export async function checkLanguage(lng: string): Promise<void> {
 
 export async function checkNamespaces(namespaces: string[]): Promise<void> {
   for (const namespace of namespaces)
-    if (!supportedNamespaces.includes(namespace))
+    if (!supportedNamespaces.includes(namespace as Namespace))
       throw Error(`namespace "${namespace}" is not supported`)
 }
 

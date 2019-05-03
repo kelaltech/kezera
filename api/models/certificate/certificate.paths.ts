@@ -5,8 +5,8 @@ import { certificatePrivacy, certificatePurposes } from './certificate.model'
 const ObjectId = Schema.Types.ObjectId
 
 export const certificatePaths: SchemaDefinition = {
-  _at: { type: Date, default: Date.now, index: true },
-  _last: { type: Date, index: true },
+  _at: { type: Date, required: true, default: Date.now, index: true },
+  _last: { type: Date, required: true, index: true },
 
   purpose: { type: String, required: true, enum: certificatePurposes },
   description: { type: String, required: true, maxlength: 500 },

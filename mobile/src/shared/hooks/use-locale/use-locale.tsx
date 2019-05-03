@@ -4,7 +4,6 @@ import {
   UseTranslationOptions,
   UseTranslationResponse
 } from 'react-i18next'
-import { Text } from 'react-native'
 
 import {
   defaultLanguage,
@@ -53,7 +52,7 @@ function useLocale(
 
   return {
     loaded,
-    loading: loaded ? null : loading === null ? null : loading || <Text>...</Text>,
+    loading: loaded ? null : loading === null ? null : loading || null,
     ...ut
   }
 }

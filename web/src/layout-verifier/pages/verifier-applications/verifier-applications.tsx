@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Button, Content, Flex, Input, Yoga } from 'gerami'
+import { Block, Button, Content, Flex, Input, Loading, Yoga } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios, { CancelTokenSource } from 'axios'
 import * as qs from 'qs'
@@ -18,13 +18,15 @@ function VerifierApplications() {
 
   const term = useField<HTMLInputElement>()
 
+  const [ready, setReady] = useState(false)
   const [error, setError] = useState()
   const [applications, setApplications] = useState<IOrganizationResponse[]>([])
 
   const load = async (since?: number): Promise<void> => {
     try {
-      if (searchCancellation) searchCancellation.cancel()
+      if (!applications.length) setReady(false)
 
+      if (searchCancellation) searchCancellation.cancel()
       searchCancellation = Axios.CancelToken.source()
       const response = await Axios.get<IOrganizationResponse[]>(
         `/api/verifier/search-organization-applications?${qs.stringify({
@@ -37,6 +39,7 @@ function VerifierApplications() {
 
       setError(undefined)
       setApplications(response.data)
+      setReady(true)
     } catch (e) {
       if (!Axios.isCancel(error)) setError(error)
     }
@@ -57,36 +60,50 @@ function VerifierApplications() {
         ready={true}
         documentTitle={`Organization Applications`}
         title={`Organization Applications`}
-        description={`Open to view these applications in detail, and then approve or reject them after a thorough investigation of each application to register as an organization on the system.`}
+        description={`Open to view these applications in detail, and then approve or reject after thorough investigation of each, in order to register them as organizations.`}
         error={error}
         onErrorClose={setError}
       >
-        <Content
-          className={'margin-bottom-normal bg-whitish'}
-          style={{ borderRadius: '999px' }}
-        >
+        <Content className={'margin-bottom-normal'}>
           <label>
-            <Block className={'padding-bottom-big'}>
+            <Block className={'padding-bottom-big padding-horizontal-big'}>
               <Flex>
-                <div className={'margin-top-auto padding-right-big fg-blackish'}>
+                <div className={'margin-top-auto padding-right-big fg-accent'}>
                   <FontAwesomeIcon icon={'search'} />
                 </div>
-                <Input
-                  {...term.inputProps}
-                  inputRef={term.ref}
-                  placeholder={`Search for Organization Applications`}
+                <form
                   className={'margin-vertical-auto full-width'}
-                  type={'search'}
-                />
+                  onSubmit={e => {
+                    e.preventDefault()
+                    setReady(false)
+                    load().catch(setError)
+                  }}
+                >
+                  <Input
+                    {...term.inputProps}
+                    inputRef={term.ref}
+                    placeholder={`Search for Organization Applications`}
+                    className={'full-width'}
+                    type={'search'}
+                  />
+                </form>
               </Flex>
             </Block>
           </label>
         </Content>
 
-        {!applications.length ? (
+        {!ready ? (
+          <Loading delay />
+        ) : !applications.length ? (
           <Block first className={'center fg-blackish'}>
             No organization application found
-            {term.value && ` using the term "${term.value}"`}.
+            {term.value && (
+              <>
+                {' '}
+                using the term <q>{term.value}</q>
+              </>
+            )}
+            .
           </Block>
         ) : (
           <>

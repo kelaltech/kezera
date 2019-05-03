@@ -55,7 +55,21 @@ function LayoutVolunteer({ error, match }: Props) {
       >
         <div className={'volunteer-layout-container'}>
           <div className={'vol-sidenav-container'} id={'sidenav-vol'}>
-            <div className={'arrow-sidenav'} onClick={handleSidenavWidth}>
+            <Sidenav />
+          </div>
+          <div className={'vol-content-container'}>
+            <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
+          </div>
+        </div>
+      </Layout>
+    </LayoutVolunteerProviders>
+  )
+}
+
+export default LayoutVolunteer
+
+/*
+*   <div className={'arrow-sidenav'} onClick={handleSidenavWidth}>
               <span>
                 {iconRight ? (
                   <FontAwesomeIcon icon={faChevronLeft} />
@@ -64,15 +78,4 @@ function LayoutVolunteer({ error, match }: Props) {
                 )}
               </span>
             </div>
-            {mini ? <MiniNav /> : <Sidenav />}
-          </div>
-          <Page className={'vol-content-container'}>
-            <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
-          </Page>
-        </div>
-      </Layout>
-    </LayoutVolunteerProviders>
-  )
-}
-
-export default LayoutVolunteer
+            {mini ? <MiniNav /> : <Sidenav />}*/

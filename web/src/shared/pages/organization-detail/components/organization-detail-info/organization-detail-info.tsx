@@ -14,7 +14,7 @@ function OrganizationDetailInfo({ organization }: Props) {
 
   return (
     loading || (
-      <Content transparent className={'padding-horizontal-big'}>
+      <Content transparent>
         {!organization.motto ? null : (
           <Content className={'margin-top-big'}>
             <Block className={'organization-motto'}>

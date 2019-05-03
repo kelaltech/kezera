@@ -14,7 +14,7 @@ export const accountRoles: IAccountRole[] = [
 export type IAccountStatus = 'ACTIVE' | 'BLOCKED' | 'DISABLED'
 export const accountStatuses: IAccountStatus[] = ['ACTIVE', 'BLOCKED', 'DISABLED']
 
-export interface IAccount {
+export type IAccount = {
   _at?: Date | number
   _last: Date | number
 

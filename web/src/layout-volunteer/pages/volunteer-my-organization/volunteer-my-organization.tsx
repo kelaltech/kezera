@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import './volunteer-my-organization.scss'
-import { Warning, Yoga } from 'gerami'
+import { Warning, Yoga, Block } from 'gerami'
 import axios from 'axios'
 import { RouteComponentProps } from 'react-router'
-import { Block } from '@material-ui/icons'
 
 function MyOrganization({  }: RouteComponentProps) {
   const [organizations, setOrganizations] = useState([])
@@ -25,7 +24,7 @@ function MyOrganization({  }: RouteComponentProps) {
     axios
       .get('/api/organization/discover')
       .then(organization => {
-        setOrganizations((organization.data = []))
+        setOrganizations(organization.data)
       })
       .catch(e => console.log(e))
   }
@@ -47,13 +46,16 @@ function MyOrganization({  }: RouteComponentProps) {
       <div>
         <h3>Discover organizations around you.</h3>
         {organizations.length === 0 ? (
-          <Block className={'fg-blackish'}>
-            we couldn't find organizations around you!
+          <div>
+            <Block className={'fg-blackish'}>
+              we couldn't find organizations around you!
+            </Block>
             <Warning
               problem={'This might be due to your location setting '}
               title={'warning'}
+              shy
             />
-          </Block>
+          </div>
         ) : (
           <Yoga maxCol={2}>
             <Warning problem={'This might be due to your location setting '} shy />

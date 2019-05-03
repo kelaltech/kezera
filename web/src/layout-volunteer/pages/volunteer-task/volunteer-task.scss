@@ -9,7 +9,6 @@
 
   .collapse-controller {
     padding: 0 $padding-L 0 $padding-L;
-    position: relative;
     .bar-before-expand {
       display: flex;
       .header-expand-bar {
@@ -26,9 +25,12 @@
     }
 
     .bar-after-expanded {
-      //background-color: $accent;
     }
   }
+}
+
+.task-label {
+  padding-left: $padding-S;
 }
 
 .vol-task-container {
