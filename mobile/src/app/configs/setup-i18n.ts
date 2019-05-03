@@ -21,4 +21,5 @@ i18n
   .then(() => setLanguage())
   .catch(console.error)
 
+// might as well just do this, because lazy loading is not supported yet
 loadNamespaces(supportedNamespaces).catch(console.error)

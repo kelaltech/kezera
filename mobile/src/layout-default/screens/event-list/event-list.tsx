@@ -5,11 +5,19 @@ import { Icon } from 'react-native-elements'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import values from '../../../assets/styles/values'
+import Header from '../../../shared/components/header/header'
 
 function EventList({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale([])
+  const { loading, t } = useLocale(['event'])
 
-  return loading || <Text>{t`app-name`}: EventList Screen (in LayoutDefault)</Text>
+  return (
+    loading || (
+      <>
+        <Header title={t`event:events`} />
+        <Text>{t`app-name`}: EventList Screen (in LayoutDefault)</Text>
+      </>
+    )
+  )
 }
 
 EventList.navigationOptions = {

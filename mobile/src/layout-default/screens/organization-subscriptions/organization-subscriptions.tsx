@@ -5,13 +5,17 @@ import { Icon } from 'react-native-elements'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import values from '../../../assets/styles/values'
+import Header from '../../../shared/components/header/header'
 
 function OrganizationSubscriptions({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale([])
+  const { loading, t } = useLocale(['organization'])
 
   return (
     loading || (
-      <Text>{t`app-name`}: OrganizationSubscriptions Screen (in LayoutDefault)</Text>
+      <>
+        <Header title={t`organization:my-subscriptions`} />
+        <Text>{t`app-name`}: OrganizationSubscriptions Screen (in LayoutDefault)</Text>
+      </>
     )
   )
 }

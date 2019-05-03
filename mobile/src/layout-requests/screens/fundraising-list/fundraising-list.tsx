@@ -8,13 +8,13 @@ import values from '../../../assets/styles/values'
 import classes from '../../../assets/styles/classes'
 
 function FundraisingList({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale([])
+  const { loading, t } = useLocale(['fundraising'])
 
   return loading || <Text>{t`app-name`}: FundraisingList Screen (in LayoutRequests)</Text>
 }
 FundraisingList.navigationOptions = {
   tabBarLabel: () => (
-    <Text style={{ ...classes.paddingSmall, color: values.color.white }}>
+    <Text style={{ ...classes.paddingVerticalSmall, color: values.color.white }}>
       {_`fundraising:fundraising`}
     </Text>
   )

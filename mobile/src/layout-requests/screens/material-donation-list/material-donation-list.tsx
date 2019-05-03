@@ -8,7 +8,7 @@ import values from '../../../assets/styles/values'
 import classes from '../../../assets/styles/classes'
 
 function MaterialDonationList({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale([])
+  const { loading, t } = useLocale(['material-donation'])
 
   return (
     loading || <Text>{t`app-name`}: MaterialDonationList Screen (in LayoutRequests)</Text>
@@ -17,7 +17,7 @@ function MaterialDonationList({  }: NavigationInjectedProps<{}>) {
 
 MaterialDonationList.navigationOptions = {
   tabBarLabel: () => (
-    <Text style={{ ...classes.paddingSmall, color: values.color.white }}>
+    <Text style={{ ...classes.paddingVerticalSmall, color: values.color.white }}>
       {_`material-donation:material-donations`}
     </Text>
   )

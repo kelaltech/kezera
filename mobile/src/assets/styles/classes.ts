@@ -37,6 +37,14 @@ export default StyleSheet.create({
   marginLeft: { marginLeft: values.space.normal },
   marginLeftBig: { marginLeft: values.space.big },
 
+  marginVerticalSmall: { marginVertical: values.space.small },
+  marginVertical: { marginVertical: values.space.normal },
+  marginVerticalBig: { marginVertical: values.space.big },
+
+  marginHorizontalSmall: { marginHorizontal: values.space.small },
+  marginHorizontal: { marginHorizontal: values.space.normal },
+  marginHorizontalBig: { marginHorizontal: values.space.big },
+
   paddingSmall: { padding: values.space.small },
   padding: { padding: values.space.normal },
   paddingBig: { padding: values.space.big },
@@ -56,6 +64,14 @@ export default StyleSheet.create({
   paddingLeftSmall: { paddingLeft: values.space.small },
   paddingLeft: { paddingLeft: values.space.normal },
   paddingLeftBig: { paddingLeft: values.space.big },
+
+  paddingVerticalSmall: { paddingVertical: values.space.small },
+  paddingVertical: { paddingVertical: values.space.normal },
+  paddingVerticalBig: { paddingVertical: values.space.big },
+
+  paddingHorizontalSmall: { paddingHorizontal: values.space.small },
+  paddingHorizontal: { paddingHorizontal: values.space.normal },
+  paddingHorizontalBig: { paddingHorizontal: values.space.big },
 
   /*
    Text  

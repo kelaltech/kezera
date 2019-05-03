@@ -7,8 +7,9 @@ import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import values from '../../../assets/styles/values'
 
 function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale([])
+  const { loading, t } = useLocale(['volunteer'])
 
+  // todo: a special type of header with the search bar embedded inside
   return loading || <Text>{t`app-name`}: VolunteerSearch Screen (in LayoutDefault)</Text>
 }
 

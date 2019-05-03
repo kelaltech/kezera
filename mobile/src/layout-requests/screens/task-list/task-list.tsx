@@ -8,14 +8,14 @@ import values from '../../../assets/styles/values'
 import classes from '../../../assets/styles/classes'
 
 function TaskList({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale([])
+  const { loading, t } = useLocale(['task'])
 
   return loading || <Text>{t`app-name`}: TaskList Screen (in LayoutRequests)</Text>
 }
 
 TaskList.navigationOptions = {
   tabBarLabel: () => (
-    <Text style={{ ...classes.paddingSmall, color: values.color.white }}>
+    <Text style={{ ...classes.paddingVerticalSmall, color: values.color.white }}>
       {_`task:tasks`}
     </Text>
   )

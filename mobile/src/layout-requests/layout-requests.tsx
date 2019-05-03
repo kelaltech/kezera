@@ -3,6 +3,7 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation'
 import { Icon } from 'react-native-elements'
 
 import useLocale from '../shared/hooks/use-locale/use-locale'
+import Header from '../shared/components/header/header'
 import LayoutRequestsProviders from './configs/layout-requests-providers'
 import LayoutRequestsNavigator from './configs/layout-requests-navigator'
 import values from '../assets/styles/values'
@@ -12,7 +13,7 @@ function LayoutRequests({ navigation }: NavigationInjectedProps<{}>) {
 
   return (
     <LayoutRequestsProviders>
-      {/* todo: shared Header goes here too */}
+      <Header title={t`request:requests`} />
       <LayoutRequestsNavigator navigation={navigation} />
     </LayoutRequestsProviders>
   )
