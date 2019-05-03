@@ -265,18 +265,16 @@ function OrganizationDetail({
         (organization.account.status !== 'ACTIVE' ? (
           <Warning problem={`Sorry, this organization's account is not active.`} />
         ) : (
-          <Content className={'bg-whitish'} style={{ overflow: 'visible' }}>
-            <Content>
-              <Tabs
-                value={tab}
-                onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
-              >
-                <Tab label={`Info.`} value={'info'} />
-                {!isApplication && <Tab label={`Requests`} value={'requests'} />}
-                {!isApplication && <Tab label={`Events`} value={'events'} />}
-                {!isApplication && <Tab label={`News`} value={'news'} />}
-              </Tabs>
-            </Content>
+          <Content style={{ overflow: 'visible' }} transparent>
+            <Tabs
+              value={tab}
+              onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
+            >
+              <Tab label={`Info.`} value={'info'} />
+              {!isApplication && <Tab label={`Requests`} value={'requests'} />}
+              {!isApplication && <Tab label={`Events`} value={'events'} />}
+              {!isApplication && <Tab label={`News`} value={'news'} />}
+            </Tabs>
 
             {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
             {!isApplication && (
