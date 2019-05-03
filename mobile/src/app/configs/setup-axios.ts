@@ -1,3 +1,4 @@
+import Config from 'react-native-config'
 import Axios from 'axios'
 
-Axios.defaults.baseURL = process.env.BASE_URL || 'http://10.0.2.2:8900' // default android emulator IP for PC localhost
+Axios.defaults.baseURL = Config.BASE_URL || 'http://10.0.2.2:1400' // default android emulator IP for PC localhost
