@@ -1,5 +1,6 @@
 import { createMaterialTopTabNavigator } from 'react-navigation'
 
+import values from '../../assets/styles/values'
 import TaskList from '../screens/task-list/task-list'
 import MaterialDonationList from '../screens/material-donation-list/material-donation-list'
 import FundraisingList from '../screens/fundraising-list/fundraising-list'
@@ -13,7 +14,14 @@ const LayoutRequestsNavigator = createMaterialTopTabNavigator(
     OrganDonationList
   },
   {
-    initialRouteName: 'TaskList'
+    initialRouteName: 'TaskList',
+    tabBarOptions: {
+      scrollEnabled: true,
+      pressColor: values.color.secondary,
+      style: {
+        backgroundColor: values.color.primary
+      }
+    }
   }
 )
 
