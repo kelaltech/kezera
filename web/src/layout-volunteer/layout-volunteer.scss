@@ -3,24 +3,6 @@
   display: flex;
 }
 
-/*.vol-sidenav-container {
-  width: 220px;
-  height: auto;
-  position: relative;
-  border-right: 1px solid $accent;
-  transition: 0.2s all;
-
-  @media screen and (max-width: $mobile) {
-    display: none;
-  }
-}
-
-.arrow-sidenav {
-  position: absolute;
-  right: -15px;
-  padding: 3px;
-  background-color: #e2e2e2;
-}*/
 .vol-content-container {
   flex-grow: 1;
 }
@@ -28,4 +10,7 @@
 .vol-sidenav-container {
   //width: 220px;
   position: relative;
+
+  display: none;
+  /*todo remove display property*/
 }
