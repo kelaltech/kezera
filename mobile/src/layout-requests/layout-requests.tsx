@@ -1,19 +1,31 @@
 import * as React from 'react'
-import { NavigationParams, NavigationProp, NavigationScreenProp } from 'react-navigation'
+import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import { Icon } from 'react-native-elements'
 
+import useLocale from '../shared/hooks/use-locale/use-locale'
 import LayoutRequestsProviders from './configs/layout-requests-providers'
 import LayoutRequestsNavigator from './configs/layout-requests-navigator'
+import values from '../assets/styles/values'
 
-interface Props {
-  navigation: NavigationScreenProp<{}, NavigationParams> & NavigationProp<{}>
-}
-function LayoutRequests({ navigation }: Props) {
+function LayoutRequests({ navigation }: NavigationInjectedProps<{}>) {
+  const { t } = useLocale(['request'])
+
   return (
     <LayoutRequestsProviders>
+      {/* todo: shared Header goes here too */}
       <LayoutRequestsNavigator navigation={navigation} />
     </LayoutRequestsProviders>
   )
 }
 LayoutRequests.router = LayoutRequestsNavigator.router
 
-export default LayoutRequests
+LayoutRequests.navigationOptions = {
+  tabBarIcon: ({ focused }: any) => (
+    <Icon
+      name={'monetization-on'}
+      color={focused ? values.color.secondary : values.color.primary}
+    />
+  )
+}
+
+export default withNavigation(LayoutRequests)

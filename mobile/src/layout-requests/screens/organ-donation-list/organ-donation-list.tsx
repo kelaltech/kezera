@@ -1,9 +1,13 @@
 import React from 'react'
 import { Text } from 'react-native'
+import { NavigationInjectedProps, withNavigation } from 'react-navigation'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import { _ } from '../../../lib/language'
+import values from '../../../assets/styles/values'
+import classes from '../../../assets/styles/classes'
 
-function OrganDonationList() {
+function OrganDonationList({  }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale([])
 
   return (
@@ -11,4 +15,12 @@ function OrganDonationList() {
   )
 }
 
-export default OrganDonationList
+OrganDonationList.navigationOptions = {
+  tabBarLabel: () => (
+    <Text style={{ ...classes.paddingSmall, color: values.color.white }}>
+      {_`organ-donation:organ-donations`}
+    </Text>
+  )
+}
+
+export default withNavigation(OrganDonationList)

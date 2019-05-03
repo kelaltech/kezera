@@ -1,9 +1,12 @@
 import React from 'react'
 import { Text } from 'react-native'
+import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import { Icon } from 'react-native-elements'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import values from '../../../assets/styles/values'
 
-function OrganizationSubscriptions() {
+function OrganizationSubscriptions({  }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale([])
 
   return (
@@ -13,4 +16,10 @@ function OrganizationSubscriptions() {
   )
 }
 
-export default OrganizationSubscriptions
+OrganizationSubscriptions.navigationOptions = {
+  tabBarIcon: ({ focused }: any) => (
+    <Icon name={'work'} color={focused ? values.color.secondary : values.color.primary} />
+  )
+}
+
+export default withNavigation(OrganizationSubscriptions)

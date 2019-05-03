@@ -1,9 +1,11 @@
 import { Theme } from 'react-native-elements'
 
+import values from './values'
+
 const theme: Theme = {
   colors: {
-    primary: '#3f51b5',
-    secondary: '#ff5722'
+    primary: values.color.primary,
+    secondary: values.color.secondary
   }
 }
 

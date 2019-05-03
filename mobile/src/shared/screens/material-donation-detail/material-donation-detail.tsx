@@ -1,9 +1,10 @@
 import React from 'react'
 import { Text } from 'react-native'
+import { NavigationInjectedProps, withNavigation } from 'react-navigation'
 
 import useLocale from '../../hooks/use-locale/use-locale'
 
-function MaterialDonationDetail() {
+function MaterialDonationDetail({  }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale([])
 
   return (
@@ -11,4 +12,4 @@ function MaterialDonationDetail() {
   )
 }
 
-export default MaterialDonationDetail
+export default withNavigation(MaterialDonationDetail)
