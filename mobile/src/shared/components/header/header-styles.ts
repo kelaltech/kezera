@@ -21,7 +21,7 @@ export default StyleSheet.create({
     ...classes.paddingVertical,
     ...classes.paddingHorizontal,
     textAlignVertical: 'center',
-    fontSize: 18, // todo: add a fontSize global value (this is big)
+    fontSize: values.fontSize.big,
     color: values.color.white
   }
 })

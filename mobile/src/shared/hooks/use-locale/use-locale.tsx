@@ -4,6 +4,7 @@ import {
   UseTranslationOptions,
   UseTranslationResponse
 } from 'react-i18next'
+import { Platform, ProgressBarAndroid, ProgressViewIOS, View } from 'react-native'
 
 import {
   defaultLanguage,
@@ -13,6 +14,8 @@ import {
   Namespace,
   setLanguage
 } from '../../../lib/language'
+import classes from '../../../assets/styles/classes'
+import values from '../../../assets/styles/values'
 
 type UseLocaleResponse = UseTranslationResponse & {
   loaded: true | null
@@ -52,7 +55,28 @@ function useLocale(
 
   return {
     loaded,
-    loading: loaded ? null : loading === null ? null : loading || null,
+    loading: loaded
+      ? null
+      : loading === null
+      ? null
+      : loading ||
+        Platform.select({
+          android: (
+            <View style={{ ...classes.grow, ...classes.row, justifyContent: 'center' }}>
+              <View style={{ alignSelf: 'center' }}>
+                <ProgressBarAndroid />
+              </View>
+            </View>
+          ),
+          ios: (
+            <View style={{ ...classes.grow, ...classes.row, justifyContent: 'center' }}>
+              <View style={{ ...classes.grow, alignSelf: 'center' }}>
+                <ProgressViewIOS />
+              </View>
+            </View>
+          ),
+          default: <>{null}</>
+        }),
     ...ut
   }
 }

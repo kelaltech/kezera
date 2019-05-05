@@ -88,5 +88,7 @@ export default StyleSheet.create({
   sub1: {}, // todo
   sub2: {}, // todo
 
-  label: { opacity: 0.7 }
+  label: { opacity: 0.7 },
+
+  link: { color: values.color.secondary, textDecorationLine: 'underline' }
 })

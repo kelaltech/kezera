@@ -1,1 +1,16 @@
-{}
+{
+  "account": "Account",
+  "accounts": "Accounts",
+
+  "display-name": "Display Name",
+  "email": "Email",
+  "password": "Password",
+  "repeat-password": "Repeat Password",
+  "register": "Register",
+
+  "forgot-password": "Forgot Password?",
+  "login": "Login",
+  "create-new-account": "Create New Account",
+  "wrong-credentials": "You've entered wrong credentials.",
+  "logged-in-as": "You are logged in as:"
+}

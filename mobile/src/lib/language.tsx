@@ -185,6 +185,9 @@ export async function setLanguage(
 
   await AsyncStorage.setItem('lng', lng)
   await i18n.changeLanguage(lng)
+
+  // might as well just do this, because lazy loading is not supported yet
+  await loadNamespaces(supportedNamespaces, lng)
 }
 
 export function _(

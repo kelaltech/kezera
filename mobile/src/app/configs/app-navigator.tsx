@@ -28,7 +28,7 @@ const AppNavigator = createStackNavigator(
     EventDetail
   },
   {
-    initialRouteName: 'LayoutDefault', // todo: if !account? 'LayoutStart'
+    initialRouteName: 'LayoutStart', // todo: if account? 'LayoutStart'
     headerMode: 'none'
   }
 )
