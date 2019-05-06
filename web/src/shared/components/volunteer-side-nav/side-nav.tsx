@@ -14,13 +14,19 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import MiniNav from '../../../layout-volunteer/components/volunteer-mini-nav/volunteer-mini-nav'
 import { async } from 'q'
+import {
+  useSidenavDispatch,
+  useSidenavState
+} from '../../../layout-volunteer/stores/sidenav/sidenav-provider'
 
 function Sidenav(props: any) {
-  const [mini, setMini] = useState(false)
   const [open, setOpen] = useState({
     task: false,
     organization: false
   })
+  // const [mini, setMini] =  useS
+  const { mini } = useSidenavState()
+  const miniDispatch = useSidenavDispatch()
   const handleTaskExpand = () => {
     setOpen({ ...open, ['task']: !open.task })
   }
@@ -29,9 +35,8 @@ function Sidenav(props: any) {
   }
 
   const handleSideNavWidth = () => {
-    setMini(!mini)
+    miniDispatch({ type: 'set' })
   }
-
   return (
     <div
       className={`sidenav-container ${mini ? 'mini-width' : 'wide-width'}`}

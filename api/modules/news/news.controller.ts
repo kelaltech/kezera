@@ -6,6 +6,7 @@ import { IAccount } from '../../models/account/account.model'
 import { Document, Schema } from 'mongoose'
 import { serverApp } from '../../index'
 import { Stream } from 'stream'
+import { getComment } from '../comment/comment.methods'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -137,4 +138,16 @@ export async function addComment(
   news.comments.push(comment._id)
   await news.save()
   return comment
+}
+
+export async function getComments(newsId: Schema.Types.ObjectId): Promise<any> {
+  let news = await get(NewsModel, newsId)
+  let comments = []
+  /*  if(news.comments.length == 0 ){
+    return comments;
+  }*/
+  for (let i = 0; i < news.comments.length; i++) {
+    comments.push(await getComment(news.comments[i]))
+  }
+  return comments
 }

@@ -80,6 +80,7 @@ class NewsView extends React.Component<any, INewsAddState> {
   }
 
   render() {
+    const { match } = this.props
     const { description, title, article, liked, likeCount } = this.state
     return (
       <div className={'news-view-container'}>
@@ -87,7 +88,7 @@ class NewsView extends React.Component<any, INewsAddState> {
           <div
             className={'news-view-img'}
             style={{
-              backgroundImage: `url(${newsTemp})`
+              backgroundImage: `url(/api/news/picture/${match.params._id})`
             }}
           />
           <div className={'news-view-detail-container'}>
@@ -142,7 +143,7 @@ class NewsView extends React.Component<any, INewsAddState> {
           </div>
         </div>
         <div className={'news-view-stat'}>
-          <NewsTabs />
+          <NewsTabs _id={match.params._id} />
         </div>
       </div>
     )

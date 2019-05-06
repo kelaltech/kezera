@@ -27,6 +27,8 @@ const OrganizationDetail = lazy(() =>
   import('../../shared/pages/organization-detail/organization-detail')
 )
 
+const NewsDetail = lazy(() => import('../../shared/pages/news-detail/news-detail'))
+
 export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
 
@@ -57,7 +59,7 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       <Route exact path={`${p}/search-result`} component={SearchResult} />
 
       <Route exact path={`${p}/event/:_id`} component={EventDetail} />
-
+      <Route exact path={`${p}/news/:_id`} component={NewsDetail} />
       <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
 
       <Route component={NotFound} />
