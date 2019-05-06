@@ -17,9 +17,18 @@
   display: flex;
   justify-content: space-between;
 
+  @media screen and (max-width: $mobile) {
+    width: 100vw;
+    display: block;
+  }
   .hero-slogan {
     align-self: center;
     color: $bg;
+
+    @media screen and (max-width: $mobile) {
+      text-align: left;
+      padding-top: $padding-L * 7;
+    }
   }
 }
 
@@ -33,6 +42,12 @@
   text-align: center;
   color: $primary;
   border-radius: 10px;
+
+  @media screen and (max-width: $mobile) {
+    left: 50%;
+    top: 75%;
+    transform: translate(-50%, -50%);
+  }
 }
 .l-volunteer-activities {
   margin-top: 200px;
@@ -40,20 +55,35 @@
   height: auto;
   display: flex;
   justify-content: space-around;
+
+  @media screen and (max-width: $mobile) {
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 50px;
+  }
   .l-right-card {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    @media screen and (max-width: $mobile) {
+      align-self: center;
+    }
   }
   .l-center-text {
     display: flex;
     font-size: 3em;
     flex-direction: column;
+    @media screen and (max-width: $mobile) {
+      display: none;
+    }
   }
   .l-left-card {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    @media screen and (max-width: $mobile) {
+      align-self: center;
+    }
   }
 }
 
@@ -66,6 +96,15 @@
   background-size: cover;
   text-align: center;
 
+  @media screen and (max-width: $mobile) {
+    width: 100vw;
+
+    h1 {
+      height: 200px !important;
+      line-height: 200px;
+      font-size: 1.5em !important;
+    }
+  }
   h1 {
     height: 100vh;
     line-height: 100vh;
@@ -77,6 +116,13 @@
   display: flex;
   justify-content: space-evenly;
 
+  @media screen and (max-width: $mobile) {
+    flex-direction: column;
+    .l2-card-news {
+      margin-top: 10px;
+      align-self: center;
+    }
+  }
   .l2-card-news {
     margin-top: 200px;
   }
@@ -85,13 +131,23 @@
   padding-top: $padding-L * 7;
   display: flex;
   justify-content: space-evenly;
+
+  @media screen and (max-width: $mobile) {
+    flex-direction: column;
+
+    * {
+      align-self: center;
+    }
+  }
 }
 
 .l-d-app {
   margin-top: $padding-L * 7;
   width: 100%;
   height: 100vh;
-
+  @media screen and (max-width: $mobile) {
+    width: 100vw;
+  }
   .l-d-title {
     text-align: center;
     p {
@@ -110,6 +166,25 @@
     background-size: cover;
     display: flex;
     justify-content: space-evenly;
+
+    @media screen and (max-width: $mobile) {
+      height: 350px;
+      width: 100vw;
+      transform: rotate(90deg);
+      .l-d-b-title,
+      .l-d-b-btn-cont {
+        width: 100% !important;
+        transform: rotate(-90deg);
+        padding: 0 !important;
+      }
+      .l-d-b-title {
+        padding-top: $padding-L * 11 !important;
+
+        p {
+          display: none;
+        }
+      }
+    }
     .l-d-b-title {
       padding-left: $padding-L * 2;
       color: $bg !important;
