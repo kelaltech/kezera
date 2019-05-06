@@ -7,6 +7,7 @@ import axios from 'axios'
 import { withRouter } from 'react-router'
 import { Editor, createEditorState } from 'medium-draft'
 import { convertToRaw, convertFromRaw, EditorState, AtomicBlockUtils } from 'draft-js'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
 interface INewsAddState {
   title: any
@@ -80,7 +81,7 @@ class NewsView extends React.Component<any, INewsAddState> {
   }
 
   render() {
-    const { match } = this.props
+    const { match, role } = this.props
     const { description, title, article, liked, likeCount } = this.state
     return (
       <div className={'news-view-container'}>
@@ -130,6 +131,15 @@ class NewsView extends React.Component<any, INewsAddState> {
                 <FontAwesomeIcon icon={['fas', 'share-alt']} />
                 &nbsp; Share
               </span>
+              {role == 'ORGANIZATION' ? (
+                <a
+                  className={'news-view-edit-icon'}
+                  href={`/news/${match.params._id}/edit`}
+                >
+                  <FontAwesomeIcon icon={faEdit} />
+                  &nbsp; Edit
+                </a>
+              ) : null}
             </div>
             <div className={'news-view-article'}>
               <Editor
