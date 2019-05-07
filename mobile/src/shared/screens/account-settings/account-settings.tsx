@@ -28,7 +28,10 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
         setSending(false)
         navigation.dispatch(NavigationActions.navigate({ routeName: 'Init' }))
       },
-      e => Alert.alert(t`error`, e.message)
+      e => {
+        Alert.alert(t`error`, e.message)
+        setSending(false)
+      }
     )
   }
 

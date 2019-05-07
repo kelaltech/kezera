@@ -19,7 +19,7 @@ export async function accountRequestToLeanDocument(
   _id?: ObjectId,
   _last: Date | number = Date.now()
 ): Promise<any> {
-  return {
+  const leanDocument = {
     _id,
     _last,
 
@@ -30,8 +30,12 @@ export async function accountRequestToLeanDocument(
     // set/change password manually (using postSave/preUpdate)
 
     displayName: request.displayName,
-    phoneNumber: request.phoneNumber === null ? undefined : request.phoneNumber
+    phoneNumber: request.phoneNumber
   }
+
+  if (!leanDocument.phoneNumber) delete leanDocument.phoneNumber
+
+  return leanDocument
 }
 
 export async function accountRequestToDocument(

@@ -16,7 +16,7 @@ import {
   useAccountDispatch,
   useAccountState
 } from '../../../app/stores/account/account-provider'
-import { login, logout, reloadAccount } from '../../../app/stores/account/account-actions'
+import { login, logout } from '../../../app/stores/account/account-actions'
 import Loading from '../../../shared/components/loading/loading'
 
 function AccountLogin({ navigation }: NavigationInjectedProps<{}>) {
@@ -60,7 +60,10 @@ function AccountLogin({ navigation }: NavigationInjectedProps<{}>) {
         setSending(false)
         navigation.dispatch(NavigationActions.navigate({ routeName: 'VolunteerWelcome' }))
       },
-      e => Alert.alert(t`error`, e.message)
+      e => {
+        Alert.alert(t`error`, e.message)
+        setSending(false)
+      }
     )
   }
 

@@ -6,6 +6,7 @@
   "email": "Email",
   "password": "Password",
   "repeat-password": "Repeat Password",
+  "phone-number": "Phone Number",
   "register": "Register",
 
   "forgot-password": "Forgot Password?",
@@ -14,6 +15,9 @@
   "wrong-credentials": "You've entered wrong credentials.",
   "logged-in-as": "You are logged in as:",
   "logout": "Logout",
+
+  "already-have-an-account-login": "Already have an account? Login",
+  "passwords-do-not-match": "Passwords do not match.",
 
   "account-settings": "Account Settings"
 }
