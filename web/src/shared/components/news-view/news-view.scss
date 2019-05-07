@@ -71,6 +71,14 @@
   }
   .news-view-share-icon {
   }
+  .news-view-edit-icon {
+    text-decoration: none;
+    color: #8f8f8f;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
   .name-view-like-list {
     &:hover {

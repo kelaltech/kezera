@@ -4,7 +4,7 @@
   top: 60px;
   width: 100%;
   height: auto;
-  //background-color: darkorange;
+  background-color: darkorange;
   padding: 15px;
   @media screen and (max-width: $mobile) {
     display: none;
@@ -14,7 +14,7 @@
 .mini-sidenav-links {
   .sid-link {
     padding: $padding-S;
-    margin: 2px;
+    //margin: 2px;
     display: flex;
     &:hover {
       background-color: #d6d6d6;

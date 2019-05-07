@@ -16,11 +16,11 @@ export default function MiniNav() {
       <div className={'mini-sidenav-container'}>
         <div className={'mini-sidenav-links'}>
           <div className={'sid-link'}>
-            <span className={'icon-link discovery '}>
-              <a title={'discover'} href="/discovery">
+            <a title={'discover'} href="/discovery">
+              <span className={'icon-link discovery '}>
                 <FontAwesomeIcon icon={faNewspaper} />
-              </a>
-            </span>
+              </span>
+            </a>
           </div>
           <div className={'sid-link'}>
             <span className={'icon-link discovery '}>

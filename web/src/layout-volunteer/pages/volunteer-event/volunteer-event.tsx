@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Block } from 'gerami'
+import { Block, Yoga } from 'gerami'
 import ProductSlider from '../../components/volunteer-product-slider/volunteer-product-slider'
 
 import './volunteer-event.scss'
@@ -62,13 +62,12 @@ function VolunteerEvents() {
       <div className={'e-slider events-list-container'}>
         <h4>Events around you </h4>
         <Slider {...settings}>
-          {/*  {events.map((event: any) => (
+          {events.map((event: any) => (
             <div className={'slider-event-list'}>
               <EventCard event={event} />
-              <h1>Bituk</h1>
             </div>
           ))}
-           {nearEvents.map((event: any) => (//todo uncomment
+          {/*   {nearEvents.map((event: any) => (//todo uncomment
               <div className={'slider-event-list'}>
                 <EventCard  event={event}  />
               </div>
@@ -78,11 +77,13 @@ function VolunteerEvents() {
       <Block />
       <div className={'events-list-container'}>
         <h4>Upcoming </h4>
-        {events.map((event: any) => (
-          <Block>
-            <EventCard event={event} />
-          </Block>
-        ))}
+        <Yoga maxCol={2}>
+          {events.map((event: any) => (
+            <Block>
+              <EventCard event={event} />
+            </Block>
+          ))}
+        </Yoga>
       </div>
     </div>
   )

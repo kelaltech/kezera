@@ -22,19 +22,16 @@
 }
 
 .events-list-container {
-  width: 50%;
+  width: 75vw;
   margin: 0 auto;
 
   @media screen and (max-width: 500px) {
-    width: 100%;
-    margin: 0 15px;
+    width: 90vw;
   }
 }
 
 .e-slider {
-  //width: 75% !important;
-  width: 300px;
-  margin: 0 auto;
+  //width: 75vw !important;
 }
 .slider-event-list {
   padding: 0 5px;
