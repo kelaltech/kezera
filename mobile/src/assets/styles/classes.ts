@@ -81,9 +81,9 @@ export default StyleSheet.create({
   italic: { fontStyle: 'italic' },
   boldItalic: { fontWeight: 'bold', fontStyle: 'italic' },
 
-  head1: {}, // todo
-  head2: {}, // todo
-  head3: {}, // todo
+  head1: { fontWeight: 'bold', fontSize: values.fontSize.big },
+  head2: { fontWeight: 'bold', fontSize: values.fontSize.normal },
+  head3: { fontWeight: 'bold', fontSize: values.fontSize.small },
 
   sub1: {}, // todo
   sub2: {}, // todo

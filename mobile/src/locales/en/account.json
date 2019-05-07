@@ -12,5 +12,6 @@
   "login": "Login",
   "create-new-account": "Create New Account",
   "wrong-credentials": "You've entered wrong credentials.",
-  "logged-in-as": "You are logged in as:"
+  "logged-in-as": "You are logged in as:",
+  "logout": "Logout"
 }
