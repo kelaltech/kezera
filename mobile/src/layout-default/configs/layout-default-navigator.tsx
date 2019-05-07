@@ -65,7 +65,7 @@ const LayoutDefaultNavigator = createBottomTabNavigator(
   {
     initialRouteName: 'NewsList',
     tabBarOptions: {
-      showLabel: true
+      showLabel: false,
     }
   }
 )
