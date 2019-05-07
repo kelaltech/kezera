@@ -2,7 +2,7 @@ import { ModelFactory } from 'meseret'
 import { Document, Schema } from 'mongoose'
 import { eventPaths } from './event.path'
 
-type ObjectId = Schema.Types.ObjectId | string | number
+type ObjectId = Schema.Types.ObjectId | string
 
 export interface IEvent extends Document {
   _at: Date | number
@@ -13,6 +13,7 @@ export interface IEvent extends Document {
   goingVolunteers: ObjectId[]
   startDate: Date
   endDate: Date
+  mapURL: string
   location: string
   likes: ObjectId[]
   comments: ObjectId[]
@@ -25,7 +26,7 @@ export const eventModelFactory = new ModelFactory<IEvent>({
   paths: eventPaths
 })
 
-eventModelFactory.schema.index({
+eventModelFactory.model.collection.ensureIndex({
   title: 'text',
   description: 'text'
 })

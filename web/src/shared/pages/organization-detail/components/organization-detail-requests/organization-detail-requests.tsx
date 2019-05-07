@@ -50,12 +50,12 @@ function OrganizationDetailRequest({ organization }: Props) {
         ) : (
           <>
             {!requests.length ? (
-              <Block first last className={'fg-blackish'}>
+              <div className={'padding-vertical-very-big center big fg-blackish'}>
                 This organization has not posted requests yet.
-              </Block>
+              </div>
             ) : (
               <>
-                <Yoga maxCol={4} className={'padding-normal'}>
+                <Yoga maxCol={4} className={'yoga-in-rich-page padding-normal'}>
                   {requests.map((r, i) => (
                     <RequestCard key={i} request={r} />
                   ))}

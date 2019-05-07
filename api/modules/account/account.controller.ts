@@ -26,7 +26,7 @@ import { serverApp } from '../../index'
 import { Grid } from '../../lib/grid'
 
 export class AccountController extends KoaController {
-  /* GENERAL */
+  /* GENERAL: */
 
   async add(
     session?: ClientSession,
@@ -112,7 +112,7 @@ export class AccountController extends KoaController {
     return accountDocumentToResponse(document)
   }
 
-  /* PHOTO */
+  /* PHOTO: */
 
   async addPhoto(
     session?: ClientSession,
@@ -122,14 +122,20 @@ export class AccountController extends KoaController {
     const account = await get(AccountModel, user!._id)
     const grid = new Grid(serverApp, AccountModel, account._id, 'photo')
 
-    await grid.set(createReadStream(ctx!.request.files!['photo'].path))
+    const photo = ctx!.request.files!['photo']
+    await grid.set(createReadStream(photo.path), photo.type)
 
     return this.me(session, user)
   }
 
-  async getPhoto(account_id = super.getParam('account_id')): Promise<Stream> {
+  async getPhoto(
+    account_id = super.getParam('account_id'),
+    ctx = super.getContext()
+  ): Promise<Stream> {
     const account = await get(AccountModel, account_id)
     const grid = new Grid(serverApp, AccountModel, account._id, 'photo')
+
+    if (ctx) ctx.type = await grid.getType()
 
     return grid.get()
   }
@@ -146,7 +152,7 @@ export class AccountController extends KoaController {
     return this.me(session, user)
   }
 
-  /* PASSWORD RESET */
+  /* PASSWORD RESET: */
 
   async startPasswordReset(
     session?: ClientSession,

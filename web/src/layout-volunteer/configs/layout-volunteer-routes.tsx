@@ -22,6 +22,7 @@ const Task = lazy(() => import('../pages/volunteer-task/volunteer-task'))
 const SearchResult = lazy(() =>
   import('../pages/volunteer-search-result/volunteer-search-result')
 )
+const EventDetail = lazy(() => import('../../shared/pages/event-detail/event-detail'))
 const OrganizationDetail = lazy(() =>
   import('../../shared/pages/organization-detail/organization-detail')
 )
@@ -54,6 +55,8 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       <Route exact path={`${p}/me`} component={Profile} />
       <Route exact path={`${p}/request`} component={Request} />
       <Route exact path={`${p}/search-result`} component={SearchResult} />
+
+      <Route exact path={`${p}/event/:_id`} component={EventDetail} />
 
       <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
 

@@ -7,22 +7,31 @@ import { IOrganizationResponse } from '../../../../../api/modules/organization/o
 
 interface Props {
   organization: IOrganizationResponse
+  /**
+   * @default false
+   */
+  isApplication?: boolean
+  className?: string
 }
 
 /**
  * The recommended Yoga maxCol (for a size XXL) is 3.
  */
-function OrganizationCard({ organization }: Props) {
+function OrganizationCard({ organization, className, isApplication = false }: Props) {
   const { loading, t } = useLocale(['organization'])
+
+  const detailUrl = !isApplication
+    ? `/organization/${organization._id}`
+    : `/application/${organization._id}`
 
   return (
     loading || (
-      <Card className={'organization-card top'} imgSrc={organization.logoUri}>
+      <Card
+        className={` ${className} organization-card top `}
+        imgSrc={organization.logoUri}
+      >
         {organization.logoUri && (
-          <Anchor
-            to={`/organization/${organization._id}`}
-            className={'organization-card-logo-anchor'}
-          >
+          <Anchor to={detailUrl} className={'organization-card-logo-anchor'}>
             <Content
               className={'organization-card-logo'}
               style={{ backgroundImage: `url(${organization.logoUri})` }}
@@ -32,14 +41,12 @@ function OrganizationCard({ organization }: Props) {
 
         <Content className={'organization-card-content'}>
           <div className={'bold font-L center'}>
-            <Anchor to={`/organization/${organization._id}`}>
-              {organization.account.displayName}
-            </Anchor>
+            <Anchor to={detailUrl}>{organization.account.displayName}</Anchor>
           </div>
           <hr style={{ opacity: 0.42 }} />
           <div className={'font-S fg-blackish center'}>
             <small>
-              <Anchor to={`/organization/${organization._id}`} className={'fg-blackish'}>
+              <Anchor to={detailUrl} className={'fg-blackish'}>
                 {organization.type}
               </Anchor>
             </small>
@@ -47,8 +54,12 @@ function OrganizationCard({ organization }: Props) {
               |
             </small>
             <small>
-              <Anchor to={`/organization/${organization._id}`} className={'fg-blackish'}>
-                {organization.subscribersCount || 'NO'} SUBSCRIBERS
+              <Anchor to={detailUrl} className={'fg-blackish'}>
+                {!isApplication
+                  ? `${organization.subscribersCount || 'NO'} SUBSCRIBER${
+                      organization.subscribersCount === 1 ? '' : 'S'
+                    }`
+                  : `Sent on ${new Date(organization._at).toDateString().substr(3)}`}
               </Anchor>
             </small>
           </div>

@@ -24,6 +24,7 @@ export type IOrganizationRequest = {
 }
 
 export type IOrganizationResponse = {
+  _at: number
   _id: string
 
   account: IAccountPublicResponse

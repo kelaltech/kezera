@@ -2,23 +2,38 @@ import { IServerAppConfig } from 'meseret'
 import * as KoaPassport from 'koa-passport'
 import * as path from 'path'
 
+// models
 import { AccountModel } from '../models/account/account.model'
+import { ActivityModel } from '../models/activity/activity.model'
 import { CertificateModel } from '../models/certificate/certificate.model'
+import { commentModel } from '../models/comment/comment.model'
+import { EventModel } from '../models/event/event.model'
+import { FundModel } from '../models/fundraising/fundraising.model'
 import { KeyModel } from '../models/key/key.model'
+import { MaterialModel } from '../models/material/material.model'
+import { NewsModel } from '../models/news/news.model'
+import { OrganModel } from '../models/organ/organ.model'
 import { OrganizationModel } from '../models/organization/organization.model'
 import { OrganizationApplicationModel } from '../models/organization-application/organization-application.model'
-import { FundModel } from '../models/fundraising/fundraising.model'
-import { TaskModel } from '../models/task/task.model'
 import { RequestModel } from '../models/request/request.model'
+import { SpamReportModel } from '../models/spam-report/spam-report.model'
+import { TaskModel } from '../models/task/task.model'
+import { VolunteerModel } from '../models/volunteer/volunteer.model'
 
+// routers
 import { accountRouter } from '../modules/account/account.router'
-import { newsRouter } from '../modules/news/news.route'
-import { requestRouter } from '../modules/request/request.router'
+import { activityRouter } from '../modules/activity/activity.router'
+import { adminRouter } from '../modules/admin/admin.router'
+import { certificateRouter } from '../modules/certificate/certificate.router'
+import { commentRouter } from '../modules/comment/comment.route'
 import { eventRouter } from '../modules/event/event.router'
+import { materialRouter } from '../modules/material/material.router'
+import { newsRouter } from '../modules/news/news.route'
 import { organizationRouter } from '../modules/organization/organization.router'
+import { requestRouter } from '../modules/request/request.router'
+import { spamRouter } from '../modules/spam/spam.router'
 import { verifierRouter } from '../modules/verifier/verifier.router'
 import { volunteerRouter } from '../modules/volunteer/volunteer.router'
-import { organRouter } from '../modules/organ/organ.router'
 
 export const serverAppConfig: IServerAppConfig = {
   name: 'SPVA',
@@ -32,25 +47,38 @@ export const serverAppConfig: IServerAppConfig = {
   ],
 
   models: [
+    ActivityModel,
     AccountModel,
     CertificateModel,
+    commentModel,
+    EventModel,
+    FundModel,
     KeyModel,
+    MaterialModel,
+    NewsModel,
+    OrganModel,
     OrganizationModel,
     OrganizationApplicationModel,
-    FundModel,
+    RequestModel,
+    SpamReportModel,
     TaskModel,
-    RequestModel
+    VolunteerModel
   ],
 
   routers: [
+    adminRouter,
+    activityRouter,
     accountRouter,
-    newsRouter,
+    commentRouter,
+    certificateRouter,
     eventRouter,
+    newsRouter,
+    materialRouter,
     organizationRouter,
     requestRouter,
+    spamRouter,
     verifierRouter,
-    volunteerRouter,
-    organRouter
+    volunteerRouter
   ],
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],

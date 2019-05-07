@@ -18,7 +18,9 @@ import {
   toggleAttend,
   going,
   isGoing,
-  getInterested
+  getInterested,
+  getOrganizationEvents,
+  getRecentEvents
 } from './event.controller'
 import * as fs from 'fs'
 
@@ -30,23 +32,26 @@ eventRouter.get('/all', async ctx => {
   ctx.body = await listAllEvents()
 })
 
-// /api/event/search/term
-eventRouter.get('/search', async ctx => {
-  console.log('search')
-  ctx.body = await searchEvent(ctx.query.term)
+eventRouter.get('/mine', async ctx => {
+  console.log('This is the event of the organization', ctx.state.user._id)
+  ctx.body = await getOrganizationEvents(ctx.state.user._id)
 })
 
-// api/event/:_id
-eventRouter.get('/:_id', async ctx => {
-  console.log('/:_id asdsad')
-  ctx.body = await getEvent(ctx.params._id)
+eventRouter.get('/recent', async ctx => {
+  ctx.body = await getRecentEvents(Number(ctx.query.count))
+})
+
+// /api/event/search/term
+eventRouter.get('/search', async ctx => {
+  ctx.body = await searchEvent(ctx.query.term)
 })
 
 // /api/event/create
 eventRouter.post('/create', async ctx => {
-  console.log(ctx.request.body)
+  console.log(ctx.request.body.event)
+  console.log(ctx.request.files!.image.path)
   ctx.body = await addEvent(
-    ctx.request.body,
+    JSON.parse(ctx.request.body.event),
     ctx.state.user._id,
     fs.createReadStream(ctx.request.files!.image.path)
   )
@@ -63,9 +68,10 @@ eventRouter.get('/:_id/attended', async ctx => {
 
 // /api/event/:_id"
 eventRouter.put('/:_id', async ctx => {
+  console.log(ctx.request.body.event)
   ctx.body = await editEvent(
     ctx.params._id,
-    ctx.request.body,
+    JSON.parse(ctx.request.body.event),
     ctx.state.user._id,
     fs.createReadStream(ctx.request.files!.image.path)
   )
@@ -87,9 +93,8 @@ eventRouter.get('/:_id/attendance/verify', async ctx => {
 eventRouter.delete('/:_id', async ctx => {
   ctx.body = await removeEvent(ctx.params._id, ctx.state.user._id)
 })
-
+// /api/event/:_id/comments
 eventRouter.get('/:_id/comments', async ctx => {
-  console.log('/:_id/comments')
   ctx.body = await getComments(ctx.params._id)
 })
 
@@ -121,4 +126,10 @@ eventRouter.put('/:_id/going', async ctx => {
 
 eventRouter.get('/:_id/isGoing', async ctx => {
   ctx.body = await isGoing(ctx.params._id, ctx.state.user._id)
+})
+
+// api/event/:_id
+eventRouter.get('/:_id', async ctx => {
+  console.log('/:_id asdsad')
+  ctx.body = await getEvent(ctx.params._id)
 })

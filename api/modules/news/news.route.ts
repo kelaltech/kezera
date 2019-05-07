@@ -22,13 +22,22 @@ export const newsRouter = new Route({
   prefix: '/api/news'
 })
 
+//GET /api/news/recent?count=5
+newsRouter.get('/recent', async ctx => {
+  ctx.body = await recentNews(Number(ctx.query.count))
+})
+
 //POST /api/news/new
 newsRouter.post('/new', async ctx => {
-  ctx.body = await addNews(ctx.request.body, ctx.state.user)
+  ctx.body = await addNews(ctx.request.body)
 })
 
 newsRouter.get('/allnews', async ctx => {
   ctx.body = await listAllNews()
+})
+//GET /api/news/search?term=:term
+newsRouter.get('/search', async ctx => {
+  ctx.body = await searchNews(ctx.query.term)
 })
 
 //GET /api/news/:_newsId
@@ -86,17 +95,8 @@ newsRouter.put('/:_newsId', async ctx => {
   ctx.body = await editNews(ctx.request.body, ctx.params._newsId)
 })
 
-//GET /api/news/search?term=:term
-newsRouter.get('/search', async ctx => {
-  ctx.body = await searchNews(ctx.params.term)
-})
 //POST /api/news/:_newsId/comment/new
 
 newsRouter.post('/:_newsId/comment/new', async ctx => {
   ctx.body = await addComment(ctx.state.user, ctx.params._newsId, ctx.request.body)
-})
-
-//GET /api/news/recent?count=5
-newsRouter.get('/recent', async ctx => {
-  ctx.body = await recentNews(ctx.query.count)
 })

@@ -1,0 +1,18 @@
+@import '../../../assets/styles/theme';
+.AdminDrawer {
+  background-color: #fff;
+  width: 250px !important;
+  float: left;
+  filter: drop-shadow($shade-S);
+}
+
+.AdminDrawerContent {
+  top: 60px;
+  position: sticky;
+}
+.primary {
+  color: $primary;
+}
+.no-decoration {
+  text-decoration: none;
+}

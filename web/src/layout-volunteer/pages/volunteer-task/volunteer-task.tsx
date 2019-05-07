@@ -38,8 +38,11 @@ const taskTypes = [
 ]
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCertificate } from '@fortawesome/free-solid-svg-icons'
-import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons/faChevronCircleDown'
+import {
+  faCertificate,
+  faChevronCircleDown,
+  faChild
+} from '@fortawesome/free-solid-svg-icons'
 import { Card, Yoga } from 'gerami'
 function VolunteerTask() {
   const [expanded, setExpanded] = useState(false)
@@ -55,40 +58,34 @@ function VolunteerTask() {
         console.log(e)
       })
   }, [])
+
+  const handleTaskFilter = (name: string) => () => {
+    axios
+      .get(`/api/task/search?term=${name}`)
+      .then(task => {
+        setTasks(task.data)
+      })
+      .catch(e => console.log(e))
+  }
   return (
     <div className={'tasks-list-container'}>
       <div className={'col-bar-container'}>
-        <div className={'col-bar-img'} />
         <div className={'collapse-controller'}>
-          {/*  <div className={'before-expand'} >
-               <div className={'expand'}  onClick={() => setExpanded(!expanded)}>
-                  <FontAwesomeIcon icon={faChevronCircleDown}/>
-                </div>
-            <Yoga maxCol={3}
-              >
-            </Yoga>
-          </div>
-          <div className={'after-expand'}>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-
-            </Collapse>
-          </div>*/}
-
           <div className={'bar-before-expand'}>
             <span className={'expand-icon'} onClick={() => setExpanded(!expanded)}>
               <FontAwesomeIcon icon={faChevronCircleDown} />
             </span>
             <div className={'header-expand-bar'}>
               <Yoga maxCol={3}>
-                <MenuItem>
-                  <FontAwesomeIcon icon={faChevronCircleDown} />
+                <MenuItem onClick={handleTaskFilter('children')}>
+                  <FontAwesomeIcon icon={faChild} />
                   Children & Youth
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('education')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Education & Literacy
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('environment')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Environment
                 </MenuItem>
@@ -99,67 +96,67 @@ function VolunteerTask() {
           <div className={'bar-after-expanded'}>
             <Collapse in={expanded} timeout={'auto'} unmountOnExit>
               <Yoga style={{ padding: '20px' }} maxCol={3}>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Advocacy & Human Rights')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Advocacy & Human Rights
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Animal')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Animal
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Art & Culture')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Art & Culture
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Community')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Community
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Computer & Technology')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Computer & Technology
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Crisis Support')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Crisis Support
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Disaster Relief')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Disaster Relief
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Hunger')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Hunger
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Faith-Based')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Faith-Based
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Employment')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Employment
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Emergency & Safety')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Emergency & Safety
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Media & Broadcasting')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Media & Broadcasting
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('People with Disability')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   People with Disability
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Politics')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Politics
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Women')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Women
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleTaskFilter('Sport & Recreation')}>
                   <FontAwesomeIcon icon={faChevronCircleDown} />
                   Sport & Recreation
                 </MenuItem>

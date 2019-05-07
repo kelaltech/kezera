@@ -51,6 +51,7 @@ export async function accountDocumentToResponse(
   photoUri?: string | null
 ): Promise<IAccountResponse> {
   const response: IAccountResponse = {
+    _at: new Date(document._at!).getTime(),
     _id: document._id,
 
     status: document.status,

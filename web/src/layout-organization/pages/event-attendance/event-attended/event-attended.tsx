@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Yoga, Title, Page, Block } from 'gerami'
 import EventAttendedCard from '../../../../shared/components/event-attended-card/event-attended-card'
-import axios from 'axios'
+import { useEventDispatch, useEventState } from '../../../stores/events/events.provider'
+import { GetAttended } from '../../../stores/events/events.action'
 
 export default function EventAttended(props: any) {
-  let [user, setUser] = useState([])
+  let eventDispatch = useEventDispatch()
+  let { volunteers } = useEventState()
   useEffect(() => {
-    axios
-      .get(`/api/event/${props.match.params._id}/attended`)
-      .then((resp: any) => setUser(resp.data))
-      .catch()
+    GetAttended(props.match.params._id, eventDispatch)
   }, [])
   return (
     <Page>
-      <Block className="center">
-        <Title size={'3XL'}> Users who attended the event </Title>
+      <Block>
+        <Title size={'XXL'}> Volunteers attended</Title>
       </Block>
-      {user.length >= 0 ? (
+      {volunteers && volunteers.length > 0 ? (
         <>
-          {user.map((u: any) => (
-            <>
-              <Yoga maxCol={6}>
-                <EventAttendedCard user={u} />
-              </Yoga>
-            </>
-          ))}
+          {volunteers &&
+            volunteers.map((u: any) => (
+              <>
+                <Yoga maxCol={6}>
+                  <EventAttendedCard user={u} />
+                </Yoga>
+              </>
+            ))}
         </>
       ) : (
-        <Title size={'3XL'}> No users attended </Title>
+        <Title size={'M'}> No users attended </Title>
       )}
     </Page>
   )

@@ -8,7 +8,7 @@ export default function Table(props: any) {
 }
 
 export function TableHeader(props: any) {
-  return <span className={'flex bg-primary padding-normal'}>{props.children}</span>
+  return <span className={'flex bg-primary padding-small'}>{props.children}</span>
 }
 
 export function TableCell(props: any) {

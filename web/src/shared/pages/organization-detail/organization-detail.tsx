@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Anchor, Content, Flex, FlexSpacer } from 'gerami'
+import { RouteComponentProps, withRouter } from 'react-router'
+import { Anchor, Content, Flex, FlexSpacer, Warning } from 'gerami'
+import { IButtonProps } from 'gerami/src/components/Button/Button'
 import { Tab, Tabs } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as qs from 'qs'
@@ -20,14 +21,36 @@ import OrganizationDetailRequests from './components/organization-detail-request
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
 import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
 import { reloadSubscriptions } from '../../../layout-volunteer/stores/volunteer/volunteer-actions'
+import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
 
 type ITabName = 'info' | 'requests' | 'events' | 'news'
 
-function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: string }>) {
+type Props = RouteComponentProps<{ _id: string }> & {
+  /**
+   * @default false
+   */
+  isApplication?: boolean
+  errorOverride?: any
+  organizationOverride?: IOrganizationResponse
+  actionsOverride?: IButtonProps[]
+}
+
+function OrganizationDetail({
+  history,
+  match,
+  isApplication,
+  errorOverride,
+  organizationOverride,
+  actionsOverride
+}: Props) {
   const { t } = useLocale(['organization'])
 
   const [error, setError] = useState()
-  const [organization, setOrganization] = useState<IOrganizationResponse>()
+  const [organization, setOrganization] = useState<IOrganizationResponse | undefined>(
+    organizationOverride
+  )
+
+  const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
 
   const { account } = useAccountState()
   const { myOrganization } = useMyOrganizationState()
@@ -40,7 +63,7 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
   const loadBy_id = async (_id: string): Promise<void> => {
     try {
       const response = await Axios.get<IOrganizationResponse>(
-        `/api/organization/get/${match.params._id}`
+        `/api/organization/get/${_id}`
       )
       if (!response.data || !response.data._id)
         return setError(`Organization response is malformed.`)
@@ -52,7 +75,9 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
   }
 
   useEffect(() => {
-    if (requestedId === match.params._id) {
+    if (organizationOverride) {
+      setOrganization(organizationOverride)
+    } else if (requestedId === match.params._id) {
       return
     } else if (match.params._id.toLowerCase() === 'me') {
       setWaitingForMe(true)
@@ -80,6 +105,8 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
   const [tab, setTab] = useState<ITabName>(query.tab || 'info')
 
   useEffect(() => {
+    if (isApplication) return setTab('info')
+
     switch (query.tab as ITabName | undefined) {
       default:
       case 'info':
@@ -117,7 +144,8 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
       photo={organization && organization.logoUri}
       ready={!!(organization || error)}
       languageNamespaces={['organization']}
-      error={error}
+      error={errorOverride || error}
+      onErrorClose={setError}
       documentTitle={organization && organization.account.displayName}
       title={
         organization && (
@@ -140,16 +168,53 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
               {organization.subscribersCount || 'NO'} SUBSCRIBER
               {organization.subscribersCount === 1 ? '' : 'S'}
             </span>
-            <FlexSpacer />
-            {!organization.website ? null : (
-              <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
-                {organization.website}
-              </Anchor>
+            {!organization.motto ? null : (
+              <>
+                <span>{organization.type}</span>
+                <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
+                  |
+                </span>
+                <span>
+                  {!isApplication
+                    ? `${organization.subscribersCount || 'NO'} SUBSCRIBER${
+                        organization.subscribersCount === 1 ? '' : 'S'
+                      }`
+                    : `Sent on ${new Date(organization._at).toDateString().substr(3)}`}
+                </span>
+              </>
             )}
+            <FlexSpacer />
+            {organization.account.status !== 'ACTIVE' || !organization.website ? null : (
+              <>
+                <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
+                  {organization.website}
+                </Anchor>
+                <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
+                  |
+                </span>
+              </>
+            )}
+            <span>
+              <Anchor
+                onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                title={`Report Organization as Spam`}
+              >
+                <FontAwesomeIcon icon={'user-slash'} />
+              </Anchor>
+              <SpamReportDrop
+                type={'ORGANIZATION'}
+                ids={[organization._id]}
+                open={isSpamReportDropOpen}
+                onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                align={'right'}
+                anchorOffset={18}
+              />
+            </span>
           </Flex>
         ))
       }
       actions={
+        actionsOverride ||
         (account &&
           organization &&
           ((account.role === 'ORGANIZATION' && [
@@ -204,30 +269,37 @@ function OrganizationDetail({ history, match }: RouteComponentProps<{ _id: strin
         []
       }
     >
-      {organization && (
-        <Content className={'bg-whitish'} style={{ overflow: 'visible' }}>
-          <Content>
+      {organization &&
+        (organization.account.status !== 'ACTIVE' ? (
+          <Warning problem={`Sorry, this organization's account is not active.`} />
+        ) : (
+          <Content style={{ overflow: 'visible' }} transparent>
             <Tabs
               value={tab}
               onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
             >
               <Tab label={`Info.`} value={'info'} />
-              <Tab label={`Requests`} value={'requests'} />
-              <Tab label={`Events`} value={'events'} />
-              <Tab label={`News`} value={'news'} />
+              {!isApplication && <Tab label={`Requests`} value={'requests'} />}
+              {!isApplication && <Tab label={`Events`} value={'events'} />}
+              {!isApplication && <Tab label={`News`} value={'news'} />}
             </Tabs>
-          </Content>
 
-          {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
-          {tab === 'requests' && (
-            <OrganizationDetailRequests organization={organization} />
-          )}
-          {tab === 'events' && <OrganizationDetailEvents organization={organization} />}
-          {tab === 'news' && <OrganizationDetailNews organization={organization} />}
-        </Content>
-      )}
+            {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
+            {!isApplication && (
+              <>
+                {tab === 'requests' && (
+                  <OrganizationDetailRequests organization={organization} />
+                )}
+                {tab === 'events' && (
+                  <OrganizationDetailEvents organization={organization} />
+                )}
+                {tab === 'news' && <OrganizationDetailNews organization={organization} />}
+              </>
+            )}
+          </Content>
+        ))}
     </RichPage>
   )
 }
 
-export default OrganizationDetail
+export default withRouter(OrganizationDetail)

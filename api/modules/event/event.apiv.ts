@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose'
 
 export type IOrganizationEventRequest = {
+  _id: Schema.Types.ObjectId
   title: string
   description: string
   startDate: Date
@@ -15,12 +16,18 @@ export type IOrganizationEventRequest = {
 }
 
 export type IOrganizationEventResponse = {
+  _id: Schema.Types.ObjectId
   title: string
   description: string
   startDate: Date
-  amountOfPeople: Number
   endDate: Date
+  likes: Schema.Types.ObjectId[]
+  amountOfPeople: Number
+  comments: Schema.Types.ObjectId[]
   location?: string
+  interestedVolunteers: Schema.Types.ObjectId[]
+  goingVolunteers: Schema.Types.ObjectId[]
+  attendedVolunteers: Schema.Types.ObjectId[]
 }
 
 export type IVolunteerEventRequest = {

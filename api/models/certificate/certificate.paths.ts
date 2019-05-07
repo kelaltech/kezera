@@ -1,18 +1,22 @@
 import { Schema, SchemaDefinition } from 'mongoose'
 
-import { certificatePurposes } from './certificate.model'
+import { certificatePrivacy, certificatePurposes } from './certificate.model'
 
 const ObjectId = Schema.Types.ObjectId
 
 export const certificatePaths: SchemaDefinition = {
-  _at: { type: Date, default: Date.now, index: true },
-  _last: { type: Date, index: true },
+  _at: { type: Date, required: true, default: Date.now, index: true },
+  _last: { type: Date, required: true, index: true },
 
   purpose: { type: String, required: true, enum: certificatePurposes },
+  description: { type: String, required: true, maxlength: 500 },
 
   issuedBy: { type: ObjectId, required: true, ref: 'organization' },
   issuedTo: { type: ObjectId, required: true, ref: 'volunteer' },
 
-  design: { type: ObjectId, required: true, ref: 'certificate-design' },
-  message: { type: String, required: true, maxlength: 1000 }
+  privacy: {
+    type: String,
+    required: true,
+    enum: certificatePrivacy
+  }
 }

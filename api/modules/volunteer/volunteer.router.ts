@@ -6,6 +6,7 @@ import {
   volunteerInfo,
   editVolunteerInfo
 } from './volunteer.controller'
+import { authorize } from '../../lib/middlewares/authorize'
 
 export const volunteerRouter = new Router({
   prefix: '/api/volunteer'
@@ -16,8 +17,8 @@ volunteerRouter.post('/register', async (ctx: any) => {
   ctx.body = await RegisterVolunteer(ctx.request.body)
 })
 
-volunteerRouter.get('/me', async ctx => {
-  console.log('This is from /me route')
+// GET /api/volunteer/me *
+volunteerRouter.get('/me', authorize(['VOLUNTEER']), async ctx => {
   ctx.body = await volunteerInfo(ctx.state.user)
 })
 

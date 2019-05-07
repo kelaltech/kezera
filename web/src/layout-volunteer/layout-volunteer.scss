@@ -1,0 +1,16 @@
+@import '../assets/styles/theme';
+.volunteer-layout-container {
+  display: flex;
+}
+
+.vol-content-container {
+  flex-grow: 1;
+}
+
+.vol-sidenav-container {
+  //width: 220px;
+  position: relative;
+
+  display: none;
+  /*todo remove display property*/
+}

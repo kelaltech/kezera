@@ -1,6 +1,5 @@
 import { ModelFactory } from 'meseret'
 import { Document, Schema } from 'mongoose'
-
 import { VolunteerPaths } from './volunteer.path'
 
 type ObjectId = Schema.Types.ObjectId | string | number
@@ -18,6 +17,14 @@ export interface IVolunteer extends Document {
     material: boolean
     task: boolean
     money: boolean
+  }
+  portfolio: {
+    events: ObjectId[]
+    tasks: ObjectId[]
+    certificate: ObjectId[]
+    material: ObjectId[]
+    money: ObjectId[]
+    organ: ObjectId[]
   }
 }
 

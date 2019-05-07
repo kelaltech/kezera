@@ -1,16 +1,17 @@
-import { EventModel } from '../../models/event/event.model'
+import { EventModel, IEvent } from '../../models/event/event.model'
 import { add, edit, get, list, remove, search } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
 import { Grid } from '../../lib/grid'
 import { Stream } from 'stream'
 import { serverApp } from '../../index'
-import { commentModel } from '../../models/comment/comment.model'
+import { commentModel, IComment } from '../../models/comment/comment.model'
 import { KoaError } from '../../lib/koa-error'
 import { AccountModel, IAccount } from '../../models/account/account.model'
+import { getComment } from '../comment/comment.methods'
 
 export async function removeEvent(
-  id: Schema.Types.ObjectId,
-  orgId: Schema.Types.ObjectId
+  id: Schema.Types.ObjectId | string,
+  orgId: Schema.Types.ObjectId | string
 ): Promise<void> {
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) await remove(EventModel, id)
@@ -21,8 +22,25 @@ export async function getEvent(id: Schema.Types.ObjectId): Promise<any> {
   return await get(EventModel, id)
 }
 
-export async function searchEvent(term: any): Promise<any> {
-  return await search(EventModel, term)
+export async function searchEvent(term: string): Promise<any> {
+  let events = await search(EventModel, term)
+  console.log(events)
+  return events
+}
+
+export async function getRecentEvents(count: number): Promise<IEvent[]> {
+  return await list(EventModel, {
+    since: Date.now(),
+    count
+  })
+}
+
+export async function getOrganizationEvents(
+  id: Schema.Types.ObjectId
+): Promise<IEvent[]> {
+  return await list(EventModel, {
+    preQuery: model => model.find({ organizationId: id })
+  })
 }
 
 export async function listAllEvents(): Promise<any> {
@@ -76,22 +94,21 @@ export async function usersLikedAnEvent(id: Schema.Types.ObjectId): Promise<any>
   return users
 }
 
-export async function getComments(eventId: Schema.Types.ObjectId): Promise<any> {
-  //todo comments
-  return await get(EventModel, eventId)
+export async function getComments(eventId: Schema.Types.ObjectId): Promise<IComment[][]> {
+  let event = await get(EventModel, eventId)
+  let comments = []
+  for (let i = 0; i < event.comments.length; i++) {
+    comments.push(await getComment(event.comments[i]))
+  }
+  return comments
 }
 
-export async function addEvent(body: any, orgId: any, pic: Stream) {
-  //const organization = await get(AccountModel, orgId)
-  body.organizationId = orgId
-  const event = await add(EventModel, body)
+export async function addEvent(body: any, orgId: any, pic: Stream): Promise<IEvent> {
+  const event = await add(EventModel, { ...body, organizationId: orgId })
   console.log(event)
   const grid = new Grid(serverApp, EventModel, event._id)
-  /*organization.events.push({
-    //@ts-ignore
-    eventId: event._id
-  })*/
   await Promise.all([grid.set(pic)])
+  return event
 }
 
 export async function editEvent(
@@ -99,12 +116,13 @@ export async function editEvent(
   body: any,
   orgId: Schema.Types.ObjectId,
   pic: Stream
-): Promise<any> {
+): Promise<IEvent> {
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) {
-    await edit(EventModel, id, body)
+    let updated = await edit(EventModel, id, { ...body })
     await new Grid(serverApp, EventModel, id).remove()
     await new Grid(serverApp, EventModel, id).set(pic)
+    return updated
   } else throw new KoaError('Not authorized', 401)
 }
 

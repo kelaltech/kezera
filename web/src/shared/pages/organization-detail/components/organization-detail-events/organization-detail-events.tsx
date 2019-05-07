@@ -50,14 +50,14 @@ function OrganizationDetailEvent({ organization }: Props) {
         ) : (
           <>
             {!events.length ? (
-              <Block first last className={'fg-blackish'}>
+              <div className={'padding-vertical-very-big center big fg-blackish'}>
                 This organization has not posted events yet.
-              </Block>
+              </div>
             ) : (
               <>
-                <Yoga maxCol={4} className={'padding-normal'}>
+                <Yoga maxCol={4} className={'yoga-in-rich-page padding-normal'}>
                   {events.map((e, i) => (
-                    <EventCard key={i} event={e} fetch={() => {}} />
+                    <EventCard key={i} event={e} />
                   ))}
                 </Yoga>
                 {events.length && events.length % count === 0 && (

@@ -5,17 +5,69 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 // am
 import amCommon from '../locales/am/common.json'
+import amAccount from '../locales/am/account.json'
+import amCertificate from '../locales/am/certificate.json'
+import amComment from '../locales/am/comment.json'
+import amEvent from '../locales/am/event.json'
+import amFundraising from '../locales/am/fundraising.json'
+import amMaterialDonation from '../locales/am/material-donation.json'
+import amNews from '../locales/am/news.json'
+import amOrganDonation from '../locales/am/organ-donation.json'
+import amOrganization from '../locales/am/organization.json'
+import amRequest from '../locales/am/request.json'
+import amSpam from '../locales/am/spam.json'
+import amTask from '../locales/am/task.json'
+import amVolunteer from '../locales/am/volunteer.json'
 
 // en
 import enCommon from '../locales/en/common.json'
+import enAccount from '../locales/en/account.json'
+import enCertificate from '../locales/en/certificate.json'
+import enComment from '../locales/en/comment.json'
+import enEvent from '../locales/en/event.json'
+import enFundraising from '../locales/en/fundraising.json'
+import enMaterialDonation from '../locales/en/material-donation.json'
+import enNews from '../locales/en/news.json'
+import enOrganDonation from '../locales/en/organ-donation.json'
+import enOrganization from '../locales/en/organization.json'
+import enRequest from '../locales/en/request.json'
+import enSpam from '../locales/en/spam.json'
+import enTask from '../locales/en/task.json'
+import enVolunteer from '../locales/en/volunteer.json'
 
 // until dynamic imports gets supported by react native
 const translations: any = {
   am: {
-    common: amCommon
+    common: amCommon,
+    account: amAccount,
+    certificate: amCertificate,
+    comment: amComment,
+    event: amEvent,
+    fundraising: amFundraising,
+    'material-donation': amMaterialDonation,
+    news: amNews,
+    'organ-donation': amOrganDonation,
+    organization: amOrganization,
+    request: amRequest,
+    spam: amSpam,
+    task: amTask,
+    volunteer: amVolunteer
   },
   en: {
-    common: enCommon
+    common: enCommon,
+    account: enAccount,
+    certificate: enCertificate,
+    comment: enComment,
+    event: enEvent,
+    fundraising: enFundraising,
+    'material-donation': enMaterialDonation,
+    news: enNews,
+    'organ-donation': enOrganDonation,
+    organization: enOrganization,
+    request: enRequest,
+    spam: enSpam,
+    task: enTask,
+    volunteer: enVolunteer
   }
 }
 
@@ -23,8 +75,37 @@ export type Language = 'am' | 'en'
 export const supportedLanguages = ['am', 'en']
 export const defaultLanguage: Language = 'en'
 
-export type Namespace = 'common'
-export const supportedNamespaces = ['common']
+export type Namespace =
+  | 'common'
+  | 'account'
+  | 'certificate'
+  | 'comment'
+  | 'event'
+  | 'fundraising'
+  | 'material-donation'
+  | 'news'
+  | 'organ-donation'
+  | 'organization'
+  | 'request'
+  | 'spam'
+  | 'task'
+  | 'volunteer'
+export const supportedNamespaces: Namespace[] = [
+  'common',
+  'account',
+  'certificate',
+  'comment',
+  'event',
+  'fundraising',
+  'material-donation',
+  'news',
+  'organ-donation',
+  'organization',
+  'request',
+  'spam',
+  'task',
+  'volunteer'
+]
 export const defaultNamespaces: Namespace[] = ['common']
 
 export async function checkLanguage(lng: string): Promise<void> {
@@ -33,7 +114,7 @@ export async function checkLanguage(lng: string): Promise<void> {
 
 export async function checkNamespaces(namespaces: string[]): Promise<void> {
   for (const namespace of namespaces)
-    if (!supportedNamespaces.includes(namespace))
+    if (!supportedNamespaces.includes(namespace as Namespace))
       throw Error(`namespace "${namespace}" is not supported`)
 }
 
@@ -104,6 +185,9 @@ export async function setLanguage(
 
   await AsyncStorage.setItem('lng', lng)
   await i18n.changeLanguage(lng)
+
+  // might as well just do this, because lazy loading is not supported yet
+  await loadNamespaces(supportedNamespaces, lng)
 }
 
 export function _(

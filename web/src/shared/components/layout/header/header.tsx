@@ -2,10 +2,10 @@ import React, { CSSProperties, ReactNode, useState } from 'react'
 import { Anchor, Block, Button, FlexSpacer, Image, MenuDrop, MenuItem } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import './header.scss'
 import useLocale from '../../../hooks/use-locale/use-locale'
 import { INavigationItem } from './interfaces'
 import logo128 from '../../../../assets/images/logo-128.png'
-import './header.scss'
 
 export interface IHeaderProps {
   centerNode?: ReactNode | null

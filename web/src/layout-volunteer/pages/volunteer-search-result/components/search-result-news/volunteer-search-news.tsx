@@ -11,10 +11,12 @@ function NewsSearchResult(props: INewsResult) {
   const [news, setNews] = useState([])
 
   useEffect(() => {
+    console.log(`/api/news/search?term=${term}`)
     axios
-      .get('/api/news/search?term' + term)
+      .get(`/api/news/search?term=${term}`)
       .then((news: any) => {
         setNews(news.data)
+        console.log(news.data)
       })
       .catch((e: any) => console.log(e))
   }, [])

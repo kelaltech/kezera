@@ -39,9 +39,9 @@ export default function EventVerification(props: any) {
   return (
     <Page>
       <Block>
-        <Title size="3XL"> Verifiy volunteers attendance </Title>
+        <Title size="XXL"> Volunteers </Title>
       </Block>
-      {volunteer.length >= 0 ? (
+      {volunteer.length > 0 ? (
         <>
           <Table>
             <TableHeader>
@@ -103,7 +103,7 @@ export default function EventVerification(props: any) {
           </Block>
         </>
       ) : (
-        <Title size="3XL"> No volunteers found </Title>
+        <Title size={'M'}> No volunteers found </Title>
       )}
     </Page>
   )

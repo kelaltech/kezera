@@ -1,31 +1,102 @@
-.drawer-container {
-  width: 20%;
-  position: fixed;
-  background-color: #f02139;
-  min-height: 100vh;
-  height: auto;
-  //z-index: -1;
+@import '../../../assets/styles/theme';
+.sidenav-container {
+  position: sticky;
+  top: 60px;
+  width: 220px;
+  min-height: 90vh;
+  border-right: 1px solid #d6d6d6;
+  transition: 0.2s all;
+  padding: 15px;
+  @media screen and (max-width: $mobile) {
+    display: none;
+  }
+}
+.mini-width {
+  width: 50px !important;
+}
+.wide-width {
+  width: 220px !important;
+}
+
+.btn-link {
+  text-align: center;
+  margin-bottom: $padding-M;
+}
+.sidenav-links {
+  .sid-link {
+    padding: $padding-S;
+    margin: 2px;
+    display: flex;
+    &:hover {
+      background-color: #d6d6d6;
+      border-radius: $radius;
+      cursor: pointer;
+    }
+    font-size: $font-S;
+
+    .a {
+      all: unset;
+      width: 100%;
+      height: inherit;
+    }
+    .icon-link {
+      margin-right: 3px;
+    }
+
+    .discovery {
+      color: #177be6;
+    }
+    .news {
+      color: #177be6;
+    }
+
+    .event {
+      color: #ffb53a;
+    }
+    .task {
+      color: dodgerblue;
+    }
+    .organization {
+      color: lightcoral;
+    }
+  }
+}
+
+.sid-link-sub {
+  padding: $padding-S;
+  margin: 2px;
   display: flex;
-  transition: 0.5s all;
+  font-size: $font-S;
+  .task-sub-title {
+    h5 {
+      font-weight: lighter;
+      font-size: $font-S;
+    }
+  }
+
+  .task-sub-links {
+    margin-left: $space;
+    a {
+      display: block;
+      margin: 2px;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        color: $primary;
+      }
+    }
+  }
 }
 
-.small-nav {
-  width: 20%;
-  height: inherit;
-  background-color: #3f51b5;
-}
-.wide-nav {
-  width: 78%;
-  height: inherit;
-  background-color: #00b478;
-}
-.min-nav {
-  width: 0;
-  display: none;
-}
-
-.open-close {
-  width: 20px;
-  height: 40px;
-  background-color: dodgerblue;
+.sidenav-close-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: $padding-L;
+  text-align: center;
+  &:hover {
+    background-color: #d6d6d6;
+  }
 }

@@ -13,7 +13,7 @@ export const organizationTypes: IOrganizationType[] = [
   'PRIVATE'
 ]
 
-export interface IOrganization {
+export type IOrganization = {
   _at?: Date | number
   _last: Date | number
 

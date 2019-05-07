@@ -15,6 +15,14 @@ export type IVolunteerResponse = {
     task: boolean
     money: boolean
   }
+  portfolio: {
+    events: string
+    tasks: string
+    certificate: string
+    material: string
+    money: string
+    organ: string
+  }
 }
 
 export type IVolunteerRequest = {
@@ -30,5 +38,13 @@ export type IVolunteerRequest = {
     material: boolean
     task: boolean
     money: boolean
+  }
+  portfolio?: {
+    events: string
+    tasks: string
+    certificate: string
+    material: string
+    money: string
+    organ: string
   }
 }

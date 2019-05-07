@@ -33,8 +33,6 @@ export default function News() {
           title = ''
         }
 
-        console.log(data.data)
-
         setNews(data.data)
       })
       .catch(e => {
@@ -49,7 +47,7 @@ export default function News() {
           <NewsCard
             _id={n._id}
             commentCount={n.comments.length}
-            imgSrc={NewsTemp}
+            imgSrc={`/api/news/${n._id}/pic`}
             title={n.title}
             likeCount={n.likes.length}
             description={n.description}

@@ -9,18 +9,12 @@ import { Stream } from 'stream'
 
 type ObjectId = Schema.Types.ObjectId | string
 
-export async function addNews(data: any, account: Document & IAccount): Promise<any> {
-  /*  if(account.role !== 'ORGANIZATION'){
-    return "you dont have permission to publish this contente"
-  }*/
-  data._by = await account._id
+export async function addNews(data: any): Promise<any> {
   return await add(NewsModel, data)
 }
 
 export async function getAllNews(since: number, count: number): Promise<any> {
-  const docs = await list(NewsModel, { since: since, count: count })
-
-  return docs
+  return await list(NewsModel, { since: since, count: count })
 }
 
 export async function listAllNews() {
@@ -111,8 +105,11 @@ export async function editNews(data: any, _newsId: ObjectId): Promise<any> {
 export async function searchNews(term: string): Promise<any> {
   return search(NewsModel, term)
 }
-export async function recentNews(count: Number): Promise<any> {
-  return await NewsModel.find({}).count(count)
+export async function recentNews(count: number): Promise<any> {
+  return await list(NewsModel, {
+    since: Date.now(),
+    count
+  })
 }
 /*export async function addNewsWithPicture(
   data: any,

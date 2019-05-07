@@ -132,42 +132,66 @@ function Profile() {
                     <FontAwesomeIcon icon={faCertificate} />
                   </ListItemIcon>
                   <ListItemText primary="Certificate Achieved" />
-                  <ListItemSecondaryAction>{2}</ListItemSecondaryAction>
+                  <ListItemSecondaryAction>
+                    {volunteer!.portfolio.certificate.length === 0
+                      ? '-'
+                      : volunteer!.portfolio.certificate.length}
+                  </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <FontAwesomeIcon icon={faCalendarCheck} />
                   </ListItemIcon>
                   <ListItemText primary="Event Attended" />
-                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                  <ListItemSecondaryAction>
+                    {volunteer!.portfolio.events.length === 0
+                      ? '-'
+                      : volunteer!.portfolio.events.length}
+                  </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <FontAwesomeIcon icon={faTasks} />
                   </ListItemIcon>
                   <ListItemText primary="Task Accomplished" />
-                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                  <ListItemSecondaryAction>
+                    {volunteer!.portfolio.tasks.length === 0
+                      ? '-'
+                      : volunteer!.portfolio.tasks.length}
+                  </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <FontAwesomeIcon icon={faToolbox} />
                   </ListItemIcon>
                   <ListItemText primary="Material Donated" />
-                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                  <ListItemSecondaryAction>
+                    {volunteer!.portfolio.material.length === 0
+                      ? '-'
+                      : volunteer!.portfolio.material.length}
+                  </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <FontAwesomeIcon icon={faHandHoldingUsd} />
                   </ListItemIcon>
                   <ListItemText primary="Money Donated" />
-                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                  <ListItemSecondaryAction>
+                    {volunteer!.portfolio.money.length === 0
+                      ? '-'
+                      : volunteer!.portfolio.money.length}
+                  </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <FontAwesomeIcon icon={faHandHoldingHeart} />
                   </ListItemIcon>
                   <ListItemText primary="Organ Pledged" />
-                  <ListItemSecondaryAction>{12}</ListItemSecondaryAction>
+                  <ListItemSecondaryAction>
+                    {volunteer!.portfolio.organ.length === 0
+                      ? '-'
+                      : volunteer!.portfolio.organ.length}
+                  </ListItemSecondaryAction>
                 </ListItem>
               </List>
             </div>
@@ -188,13 +212,16 @@ function Profile() {
         </div>
         <div className={'pro-event-attended'}>
           <Slider {...Settings}>
-            {events.map(e => (
+            <div>Anteneh is Responsible for this :( !</div>
+            <div>Anteneh is Responsible for this :( !</div>
+            <div>Anteneh is Responsible for this :( !</div>
+            {/*  {events.map(e => (
               <div>
                 <Block>
-                  <EventCard event={e} role={'VOLUNTEER'} fetch={() => {}} />
+                  <EventCard event={e} />
                 </Block>
               </div>
-            ))}
+            ))}*/}
           </Slider>
         </div>
       </Content>

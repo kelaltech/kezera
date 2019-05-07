@@ -17,9 +17,10 @@ import { OrganizationModel } from '../../models/organization/organization.model'
 import { IRequest, RequestModel } from '../../models/request/request.model'
 import { EventModel, IEvent } from '../../models/event/event.model'
 import { INews, NewsModel } from '../../models/news/news.model'
+import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 
 export class OrganizationController extends KoaController {
-  /* GENERAL */
+  /* GENERAL: */
 
   async apply(
     session?: ClientSession,
@@ -125,6 +126,35 @@ export class OrganizationController extends KoaController {
     )
   }
 
+  async discover(
+    session?: ClientSession,
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10,
+    account = super.getUser()
+  ): Promise<IOrganizationResponse[]> {
+    const conditions: any = {}
+    if (account) {
+      const volunteer = await VolunteerModel.findOne({ account: account._id })
+      if (volunteer) {
+        conditions.subscribers = { $ne: account._id }
+      }
+    }
+
+    const organizations = await list(OrganizationModel, {
+      session,
+      conditions,
+      since,
+      count
+    })
+    return await Promise.all(
+      organizations.map(organization => organizationDocumentToResponse(organization))
+    )
+  }
+
+  async stats(): Promise<void> {
+    // todo
+  }
+
   async editMe(
     session?: ClientSession,
     account_id = super.getUser()!._id, // organization account _id
@@ -151,7 +181,7 @@ export class OrganizationController extends KoaController {
     return await organizationDocumentToResponse(organization)
   }
 
-  /* SUBSCRIPTIONS */
+  /* SUBSCRIPTIONS: */
 
   async subscriptions(
     session?: ClientSession,
@@ -194,7 +224,7 @@ export class OrganizationController extends KoaController {
     await edit(OrganizationModel, _id, organization, { session })
   }
 
-  /* LINKS TO OTHER MODULES */
+  /* LINKS TO OTHER MODULES: */
 
   async requests(
     session?: ClientSession,
