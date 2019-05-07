@@ -1,5 +1,6 @@
 {
   "app-name": "SPVA",
 
-  "error": "Error"
+  "error": "Error",
+  "optional": "Optional"
 }

@@ -14,6 +14,7 @@ import { Button, Image, Input } from 'react-native-elements'
 import { IAccountRequest } from '../../../apiv/account.apiv'
 import { login } from '../../../app/stores/account/account-actions'
 import { useAccountDispatch } from '../../../app/stores/account/account-provider'
+import values from '../../../assets/styles/values'
 
 function AccountRegister({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale([])
@@ -119,7 +120,7 @@ function AccountRegister({ navigation }: NavigationInjectedProps<{}>) {
           <Input
             style={styles.inputs}
             keyboardType={'phone-pad'}
-            placeholder={t`account:phone-number`}
+            placeholder={t`account:phone-number` + ' (' + t`optional` + ')'}
             value={data.phoneNumber || ''}
             onChangeText={phoneNumber => setData({ ...data, phoneNumber })}
             editable={!sending}
@@ -149,6 +150,8 @@ function AccountRegister({ navigation }: NavigationInjectedProps<{}>) {
         >
           <Text>{t`account:already-have-an-account-login`}</Text>
         </TouchableOpacity>
+
+        <View style={{ height: values.space.big }} />
       </ScrollView>
     )
   )
