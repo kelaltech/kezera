@@ -19,5 +19,10 @@
   "already-have-an-account-login": "Already have an account? Login",
   "passwords-do-not-match": "Passwords do not match.",
 
+  "reset-account-password": "Reset Account Password",
+  "reset-start-description": "If you've forgotten your account's password, we can email a unique temporary link to your inbox. Then, you can follow that link to securely reset your account's password.",
+  "email-reset-link": "Email Reset Link",
+  "reset-email-sent-confirmation": "We've sent you the email successfully. Please check your inbox to proceed.",
+
   "account-settings": "Account Settings"
 }

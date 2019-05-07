@@ -32,6 +32,6 @@ export default StyleSheet.create({
   },
 
   loginLink: {
-    ...classes.marginVerticalBig
+    ...classes.paddingVerticalBig
   }
 })
