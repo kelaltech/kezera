@@ -27,6 +27,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         accountFromStorage && state.account === undefined
           ? JSON.parse(accountFromStorage)
           : undefined,
+        () => {},
         e => Alert.alert(_`error`, e.message)
       )
     })

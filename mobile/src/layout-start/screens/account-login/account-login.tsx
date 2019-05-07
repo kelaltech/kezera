@@ -16,7 +16,7 @@ import {
   useAccountDispatch,
   useAccountState
 } from '../../../app/stores/account/account-provider'
-import { logout, reloadAccount } from '../../../app/stores/account/account-actions'
+import { login, logout, reloadAccount } from '../../../app/stores/account/account-actions'
 import Loading from '../../../shared/components/loading/loading'
 
 function AccountLogin({ navigation }: NavigationInjectedProps<{}>) {
@@ -34,30 +34,34 @@ function AccountLogin({ navigation }: NavigationInjectedProps<{}>) {
 
   const handleLogin = (): void => {
     setSending(true)
-    Axios.post<void>('/api/account/login', data)
-      .then(response => {
-        const responseUrl: string = response.request.responseURL.toLowerCase()
-        if (
-          responseUrl.includes('success=false') &&
-          responseUrl.includes('code=wrong_credentials')
-        ) {
-          Alert.alert(t`error`, t`account:wrong-credentials`)
-        } else {
-          reloadAccount(accountDispatch)
-          setData({ ...data, password: '' })
-          navigation.dispatch(NavigationActions.navigate({ routeName: 'LayoutDefault' }))
-        }
-      })
-      .catch(e => Alert.alert(t`error`, e.message))
-      .finally(() => setSending(false))
+    login(
+      accountDispatch,
+      data,
+      () => {
+        setSending(false)
+        setData({ ...data, password: '' })
+        navigation.dispatch(NavigationActions.navigate({ routeName: 'Init' }))
+      },
+      e => {
+        Alert.alert(
+          t`error`,
+          e.message === 'WRONG_CREDENTIALS' ? t`account:wrong-credentials` : e.message
+        )
+        setSending(false)
+      }
+    )
   }
 
   const handleLogout = (): void => {
     setSending(true)
-    logout(accountDispatch, () => {
-      setSending(false)
-      navigation.dispatch(NavigationActions.navigate({ routeName: 'VolunteerWelcome' }))
-    })
+    logout(
+      accountDispatch,
+      () => {
+        setSending(false)
+        navigation.dispatch(NavigationActions.navigate({ routeName: 'VolunteerWelcome' }))
+      },
+      e => Alert.alert(t`error`, e.message)
+    )
   }
 
   return (

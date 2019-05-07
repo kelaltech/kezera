@@ -14,16 +14,11 @@ function VolunteerWelcome({ navigation }: NavigationInjectedProps<{}>) {
     loading || (
       <View style={styles.main}>
         <Text style={classes.grow}>
-          {t`app-name`}: VolunteerWelcome Screen (in LayoutStart) {/* todo */}
+          {t`app-name`}: VolunteerWelcome Screen (in LayoutStart)
         </Text>
         <Button
           title={t`volunteer:get-started`}
-          onPress={() =>
-            navigation.push(
-              'AccountLogin' /* todo: link to AccountRegister instead */,
-              {}
-            )
-          }
+          onPress={() => navigation.push('AccountRegister', {})}
         />
       </View>
     )

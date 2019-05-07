@@ -17,6 +17,7 @@ export default StyleSheet.create({
   },
 
   title: {
+    ...classes.grow,
     ...classes.bold,
     ...classes.paddingVertical,
     ...classes.paddingHorizontal,
