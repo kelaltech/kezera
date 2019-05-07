@@ -43,7 +43,7 @@ export function reloadAccount(
   }
 }
 
-let updateAccountTimeout: NodeJS.Timeout | null = null
+let updateAccountTimeout: number | null = null
 let updateAccountCancellation: CancelTokenSource | null = null
 export function updateAccount(
   accountDispatch: (action: Action) => void,
