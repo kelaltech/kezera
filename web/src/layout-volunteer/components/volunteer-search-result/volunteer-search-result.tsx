@@ -7,7 +7,6 @@ import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 import './volunteer-search-result.scss'
 import qs from 'qs'
 import axios from 'axios'
-import FormControlLabel from '@material-ui/core/es/FormControlLabel'
 import NewsSearchResult from '../../pages/volunteer-search-result/components/search-result-news/volunteer-search-news'
 import EventsSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-events/volunteer-search-events'
 import DonationSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-donations/volunteer-search-donations'
@@ -102,19 +101,18 @@ function VolunteerSearchResult() {
           variant="scrollable"
           scrollButtons="on"
         >
-          <Tab label={'All'} />
+          <Tab label={'Donations'} />
           <Tab label={'News'} />
           <Tab label={'Event'} />
           <Tab label={'Task'} />
-          <Tab label={'Donations'} />
           <Tab label={'Organization'} />
           <Tab label={'Volunteer'} />
         </Tabs>
 
         {value === 0 && (
-          <div>
-            <h1>All Search Results!</h1>
-          </div>
+          <Block>
+            <DonationSearchResult term={searchTerm} />
+          </Block>
         )}
         {value === 1 && (
           <Block>
@@ -131,17 +129,13 @@ function VolunteerSearchResult() {
             <TaskSearchResult term={searchTerm} />
           </Block>
         )}
+
         {value === 4 && (
-          <Block>
-            <DonationSearchResult term={searchTerm} />
-          </Block>
-        )}
-        {value === 5 && (
           <Block>
             <OrganizationSearchResult term={searchTerm} />
           </Block>
         )}
-        {value === 6 && (
+        {value === 5 && (
           <Block>
             <VolSearchResult term={searchTerm} />
           </Block>

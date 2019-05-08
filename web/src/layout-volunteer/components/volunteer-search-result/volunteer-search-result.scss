@@ -14,6 +14,8 @@
   margin: 0 !important;
   position: sticky;
   top: 55px;
-  width: 50%;
-  background-color: dodgerblue;
+  width: 100%;
+  @media screen and (max-width: $mobile){
+    width: 100vw;
+  }
 }

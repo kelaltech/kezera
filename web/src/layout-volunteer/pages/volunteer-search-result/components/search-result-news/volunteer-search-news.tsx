@@ -22,7 +22,7 @@ function NewsSearchResult(props: INewsResult) {
   }, [])
   return (
     <div>
-      <h1>News Search result</h1>
+      <h2>News Search result</h2>
 
       <div>
         {news.map((n: any) => (
