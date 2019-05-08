@@ -5,7 +5,7 @@ import {
   NavigationInjectedProps,
   withNavigation
 } from 'react-navigation'
-import { Button, Divider, Input } from 'react-native-elements'
+import { Divider, Input } from 'react-native-elements'
 
 import useLocale from '../../hooks/use-locale/use-locale'
 import Header from '../../components/header/header'
@@ -23,6 +23,7 @@ import EditableItem from '../../components/editable-item/editable-item'
 import LabeledView from '../../components/labeled-view/labeled-view'
 import { IAccountResponse } from '../../../apiv/account.apiv'
 import values from '../../../assets/styles/values'
+import AccountSettingsPhoto from './components/account-settings-photo/account-settings-photo'
 
 function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['account'])
@@ -130,6 +131,10 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
         <Header title={t`account:account-settings`} showAccount={false} showBack />
 
         <ScrollView style={classes.padding}>
+          <AccountSettingsPhoto />
+
+          <Divider />
+
           <EditableItem
             viewNode={
               <LabeledView
