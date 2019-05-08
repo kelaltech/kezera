@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Icon } from 'react-native-elements'
 
 import classes from '../../../assets/styles/classes'
@@ -10,9 +10,17 @@ type Props = {
 
   onEditStart?: () => void
   onEditSubmit?: () => void
+
+  style?: StyleProp<ViewStyle>
 }
 
-function EditableItem({ viewNode, editNode, onEditStart, onEditSubmit }: Props) {
+function EditableItem({
+  viewNode,
+  editNode,
+  onEditStart,
+  onEditSubmit,
+  style = {}
+}: Props) {
   const [mode, setMode] = useState<'VIEW' | 'EDIT'>('VIEW')
 
   const viewMode = (): void => {
@@ -26,14 +34,20 @@ function EditableItem({ viewNode, editNode, onEditStart, onEditSubmit }: Props) 
   }
 
   return (
-    <View style={{ ...classes.row, justifyContent: 'center' }}>
-      <View style={{ ...classes.grow, justifyContent: 'center' }}>
+    <View
+      style={{
+        ...classes.row,
+        ...classes.marginVerticalSmall,
+        ...(style as any)
+      }}
+    >
+      <View style={{ ...classes.grow, alignSelf: 'center' }}>
         {mode === 'VIEW' && viewNode}
         {mode === 'EDIT' && editNode}
       </View>
       <TouchableOpacity
         onPress={() => (mode === 'VIEW' ? editMode() : viewMode())}
-        style={classes.marginLeftSmall}
+        style={{ ...classes.marginLeftSmall, alignSelf: 'center' }}
       >
         {mode === 'VIEW' ? (
           <Icon name={'edit'} raised />

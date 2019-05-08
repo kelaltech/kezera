@@ -57,13 +57,23 @@ function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
             navigation.dispatch(NavigationActions.navigate({ routeName: 'Init' }))
           },
           e => {
-            Alert.alert(t`error` + '(' + t`account:login` + ')', e.message)
+            Alert.alert(
+              t`error` + '(' + t`account:login` + ')',
+              e.response && e.response.data
+                ? e.response.data.prettyMessage || e.response.data.message
+                : e.message
+            )
             setSending(false)
           }
         )
       )
       .catch(e => {
-        Alert.alert(t`error`, e.message)
+        Alert.alert(
+          t`error`,
+          e.response && e.response.data
+            ? e.response.data.prettyMessage || e.response.data.message
+            : e.message
+        )
         setSending(false)
       })
   }

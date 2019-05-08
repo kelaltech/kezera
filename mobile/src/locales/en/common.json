@@ -1,6 +1,12 @@
 {
   "app-name": "SPVA",
 
+  "n-a": "n/a",
   "error": "Error",
-  "optional": "Optional"
+  "optional": "Optional",
+
+  "yes": "Yes",
+  "no": "No",
+
+  "go-home": "Go Home"
 }

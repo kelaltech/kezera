@@ -27,7 +27,12 @@ function AccountResetStart({ navigation }: NavigationInjectedProps<Params>) {
     try {
       await Axios.post('/api/account/reset/start', data)
     } catch (e) {
-      Alert.alert(t`error`, e.prettyMessage || e.message || 'Unknown error.')
+      Alert.alert(
+        t`error`,
+        e.response && e.response.data
+          ? e.response.data.prettyMessage || e.response.data.message
+          : e.message
+      )
       setState('INITIAL')
       return
     }
