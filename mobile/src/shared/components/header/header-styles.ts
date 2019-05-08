@@ -42,7 +42,8 @@ export default StyleSheet.create({
     height: values.fontSize.big + 2 * values.space.normal - values.space.small,
     borderRadius:
       (values.fontSize.big + 2 * values.space.normal - values.space.small) / 2,
-    fontSize: values.space.big,
+    fontSize: values.fontSize.big,
+    fontWeight: 'bold',
     textAlign: 'center',
     textAlignVertical: 'center',
     backgroundColor: values.color.secondary,
