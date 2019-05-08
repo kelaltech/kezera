@@ -24,5 +24,28 @@ export default StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: values.fontSize.big,
     color: values.color.white
+  },
+
+  accountCircle: {
+    justifyContent: 'center'
+  },
+  accountCircleImage: {
+    margin: values.space.small,
+    borderRadius:
+      (values.fontSize.big + 2 * values.space.normal - values.space.small) / 2,
+    width: values.fontSize.big + 2 * values.space.normal - values.space.small,
+    height: values.fontSize.big + 2 * values.space.normal - values.space.small
+  },
+  accountCircleText: {
+    margin: values.space.small,
+    width: values.fontSize.big + 2 * values.space.normal - values.space.small,
+    height: values.fontSize.big + 2 * values.space.normal - values.space.small,
+    borderRadius:
+      (values.fontSize.big + 2 * values.space.normal - values.space.small) / 2,
+    fontSize: values.space.big,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    backgroundColor: values.color.secondary,
+    color: values.color.whitish
   }
 })

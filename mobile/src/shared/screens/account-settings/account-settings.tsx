@@ -38,7 +38,7 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
   return (
     loading || (
       <>
-        <Header title={t`account:account-settings`} showBack />
+        <Header title={t`account:account-settings`} showAccount={false} showBack />
 
         <ScrollView style={classes.padding}>
           <Text>{t`app-name`}: AccountSettings Screen (in App/shared)</Text>
