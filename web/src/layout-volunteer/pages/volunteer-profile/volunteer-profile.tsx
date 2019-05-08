@@ -28,6 +28,11 @@ import {
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import axios from 'axios'
 import EventCard from '../../../shared/components/event-card/event-card'
+import CertificateCard from '../../../shared/components/certificate-card/certificate-card'
+import {
+  ICertificatePrivacy,
+  ICertificatePurpose
+} from '../../../../../api/models/certificate/certificate.model'
 
 function Profile() {
   const Settings = {

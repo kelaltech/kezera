@@ -12,6 +12,7 @@ import Slider from 'react-slick'
 import RequestCard from '../../../shared/components/request/request-card'
 import { Block, Yoga } from 'gerami'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
+import RichPage from '../../../shared/components/rich-page/rich-page'
 
 function DiscoveryPage() {
   const [news, setNews] = useState([])
@@ -112,11 +113,11 @@ function DiscoveryPage() {
       .catch(e => console.log(e))
   }
   return (
-    <div>
+    <RichPage title={'Discovery'}>
       <div className={'discovery-container'}>
         <div className={'discovery-result-container'}>
           <div>
-            <h1>News</h1>
+            <h2>News</h2>
             <div className={'dis-slider'}>
               {news.length === 0 ? (
                 <Block className={'fg-blackish'}>There is no News ..!</Block>
@@ -142,7 +143,7 @@ function DiscoveryPage() {
             </div>
           </div>
           <div className={'result '}>
-            <h1>Event</h1>
+            <h2>Event</h2>
             <div className={'dis-slider'}>
               {event.length === 0 ? (
                 <Block className={'fg-blackish'}>There are no events ..!</Block>
@@ -150,9 +151,7 @@ function DiscoveryPage() {
                 <Slider {...settings} {...settingsEvents}>
                   {event.map((n: any) => (
                     <div className={'slider-list'}>
-                      <h1>Anteneh is responsible for this </h1>
-                      {/*<EventCard event={n} />*/}
-                      {/*<EventCard event={n} />*/}
+                      <EventCard event={n} />
                     </div>
                   ))}
                 </Slider>
@@ -160,8 +159,8 @@ function DiscoveryPage() {
             </div>
           </div>
           <div className={'result'}>
-            <h1>Organization</h1>
-            <div className={'dis-slider'}>
+            <h2>Organization</h2>
+            <div className={'dis-slider dis-sli-event'}>
               {organization.length === 0 ? (
                 <Block className={'fg-blackish'}>There are no organizations ..!</Block>
               ) : (
@@ -176,7 +175,7 @@ function DiscoveryPage() {
             </div>
           </div>
           <div className={'result-request'}>
-            <h1>Request</h1>
+            <h2>Request</h2>
             <div className={'dis-slider'}>
               {request.length === 0 ? (
                 <Block className={'fg-blackish'}>There are no requests ..!</Block>
@@ -193,7 +192,7 @@ function DiscoveryPage() {
           </div>
         </div>
       </div>
-    </div>
+    </RichPage>
   )
 }
 DiscoveryPage.propTypes = {
