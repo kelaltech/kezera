@@ -28,12 +28,11 @@ export async function deleteOrgan(id: ObjectId): Promise<any> {
   return await remove(OrganModel, id)
 }
 
-
 export async function newPledge(
   _organId: ObjectId,
   account: Document & IAccount
 ): Promise<IOrganResponse | any> {
-  const doc:IOrgan = await get(OrganModel, _organId)
+  const doc: IOrgan = await get(OrganModel, _organId)
 
   if (doc.pledges.length == 0) {
     doc.pledges.push(account._id)
@@ -55,9 +54,9 @@ export async function newPledge(
   return { doc }
 }
 
-export async function getPledges(_organId: ObjectId):Promise<any> {
-  const doc:IOrgan = await get(OrganModel,_organId, {
-    postQuery: q=> q.populate('pledges')
+export async function getPledges(_organId: ObjectId): Promise<any> {
+  const doc: IOrgan = await get(OrganModel, _organId, {
+    postQuery: q => q.populate('pledges')
   })
   return doc
 }

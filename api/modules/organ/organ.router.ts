@@ -6,7 +6,7 @@ import {
   editOrgan,
   deleteOrgan,
   newPledge,
-   getPledges
+  getPledges
 } from './organ.controller'
 
 export const organRouter = new Router({
@@ -36,8 +36,8 @@ organRouter.delete('/:_id', async ctx => {
 //=== Things Related to Pledges
 
 //POST /api/organ/:_id/pledge
-organRouter.post('/:_id/pledge', async ctx =>{
-  ctx.body = await newPledge(ctx.params._id,ctx.user.state)
+organRouter.post('/:_id/pledge', async ctx => {
+  ctx.body = await newPledge(ctx.params._id, ctx.user.state)
 })
 organRouter.get(':_id/pledges', async ctx => {
   ctx.body = await getPledges(ctx.params._id)
