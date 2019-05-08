@@ -37,6 +37,6 @@ export default StyleSheet.create({
   },
 
   createNewAccount: {
-    ...classes.marginVerticalBig
+    ...classes.paddingVerticalBig
   }
 })

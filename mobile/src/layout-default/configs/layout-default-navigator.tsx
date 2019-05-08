@@ -12,6 +12,9 @@ import LayoutRequests from '../../layout-requests/layout-requests'
 import EventList from '../screens/event-list/event-list'
 import OrganizationSubscriptions from '../screens/organization-subscriptions/organization-subscriptions'
 
+const iconHeight = 28
+const iconMargin = iconHeight / 2
+
 const LayoutDefaultNavigator = createBottomTabNavigator(
   {
     NewsList: {
@@ -65,7 +68,10 @@ const LayoutDefaultNavigator = createBottomTabNavigator(
   {
     initialRouteName: 'NewsList',
     tabBarOptions: {
-      showLabel: false
+      showLabel: false,
+      style: {
+        height: iconHeight + iconMargin * 2
+      }
     }
   }
 )
@@ -92,6 +98,10 @@ function TabBarLabel({
 
 function TabBarIcon({ name, focused }: { name: string; focused: boolean }) {
   return (
-    <Icon name={name} color={focused ? values.color.secondary : values.color.primary} />
+    <Icon
+      name={name}
+      color={focused ? values.color.secondary : values.color.primary}
+      size={iconHeight}
+    />
   )
 }

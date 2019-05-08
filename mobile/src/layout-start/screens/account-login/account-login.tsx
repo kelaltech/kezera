@@ -6,7 +6,6 @@ import {
   withNavigation
 } from 'react-navigation'
 import { Button, Image, Input } from 'react-native-elements'
-import Axios from 'axios'
 
 import styles from './account-login-styles'
 import classes from '../../../assets/styles/classes'
@@ -19,13 +18,17 @@ import {
 import { login, logout } from '../../../app/stores/account/account-actions'
 import Loading from '../../../shared/components/loading/loading'
 
-function AccountLogin({ navigation }: NavigationInjectedProps<{}>) {
+type Params = {
+  email?: string
+}
+
+function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
   const { loading, t } = useLocale(['account'])
 
   const [sending, setSending] = useState(false)
 
   const [data, setData] = useState({
-    email: '',
+    email: navigation.getParam('email', '') || '',
     password: ''
   })
 

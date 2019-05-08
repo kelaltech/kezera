@@ -14,15 +14,20 @@ import { Button, Image, Input } from 'react-native-elements'
 import { IAccountRequest } from '../../../apiv/account.apiv'
 import { login } from '../../../app/stores/account/account-actions'
 import { useAccountDispatch } from '../../../app/stores/account/account-provider'
+import values from '../../../assets/styles/values'
 
-function AccountRegister({ navigation }: NavigationInjectedProps<{}>) {
+type Params = {
+  email?: string
+}
+
+function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
   const { loading, t } = useLocale([])
 
   const [sending, setSending] = useState(false)
 
   const initialData: IAccountRequest = {
     displayName: '',
-    email: '',
+    email: navigation.getParam('email', '') || '',
     password: '',
     phoneNumber: ''
   }
@@ -119,7 +124,7 @@ function AccountRegister({ navigation }: NavigationInjectedProps<{}>) {
           <Input
             style={styles.inputs}
             keyboardType={'phone-pad'}
-            placeholder={t`account:phone-number`}
+            placeholder={t`account:phone-number` + ' (' + t`optional` + ')'}
             value={data.phoneNumber || ''}
             onChangeText={phoneNumber => setData({ ...data, phoneNumber })}
             editable={!sending}
@@ -144,11 +149,18 @@ function AccountRegister({ navigation }: NavigationInjectedProps<{}>) {
         <TouchableOpacity
           style={styles.loginLink}
           onPress={() =>
-            navigation.dispatch(NavigationActions.navigate({ routeName: 'AccountLogin' }))
+            navigation.dispatch(
+              NavigationActions.navigate({
+                routeName: 'AccountLogin',
+                params: { email: data.email }
+              })
+            )
           }
         >
           <Text>{t`account:already-have-an-account-login`}</Text>
         </TouchableOpacity>
+
+        <View style={{ height: values.space.big }} />
       </ScrollView>
     )
   )
