@@ -1,24 +1,6 @@
 @import '../../../assets/styles/react-slick-slider';
+
 .events-container {
-  /*width: 50%;
-  margin: 0 auto;*/
-}
-
-.events-around-you {
-  width: 25%;
-  margin: 0 15px;
-  padding: 5px;
-  //float: right;
-  position: fixed;
-  right: 0;
-  max-height: 80vh;
-  overflow-y: scroll;
-  //background-color: #00b478;
-
-  @media screen and (max-width: 500px) {
-    width: 100%;
-    position: static;
-  }
 }
 
 .events-list-container {
@@ -31,7 +13,9 @@
 }
 
 .e-slider {
-  //width: 75vw !important;
+  @media screen and (max-width: 500px) {
+    width: 80vw !important;
+  }
 }
 .slider-event-list {
   padding: 0 5px;

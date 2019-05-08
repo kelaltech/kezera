@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import MyOrganizationCard from '../../../../components/volunteer-my-organization/volunteer-my-organizattion'
+import OrganizationCard from '../../../../../shared/components/organization-card/organization-card'
+import { Yoga } from 'gerami'
 
 interface IOrganizationResult {
   term?: string
@@ -11,29 +13,20 @@ function OrganizationSearchResult(props: IOrganizationResult) {
 
   useEffect(() => {
     axios
-      .get('/api/event/search?term=' + term)
+      .get('/api/organization/search?term=' + term)
       .then(org => {
         setOrganizations(org.data)
       })
       .then(e => console.log(e))
-  })
-  return (
-    <div>
-      <h1>Organization Search result</h1>
-      <div>
-        {organization.map((o: any) => (
-          <MyOrganizationCard
-            coverImg={`/api/organization/${o._id}/cover`}
-            profileImg={`/api/organization/${o._id}/profile`}
-            name={o.name}
-            type={o.type}
-            motto={o.motto}
-            location={o.location}
-            website={o.website}
-          />
-        ))}
-      </div>
-    </div>
+  }, [term])
+  return organization.length === 0 ? (
+    <div className={'fg-blackish'}>can't find organizations with the term {term}</div>
+  ) : (
+    <Yoga maxCol={2}>
+      {organization.map((o: any) => (
+        <OrganizationCard organization={o} />
+      ))}
+    </Yoga>
   )
 }
 
