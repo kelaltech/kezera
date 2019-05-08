@@ -28,15 +28,14 @@ function VolunteerSearchResult() {
       ? (filterBox!.style.display = 'block')
       : (filterBox!.style.display = 'none')
   }
+  const query = qs.parse(window.location.search, {
+    ignoreQueryPrefix: true
+  }).term
 
   useEffect(() => {
-    setSearchTerm(
-      qs.parse(window.location.search, {
-        ignoreQueryPrefix: true
-      }).term
-    )
+    setSearchTerm(query)
     fetchAllResult()
-  }, [])
+  }, [query])
 
   const fetchAllResult = () => {
     axios
@@ -49,7 +48,8 @@ function VolunteerSearchResult() {
 
   return (
     <div className="search-result-container">
-      {/* <div className={'search-filter-container'}>
+      {/* todo if we added filter api uncomment this
+      <div className={'search-filter-container'}>
           <div className={'search-filter-top'}>
             <h4>Filter</h4>
             <span onClick={collapseFilter}>

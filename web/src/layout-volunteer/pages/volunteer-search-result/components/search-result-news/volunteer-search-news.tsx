@@ -1,8 +1,9 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { Block } from 'gerami'
+import { Block, Yoga } from 'gerami'
 import axios from 'axios'
 import NewsCard from '../../../../../shared/components/news-card/news-card'
+import { richTextToDisplayText } from '../../../../../lib/richTextConverter'
 interface INewsResult {
   term?: string
 }
@@ -11,33 +12,29 @@ function NewsSearchResult(props: INewsResult) {
   const [news, setNews] = useState([])
 
   useEffect(() => {
-    console.log(`/api/news/search?term=${term}`)
     axios
       .get(`/api/news/search?term=${term}`)
       .then((news: any) => {
-        setNews(news.data)
-        console.log(news.data)
+        setNews(richTextToDisplayText(news.data))
       })
       .catch((e: any) => console.log(e))
-  }, [])
-  return (
+  }, [term])
+  return news.length === 0 ? (
+    <div className={'fg-blackish'}>can't find news with the term {term}</div>
+  ) : (
     <div>
-      <h2>News Search result</h2>
-
-      <div>
+      <Yoga maxCol={2}>
         {news.map((n: any) => (
-          <Block>
-            <NewsCard
-              title={n.title}
-              likeCount={n.likeCount}
-              commentCount={n.commentCount}
-              description={n.description}
-              imgSrc={n.imgSrc}
-              _id={n.id}
-            />
-          </Block>
+          <NewsCard
+            title={n.title}
+            likeCount={n.likeCount}
+            commentCount={n.commentCount}
+            description={n.description}
+            imgSrc={n.imgSrc}
+            _id={n.id}
+          />
         ))}
-      </div>
+      </Yoga>
     </div>
   )
 }

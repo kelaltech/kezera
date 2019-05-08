@@ -13,6 +13,7 @@ import RequestCard from '../../../shared/components/request/request-card'
 import { Block, Yoga } from 'gerami'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import RichPage from '../../../shared/components/rich-page/rich-page'
+import { richTextToDisplayText } from '../../../lib/richTextConverter'
 
 function DiscoveryPage() {
   const [news, setNews] = useState([])
@@ -74,25 +75,7 @@ function DiscoveryPage() {
     axios
       .get('/api/news/recent?count=5')
       .then((news: any) => {
-        let article = ''
-        let description = ''
-        let title = ''
-        //for mapping the stored Editor state in to plain text/string
-        for (let d of news.data) {
-          JSON.parse(d.article).blocks.map((block: any) => (article += block.text))
-          JSON.parse(d.title).blocks.map((block: any) => (title += block.text))
-          JSON.parse(d.description).blocks.map(
-            (block: any) => (description += block.text)
-          )
-          d.article = article
-          d.title = title
-          d.description = description
-
-          article = ''
-          description = ''
-          title = ''
-        }
-        setNews(news.data)
+        setNews(richTextToDisplayText(news.data))
       })
       .catch(e => console.log(e))
   }
