@@ -4,6 +4,7 @@ import './volunteer-my-organization.scss'
 import { Warning, Yoga, Block } from 'gerami'
 import axios from 'axios'
 import { RouteComponentProps } from 'react-router'
+import RichPage from '../../../shared/components/rich-page/rich-page'
 
 function MyOrganization({  }: RouteComponentProps) {
   const [organizations, setOrganizations] = useState([])
@@ -29,6 +30,7 @@ function MyOrganization({  }: RouteComponentProps) {
       .catch(e => console.log(e))
   }
   return (
+    <RichPage title={'My Organizations'}>
     <div className={'my-organization-list-container'}>
       <div>
         <h3>My Organizations</h3>
@@ -66,6 +68,7 @@ function MyOrganization({  }: RouteComponentProps) {
         )}
       </div>
     </div>
+    </RichPage>
   )
 }
 
