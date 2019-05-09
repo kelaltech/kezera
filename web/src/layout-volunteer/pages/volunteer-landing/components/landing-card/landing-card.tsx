@@ -1,7 +1,6 @@
 import React from 'react'
 import './landing-card.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { icon } from '@fortawesome/fontawesome-svg-core'
 import { Button } from '@material-ui/core'
 
 interface ILandingCard {

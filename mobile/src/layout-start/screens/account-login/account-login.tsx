@@ -6,7 +6,6 @@ import {
   withNavigation
 } from 'react-navigation'
 import { Button, Image, Input } from 'react-native-elements'
-import Axios from 'axios'
 
 import styles from './account-login-styles'
 import classes from '../../../assets/styles/classes'
@@ -16,16 +15,20 @@ import {
   useAccountDispatch,
   useAccountState
 } from '../../../app/stores/account/account-provider'
-import { login, logout, reloadAccount } from '../../../app/stores/account/account-actions'
+import { login, logout } from '../../../app/stores/account/account-actions'
 import Loading from '../../../shared/components/loading/loading'
 
-function AccountLogin({ navigation }: NavigationInjectedProps<{}>) {
+type Params = {
+  email?: string
+}
+
+function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
   const { loading, t } = useLocale(['account'])
 
   const [sending, setSending] = useState(false)
 
   const [data, setData] = useState({
-    email: '',
+    email: navigation.getParam('email', '') || '',
     password: ''
   })
 
@@ -45,7 +48,11 @@ function AccountLogin({ navigation }: NavigationInjectedProps<{}>) {
       e => {
         Alert.alert(
           t`error`,
-          e.message === 'WRONG_CREDENTIALS' ? t`account:wrong-credentials` : e.message
+          e.message === 'WRONG_CREDENTIALS'
+            ? t`account:wrong-credentials`
+            : e.response && e.response.data
+            ? e.response.data.prettyMessage || e.response.data.message
+            : e.message
         )
         setSending(false)
       }
@@ -54,13 +61,41 @@ function AccountLogin({ navigation }: NavigationInjectedProps<{}>) {
 
   const handleLogout = (): void => {
     setSending(true)
-    logout(
-      accountDispatch,
-      () => {
-        setSending(false)
-        navigation.dispatch(NavigationActions.navigate({ routeName: 'VolunteerWelcome' }))
-      },
-      e => Alert.alert(t`error`, e.message)
+    Alert.alert(
+      t`are-you-sure-you-want-to-logout`,
+      undefined,
+      [
+        {
+          style: 'cancel',
+          text: t`no`,
+          onPress: () => {
+            setSending(false)
+          }
+        },
+        {
+          style: 'default',
+          text: t`yes`,
+          onPress: () => {
+            logout(
+              accountDispatch,
+              () => {
+                setSending(false)
+                navigation.dispatch(NavigationActions.navigate({ routeName: 'Init' }))
+              },
+              e => {
+                Alert.alert(
+                  t`error`,
+                  e.response && e.response.data
+                    ? e.response.data.prettyMessage || e.response.data.message
+                    : e.message
+                )
+                setSending(false)
+              }
+            )
+          }
+        }
+      ],
+      { cancelable: true }
     )
   }
 
@@ -159,7 +194,19 @@ function AccountLogin({ navigation }: NavigationInjectedProps<{}>) {
             </Text>
           </TouchableOpacity>
         </View>
-        <Button onPress={handleLogout} title={t`account:logout`} disabled={sending} />
+
+        <View style={classes.marginTopBig}>
+          <Button
+            onPress={() =>
+              navigation.dispatch(NavigationActions.navigate({ routeName: 'Init' }))
+            }
+            title={t`go-home`}
+          />
+        </View>
+
+        <View style={classes.marginTopBig}>
+          <Button onPress={handleLogout} title={t`account:logout`} disabled={sending} />
+        </View>
       </View>
     ))
   )

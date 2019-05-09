@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Block, Button, Content, Input, Loading, Page, Warning } from 'gerami'
-import axios from 'axios'
+import Axios from 'axios'
 import * as qs from 'qs'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
@@ -28,7 +28,7 @@ function AccountResetStart() {
 
     const data: IAccountResetStartRequest = { emailTo: email }
     try {
-      await axios.post('/api/account/reset/start', data)
+      await Axios.post('/api/account/reset/start', data)
     } catch (e) {
       setError(e.prettyMessage || e.message || 'Unknown error.')
       setStatus('INITIAL')

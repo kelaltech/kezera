@@ -20,3 +20,19 @@ export const newsModelFactory = new ModelFactory<INews>({
 })
 
 export const NewsModel = newsModelFactory.model
+
+NewsModel.collection.ensureIndex(
+  {
+    title: 'text',
+    description: 'text',
+    article: 'text'
+  },
+  {
+    name: 'news_search',
+    weights: {
+      title: 10,
+      description: 8,
+      article: 7
+    }
+  }
+)

@@ -28,6 +28,11 @@ import {
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import axios from 'axios'
 import EventCard from '../../../shared/components/event-card/event-card'
+import CertificateCard from '../../../shared/components/certificate-card/certificate-card'
+import {
+  ICertificatePrivacy,
+  ICertificatePurpose
+} from '../../../../../api/models/certificate/certificate.model'
 
 function Profile() {
   const Settings = {
@@ -212,16 +217,13 @@ function Profile() {
         </div>
         <div className={'pro-event-attended'}>
           <Slider {...Settings}>
-            <div>Anteneh is Responsible for this :( !</div>
-            <div>Anteneh is Responsible for this :( !</div>
-            <div>Anteneh is Responsible for this :( !</div>
-            {/*  {events.map(e => (
+            {events.map(e => (
               <div>
                 <Block>
                   <EventCard event={e} />
                 </Block>
               </div>
-            ))}*/}
+            ))}
           </Slider>
         </div>
       </Content>

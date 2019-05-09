@@ -7,74 +7,31 @@ interface IVolunteerResult {
 }
 function VolSearchResult(props: IVolunteerResult) {
   const [volunteer, setVolunteer] = useState([])
-
+  const { term } = props
   useEffect(() => {
     axios
-      .get("/api/volunteer/search?term=' + term")
+      .get(`/api/volunteer/search?term=${term}`)
       .then(vol => {
         setVolunteer(vol.data)
       })
       .catch(e => console.log(e))
-  })
-  return (
-    <div>
-      <h1>Volunteer Search result</h1>
-      <Yoga maxCol={2}>
-        {/*   {
-          volunteer.map((v)=>(
-            <div>
-              <VolunteerCard {...v}/>
-            </div>
-          ))
-        }*/}
-        {volunteerData.map(v => (
-          <VolunteerCard
-            country={v.country}
-            email={v.email}
-            name={v.name}
-            phone_number={v.phone_number}
-            gender={v.Gender}
-            img={v.img}
-          />
-        ))}
-      </Yoga>
-    </div>
+  }, [term])
+  return volunteer.length === 0 ? (
+    <div className={'fg-blackish'}>can't find volunteers with the term {term}</div>
+  ) : (
+    <Yoga maxCol={2}>
+      {volunteer.map((v: any) => (
+        <VolunteerCard
+          country={v.country}
+          email={v.email}
+          name={v.name}
+          phone_number={v.phone_number}
+          gender={v.Gender}
+          img={v.img}
+        />
+      ))}
+    </Yoga>
   )
 }
 
 export default VolSearchResult
-
-const volunteerData = [
-  {
-    name: 'Biruk Tesfaye',
-    country: 'Ethiopia',
-    Gender: 'Male',
-    phone_number: '+251 923637040',
-    email: 'biruktesfayeve@gmail.com',
-    img: 'https://source.unsplash.com/random'
-  },
-  {
-    name: 'Biruk Tesfaye',
-    country: 'Ethiopia',
-    Gender: 'Male',
-    phone_number: '+251 923637040',
-    email: 'biruktesfayeve@gmail.com',
-    img: 'https://source.unsplash.com/random'
-  },
-  {
-    name: 'Biruk Tesfaye',
-    country: 'Ethiopia',
-    Gender: 'Male',
-    phone_number: '+251 923637040',
-    email: 'biruktesfayeve@gmail.com',
-    img: 'https://source.unsplash.com/random'
-  },
-  {
-    name: 'Biruk Tesfaye',
-    country: 'Ethiopia',
-    Gender: 'Male',
-    phone_number: '+251 923637040',
-    email: 'biruktesfayeve@gmail.com',
-    img: 'https://source.unsplash.com/random'
-  }
-]

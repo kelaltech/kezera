@@ -9,7 +9,7 @@ export default StyleSheet.create({
   },
 
   logo: {
-    ...classes.marginBottomBig,
+    ...classes.marginVerticalBig,
     alignSelf: 'center',
     height: 64,
     width: 64
@@ -23,11 +23,6 @@ export default StyleSheet.create({
     ...classes.marginVertical
   },
 
-  forgotPassword: {
-    ...classes.marginTop,
-    alignSelf: 'flex-end'
-  },
-
   buttonContainer: {
     ...classes.marginVertical
   },
@@ -36,7 +31,7 @@ export default StyleSheet.create({
     ...classes.marginVertical
   },
 
-  createNewAccount: {
+  loginLink: {
     ...classes.paddingVerticalBig
   }
 })

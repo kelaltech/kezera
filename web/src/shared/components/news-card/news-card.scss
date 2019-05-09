@@ -1,3 +1,4 @@
+@import '../../../assets/styles/theme';
 .news-card-container {
   width: 100%;
 }
@@ -27,6 +28,12 @@
   padding-right: 5px;
 }
 
+.news-title-anchor {
+  color: $fg !important;
+  &:hover {
+    text-decoration: none !important;
+  }
+}
 .news-card-content-title {
   font-family: 'ZCOOL XiaoWei', serif;
   font-weight: 400;

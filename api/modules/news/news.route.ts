@@ -14,7 +14,8 @@ import {
   listAllNews,
   getPictureFromNews,
   addPictureForNews,
-  recentNews
+  recentNews,
+  getComments
 } from './news.controller'
 import * as fs from 'fs'
 
@@ -99,4 +100,10 @@ newsRouter.put('/:_newsId', async ctx => {
 
 newsRouter.post('/:_newsId/comment/new', async ctx => {
   ctx.body = await addComment(ctx.state.user, ctx.params._newsId, ctx.request.body)
+})
+
+newsRouter.get('/:_id/comments', async ctx => {
+  console.log('this is the comment !!')
+  console.log(ctx.params._id)
+  ctx.body = await getComments(ctx.params._id)
 })

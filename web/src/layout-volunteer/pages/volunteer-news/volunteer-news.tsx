@@ -4,6 +4,7 @@ import NewsCard from '../../../shared/components/news-card/news-card'
 import { Block, Yoga } from 'gerami'
 
 import axios from 'axios'
+import RichPage from '../../../shared/components/rich-page/rich-page'
 function VolunteerNews() {
   const [news, setNews] = useState([])
 
@@ -37,7 +38,7 @@ function VolunteerNews() {
       })
   }, [])
   return (
-    <div>
+    <RichPage title={'News feed'}>
       <div className={'volunteer-news-container'}>
         <span>
           <Block />
@@ -59,7 +60,7 @@ function VolunteerNews() {
           ))}
         </Yoga>
       </div>
-    </div>
+    </RichPage>
   )
 }
 

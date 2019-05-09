@@ -14,14 +14,16 @@ function TaskSearchResult(props: ITaskResult) {
     axios
       .get('/api/task/search?term=' + term)
       .then((tasks: any) => {
-        setTasks(tasks.data)
+        setTasks([])
+        // setTasks(tasks.data) todo uncomment when the api is completed #Dagmawi
       })
       .catch((e: any) => console.log(e))
-  })
+  }, [term])
 
-  return (
+  return tasks.length === 0 ? (
+    <div className={'fg-blackish'}>can't find tasks with the term {term}</div>
+  ) : (
     <div>
-      <h1>Task Search result</h1>
       <div>
         {tasks.map((t: any) => (
           <RequestCard request={t} />

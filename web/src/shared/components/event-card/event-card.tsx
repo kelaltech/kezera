@@ -55,7 +55,7 @@ export default function EventCard(props: IEventProps) {
 
   return (
     <Content className={'EventCard'}>
-      <EventEdit open={open} onClose={() => setOpen(false)} event={props.event} />
+      {/*<EventEdit open={open} onClose={() => setOpen(false)} event={props.event} />*/}
       <div className={'EventCardImage'}>
         <div className={'BlurryImage'}>
           <Image className={'EventImage'} src={`/api/event/${props.event._id}/picture`} />

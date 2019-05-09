@@ -1,7 +1,7 @@
 import React, { Component, CSSProperties, useEffect, useState } from 'react'
 
 import './news-card.scss'
-import { Content } from 'gerami'
+import { Anchor, Content } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 
@@ -41,7 +41,9 @@ function NewsCard(props: INewsCardProps) {
         />
         <div className={'news-card-content'}>
           {/*Content*/}
-          <div className={'news-card-content-title'}>{title}</div>
+          <Anchor to={`/news/${_id}`} className={'news-title-anchor'}>
+            <div className={'news-card-content-title'}>{title}</div>
+          </Anchor>
           <div className={'news-card-content-desc'}>
             {description.toString().slice(0, 200)}
           </div>
