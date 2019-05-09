@@ -12,6 +12,7 @@ import { AddMaterial, UpdateMaterial } from '../material/material.controller'
 import { organizationDocumentToResponse } from '../organization/organization.filter'
 import { TaskModel } from '../../models/task/task.model'
 import { AddOrgan } from '../organ/organ.controller'
+import { OrganizationModel } from '../../models/organization/organization.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -20,7 +21,7 @@ export async function removeRequest(id: Schema.Types.ObjectId | string): Promise
 }
 
 export async function getRequest(_id: ObjectId): Promise<any> {
-  const request = (await get(RequestModel, _id)) as any
+  const request = await get(RequestModel, _id)
   const ret = request.toJSON()
   ret.picture = '/api/request/picture/' + request._id
 
@@ -33,7 +34,9 @@ export async function getRequest(_id: ObjectId): Promise<any> {
       break
   }
 
-  ret._by = await organizationDocumentToResponse(request._by)
+  ret._by = await organizationDocumentToResponse(
+    await get(OrganizationModel, null, { conditions: { account: request._by } })
+  )
 
   return ret
 }

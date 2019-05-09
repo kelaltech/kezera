@@ -55,7 +55,7 @@ export default function RequestList() {
     >
       {!requests.length && <Content size={'3XL'}>No requests found.</Content>}
 
-      <Yoga size={'3XL'} maxCol={3} className={'request-list-yoga'}>
+      <Yoga size={'3XL'} maxCol={3} className={'request-list-yoga yoga-in-rich-page'}>
         {requests.map((request, i) => {
           switch (request.type) {
             case 'Fundraising':

@@ -5,7 +5,7 @@ const ObjectId = Schema.Types.ObjectId
 
 export const requestPaths: SchemaDefinition = {
   _at: { type: Date, default: Date.now },
-  _by: { type: ObjectId, ref: 'organization' },
+  _by: { type: ObjectId, ref: 'account' },
   name: { type: String, required: true },
   description: { type: String, required: true },
   startDate: { type: Date, default: Date.now },
