@@ -14,7 +14,8 @@ import { Button, Image, Input } from 'react-native-elements'
 import { IAccountRequest } from '../../../apiv/account.apiv'
 import { login } from '../../../app/stores/account/account-actions'
 import { useAccountDispatch } from '../../../app/stores/account/account-provider'
-import values from '../../../assets/styles/values'
+import Footer from '../../../shared/components/footer/footer'
+import classes from '../../../assets/styles/classes'
 
 type Params = {
   email?: string
@@ -170,7 +171,7 @@ function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
           <Text>{t`account:already-have-an-account-login`}</Text>
         </TouchableOpacity>
 
-        <View style={{ height: values.space.big }} />
+        <Footer style={classes.marginTopBig} />
       </ScrollView>
     )
   )
