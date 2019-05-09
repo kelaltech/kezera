@@ -16,6 +16,8 @@ export interface IRequest extends Document {
   startDate: Date | number
   endDate?: Date | number
   type?: IRequestType
+  attended: ObjectId[]
+  goingVolunteers: ObjectId[]
 }
 
 export const requestModelFactory = new ModelFactory<IRequest>({

@@ -183,6 +183,21 @@ function OrganizationDetail({
                 </span>
               </>
             )}
+            {!organization.motto ? null : (
+              <>
+                <span>{organization.type}</span>
+                <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
+                  |
+                </span>
+                <span>
+                  {!isApplication
+                    ? `${organization.subscribersCount || 'NO'} SUBSCRIBER${
+                        organization.subscribersCount === 1 ? '' : 'S'
+                      }`
+                    : `Sent on ${new Date(organization._at).toDateString().substr(3)}`}
+                </span>
+              </>
+            )}
             <FlexSpacer />
             {organization.account.status !== 'ACTIVE' || !organization.website ? null : (
               <>

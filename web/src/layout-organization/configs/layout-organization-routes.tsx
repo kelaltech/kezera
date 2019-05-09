@@ -34,6 +34,9 @@ const RequestAdd = lazy(() =>
 const RequestInformation = lazy(() =>
   import('../../shared/pages/request-detail/request-information')
 )
+const RequestGoing = lazy(() =>
+  import('../../shared/pages/request-detail/request-going/request-going')
+)
 
 const RequestEdit = lazy(() =>
   import('../../layout-organization/pages/request/request-edit')
@@ -75,6 +78,7 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/request/add`} component={RequestAdd} />
       <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
       <Route exact path={`${p}/request/:_id/edit`} component={RequestEdit} />
+      <Route exact path={`${p}/request/:_id/going`} component={RequestGoing} />
 
       <Route
         exact

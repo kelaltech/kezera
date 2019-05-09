@@ -1,4 +1,4 @@
-import Router = require('koa-router')
+import * as Router from 'koa-router'
 import {
   removeRequest,
   listRequests,
@@ -7,7 +7,12 @@ import {
   goingVolunteers,
   addRequestWithPicture,
   getPicture,
-  editRequest
+  editRequest,
+  attended,
+  getAttended,
+  attendanceVerification,
+  isGoing,
+  going
 } from './request.controller'
 
 import * as fs from 'fs'
@@ -58,4 +63,26 @@ requestRouter.put('/:_id', async ctx => {
     ctx.state.user._id,
     fs.createReadStream(ctx.request.files!.image.path)
   )
+})
+requestRouter.put('/:_id/attended', async ctx => {
+  console.log('/:_id/attended+put')
+  ctx.body = await attended(ctx.params._id, ctx.request.body)
+})
+
+requestRouter.get('/:_id/attended', async ctx => {
+  ctx.body = await getAttended(ctx.params._id)
+})
+
+requestRouter.put('/:_id/goingVolunteers', async ctx => {
+  ctx.body = await going(ctx.params._id, ctx.state.user._id)
+})
+
+requestRouter.get('/:_id/isGoing', async ctx => {
+  ctx.body = await isGoing(ctx.params._id, ctx.state.user._id)
+})
+
+requestRouter.get('/:_id/attendance/verify', async ctx => {
+  // console.log("/:_id/attended")
+  // console.log(ctx.request.body);
+  ctx.body = await attendanceVerification(ctx.params._id)
 })

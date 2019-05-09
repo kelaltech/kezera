@@ -1,16 +1,17 @@
 import { RequestModel } from '../../models/request/request.model'
 import { add, get, list, remove, search } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
-import { IAccount } from '../../models/account/account.model'
+import { AccountModel, IAccount } from '../../models/account/account.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
-import { getTask } from '../task/task.controller'
+import { AddTask, getTask } from '../task/task.controller'
 import { AddFund, editFund, getFund } from '../fundraising/fundraising.controller'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { AddMaterial, UpdateMaterial } from '../material/material.controller'
 import { organizationDocumentToResponse } from '../organization/organization.filter'
-import { OrganizationModel } from '../../models/organization/organization.model'
+import { TaskModel } from '../../models/task/task.model'
+import { AddOrgan } from '../organ/organ.controller'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -19,9 +20,7 @@ export async function removeRequest(id: Schema.Types.ObjectId | string): Promise
 }
 
 export async function getRequest(_id: ObjectId): Promise<any> {
-  const request = (await get(RequestModel, _id, {
-    postQuery: (async (doc: any) => doc.populate('_by')) as any
-  })) as any
+  const request = (await get(RequestModel, _id)) as any
   const ret = request.toJSON()
   ret.picture = '/api/request/picture/' + request._id
 
@@ -89,11 +88,7 @@ export async function addRequestWithPicture(
   account: Document & IAccount,
   pic: Stream
 ): Promise<ObjectId> {
-  const organization = await get(OrganizationModel, null, {
-    conditions: { account: account!._id }
-  })
-
-  data._by = await organization._id
+  data._by = await account._id
   const request = await add(RequestModel, data)
 
   switch (data.type) {
@@ -102,6 +97,12 @@ export async function addRequestWithPicture(
       break
     case 'Material':
       await AddMaterial(JSON.parse(data.Material), request._id)
+      break
+    case 'Task':
+      await AddTask(JSON.parse(data.Task), request._id)
+      break
+    case 'Organ':
+      await AddOrgan(JSON.parse(data.Organ))
       break
   }
 
@@ -131,4 +132,77 @@ export async function editRequest(
   }
   const grid = new Grid(serverApp, RequestModel, request._id)
   await grid.set(pic)
+}
+export async function attended(taskId: Schema.Types.ObjectId, body: any): Promise<any> {
+  const task = await get(TaskModel, taskId)
+  for (let i = 0; i < body.length; i++) {
+    //@ts-ignore
+    if (body[i].toString() == task.going[i]._id.toString()) task.going.splice(i, 1)
+  }
+  task.attended.push(body)
+  await task.save()
+}
+export async function getAttended(id: Schema.Types.ObjectId): Promise<any> {
+  const task = await get(RequestModel, id)
+  let userId = task.attended
+  let users = []
+  for (let i = 0; i < userId.length; i++) {
+    //@ts-ignore
+    users.push(await get(AccountModel, task.attended[i]._id))
+  }
+  return users
+}
+
+export async function attendanceVerification(id: Schema.Types.ObjectId): Promise<any> {
+  const task = await get(RequestModel, id)
+  let volunteers = task.goingVolunteers
+  let acc = []
+  for (let i = 0; i < volunteers.length; i++) {
+    //@ts-ignore
+    acc.push(await get(AccountModel, volunteers[i]._id))
+  }
+  return acc
+}
+
+export async function going(
+  _id: Schema.Types.ObjectId,
+  account: Document & IAccount
+): Promise<{
+  going: number
+}> {
+  const doc = await get(RequestModel, _id)
+
+  if (doc.goingVolunteers.length == 0) {
+    doc.goingVolunteers.push(account._id)
+    await doc.save()
+    return {
+      going: doc.goingVolunteers.length
+    }
+  }
+
+  for (let i = 0; i < doc.goingVolunteers.length; i++) {
+    //@ts-ignore
+    if (account._id.toString() === doc.goingVolunteers[i]._id.toString()) {
+      await doc.goingVolunteers.splice(i, 1)
+    } else {
+      doc.goingVolunteers.push(account._id)
+    }
+  }
+  await doc.save()
+
+  return { going: doc.goingVolunteers.length }
+}
+
+export async function isGoing(
+  id: Schema.Types.ObjectId,
+  userId: Schema.Types.ObjectId
+): Promise<any> {
+  let task = await get(RequestModel, id)
+  for (let i = 0; i < task.goingVolunteers.length; i++) {
+    //@ts-ignore
+    if (task.going[i]._id.toString() == userId.toString()) {
+      return { going: true }
+    }
+  }
+  return { going: false }
 }

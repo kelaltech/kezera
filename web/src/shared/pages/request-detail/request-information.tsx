@@ -23,6 +23,8 @@ import { useMyOrganizationState } from '../../../layout-organization/stores/my-o
 import '../request-detail/request-information.scss'
 import RequestFundDetail from './request-fund/request-fund-detail'
 import RequestTaskDetail from './request-task/request-task-detail'
+import RequestMaterialDetail from './request-material/request-material'
+import RequestOrganDetail from './request-organ/request-organ-detail'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const [request, setRequest] = useState<any>()
@@ -30,14 +32,17 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
 
   let { myOrganization } = useMyOrganizationState()
 
-  let participants = function() {
+  let going = function() {
+    axios.put(`/api/request/${match.params._id}/going`).then(resp => setToggle(!toggle))
+  } /*
+  let isGoing = function() {
     axios
-      .put(`/api/request/${match.params._id}/supporting`)
-      .then(resp => setToggle(!toggle))
-      .catch(console.error)
+      .get(`/api/request/${match.params._id}/isGoing`)
+      .then(resp => setToggle(resp.data.goingVolunteers))
+      .catch()
   }
-
-  useEffect(() => {
+*/
+  let getRequest = function() {
     axios
       .get(`/api/request/${match.params._id}`)
       .then(res => {
@@ -48,6 +53,11 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
       .catch(e => {
         console.log(e)
       })
+  }
+
+  useEffect(() => {
+    getRequest() /*
+    isGoing()*/
   }, [])
   const { account } = useAccountState()
 
@@ -59,7 +69,15 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
       covers={[request.picture]}
       actions={
         (account &&
-          ((account.role === 'VOLUNTEER' && [{}]) ||
+          ((account.role === 'VOLUNTEER' && [
+            {
+              children: (
+                <Switch checked={toggle} onChange={() => going()}>
+                  Attend
+                </Switch>
+              )
+            }
+          ]) ||
             (account.role === 'ORGANIZATION' &&
               myOrganization &&
               myOrganization._id === request._by._id && [
@@ -87,6 +105,8 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           <Title size={'L'} className={'bold center'}>
             {request.type === 'Fundraising' && <RequestFundDetail request={request} />}
             {request.type === 'Task' && <RequestTaskDetail request={request} />}
+            {request.type === 'Material' && <RequestMaterialDetail request={request} />}
+            {request.type === 'Organ' && <RequestOrganDetail request={request} />}
           </Title>
         </div>
         <Content>
@@ -106,6 +126,11 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
       <Block last className={'padding-horizontal-none'}>
         <div className={'fg-blackish padding-bottom-normal'}>Requested by: </div>
         <OrganizationCard organization={request._by} />
+      </Block>
+      <Block>
+        <Title size={'L'}>
+          <Anchor to={`/request/${request._id}/going`}>See Who's Going</Anchor>
+        </Title>
       </Block>
     </RichPage>
   )
