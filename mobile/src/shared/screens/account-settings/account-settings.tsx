@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import {
   NavigationActions,
   NavigationInjectedProps,
@@ -24,6 +24,7 @@ import LabeledView from '../../components/labeled-view/labeled-view'
 import { IAccountResponse } from '../../../apiv/account.apiv'
 import values from '../../../assets/styles/values'
 import AccountSettingsPhoto from './components/account-settings-photo/account-settings-photo'
+import { baseUrl } from '../../../app/configs/setup-axios'
 
 function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['account'])
@@ -244,6 +245,20 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
           />
 
           <Divider />
+
+          <View style={classes.marginTopBig}>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(`${baseUrl}/volunteer/account`)}
+              style={{ alignSelf: 'center', marginTop: values.space.big }}
+              disabled={sending}
+            >
+              <Text
+                style={{ color: values.color.secondary, fontSize: values.fontSize.big }}
+              >
+                {t`account:more-settings`}
+              </Text>
+            </TouchableOpacity>
+          </View>
 
           <View style={classes.marginVerticalBig}>
             <TouchableOpacity
