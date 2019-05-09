@@ -11,8 +11,10 @@ export default StyleSheet.create({
     height:
       (values.fontSize.big + 2 * values.space.normal - values.space.small) * scaleFactor,
     borderRadius:
-      ((values.fontSize.big + 2 * values.space.normal - values.space.small) / 2) *
-      scaleFactor
+      ((values.fontSize.big + 2 * values.space.normal - values.space.small) *
+        scaleFactor) /
+      2,
+    backgroundColor: values.color.blackish
   },
   accountCircleText: {
     width:
