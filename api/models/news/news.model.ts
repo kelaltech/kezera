@@ -25,14 +25,14 @@ NewsModel.collection.ensureIndex(
   {
     title: 'text',
     description: 'text',
-    article: 'text',
+    article: 'text'
   },
   {
     name: 'news_search',
     weights: {
       title: 10,
       description: 8,
-      article:7
+      article: 7
     }
   }
 )
