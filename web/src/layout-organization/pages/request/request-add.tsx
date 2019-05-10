@@ -29,6 +29,7 @@ import { IAccountStatus } from '../../../../../api/models/account/account.model'
 import FundAdd from '../fundraising/fund-add'
 import { Schema } from 'mongoose'
 import MaterialAdd from '../../components/material-add/material-add'
+import OrganAdd from '../organ/organ-add'
 
 function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
@@ -51,6 +52,12 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
     switch (type) {
       case 'Fundraising':
         data.append('Fundraising', JSON.stringify(specific))
+        break
+      case 'Task':
+        data.append('Task', JSON.stringify(specific))
+        break
+      case 'Organ':
+        data.append('Organ', JSON.stringify(specific))
         break
       case 'Material':
         data.append('Material', JSON.stringify(specific))
@@ -151,23 +158,16 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
               </Select>
             </FormControl>
           </Block>
-          {type == 'Fundraising' ? (
-            <FundAdd onChange={setSpecific} />
-          ) : (
-            type == 'Material' && <MaterialAdd onChange={setSpecific} />
-          )}
+          {type == 'Fundraising' && <FundAdd onChange={setSpecific} />}
+          {type == 'Task' && <TaskAdd onChange={setSpecific} />}
+          {type == 'Material' && <MaterialAdd onChange={setSpecific} />}
+          {type == 'Organ' && <OrganAdd onChange={setSpecific} />}
           <Block last className={'right'}>
             <Button type={'submit'}>Make the Request</Button>
           </Block>
-          <Flex className={'center'}>
-            <Button type={'reset'} to={`/organization/request/add`}>
-              Make Another Request
-            </Button>
-            <FlexSpacer />
-            <Button type={'submit'} to={`/organization/request/list`}>
-              Finish
-            </Button>
-          </Flex>
+          <Button type={'submit'} to={`/organization/request/list`}>
+            Finish
+          </Button>
         </form>
       </Content>
     </Page>

@@ -9,7 +9,7 @@ import { AddTask, getTask } from '../task/task.controller'
 import { AddFund, editFund, getFund } from '../fundraising/fundraising.controller'
 import { AddMaterial, UpdateMaterial } from '../material/material.controller'
 import { organizationDocumentToResponse } from '../organization/organization.filter'
-import { AddOrgan } from '../organ/organ.controller'
+import { AddOrgan, getOrgan } from '../organ/organ.controller'
 import { OrganizationModel } from '../../models/organization/organization.model'
 import { IRequestResponse } from './request.apiv'
 import { IVolunteerResponse } from '../volunteer/volunteer.apiv'
@@ -34,6 +34,9 @@ export async function getRequest(_id: ObjectId): Promise<any> {
       break
     case 'Fundraising':
       ret.fundraising = await getFund(request._id)
+      break
+    case 'Organ':
+      ret.organ = await getOrgan(request._id)
       break
   }
 
@@ -100,7 +103,7 @@ export async function addRequestWithPicture(
       await AddTask(JSON.parse(data.Task), request._id)
       break
     case 'Organ':
-      await AddOrgan(JSON.parse(data.Organ))
+      await AddOrgan(JSON.parse(data.Organ), request._id)
       break
   }
 
@@ -160,10 +163,7 @@ export async function attendanceVerification(id: Schema.Types.ObjectId): Promise
 export async function listRequestVolunteers(
   request_id: ObjectId
 ): Promise<IVolunteerResponse[]> {
-  let request = await get(RequestModel, request_id, {
-    postQuery: query =>
-      query.populate({ path: 'volunteers', populate: { path: 'account' } })
-  })
+  let request = await get(RequestModel, request_id)
   for (let i = 0; i < request.volunteers.length; i++) {
     ;(request.volunteers[i] as any).account = (await accountDocumentToPublicResponse(
       (request.volunteers[i] as any).account

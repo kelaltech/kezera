@@ -14,12 +14,13 @@ function RequestGoing({ match }: RouteComponentProps<{ _id: string }>) {
   useEffect(() => {
     getGoing()
   }, [])
+
   return !volunteers ? null : (
     <Content>
       <Yoga maxCol={5}>
-        <div>
-          <pre>{JSON.stringify(volunteers, undefined, 4)}</pre>
-        </div>
+        {volunteers.map(volunteer => {
+          ;<div>{volunteer.username}</div>
+        })}
       </Yoga>
     </Content>
   )

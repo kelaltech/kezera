@@ -61,11 +61,6 @@ requestRouter.put('/:_id/attended', async ctx => {
   console.log('/:_id/attended+put')
   ctx.body = await attended(ctx.params._id, ctx.request.body)
 })*/
-
-requestRouter.put('/:_id/isGoing', async ctx => {
-  console.log('/:_id/attended+put')
-  ctx.body = await toggleRequestVolunteer(ctx.params._id, ctx.request.body)
-})
 /*
 requestRouter.get('/:_id/attended', async ctx => {
   ctx.body = await attended(ctx.params._id, ctx.request.body)
