@@ -17,6 +17,7 @@ import {
 } from '../../../app/stores/account/account-provider'
 import { login, logout } from '../../../app/stores/account/account-actions'
 import Loading from '../../../shared/components/loading/loading'
+import Footer from '../../../shared/components/footer/footer'
 
 type Params = {
   email?: string
@@ -172,6 +173,8 @@ function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
         </TouchableOpacity>
 
         <View style={classes.grow} />
+
+        <Footer style={classes.marginTopBig} />
       </View>
     ) : (
       <View style={{ ...styles.main }}>
@@ -194,6 +197,8 @@ function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
             </Text>
           </TouchableOpacity>
         </View>
+
+        <Footer />
 
         <View style={classes.marginTopBig}>
           <Button

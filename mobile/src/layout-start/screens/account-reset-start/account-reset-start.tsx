@@ -8,6 +8,8 @@ import Axios from 'axios'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import Header from '../../../shared/components/header/header'
 import classes from '../../../assets/styles/classes'
+import Footer from '../../../shared/components/footer/footer'
+import values from '../../../assets/styles/values'
 
 type Params = {
   email?: string
@@ -72,6 +74,8 @@ function AccountResetStart({ navigation }: NavigationInjectedProps<Params>) {
               </View>
             </>
           )}
+
+          <Footer style={{ marginTop: values.space.big * 2 }} />
         </ScrollView>
       </>
     )

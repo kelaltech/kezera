@@ -1,1 +1,36 @@
-{}
+{
+  "account": "መለያ",
+  "accounts": "መለያዎች",
+
+  "you-are-logged-out": "ዘግተው ወጥተዋል።",
+
+  "display-name": "መጠሪያ ስም",
+  "email": "ኢሜይል",
+  "password": "የይለፍ ቃል",
+  "repeat-password": "የይለፍ ቃልዎን ይድገሙ",
+  "phone-number": "ስልክ ቁጥር",
+  "register": "መዝግብ",
+
+  "forgot-password": "መክፈቻ ቁልፉን ረሱት?",
+  "login": "መግቢያ",
+  "create-new-account": "አዲስ መለያ ይፍጠርሩ",
+  "wrong-credentials": "ያስገቡት መለያ ወይም የይለፍ ቃል ልክ አይደለም።",
+  "logged-in-as": "የገቡበት መለያ፦",
+  "are-you-sure-you-want-to-logout": "መውጣት እንደሚፈልጉ እርግጠኛ ነዎት?",
+  "logout": "መውጫ",
+
+  "already-have-an-account-login": "ቀድሞውኑ መለያ አለዎት? ይግቡ",
+  "passwords-do-not-match": "የይለፍ ቃሎች ተመሳሳይ አይደሉም።",
+
+  "reset-account-password": "የመለያዎን የይለፍ ቃል ይለውጡ",
+  "reset-start-description": "የመለያዎን የይለፍ ቃል ረስተዋል? ለኢሜይል የገቢ መልዕክት ሳጥንዎ የማረጋገጫ መልዕክት ልከንልዎት ፣ መለያዎን በአዲስ የይለፍ ቃል ማደስ ይችላሉ።",
+  "email-reset-link": "ኢሜይል ይላክሎት",
+  "reset-email-sent-confirmation": "በኢሜይል አድራሻዎ የማረጋገጫ መልዕክት ልከንሎታል። የገቢ መልዕክት ሳጥንውን ይፈትሹ።",
+
+  "account-settings": "የመለያዎ ማደራጃ",
+  "last-set-on": "መጨረሻ የተለወጠበት ቀን",
+  "current-password": "የአሁኑ የይለፍ ቃል",
+  "new-password": "አዲሱ የይለፍ ቃል",
+  "repeat-new-password": "አዲሱን የይለፍ ቃል ይ",
+  "more-settings": "ተጨማሪ ማስተካከያዎች"
+}

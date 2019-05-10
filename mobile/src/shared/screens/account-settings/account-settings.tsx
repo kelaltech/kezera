@@ -25,6 +25,7 @@ import { IAccountResponse } from '../../../apiv/account.apiv'
 import values from '../../../assets/styles/values'
 import AccountSettingsPhoto from './components/account-settings-photo/account-settings-photo'
 import { baseUrl } from '../../../app/configs/setup-axios'
+import Footer from '../../components/footer/footer'
 
 function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['account'])
@@ -274,7 +275,7 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
             </TouchableOpacity>
           </View>
 
-          <View style={{ height: values.space.big }} />
+          <Footer />
         </ScrollView>
       </>
     ))
