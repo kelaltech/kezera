@@ -30,14 +30,8 @@ function useLocale(
 ): UseLocaleResponse {
   const ut = useTranslation(namespaces, options)
 
-  const [lng, setLng] = useState<Language>(defaultLanguage)
+  const [lng, setLng] = useState<Language>()
   const [loaded, setLoaded] = useState<true | null>(null)
-
-  useEffect(() => {
-    getLanguage()
-      .then(setLng)
-      .catch(console.error)
-  }, [])
 
   useEffect(() => {
     getLanguage()
@@ -46,6 +40,7 @@ function useLocale(
   }, [ut.i18n.language])
 
   useEffect(() => {
+    if (!lng) return
     setLanguage(lng, defaultNamespaces.concat(namespaces), ut.i18n)
       .then(() => setLoaded(true))
       .catch(console.error)

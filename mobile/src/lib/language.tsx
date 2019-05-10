@@ -185,14 +185,11 @@ export async function setLanguage(
 
   await AsyncStorage.setItem('lng', lng)
   await i18n.changeLanguage(lng)
-
-  // might as well just do this, because lazy loading is not supported yet
-  await loadNamespaces(supportedNamespaces, lng)
 }
 
 export function _(
   key: TemplateStringsArray | string,
-  namespaces?: Namespace[],
+  namespaces: Namespace[] = [],
   i18nInstance?: i18n.i18n
 ) {
   const i18n = i18nInstance || getI18n()
@@ -200,6 +197,6 @@ export function _(
   if (namespaces) checkNamespaces(namespaces).catch(console.error)
 
   return i18n.t(key.toString(), {
-    ns: namespaces || defaultNamespaces
+    ns: namespaces.concat(defaultNamespaces)
   })
 }
