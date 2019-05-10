@@ -10,7 +10,6 @@ export interface ITask extends Document {
   startTime: Date | number
   endTime: Date | number
   requestId: ObjectId
-  taskType: {}
   attended: ObjectId[]
   going: ObjectId[]
 }

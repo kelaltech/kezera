@@ -39,8 +39,8 @@ export async function ListMaterials(orgId: Schema.Types.ObjectId): Promise<any> 
     if (donations[i]._by.toString() == orgId.toString()) {
       // @ts-ignore
       let mat: IMaterial = await MaterialModel.find({ donationId: donations[i]._id })
-      donations[i]['status'] = await mat.status
-      donations[i]['materialType'] = await mat.materialType
+      /*donations[i]['status'] = await mat.status
+      donations[i]['materialType'] = await mat.materialType*/
       console.log(donations[i])
       material.push(donations[i])
     }

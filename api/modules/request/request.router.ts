@@ -4,18 +4,15 @@ import {
   listRequests,
   searchRequest,
   getRequest,
-  goingVolunteers,
   addRequestWithPicture,
   getPicture,
   editRequest,
-  attended,
-  getAttended,
-  attendanceVerification,
-  isGoing,
-  going
+  toggleRequestVolunteer,
+  listRequestVolunteers
 } from './request.controller'
 
 import * as fs from 'fs'
+import { authorize } from '../../lib/middlewares/authorize'
 
 export const requestRouter = new Router({ prefix: '/api/request' })
 
@@ -51,10 +48,6 @@ requestRouter.post('/add', async ctx => {
   )
 })
 
-requestRouter.get('/:_id/supporting', async ctx => {
-  ctx.body = await goingVolunteers(ctx.params._id)
-})
-
 // /api/request/:_id"
 requestRouter.put('/:_id', async ctx => {
   ctx.body = await editRequest(
@@ -63,26 +56,30 @@ requestRouter.put('/:_id', async ctx => {
     ctx.state.user._id,
     fs.createReadStream(ctx.request.files!.image.path)
   )
-})
+}) /*
 requestRouter.put('/:_id/attended', async ctx => {
   console.log('/:_id/attended+put')
   ctx.body = await attended(ctx.params._id, ctx.request.body)
-})
-
+})*/
+/*
 requestRouter.get('/:_id/attended', async ctx => {
-  ctx.body = await getAttended(ctx.params._id)
+  ctx.body = await attended(ctx.params._id, ctx.request.body)
+})*/
+
+requestRouter.get('/list-request-volunteers/:request_id', async ctx => {
+  ctx.body = await listRequestVolunteers(ctx.params.request_id)
 })
 
-requestRouter.put('/:_id/goingVolunteers', async ctx => {
-  ctx.body = await going(ctx.params._id, ctx.state.user._id)
-})
-
-requestRouter.get('/:_id/isGoing', async ctx => {
-  ctx.body = await isGoing(ctx.params._id, ctx.state.user._id)
-})
-
+requestRouter.put(
+  '/toggle-request-volunteer/:request_id',
+  authorize(['VOLUNTEER']),
+  async ctx => {
+    ctx.body = await toggleRequestVolunteer(ctx.params.request_id, ctx.state.user._id)
+  }
+)
+/*
 requestRouter.get('/:_id/attendance/verify', async ctx => {
   // console.log("/:_id/attended")
   // console.log(ctx.request.body);
   ctx.body = await attendanceVerification(ctx.params._id)
-})
+})*/

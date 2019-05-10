@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react'
-import {} from 'recharts'
 import {
   Anchor,
   Block,
@@ -16,25 +15,26 @@ import {
   Yoga
 } from 'gerami'
 import axios from 'axios'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-interface IFundProps {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import RequestEdit from '../../../layout-organization/pages/request/request-edit'
+
+export interface IOrganProps {
   request: any
 }
 
-export default function FundCard({ request }: IFundProps) {
+export default function OrganCard({ request }: IOrganProps) {
   let [open, setOpen] = useState(false)
   const { account } = useAccountState()
 
-  let DeleteRequest = function(id: any) {
+  let deleteOrgan = function(id: any) {
     if (window.confirm('Are you sure?')) {
-      axios.delete(`/api/request/${request._id}`).catch(console.error)
+      axios.delete(`/api/request/${request.id}`).catch(console.error)
     }
   }
 
   return (
-    <Content className={'fund-card'}>
+    <Content>
       <Card imgSrc={request.picture}>
         <Title size={'L'} className={'center'}>
           {request.name}
@@ -48,20 +48,15 @@ export default function FundCard({ request }: IFundProps) {
           <label>{new Date(request.endDate).toDateString().substr(3)}</label>
         </Flex>
         <h5 className={'center'}>{request.type}</h5>
-        <Title className={'center'} size={'S'}>
-          {request.fundraising.amount}{' '}
-          {request.fundraising.currency === 'ETB' ? 'ETB' : null}
-          {request.fundraising.currency === 'EURO' ? '€' : null}
-          {request.fundraising.currency === 'POUND' ? '£' : null}
-          {request.fundraising.currency === 'USD' ? '$' : null}
-        </Title>
+        <Title className={'center'}>{request.organ.organType}</Title>
         <hr />
+
         <Flex>
           {account && account.role === 'ORGANIZATION' ? (
             <Flex>
               <span className={'full-width flex'}>
                 <Button
-                  onClick={() => DeleteRequest(request._id)}
+                  onClick={() => deleteOrgan(request._id)}
                   className={'ActionButton12 '}
                 >
                   <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
@@ -69,7 +64,7 @@ export default function FundCard({ request }: IFundProps) {
               </span>
             </Flex>
           ) : (
-            <Button>Donate</Button>
+            <Button>Participate</Button>
           )}
           <FlexSpacer />
           <Anchor
