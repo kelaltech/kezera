@@ -25,23 +25,21 @@ import RequestFundDetail from './request-fund/request-fund-detail'
 import RequestTaskDetail from './request-task/request-task-detail'
 import RequestMaterialDetail from './request-material/request-material'
 import RequestOrganDetail from './request-organ/request-organ-detail'
+import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
+import { useVolunteerState } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const [request, setRequest] = useState<any>()
-  let [toggle, setToggle] = useState(false)
 
+  const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
   let { myOrganization } = useMyOrganizationState()
 
-  let going = function() {
-    axios.put(`/api/request/${match.params._id}/going`).then(resp => setToggle(!toggle))
-  } /*
   let isGoing = function() {
     axios
-      .get(`/api/request/${match.params._id}/isGoing`)
-      .then(resp => setToggle(resp.data.goingVolunteers))
+      .put(`/api/request/toggle-request-volunteer/${match.params._id}`)
+      .then(resp => setRequest(resp.data))
       .catch()
   }
-*/
   let getRequest = function() {
     axios
       .get(`/api/request/${match.params._id}`)
@@ -56,10 +54,11 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   }
 
   useEffect(() => {
-    getRequest() /*
-    isGoing()*/
+    getRequest()
+    isGoing()
   }, [])
   const { account } = useAccountState()
+  const { volunteer } = useVolunteerState()
 
   return !request ? null : (
     <RichPage
@@ -72,7 +71,10 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           ((account.role === 'VOLUNTEER' && [
             {
               children: (
-                <Switch checked={toggle} onChange={() => going()}>
+                <Switch
+                  checked={request.volunteers.includes(volunteer)}
+                  onChange={() => isGoing()}
+                >
                   Attend
                 </Switch>
               )
@@ -94,7 +96,7 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           {request.type} | Posted on {new Date(request._at).toDateString().substr(3)}
           <FlexSpacer />
           <Anchor to={`/organization/${request._by._id}`}>
-            {request._by.account.displayName}
+            {request._by.displayName}
           </Anchor>
         </Flex>
       </div>
@@ -131,6 +133,22 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
         <Title size={'L'}>
           <Anchor to={`/request/${request._id}/going`}>See Who's Going</Anchor>
         </Title>
+      </Block>
+      <Block>
+        <Anchor
+          onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+          title={`Report Organization as Spam`}
+        >
+          <FontAwesomeIcon icon={'user-slash'} />
+        </Anchor>
+        <SpamReportDrop
+          type={'REQUEST'}
+          ids={[request._id]}
+          open={isSpamReportDropOpen}
+          onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+          align={'right'}
+          anchorOffset={18}
+        />
       </Block>
     </RichPage>
   )

@@ -47,6 +47,7 @@ export default function RequestList() {
           ((account.role === 'VOLUNTEER' && [{}]) ||
             (account.role === 'ORGANIZATION' && [
               {
+                to: '/organization/request/add',
                 children: <>Make a Request</>
               }
             ]))) ||
@@ -61,6 +62,10 @@ export default function RequestList() {
             case 'Fundraising':
               return <FundCard key={i} request={request} />
             case 'Task':
+              return <TaskCard key={i} request={request} />
+            case 'Material':
+              return <TaskCard key={i} request={request} />
+            case 'Organ':
               return <TaskCard key={i} request={request} />
           }
         })}

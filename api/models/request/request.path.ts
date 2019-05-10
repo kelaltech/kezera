@@ -11,6 +11,7 @@ export const requestPaths: SchemaDefinition = {
   startDate: { type: Date, default: Date.now },
   endDate: { type: Date, required: false },
   type: { type: String, enum: requestTypes, required: false },
-  going: [{ id: { type: ObjectId, refs: 'account' } }],
-  attended: [{ id: { type: ObjectId, refs: 'account' } }]
+  volunteers: [{ id: { type: ObjectId, refs: 'volunteer' } }],
+  approved: [{ id: { type: ObjectId, refs: 'volunteer' } }],
+  status: { type: String, required: true, default: true }
 }

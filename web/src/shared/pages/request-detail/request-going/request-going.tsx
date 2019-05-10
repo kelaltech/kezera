@@ -1,59 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import { Content, Image, Title } from 'gerami'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
+import { Content, Yoga } from 'gerami'
 import axios from 'axios'
+import { RouteComponentProps, withRouter } from 'react-router'
 
-export default function RequestGoing(props: any) {
-  let [user, setUser] = useState([])
+function RequestGoing({ match }: RouteComponentProps<{ _id: string }>) {
+  let [volunteers, setVolunteers] = useState<any[]>([])
   let getGoing = function() {
     axios
-      .get(`/api/request/${props.id}/going`)
-      .then((resp: any) => setUser(resp.data))
+      .get(`/api/request/list-request-volunteers/${match.params._id}`)
+      .then((resp: any) => setVolunteers(resp.data))
       .catch(console.error)
   }
   useEffect(() => {
     getGoing()
   }, [])
-  return (
-    <Content className={'UserInterested'}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Phone no.</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {user.length >= 0 ? (
-            <>
-              {user.map((user: any) => (
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    <label>
-                      &emsp;
-                      <span className={'UserName'}>
-                        {' '}
-                        <span className="inline-block middle">
-                          {user.displayName}
-                        </span>{' '}
-                      </span>
-                    </label>
-                  </TableCell>
-                  <TableCell align="right">{user.phoneNumber}</TableCell>
-                </TableRow>
-              ))}
-            </>
-          ) : (
-            <TableRow>
-              <TableCell>nobody's interested</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+  return !volunteers ? null : (
+    <Content>
+      <Yoga maxCol={5}>
+        <div>
+          <pre>{JSON.stringify(volunteers, undefined, 4)}</pre>
+        </div>
+      </Yoga>
     </Content>
   )
 }
+export default withRouter(RequestGoing)
