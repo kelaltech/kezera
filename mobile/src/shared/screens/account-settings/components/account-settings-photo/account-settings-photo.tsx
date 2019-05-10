@@ -92,51 +92,48 @@ function AccountSettingsPhoto() {
     ImagePicker.launchCamera(imagePickerOptions, handleImage)
   }
 
-  return (
-    loading ||
-    (!account ? (
+  return !account ? (
+    loading || (
       <View style={{ ...classes.grow, justifyContent: 'center' }}>
         <Text style={{ alignSelf: 'center' }}>{t`account:you-are-logged-out`}</Text>
       </View>
-    ) : (
-      <View
-        style={{ ...classes.marginVerticalBig, ...classes.row, alignItems: 'center' }}
-      >
-        <View style={{ ...classes.grow }}>
-          {account.photoUri ? (
-            <Image
-              style={styles.accountCircleImage}
-              source={{ uri: `${baseUrl}${account.photoUri}` }}
-              resizeMode={'cover'}
-            />
-          ) : (
-            <Text style={styles.accountCircleText}>
-              {account.displayName.substr(0, 1).toUpperCase()}
-            </Text>
-          )}
-        </View>
-
-        {account.photoUri && (
-          <View>
-            <TouchableOpacity onPress={handleRemovePhoto}>
-              <Icon name={'delete'} raised />
-            </TouchableOpacity>
-          </View>
+    )
+  ) : (
+    <View style={{ ...classes.marginVerticalBig, ...classes.row, alignItems: 'center' }}>
+      <View style={{ ...classes.grow }}>
+        {account.photoUri ? (
+          <Image
+            style={styles.accountCircleImage}
+            source={{ uri: `${baseUrl}${account.photoUri}` }}
+            resizeMode={'cover'}
+          />
+        ) : (
+          <Text style={styles.accountCircleText}>
+            {account.displayName.substr(0, 1).toUpperCase()}
+          </Text>
         )}
-
-        <View>
-          <TouchableOpacity onPress={launchImageLibrary}>
-            <Icon name={'photo'} raised />
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <TouchableOpacity onPress={launchCamera}>
-            <Icon name={'camera'} raised />
-          </TouchableOpacity>
-        </View>
       </View>
-    ))
+
+      {account.photoUri && (
+        <View>
+          <TouchableOpacity onPress={handleRemovePhoto}>
+            <Icon name={'delete'} raised />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      <View>
+        <TouchableOpacity onPress={launchImageLibrary}>
+          <Icon name={'photo'} raised />
+        </TouchableOpacity>
+      </View>
+
+      <View>
+        <TouchableOpacity onPress={launchCamera}>
+          <Icon name={'camera'} raised />
+        </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 
