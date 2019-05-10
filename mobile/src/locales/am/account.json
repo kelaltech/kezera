@@ -7,7 +7,7 @@
   "display-name": "መጠሪያ ስም",
   "email": "ኢሜይል",
   "password": "የይለፍ ቃል",
-  "repeat-password": "የማለፊያ ቃልዎን ይድገሙ",
+  "repeat-password": "የይለፍ ቃልዎን ይድገሙ",
   "phone-number": "ስልክ ቁጥር",
   "register": "መዝግብ",
 
@@ -19,7 +19,7 @@
   "are-you-sure-you-want-to-logout": "መውጣት እንደሚፈልጉ እርግጠኛ ነዎት?",
   "logout": "መውጫ",
 
-  "already-have-an-account-login": "ቀድሞውኑ መ4ለያ አለዎት? ይግቡ",
+  "already-have-an-account-login": "ቀድሞውኑ መለያ አለዎት? ይግቡ",
   "passwords-do-not-match": "የይለፍ ቃሎች ተመሳሳይ አይደሉም።",
 
   "reset-account-password": "የመለያዎን የይለፍ ቃል ይለውጡ",
@@ -27,10 +27,10 @@
   "email-reset-link": "ኢሜይል ይላክሎት",
   "reset-email-sent-confirmation": "በኢሜይል አድራሻዎ የማረጋገጫ መልዕክት ልከንሎታል። የገቢ መልዕክት ሳጥንውን ይፈትሹ።",
 
-  "account-settings": "የመለያዎ መቼቶች",
+  "account-settings": "የመለያዎ ማደራጃ",
   "last-set-on": "መጨረሻ የተለወጠበት ቀን",
   "current-password": "የአሁኑ የይለፍ ቃል",
   "new-password": "አዲሱ የይለፍ ቃል",
-  "repeat-new-password": "አዲሱን የይለፍ ቃል ይድገሙ",
-  "more-settings": "ተጨማሪ መቼቶች"
+  "repeat-new-password": "አዲሱን የይለፍ ቃል ይ",
+  "more-settings": "ተጨማሪ ማስተካከያዎች"
 }
