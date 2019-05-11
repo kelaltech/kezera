@@ -8,8 +8,7 @@ import { ICertificateRequest, ICertificateResponse } from './certificate.apiv'
 import { add, edit, get, list } from '../../lib/crud'
 import {
   CertificateModel,
-  ICertificatePrivacy,
-  ICertificatePurpose
+  ICertificatePrivacy
 } from '../../models/certificate/certificate.model'
 import { IVolunteer, VolunteerModel } from '../../models/volunteer/volunteer.model'
 import {
@@ -27,7 +26,6 @@ export class CertificateController extends KoaController {
   /* ISSUES */
 
   async issue(
-    purpose: ICertificatePurpose,
     session?: ClientSession,
     data = super.getRequestBody<ICertificateRequest>(),
     account_id = super.getUser()!._id
@@ -47,7 +45,6 @@ export class CertificateController extends KoaController {
           data,
           organization._id,
           issuedTo,
-          purpose,
           volunteer.privacy.certificate ? 'PUBLIC' : 'PRIVATE'
         ),
         { session }
