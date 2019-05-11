@@ -4,11 +4,11 @@ import newsTemp from '../../../assets/images/news-temp.jpg'
 import NewsTabs from './components/news-view-tab'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
-import { withRouter } from 'react-router'
+import { match, withRouter } from 'react-router'
 import { Editor, createEditorState } from 'medium-draft'
 import { convertToRaw, convertFromRaw, EditorState, AtomicBlockUtils } from 'draft-js'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
-import { Anchor, Flex } from 'gerami'
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { Anchor, Button, Flex } from 'gerami'
 import SpamReportDrop from '../../../shared/components/spam-report-drop/spam-report-drop'
 
 interface INewsAddState {
@@ -65,6 +65,20 @@ class NewsView extends React.Component<any, INewsAddState> {
       })
   }
 
+  handleDeleteNews = () => {
+    const { match } = this.props
+    let check = confirm('are you sure you want to delete the news')
+    if (check) {
+      axios
+        .delete(`/api/news/${match.params._id}`)
+        .then(() => {
+          alert('successfully removed')
+        })
+        .catch(e => console.log(e))
+    } else {
+      alert('canceled')
+    }
+  }
   handleLike = () => {
     const { match } = this.props
     //send request to the back
@@ -93,7 +107,7 @@ class NewsView extends React.Component<any, INewsAddState> {
           <div
             className={'news-view-img'}
             style={{
-              backgroundImage: `url(/api/news/picture/${match.params._id})`
+              backgroundImage: `url(/api/news/${match.params._id}/pic`
             }}
           />
           <div className={'news-view-detail-container'}>
@@ -143,6 +157,12 @@ class NewsView extends React.Component<any, INewsAddState> {
                   <FontAwesomeIcon icon={faEdit} />
                   &nbsp; Edit
                 </a>
+              ) : null}
+              {role == 'ORGANIZATION' ? (
+                <Button className={'news-view-edit-icon'} onClick={this.handleDeleteNews}>
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                  &nbsp; Delete
+                </Button>
               ) : null}
               {role == 'VOLUNTEER' && (
                 <span>

@@ -89,9 +89,10 @@ export async function toggleLike(
   return { likes: doc.likes.length }
 }
 
-export async function removeNews(_newsId: ObjectId): Promise<any> {
-  const docs = await remove(NewsModel, _newsId)
-  return docs
+export async function removeNews(_newsId: ObjectId, pictureID = 'default'): Promise<any> {
+  const grid = new Grid(serverApp, NewsModel, _newsId)
+  await grid.remove(pictureID)
+  return await remove(NewsModel, _newsId)
 }
 
 export async function getNews(_newsId: ObjectId): Promise<any> {

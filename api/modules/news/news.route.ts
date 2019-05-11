@@ -54,7 +54,10 @@ newsRouter.get('/:_newsId', async ctx => {
   console.log(ctx.params._newsId, 'from news')
   ctx.body = await getNews(ctx.params._newsId)
 })
-
+//DELETE /api/news/:_newsId
+newsRouter.delete('/:_newsId', async ctx => {
+  ctx.body = await removeNews(ctx.params._newsId)
+})
 //POST /api/news/:_newsId/addpic
 newsRouter.post('/:_newsId/addpic', async ctx => {
   const files = ctx.request.files!.file
@@ -83,11 +86,6 @@ newsRouter.get('/:_newsId/likes', async ctx => {
   //return the users profile
 
   ctx.body = await getLikes(ctx.params._newsId)
-})
-
-//DELETE /api/news/:_newsId
-newsRouter.delete('/:_newsId', async ctx => {
-  ctx.body = await removeNews(ctx.query._newsId)
 })
 
 //PUT /api/news/:_newsId

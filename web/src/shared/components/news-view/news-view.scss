@@ -20,10 +20,11 @@
 }
 
 .news-view-img {
-  background-position: center;
+  background-position: center center;
   background-size: cover;
   margin: 0 auto;
   height: 300px;
+  width: 100%;
 }
 
 .news-view-detail-container {
