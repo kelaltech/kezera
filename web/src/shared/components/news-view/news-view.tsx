@@ -172,7 +172,7 @@ class NewsView extends React.Component<any, INewsAddState> {
                         isSpamReportDropOpen: !this.state.isSpamReportDropOpen
                       })
                     }
-                    title={`Report Organization as Spam`}
+                    title={`Report News as Spam`}
                   >
                     <FontAwesomeIcon icon={'user-slash'} />
                   </Anchor>

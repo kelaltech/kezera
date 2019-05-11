@@ -50,7 +50,7 @@ function VolunteerNews() {
               <NewsCard
                 _id={n._id}
                 commentCount={n.comments.length}
-                imgSrc={`/api/news/${n._id}/picture`}
+                imgSrc={`/api/news/${n._id}/pic`}
                 title={n.title}
                 likeCount={n.likes.length}
                 description={n.description}
