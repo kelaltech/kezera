@@ -8,6 +8,8 @@ import { withRouter } from 'react-router'
 import { Editor, createEditorState } from 'medium-draft'
 import { convertToRaw, convertFromRaw, EditorState, AtomicBlockUtils } from 'draft-js'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { Anchor, Flex } from 'gerami'
+import SpamReportDrop from '../../../shared/components/spam-report-drop/spam-report-drop'
 
 interface INewsAddState {
   title: any
@@ -16,6 +18,7 @@ interface INewsAddState {
   error: any
   likeCount: number
   liked: boolean
+  isSpamReportDropOpen:boolean
 }
 
 class NewsView extends React.Component<any, INewsAddState> {
@@ -28,7 +31,8 @@ class NewsView extends React.Component<any, INewsAddState> {
       article: EditorState.createEmpty(),
       error: '',
       likeCount: 0,
-      liked: false
+      liked: false,
+      isSpamReportDropOpen: false
     }
   }
   componentDidMount(): void {
@@ -140,6 +144,26 @@ class NewsView extends React.Component<any, INewsAddState> {
                   &nbsp; Edit
                 </a>
               ) : null}
+              {
+                role == 'VOLUNTEER' && (
+                  <span>
+              <Anchor
+                onClick={() => this.setState({isSpamReportDropOpen:!this.state.isSpamReportDropOpen})}
+                title={`Report Organization as Spam`}
+              >
+                <FontAwesomeIcon icon={'user-slash'} />
+              </Anchor>
+              <SpamReportDrop
+                type={'NEWS'}
+                ids={[match.params._id]}
+                open={this.state.isSpamReportDropOpen}
+                onClose={() => this.setState({isSpamReportDropOpen:!this.state.isSpamReportDropOpen})}
+                align={'right'}
+                anchorOffset={2}
+              />
+            </span>
+                )
+              }
             </div>
             <div className={'news-view-article'}>
               <Editor

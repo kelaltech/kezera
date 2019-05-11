@@ -28,6 +28,14 @@ newsRouter.get('/recent', async ctx => {
   ctx.body = await recentNews(Number(ctx.query.count))
 })
 
+// POST /api/news/new/withpic
+newsRouter.post('/new/withpic', async ctx => {
+  ctx.body = await addNewsWithPicture(
+    ctx.request.body,
+    ctx.state.user,
+    fs.createReadStream(ctx.request.files!.picture.path)
+  )
+})
 //POST /api/news/new
 newsRouter.post('/new', async ctx => {
   ctx.body = await addNews(ctx.request.body)
@@ -47,14 +55,7 @@ newsRouter.get('/:_newsId', async ctx => {
   ctx.body = await getNews(ctx.params._newsId)
 })
 
-// POST /api/news/new/withpic
-newsRouter.post('/new/withpic', async ctx => {
-  ctx.body = await addNewsWithPicture(
-    ctx.request.body,
-    ctx.state.user,
-    fs.createReadStream(ctx.request.files!.picture.path)
-  )
-})
+
 
 //POST /api/news/:_newsId/addpic
 newsRouter.post('/:_newsId/addpic', async ctx => {

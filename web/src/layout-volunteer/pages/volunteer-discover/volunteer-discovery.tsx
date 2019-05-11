@@ -96,7 +96,7 @@ function DiscoveryPage() {
       .catch(e => console.log(e))
   }
   return (
-    <RichPage title={'Discovery'}>
+    <RichPage title={'Discovery'} description={'discover the wold of SPVA'} >
       <div className={'discovery-container'}>
         <div className={'discovery-result-container'}>
           <div>

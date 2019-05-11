@@ -44,6 +44,7 @@ import {
   faChild
 } from '@fortawesome/free-solid-svg-icons'
 import { Card, Yoga } from 'gerami'
+import RichPage from '../../../shared/components/rich-page/rich-page'
 function VolunteerTask() {
   const [expanded, setExpanded] = useState(false)
   const [tasks, setTasks] = useState([])
@@ -68,6 +69,7 @@ function VolunteerTask() {
       .catch(e => console.log(e))
   }
   return (
+    <RichPage title={'Tasks'} >
     <div className={'tasks-list-container'}>
       <div className={'col-bar-container'}>
         <div className={'collapse-controller'}>
@@ -175,6 +177,7 @@ function VolunteerTask() {
           ))*/}
       </div>
     </div>
+    </RichPage>
   )
 }
 
