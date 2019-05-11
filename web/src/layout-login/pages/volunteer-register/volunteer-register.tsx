@@ -16,7 +16,7 @@ function VolunteerRegister({ history }: RouteComponentProps) {
     displayName: '',
     email: '',
     password: '',
-    phoneNumber: null
+    phoneNumber: undefined
   })
 
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true })

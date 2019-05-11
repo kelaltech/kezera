@@ -34,7 +34,13 @@ export class AccountController extends KoaController {
     status: IAccountStatus = 'ACTIVE',
     role: IAccountRole = 'VOLUNTEER'
   ): Promise<IAccountResponse> {
-    let document = await accountRequestToDocument(data, status, role)
+    let document = await accountRequestToDocument(
+      data,
+      status,
+      role,
+      undefined as any,
+      undefined as any
+    )
 
     document = await add(AccountModel, document, {
       session,
@@ -88,13 +94,15 @@ export class AccountController extends KoaController {
         data.status ||
         document.status,
       role || document.role,
+      document.password,
+      document.passwordSetOn,
       user!._id
     )
 
     await edit(
       AccountModel,
       user!._id,
-      { ...document.toObject(), ...request },
+      request,
       {
         session,
         postUpdate: async () => {

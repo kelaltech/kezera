@@ -66,7 +66,7 @@ function AccountRegister({ account, setAccount, showTitle = true }: Props) {
     validateOnChange: true,
     optional: true,
     setValueHook: async value => {
-      emitChanges({ phoneNumber: value || null })
+      emitChanges({ phoneNumber: value || undefined })
     }
   })
 

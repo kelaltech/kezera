@@ -10,7 +10,7 @@ export type IAccountRequest = {
   newPassword?: string // for edit (2 of 2)
 
   displayName: string
-  phoneNumber: string | null // optional
+  phoneNumber?: string // optional
 }
 
 export type IAccountResponse = {

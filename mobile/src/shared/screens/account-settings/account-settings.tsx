@@ -47,8 +47,7 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
         photoUri: undefined,
         displayName: '',
         email: '',
-        passwordSetOn: undefined,
-        phoneNumber: ''
+        phoneNumber: undefined
       } as any)),
     currentPassword: '',
     newPassword: '',
@@ -238,7 +237,9 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
                 keyboardType={'phone-pad'}
                 placeholder={t`account:phone-number` + ' (' + t`optional` + ')'}
                 value={data.phoneNumber || ''}
-                onChangeText={phoneNumber => setData({ ...data, phoneNumber })}
+                onChangeText={phoneNumber =>
+                  setData({ ...data, phoneNumber: phoneNumber || undefined })
+                }
                 autoFocus
               />
             }
