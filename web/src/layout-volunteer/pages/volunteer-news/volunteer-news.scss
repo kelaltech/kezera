@@ -1,9 +1,16 @@
 .volunteer-news-container {
   width: 100%;
-  margin: 0 auto;
 
   @media screen and (max-width: 500px) {
     width: 100%;
     padding: 0 3px;
+  }
+
+  .news-list-cont {
+    width: 75%;
+    margin: 0 auto;
+    @media screen and (max-width: 500px) {
+      width: 100%;
+    }
   }
 }

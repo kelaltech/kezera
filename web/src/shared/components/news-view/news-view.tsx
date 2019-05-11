@@ -1,6 +1,5 @@
 import React from 'react'
 import './news-view.scss'
-import newsTemp from '../../../assets/images/news-temp.jpg'
 import NewsTabs from './components/news-view-tab'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
@@ -10,6 +9,7 @@ import { convertToRaw, convertFromRaw, EditorState, AtomicBlockUtils } from 'dra
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { Anchor, Button, Flex } from 'gerami'
 import SpamReportDrop from '../../../shared/components/spam-report-drop/spam-report-drop'
+import { Modal } from '@material-ui/core'
 
 interface INewsAddState {
   title: any
@@ -68,6 +68,7 @@ class NewsView extends React.Component<any, INewsAddState> {
   handleDeleteNews = () => {
     const { match } = this.props
     let check = confirm('are you sure you want to delete the news')
+
     if (check) {
       axios
         .delete(`/api/news/${match.params._id}`)
@@ -103,7 +104,7 @@ class NewsView extends React.Component<any, INewsAddState> {
     const { description, title, article, liked, likeCount } = this.state
     return (
       <div className={'news-view-container'}>
-        <div className={'news-view'}>
+        <div className={'news-view'} id={'news-view-cont'}>
           <div
             className={'news-view-img'}
             style={{
@@ -131,7 +132,7 @@ class NewsView extends React.Component<any, INewsAddState> {
             </div>
             <hr />
             <div className={'new-view-action-container'}>
-              <span>
+              <span onClick={this.handleLike}>
                 {liked ? (
                   <span className={'name-view-like-icon'} onClick={this.handleLike}>
                     <FontAwesomeIcon className={'ico'} icon={['fas', 'heart']} />
@@ -142,28 +143,36 @@ class NewsView extends React.Component<any, INewsAddState> {
                   </span>
                 )}
                 <span onClick={this.fetchLikes} className={'name-view-like-list'}>
-                  &nbsp; Like&nbsp; <span>{likeCount == 0 ? '' : likeCount}</span>
+                  &nbsp; Likes&nbsp; <span>{likeCount == 0 ? '' : likeCount}</span>
                 </span>
               </span>
               <span className={'news-view-share-icon'}>
                 <FontAwesomeIcon icon={['fas', 'share-alt']} />
                 &nbsp; Share
               </span>
-              {role == 'ORGANIZATION' ? (
-                <a
-                  className={'news-view-edit-icon'}
-                  href={`/news/${match.params._id}/edit`}
-                >
-                  <FontAwesomeIcon icon={faEdit} />
-                  &nbsp; Edit
-                </a>
-              ) : null}
-              {role == 'ORGANIZATION' ? (
-                <Button className={'news-view-edit-icon'} onClick={this.handleDeleteNews}>
-                  <FontAwesomeIcon icon={faTrashAlt} />
-                  &nbsp; Delete
-                </Button>
-              ) : null}
+              {role == 'ORGANIZATION' && (
+                <span>
+                  <a
+                    className={'news-view-edit-icon'}
+                    href={`/news/${match.params._id}/edit`}
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                    &nbsp; Edit
+                  </a>
+                </span>
+              )}
+              {role == 'ORGANIZATION' && (
+                <span>
+                  <a
+                    className={'news-view-edit-icon'}
+                    href={'#like'}
+                    onClick={this.handleDeleteNews}
+                  >
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                    &nbsp; Delete
+                  </a>
+                </span>
+              )}
               {role == 'VOLUNTEER' && (
                 <span>
                   <Anchor
