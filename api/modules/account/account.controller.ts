@@ -138,6 +138,8 @@ export class AccountController extends KoaController {
 
   async getPhoto(
     account_id = super.getParam('account_id'),
+    size = Number(super.getQuery('size')) || 200,
+    quality = Number(super.getQuery('quality')) || 80,
     ctx = super.getContext()
   ): Promise<Stream> {
     const account = await get(AccountModel, account_id)
@@ -145,11 +147,11 @@ export class AccountController extends KoaController {
 
     if (ctx) ctx.type = await grid.getType()
 
-    const resizer = sharp()
-      .resize(200, 200, { fit: 'cover' })
-      .jpeg({ quality: 80, chromaSubsampling: '4:4:4' })
+    const resize = sharp()
+      .resize(size, size, { fit: 'cover' })
+      .jpeg({ quality, chromaSubsampling: '4:4:4' })
 
-    return (await grid.get()).pipe(resizer)
+    return (await grid.get()).pipe(resize)
   }
 
   async removePhoto(
