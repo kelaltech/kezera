@@ -1,5 +1,5 @@
 @import '../../../assets/styles/medium-draft-css';
-@import "../../../assets/styles/theme";
+@import '../../../assets/styles/theme';
 .news-card-add-top-container {
   width: 100%;
   //background-color: mediumspringgreen;
@@ -33,18 +33,17 @@
 }
 
 .public-DraftEditorPlaceholder-root {
-  font-size: $font-L  !important;
+  font-size: $font-L !important;
 }
 .md-RichEditor-root {
-  &:nth-child(2){
+  &:nth-child(2) {
     border-top-right-radius: $radius * 14;
     border-top-left-radius: $radius * 14;
   }
-  &:nth-child(4){
+  &:nth-child(4) {
     border-bottom-right-radius: $radius * 14;
     border-bottom-left-radius: $radius * 14;
   }
 }
 .myOwnClass {
-  //font-size: 50px;
 }

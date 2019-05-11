@@ -18,7 +18,7 @@ interface INewsAddState {
   error: any
   likeCount: number
   liked: boolean
-  isSpamReportDropOpen:boolean
+  isSpamReportDropOpen: boolean
 }
 
 class NewsView extends React.Component<any, INewsAddState> {
@@ -144,26 +144,32 @@ class NewsView extends React.Component<any, INewsAddState> {
                   &nbsp; Edit
                 </a>
               ) : null}
-              {
-                role == 'VOLUNTEER' && (
-                  <span>
-              <Anchor
-                onClick={() => this.setState({isSpamReportDropOpen:!this.state.isSpamReportDropOpen})}
-                title={`Report Organization as Spam`}
-              >
-                <FontAwesomeIcon icon={'user-slash'} />
-              </Anchor>
-              <SpamReportDrop
-                type={'NEWS'}
-                ids={[match.params._id]}
-                open={this.state.isSpamReportDropOpen}
-                onClose={() => this.setState({isSpamReportDropOpen:!this.state.isSpamReportDropOpen})}
-                align={'right'}
-                anchorOffset={2}
-              />
-            </span>
-                )
-              }
+              {role == 'VOLUNTEER' && (
+                <span>
+                  <Anchor
+                    onClick={() =>
+                      this.setState({
+                        isSpamReportDropOpen: !this.state.isSpamReportDropOpen
+                      })
+                    }
+                    title={`Report Organization as Spam`}
+                  >
+                    <FontAwesomeIcon icon={'user-slash'} />
+                  </Anchor>
+                  <SpamReportDrop
+                    type={'NEWS'}
+                    ids={[match.params._id]}
+                    open={this.state.isSpamReportDropOpen}
+                    onClose={() =>
+                      this.setState({
+                        isSpamReportDropOpen: !this.state.isSpamReportDropOpen
+                      })
+                    }
+                    align={'right'}
+                    anchorOffset={2}
+                  />
+                </span>
+              )}
             </div>
             <div className={'news-view-article'}>
               <Editor

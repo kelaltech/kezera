@@ -55,8 +55,6 @@ newsRouter.get('/:_newsId', async ctx => {
   ctx.body = await getNews(ctx.params._newsId)
 })
 
-
-
 //POST /api/news/:_newsId/addpic
 newsRouter.post('/:_newsId/addpic', async ctx => {
   const files = ctx.request.files!.file
