@@ -4,7 +4,7 @@ import {
 } from '../../models/certificate/certificate.model'
 
 export type ICertificateRequest = {
-  issuedTo: string // volunteer
+  issueTo: string[] // volunteers
   description: string
 }
 

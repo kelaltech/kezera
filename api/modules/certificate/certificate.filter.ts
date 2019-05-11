@@ -13,12 +13,13 @@ type ObjectId = Schema.Types.ObjectId | string
 export async function certificateRequestToLeanDocument(
   request: ICertificateRequest,
   issuedBy: ObjectId, // organization
+  issuedTo: ObjectId, // volunteer
   purpose: ICertificatePurpose,
   privacy: ICertificatePrivacy,
   _id?: ObjectId, // certificate
   _last: Date | number = Date.now()
 ): Promise<ICertificate & { _id?: ObjectId }> {
-  const { description, issuedTo } = request
+  const { description } = request
   return {
     _id,
     _last,
@@ -36,6 +37,7 @@ export async function certificateRequestToLeanDocument(
 export async function certificateRequestToDocument(
   request: ICertificateRequest,
   issuedBy: ObjectId, // organization
+  issuedTo: ObjectId, // volunteer
   purpose: ICertificatePurpose,
   privacy: ICertificatePrivacy,
   _id?: ObjectId, // certificate
@@ -45,6 +47,7 @@ export async function certificateRequestToDocument(
     await certificateRequestToLeanDocument(
       request,
       issuedBy,
+      issuedTo,
       purpose,
       privacy,
       _id,

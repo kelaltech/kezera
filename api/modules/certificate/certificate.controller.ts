@@ -31,28 +31,35 @@ export class CertificateController extends KoaController {
     session?: ClientSession,
     data = super.getRequestBody<ICertificateRequest>(),
     account_id = super.getUser()!._id
-  ): Promise<ICertificateResponse> {
-    const organization = await get(OrganizationModel, null, {
-      session,
-      conditions: { account: account_id }
-    })
-    const volunteer = await get(VolunteerModel, data.issuedTo, { session })
+  ): Promise<ICertificateResponse[]> {
+    const certificateResponses: ICertificateResponse[] = []
 
-    const certificate = await add(
-      CertificateModel,
-      await certificateRequestToDocument(
-        data,
-        organization._id,
-        purpose,
-        volunteer.privacy.certificate ? 'PUBLIC' : 'PRIVATE'
-      ),
-      { session }
-    )
+    for (const issuedTo of data.issueTo) {
+      const organization = await get(OrganizationModel, null, {
+        session,
+        conditions: { account: account_id }
+      })
+      const volunteer = await get(VolunteerModel, issuedTo, { session })
 
-    volunteer.portfolio.certificate.push(certificate._id)
-    await edit(VolunteerModel, volunteer._id, volunteer, { session })
+      const certificate = await add(
+        CertificateModel,
+        await certificateRequestToDocument(
+          data,
+          organization._id,
+          issuedTo,
+          purpose,
+          volunteer.privacy.certificate ? 'PUBLIC' : 'PRIVATE'
+        ),
+        { session }
+      )
 
-    return await certificateDocumentToResponse(certificate)
+      volunteer.portfolio.certificate.push(certificate._id)
+      await edit(VolunteerModel, volunteer._id, volunteer, { session })
+
+      certificateResponses.push(await certificateDocumentToResponse(certificate))
+    }
+
+    return certificateResponses
   }
 
   /* GENERAL */
