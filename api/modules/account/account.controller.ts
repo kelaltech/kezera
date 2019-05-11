@@ -1,6 +1,6 @@
 import { ClientSession } from 'mongoose'
-import { createReadStream } from 'fs'
 import { Stream } from 'stream'
+import * as sharp from 'sharp'
 
 import { KoaController } from '../../lib/koa-controller'
 import { IAccountRequest, IAccountResponse } from './account.apiv'
@@ -123,9 +123,17 @@ export class AccountController extends KoaController {
     const grid = new Grid(serverApp, AccountModel, account._id, 'photo')
 
     const photo = ctx!.request.files!['photo']
-    await grid.set(createReadStream(photo.path), photo.type)
+    const stream = sharp(photo.path)
+      .resize(1080, 1080, { fit: 'cover' })
+      .jpeg({ quality: 100 })
 
-    return this.me(session, user)
+    return new Promise<IAccountResponse>(async (resolve, reject) => {
+      stream.on('error', reject)
+
+      await grid.set(stream, 'image/jpeg')
+
+      resolve(this.me(session, user))
+    })
   }
 
   async getPhoto(
@@ -137,7 +145,11 @@ export class AccountController extends KoaController {
 
     if (ctx) ctx.type = await grid.getType()
 
-    return grid.get()
+    const resizer = sharp()
+      .resize(200, 200, { fit: 'cover' })
+      .jpeg({ quality: 80, chromaSubsampling: '4:4:4' })
+
+    return (await grid.get()).pipe(resizer)
   }
 
   async removePhoto(
