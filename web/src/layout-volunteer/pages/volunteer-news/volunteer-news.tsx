@@ -44,18 +44,17 @@ function VolunteerNews() {
           <Block />
           <h4>News feed</h4>
         </span>
-        <Yoga maxCol={2}>
+        <Yoga maxCol={1} className={'news-list-cont'}>
           {news.map((n: any) => (
             <div>
               <NewsCard
                 _id={n._id}
                 commentCount={n.comments.length}
-                imgSrc={`/api/news/${n._id}/picture`}
+                imgSrc={`/api/news/${n._id}/pic`}
                 title={n.title}
                 likeCount={n.likes.length}
                 description={n.description}
               />
-              <Block />
             </div>
           ))}
         </Yoga>
