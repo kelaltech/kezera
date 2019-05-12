@@ -60,9 +60,12 @@ function AccountPhoto({ readonly }: Props) {
   return (
     loading || (
       <>
-        <div style={{ display: 'none' }}>
-          <input type={'file'} ref={inputRef} onChange={handleChange} />
-        </div>
+        <input
+          style={{ display: 'none' }}
+          type={'file'}
+          ref={inputRef}
+          onChange={handleChange}
+        />
 
         <Button
           className={'account-photo'}

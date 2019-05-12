@@ -12,7 +12,7 @@ export default function Events() {
   const data = [
     { name: 'Interested', value: useFetch('/api/admin/events/interested') },
     { name: 'Attended', value: useFetch('/api/admin/events/attended') },
-    { name: 'Going', value: useFetch('/api/admin/events/going') }
+    { name: 'Going', value: useFetch('/api/admin/events/goingVolunteers') }
   ]
 
   let comments = useFetch('/api/admin/events/comments')

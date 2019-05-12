@@ -29,7 +29,8 @@
     "no-ssl-local": "set NO_SSL_REDIRECT=true& run-s local",
     "test": "echo \"This script is a no-op, so far.\"",
     "tsc": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "postinstall": "cd web && yarn install && yarn build"
   },
   "dependencies": {
     "@types/bcrypt": "^3.0.0",

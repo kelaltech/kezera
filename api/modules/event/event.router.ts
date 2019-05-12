@@ -120,7 +120,7 @@ eventRouter.put('/:_id/interest', async ctx => {
   ctx.body = await toggleAttend(ctx.params._id, ctx.state.user)
 })
 
-eventRouter.put('/:_id/going', async ctx => {
+eventRouter.put('/:_id/goingVolunteers', async ctx => {
   ctx.body = await going(ctx.params._id, ctx.state.user._id)
 })
 

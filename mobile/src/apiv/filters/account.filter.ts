@@ -20,6 +20,6 @@ export async function accountResponseToRequest(
     newPassword,
 
     displayName: response.displayName,
-    phoneNumber: response.phoneNumber || null
+    phoneNumber: response.phoneNumber || undefined
   }
 }

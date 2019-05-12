@@ -16,9 +16,11 @@ export async function accountRequestToLeanDocument(
   request: IAccountRequest,
   status: IAccountStatus,
   role: IAccountRole,
+  password: string,
+  passwordSetOn: Date | number,
   _id?: ObjectId,
   _last: Date | number = Date.now()
-): Promise<any> {
+): Promise<IAccount & { _id?: ObjectId }> {
   const leanDocument = {
     _id,
     _last,
@@ -27,7 +29,8 @@ export async function accountRequestToLeanDocument(
     role,
 
     email: request.email,
-    // set/change password manually (using postSave/preUpdate)
+    password,
+    passwordSetOn,
 
     displayName: request.displayName,
     phoneNumber: request.phoneNumber
@@ -42,11 +45,21 @@ export async function accountRequestToDocument(
   request: IAccountRequest,
   status: IAccountStatus,
   role: IAccountRole,
+  password: string,
+  passwordSetOn: Date | number,
   _id?: ObjectId,
   _last: Date | number = Date.now()
 ): Promise<Document & IAccount> {
   return new AccountModel(
-    await accountRequestToLeanDocument(request, status, role, _id, _last)
+    await accountRequestToLeanDocument(
+      request,
+      status,
+      role,
+      password,
+      passwordSetOn,
+      _id,
+      _last
+    )
   )
 }
 

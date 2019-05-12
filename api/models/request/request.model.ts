@@ -16,6 +16,9 @@ export interface IRequest extends Document {
   startDate: Date | number
   endDate?: Date | number
   type?: IRequestType
+  volunteers: ObjectId[]
+  approved: ObjectId[]
+  status: boolean
 }
 
 export const requestModelFactory = new ModelFactory<IRequest>({

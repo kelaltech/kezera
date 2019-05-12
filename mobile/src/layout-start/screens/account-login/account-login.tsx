@@ -17,6 +17,7 @@ import {
 } from '../../../app/stores/account/account-provider'
 import { login, logout } from '../../../app/stores/account/account-actions'
 import Loading from '../../../shared/components/loading/loading'
+import Footer from '../../../shared/components/footer/footer'
 
 type Params = {
   email?: string
@@ -48,7 +49,11 @@ function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
       e => {
         Alert.alert(
           t`error`,
-          e.message === 'WRONG_CREDENTIALS' ? t`account:wrong-credentials` : e.message
+          e.message === 'WRONG_CREDENTIALS'
+            ? t`account:wrong-credentials`
+            : e.response && e.response.data
+            ? e.response.data.prettyMessage || e.response.data.message
+            : e.message
         )
         setSending(false)
       }
@@ -57,16 +62,41 @@ function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
 
   const handleLogout = (): void => {
     setSending(true)
-    logout(
-      accountDispatch,
-      () => {
-        setSending(false)
-        navigation.dispatch(NavigationActions.navigate({ routeName: 'VolunteerWelcome' }))
-      },
-      e => {
-        Alert.alert(t`error`, e.message)
-        setSending(false)
-      }
+    Alert.alert(
+      t`are-you-sure-you-want-to-logout`,
+      undefined,
+      [
+        {
+          style: 'cancel',
+          text: t`no`,
+          onPress: () => {
+            setSending(false)
+          }
+        },
+        {
+          style: 'default',
+          text: t`yes`,
+          onPress: () => {
+            logout(
+              accountDispatch,
+              () => {
+                setSending(false)
+                navigation.dispatch(NavigationActions.navigate({ routeName: 'Init' }))
+              },
+              e => {
+                Alert.alert(
+                  t`error`,
+                  e.response && e.response.data
+                    ? e.response.data.prettyMessage || e.response.data.message
+                    : e.message
+                )
+                setSending(false)
+              }
+            )
+          }
+        }
+      ],
+      { cancelable: true }
     )
   }
 
@@ -143,6 +173,8 @@ function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
         </TouchableOpacity>
 
         <View style={classes.grow} />
+
+        <Footer style={classes.marginTopBig} />
       </View>
     ) : (
       <View style={{ ...styles.main }}>
@@ -165,7 +197,21 @@ function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
             </Text>
           </TouchableOpacity>
         </View>
-        <Button onPress={handleLogout} title={t`account:logout`} disabled={sending} />
+
+        <Footer />
+
+        <View style={classes.marginTopBig}>
+          <Button
+            onPress={() =>
+              navigation.dispatch(NavigationActions.navigate({ routeName: 'Init' }))
+            }
+            title={t`go-home`}
+          />
+        </View>
+
+        <View style={classes.marginTopBig}>
+          <Button onPress={handleLogout} title={t`account:logout`} disabled={sending} />
+        </View>
       </View>
     ))
   )

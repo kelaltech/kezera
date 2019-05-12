@@ -33,39 +33,27 @@ export default function TaskCard({ request }: ITaskProps) {
     }
   }
 
-  return (
+  return !request ? null : (
     <Content>
       <Card imgSrc={request.picture}>
-        <RequestEdit request={request} open={open} onClose={() => setOpen(false)} />
         <Title size={'L'} className={'center'}>
           {request.name}
         </Title>
         <hr />
         <Flex>
-          <label>{new Date(request.startDate).toDateString()}</label>
+          <label>{new Date(request.startDate).toDateString().substr(3)}</label>
           <FlexSpacer />
           <label>-</label>
           <FlexSpacer />
-          <label>{new Date(request.endDate).toDateString()}</label>
+          <label>{new Date(request.endDate).toDateString().substr(3)}</label>
         </Flex>
-        <h5>{request.type}</h5>
-        <label>{request.task.numberNeeded}</label>
+        <h5 className={'center'}>{request.type}</h5>
+        <Title className={'center'}>{request.task.numberNeeded}</Title>
         <hr />
+
         <Flex>
-          <Anchor
-            className={'margin-top-normal'}
-            to={`/organization/request/${request._id}`}
-          >
-            Details
-          </Anchor>
-          <FlexSpacer />
           {account && account.role === 'ORGANIZATION' ? (
             <Flex>
-              <span className={'full-width flex '}>
-                <Button onClick={() => setOpen(true)} className={'ActionButton1'}>
-                  <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
-                </Button>
-              </span>
               <span className={'full-width flex'}>
                 <Button
                   onClick={() => DeleteTask(request._id)}
@@ -76,10 +64,15 @@ export default function TaskCard({ request }: ITaskProps) {
               </span>
             </Flex>
           ) : (
-            <Button type="submit" primary>
-              Participate
-            </Button>
+            <Button>Participate</Button>
           )}
+          <FlexSpacer />
+          <Anchor
+            className={'margin-top-normal'}
+            to={`/organization/request/${request._id}`}
+          >
+            Details
+          </Anchor>
         </Flex>
       </Card>
     </Content>

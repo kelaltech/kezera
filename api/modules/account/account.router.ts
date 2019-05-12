@@ -41,11 +41,11 @@ accountRouter.post(
   handle(AccountController, (c, s) => c.addPhoto(s))
 )
 
-// GET /api/account/get-photo/:account_id
+// GET /api/account/get-photo/:account_id?size={200}&quality={80}
 accountRouter.get('/get-photo/:account_id', handle(AccountController, c => c.getPhoto()))
 
-// GET /api/account/remove-photo *
-accountRouter.get(
+// PUT /api/account/remove-photo *
+accountRouter.put(
   '/remove-photo',
   authenticate({ allowedAccountStatuses: ['ACTIVE', 'DISABLED'] }),
   handle(AccountController, (c, s) => c.removePhoto(s))

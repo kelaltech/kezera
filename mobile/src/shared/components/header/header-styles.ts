@@ -31,10 +31,11 @@ export default StyleSheet.create({
   },
   accountCircleImage: {
     margin: values.space.small,
+    width: values.fontSize.big + 2 * values.space.normal - values.space.small,
+    height: values.fontSize.big + 2 * values.space.normal - values.space.small,
     borderRadius:
       (values.fontSize.big + 2 * values.space.normal - values.space.small) / 2,
-    width: values.fontSize.big + 2 * values.space.normal - values.space.small,
-    height: values.fontSize.big + 2 * values.space.normal - values.space.small
+    backgroundColor: values.color.blackish
   },
   accountCircleText: {
     margin: values.space.small,

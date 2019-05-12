@@ -61,7 +61,7 @@ function Header({
             <Image
               style={styles.accountCircleImage}
               source={{ uri: `${baseUrl}${account.photoUri}` }}
-              resizeMode={'contain'}
+              resizeMode={'cover'}
             />
           ) : (
             <Text style={styles.accountCircleText}>

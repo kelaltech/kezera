@@ -43,7 +43,7 @@ export default function EventDetail(props: any) {
   let isGoing = function() {
     axios
       .get(`/api/event/${props.match.params._id}/isGoing`)
-      .then(resp => setToggle(resp.data.going))
+      .then(resp => setToggle(resp.data.goingVolunteers))
       .catch()
   }
   useEffect(() => {

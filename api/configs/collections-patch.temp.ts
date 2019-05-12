@@ -8,13 +8,11 @@ import { serverApp } from '../'
 setTimeout(async () => {
   // db should be connected by now
 
-  const dbConn = serverApp.dbConn
-  const creations: Promise<void>[] = []
-
-  for (const model of serverApp.config.models || []) {
-    const name = pluralize()(model.modelName)
-    creations.push(dbConn!.createCollection(name))
+  try {
+    for (const model of serverApp.config.models || []) {
+      serverApp.dbConn!.collection(pluralize()(model.modelName))
+    }
+  } catch (e) {
+    console.error(e)
   }
-
-  await Promise.all(creations)
 }, 5000) // 5 seconds

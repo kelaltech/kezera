@@ -10,6 +10,8 @@ export interface ITask extends Document {
   startTime: Date | number
   endTime: Date | number
   requestId: ObjectId
+  attended: ObjectId[]
+  going: ObjectId[]
 }
 
 export const taskModelFactory = new ModelFactory<ITask>({
