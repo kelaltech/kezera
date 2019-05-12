@@ -13,6 +13,7 @@ import {
   Namespace,
   setLanguage
 } from '../../../lib/language'
+import Loading from '../../components/loading/loading'
 
 type UseLocaleResponse = UseTranslationResponse & {
   loaded: true | null
@@ -52,7 +53,7 @@ function useLocale(
 
   return {
     loaded,
-    loading: loaded ? null : loading === null ? null : loading || null,
+    loading: loaded ? null : loading === null ? null : loading || <Loading />,
     ...ut
   }
 }

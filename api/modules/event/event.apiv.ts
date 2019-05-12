@@ -31,6 +31,7 @@ export type IOrganizationEventResponse = {
 }
 
 export type IVolunteerEventRequest = {
+  _id: string
   title: string
   description: string
   startDate: Date
@@ -40,6 +41,7 @@ export type IVolunteerEventRequest = {
   comments: Schema.Types.ObjectId[]
   location?: string
   interestedVolunteers: Schema.Types.ObjectId[]
+  organizationId: string
 }
 
 export type IVolunteerEventResponse = {

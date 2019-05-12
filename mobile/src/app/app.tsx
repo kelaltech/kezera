@@ -3,11 +3,12 @@ import './configs/setup-i18n'
 
 import * as React from 'react'
 import { createAppContainer } from 'react-navigation'
-import { withTranslation } from 'react-i18next'
+import { useScreens } from 'react-native-screens'
 
-import { defaultNamespaces } from '../lib/language'
 import AppProviders from './configs/app-providers'
 import AppNavigator from './configs/app-navigator'
+
+useScreens()
 
 const AppContainer = createAppContainer(AppNavigator) // only here on the root
 
@@ -19,4 +20,4 @@ function App() {
   )
 }
 
-export default withTranslation(defaultNamespaces)(App)
+export default App

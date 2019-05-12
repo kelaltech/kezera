@@ -17,10 +17,13 @@ import {
   toggleLike,
   toggleAttend,
   going,
+  isLiked,
   isGoing,
   getInterested,
   getOrganizationEvents,
-  getRecentEvents
+  getRecentEvents,
+  listLatestEvents,
+  upcomingEvents
 } from './event.controller'
 import * as fs from 'fs'
 
@@ -30,6 +33,16 @@ export const eventRouter = new Router({ prefix: '/api/event' })
 eventRouter.get('/all', async ctx => {
   console.log('all')
   ctx.body = await listAllEvents()
+})
+
+eventRouter.get('/latest', async ctx => {
+  console.log('fetching the latest events')
+  ctx.body = await listLatestEvents()
+})
+
+eventRouter.get('/upcoming', async ctx => {
+  console.log('fetching the upcoming events')
+  ctx.body = await upcomingEvents()
 })
 
 eventRouter.get('/mine', async ctx => {
@@ -128,8 +141,18 @@ eventRouter.get('/:_id/isGoing', async ctx => {
   ctx.body = await isGoing(ctx.params._id, ctx.state.user._id)
 })
 
+eventRouter.get('/:_id/isLiked', async ctx => {
+  console.log('likes')
+  ctx.body = await isLiked(ctx.params._id, ctx.state.user._id)
+})
+
 // api/event/:_id
 eventRouter.get('/:_id', async ctx => {
   console.log('/:_id asdsad')
   ctx.body = await getEvent(ctx.params._id)
+})
+
+eventRouter.get('/organization/:_id', async ctx => {
+  console.log('was here')
+  ctx.body = await getOrganizationEvents(ctx.params._id)
 })

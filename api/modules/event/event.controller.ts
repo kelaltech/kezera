@@ -233,6 +233,18 @@ export async function isGoing(
   }
   return { going: false }
 }
+export async function isLiked(
+  id: Schema.Types.ObjectId,
+  userId: Schema.Types.ObjectId
+): Promise<any> {
+  let event = await get(EventModel, id)
+  for (let i = 0; i < event.likes.length; i++) {
+    if (event.likes[i] == userId.toString()) {
+      return { liked: true }
+    }
+  }
+  return { liked: false }
+}
 
 export async function getInterested(id: Schema.Types.ObjectId): Promise<any> {
   let event = await get(EventModel, id)
@@ -243,4 +255,31 @@ export async function getInterested(id: Schema.Types.ObjectId): Promise<any> {
   }
   console.log(users)
   return users
+}
+
+export async function listLatestEvents(): Promise<IEvent[] | Document> {
+  let events = await EventModel.find({}).sort({ _at: 'desc' })
+  return events
+}
+
+export async function upcomingEvents(): Promise<IEvent[] | Document> {
+  let events: any = await list(EventModel)
+  let now = Date.now()
+  let difference: IEventDiff[] = []
+  for (let i = 0; i < events.length; i++) {
+    difference[i] = {
+      _id: events[i]._id,
+      difference: events[i]._startDate - now
+    }
+  }
+  let upcoming: IEvent[] = []
+  for (let j = 0; j < difference.length; j++) {
+    upcoming.push(await get(EventModel, difference[j]._id))
+  }
+  return upcoming
+}
+
+interface IEventDiff {
+  _id: any
+  difference: number
 }

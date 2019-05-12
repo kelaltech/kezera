@@ -1,5 +1,6 @@
 import { createStackNavigator } from 'react-navigation'
 
+import Init from '../screens/init/init'
 import LayoutStart from '../../layout-start/layout-start'
 import LayoutDefault from '../../layout-default/layout-default'
 import AccountSettings from '../../shared/screens/account-settings/account-settings'
@@ -11,9 +12,12 @@ import OrganDonationDetail from '../../shared/screens/organ-donation-detail/orga
 import TaskDetail from '../../shared/screens/task-detail/task-detail'
 import NewsDetail from '../../shared/screens/news-detail/news-detail'
 import EventDetail from '../../shared/screens/event-detail/event-detail'
+import EventList from '../../shared/screens/event-list/event-list'
 
 const AppNavigator = createStackNavigator(
   {
+    Init,
+
     LayoutStart,
     LayoutDefault,
 
@@ -25,10 +29,11 @@ const AppNavigator = createStackNavigator(
     OrganDonationDetail,
     TaskDetail,
     NewsDetail,
-    EventDetail
+    EventDetail,
+    EventList
   },
   {
-    initialRouteName: 'LayoutDefault', // todo: if !account? 'LayoutStart'
+    initialRouteName: 'Init',
     headerMode: 'none'
   }
 )
