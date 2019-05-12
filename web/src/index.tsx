@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import React, { StrictMode, Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { Loading } from 'gerami'
