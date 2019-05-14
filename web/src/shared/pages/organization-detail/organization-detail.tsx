@@ -140,7 +140,7 @@ function OrganizationDetail({
 
   return (
     <RichPage
-      covers={organization ? [organization.logoUri as string] : []}
+      covers={organization && organization.logoUri ? [organization.logoUri] : undefined}
       photo={organization && organization.logoUri}
       ready={!!(organization || error)}
       languageNamespaces={['organization']}
@@ -150,7 +150,7 @@ function OrganizationDetail({
       title={
         organization && (
           <Anchor to={`/organization/${organization._id}`}>
-            <h1>{organization.account.displayName}</h1>
+            <h1 className={'margin-none'}>{organization.account.displayName}</h1>
           </Anchor>
         )
       }
@@ -209,21 +209,22 @@ function OrganizationDetail({
         actionsOverride ||
         (account &&
           organization &&
-          ((account.role === 'ORGANIZATION' && [
-            {
-              to: '/account',
-              primary: true,
-              children: (
-                <>
-                  <FontAwesomeIcon
-                    icon={'pencil-alt'}
-                    className={'margin-right-normal font-S'}
-                  />
-                  Edit Account
-                </>
-              )
-            }
-          ]) ||
+          ((account.role === 'ORGANIZATION' &&
+            account._id === organization.account._id && [
+              {
+                to: '/account',
+                primary: true,
+                children: (
+                  <>
+                    <FontAwesomeIcon
+                      icon={'pencil-alt'}
+                      className={'margin-right-normal font-S'}
+                    />
+                    Edit Account
+                  </>
+                )
+              }
+            ]) ||
             (account.role === 'VOLUNTEER' &&
               (subscriptions
                 .map(subscription => subscription._id)

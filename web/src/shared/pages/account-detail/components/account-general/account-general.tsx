@@ -100,20 +100,34 @@ function AccountGeneral({ readonly, history }: Props & RouteComponentProps<{}>) 
         <Content style={{ overflow: 'visible' }}>
           <Block first>
             <Flex>
-              <h3>{t`account:account-settings`}</h3>
+              <h3
+                className={'margin-vertical-auto margin-right-normal'}
+              >{t`account:account-settings`}</h3>
 
               <FlexSpacer />
 
               {(account.role === 'ORGANIZATION' || account.role === 'VOLUNTEER') && (
-                <>
-                  <Anchor to={`/${account.role.toLowerCase()}/me`}>
+                <Flex>
+                  <Anchor
+                    className={'margin-vertical-auto'}
+                    to={`/${account.role.toLowerCase()}/me`}
+                  >
                     {t`account:go-to-my-profile`}
                   </Anchor>
-                  <span className={'padding-horizontal-normal fg-whitish'}>|</span>
-                </>
+                  <span
+                    className={
+                      'margin-vertical-auto padding-horizontal-normal fg-whitish'
+                    }
+                  >
+                    |
+                  </span>
+                </Flex>
               )}
 
-              <Anchor onClick={handleLogout}>{t`account:logout`}</Anchor>
+              <Anchor
+                className={'margin-vertical-auto'}
+                onClick={handleLogout}
+              >{t`account:logout`}</Anchor>
             </Flex>
           </Block>
 

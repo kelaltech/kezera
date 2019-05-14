@@ -24,8 +24,10 @@ export type IOrganization = {
   motto?: string
   bio: string
   locations: {
-    latitude?: number
-    longitude?: number
+    geo?: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
     address: string
   }[]
   website?: string

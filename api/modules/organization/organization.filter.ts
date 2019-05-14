@@ -24,7 +24,7 @@ export async function organizationRequestToLeanDocument(
     account: Document & IAccount
   }
 > {
-  return {
+  const leanDocument = {
     _id,
     _last,
 
@@ -32,7 +32,9 @@ export async function organizationRequestToLeanDocument(
     account: (await accountRequestToDocument(
       request.account,
       'ACTIVE',
-      'ORGANIZATION'
+      'ORGANIZATION',
+      undefined as any,
+      undefined as any
     )) as any,
 
     type: request.type,
@@ -46,6 +48,11 @@ export async function organizationRequestToLeanDocument(
     registrations: request.registrations,
     verifier
   }
+
+  if (!leanDocument.motto) delete leanDocument.motto
+  if (!leanDocument.website) delete leanDocument.website
+
+  return leanDocument
 }
 
 export async function organizationRequestToDocument(

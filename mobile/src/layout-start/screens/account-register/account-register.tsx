@@ -30,7 +30,7 @@ function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
     displayName: '',
     email: navigation.getParam('email', '') || '',
     password: '',
-    phoneNumber: ''
+    phoneNumber: undefined
   }
   const [data, setData] = useState({ ...initialData, repeatPassword: '' })
 
@@ -137,7 +137,9 @@ function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
             keyboardType={'phone-pad'}
             placeholder={t`account:phone-number` + ' (' + t`optional` + ')'}
             value={data.phoneNumber || ''}
-            onChangeText={phoneNumber => setData({ ...data, phoneNumber })}
+            onChangeText={phoneNumber =>
+              setData({ ...data, phoneNumber: phoneNumber || undefined })
+            }
             editable={!sending}
           />
         </View>

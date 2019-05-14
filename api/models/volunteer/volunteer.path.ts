@@ -10,7 +10,9 @@ export const VolunteerPaths: SchemaDefinition = {
   gender: { type: String },
   location: { type: String },
   username: {
-    type: String /*, unique: true todo: ...this was creating problems, fix it*/
+    type: String,
+    unique: true,
+    sparse: true
   },
   privacy: {
     certificate: { type: Boolean, default: true },

@@ -9,4 +9,5 @@ export type IOrganRequest = {
 export type IOrganResponse = {
   type: IOrganType
   request: IRequestResponse
+  pledges: ObjectId[]
 }

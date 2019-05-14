@@ -9,17 +9,17 @@
   "password": "የይለፍ ቃል",
   "repeat-password": "የይለፍ ቃልዎን ይድገሙ",
   "phone-number": "ስልክ ቁጥር",
-  "register": "መዝግብ",
+  "register": "ይመዝገቡ",
 
-  "forgot-password": "መክፈቻ ቁልፉን ረሱት?",
-  "login": "መግቢያ",
-  "create-new-account": "አዲስ መለያ ይፍጠርሩ",
+  "forgot-password": "የይለፍ ቃልዎን ረሱት?",
+  "login": "ይግቡ",
+  "create-new-account": "አዲስ መለያ ይፍጠሩ",
   "wrong-credentials": "ያስገቡት መለያ ወይም የይለፍ ቃል ልክ አይደለም።",
   "logged-in-as": "የገቡበት መለያ፦",
   "are-you-sure-you-want-to-logout": "መውጣት እንደሚፈልጉ እርግጠኛ ነዎት?",
   "logout": "መውጫ",
 
-  "already-have-an-account-login": "ቀድሞውኑ መለያ አለዎት? ይግቡ",
+  "already-have-an-account-login": "ቀድሞውኑ መለያ አለዎት? ከሆነ ይግቡ",
   "passwords-do-not-match": "የይለፍ ቃሎች ተመሳሳይ አይደሉም።",
 
   "reset-account-password": "የመለያዎን የይለፍ ቃል ይለውጡ",
@@ -31,6 +31,6 @@
   "last-set-on": "መጨረሻ የተለወጠበት ቀን",
   "current-password": "የአሁኑ የይለፍ ቃል",
   "new-password": "አዲሱ የይለፍ ቃል",
-  "repeat-new-password": "አዲሱን የይለፍ ቃል ይ",
+  "repeat-new-password": "አዲሱን የይለፍ ቃል ይድገሙት",
   "more-settings": "ተጨማሪ ማስተካከያዎች"
 }

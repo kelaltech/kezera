@@ -1,6 +1,11 @@
+@import '../../../../assets/styles/theme';
 .news-list-container {
-  width: 50%;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: white;
+  width: 70%;
+
+  @media screen and (max-width: $mobile * 1.5) {
+    width: 80%;
+  }
+  @media screen and (max-width: $mobile) {
+    width: 100%;
+  }
 }

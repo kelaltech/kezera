@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import './news.scss'
 import NewsCard from '../../../../shared/components/news-card/news-card'
-import NewsTemp from '../../../../assets/images/news-temp.jpg'
 import axios from 'axios'
 import { convertFromRaw } from 'draft-js'
-import { Block } from 'gerami'
+import { Block, Yoga } from 'gerami'
+import RichPage from '../../../../shared/components/rich-page/rich-page'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAccountState } from '../../../../app/stores/account/account-provider'
 export default function News() {
   const [news, setNews] = useState([])
+  const [error, setError] = useState()
 
+  const { account } = useAccountState()
   useEffect(() => {
     axios
       .get('/api/news/allnews')
@@ -36,160 +40,48 @@ export default function News() {
         setNews(data.data)
       })
       .catch(e => {
-        console.log(e)
+        setError(e)
       })
   }, [])
-  // todo
+  // todo change the route to organization specific
   return (
-    <div className={'news-list-container'}>
-      {news.map((n: any) => (
-        <div>
-          <NewsCard
-            _id={n._id}
-            commentCount={n.comments.length}
-            imgSrc={`/api/news/${n._id}/pic`}
-            title={n.title}
-            likeCount={n.likes.length}
-            description={n.description}
-          />
-          <Block />
-        </div>
-      ))}
-    </div>
+    <RichPage
+      error={error}
+      title={'Stories'}
+      actions={
+        (account!.role == 'ORGANIZATION' && [
+          {
+            to: '/news/create',
+            primary: true,
+            children: (
+              <>
+                <FontAwesomeIcon
+                  icon={'pencil-alt'}
+                  className={'margin-right-normal font-S'}
+                />
+                Create a story
+              </>
+            )
+          }
+        ]) ||
+        []
+      }
+    >
+      <Yoga maxCol={1} className={'news-list-container'}>
+        {news.map((n: any) => (
+          <div>
+            <NewsCard
+              _id={n._id}
+              commentCount={n.comments.length}
+              imgSrc={`/api/news/${n._id}/pic`}
+              title={n.title}
+              likeCount={n.likes.length}
+              description={n.description}
+            />
+            <Block />
+          </div>
+        ))}
+      </Yoga>
+    </RichPage>
   )
 }
-
-const StaticData = [
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  },
-  {
-    title:
-      'Notre Dame, Mississippi State, Louisville and Baylor earn top seeds in NCAA\n' +
-      '              women’s tournament',
-    description:
-      'The president has promised 3 percent growth for the next decade, but a new\n' +
-      '              report indicates that won’t happen without a big infrastructure bill, more\n' +
-      '              tax cuts and additional deregulation, the House.',
-    imgSrc: `${NewsTemp}`,
-    likeCount: 192,
-    commentCount: 30
-  }
-]

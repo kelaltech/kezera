@@ -55,7 +55,6 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
 
   useEffect(() => {
     getRequest()
-    isGoing()
   }, [])
   const { account } = useAccountState()
   const { volunteer } = useVolunteerState()
@@ -72,7 +71,10 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
             {
               children: (
                 <Switch
-                  checked={request.volunteers.includes(volunteer)}
+                  checked={
+                    volunteer &&
+                    request.volunteers.map((v: any) => v._id).includes(volunteer._id)
+                  }
                   onChange={() => isGoing()}
                 >
                   Attend

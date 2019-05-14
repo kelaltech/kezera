@@ -34,6 +34,7 @@ export const accountPaths: SchemaDefinition = {
     maxlength: 50,
     validate: /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/,
     index: true,
-    unique: true
+    unique: true,
+    sparse: true
   }
 }

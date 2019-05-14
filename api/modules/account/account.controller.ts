@@ -1,6 +1,6 @@
 import { ClientSession } from 'mongoose'
-import { createReadStream } from 'fs'
 import { Stream } from 'stream'
+import * as sharp from 'sharp'
 
 import { KoaController } from '../../lib/koa-controller'
 import { IAccountRequest, IAccountResponse } from './account.apiv'
@@ -34,7 +34,13 @@ export class AccountController extends KoaController {
     status: IAccountStatus = 'ACTIVE',
     role: IAccountRole = 'VOLUNTEER'
   ): Promise<IAccountResponse> {
-    let document = await accountRequestToDocument(data, status, role)
+    let document = await accountRequestToDocument(
+      data,
+      status,
+      role,
+      undefined as any,
+      undefined as any
+    )
 
     document = await add(AccountModel, document, {
       session,
@@ -88,13 +94,15 @@ export class AccountController extends KoaController {
         data.status ||
         document.status,
       role || document.role,
+      document.password,
+      document.passwordSetOn,
       user!._id
     )
 
     await edit(
       AccountModel,
       user!._id,
-      { ...document.toObject(), ...request },
+      request,
       {
         session,
         postUpdate: async () => {
@@ -123,13 +131,23 @@ export class AccountController extends KoaController {
     const grid = new Grid(serverApp, AccountModel, account._id, 'photo')
 
     const photo = ctx!.request.files!['photo']
-    await grid.set(createReadStream(photo.path), photo.type)
+    const stream = sharp(photo.path)
+      .resize(1080, 1080, { fit: 'cover' })
+      .jpeg({ quality: 100 })
 
-    return this.me(session, user)
+    return new Promise<IAccountResponse>(async (resolve, reject) => {
+      stream.on('error', reject)
+
+      await grid.set(stream, 'image/jpeg')
+
+      resolve(this.me(session, user))
+    })
   }
 
   async getPhoto(
     account_id = super.getParam('account_id'),
+    size = Number(super.getQuery('size')) || 200,
+    quality = Number(super.getQuery('quality')) || 80,
     ctx = super.getContext()
   ): Promise<Stream> {
     const account = await get(AccountModel, account_id)
@@ -137,7 +155,11 @@ export class AccountController extends KoaController {
 
     if (ctx) ctx.type = await grid.getType()
 
-    return grid.get()
+    const resize = sharp()
+      .resize(size, size, { fit: 'cover' })
+      .jpeg({ quality, chromaSubsampling: '4:4:4' })
+
+    return (await grid.get()).pipe(resize)
   }
 
   async removePhoto(

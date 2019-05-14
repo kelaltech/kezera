@@ -7,6 +7,7 @@ import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
 import { INewsResponse } from '../../../../../apiv/news.apiv'
 import NewsCard from '../../../../components/news-card/news-card'
+import { richTextToDisplayText } from '../../../../../lib/richTextConverter'
 
 interface Props {
   organization: IOrganizationResponse
@@ -27,7 +28,7 @@ function OrganizationDetailNews({ organization }: Props) {
       `/api/organization/news/${organization._id}?${qs.stringify({ since, count })}`
     )
       .then(response => {
-        setNews(news.concat(response.data))
+        setNews(news.concat(richTextToDisplayText(response.data)))
         setReady(true)
       })
       .catch(setError)
@@ -55,7 +56,7 @@ function OrganizationDetailNews({ organization }: Props) {
               </div>
             ) : (
               <>
-                <Yoga maxCol={4} className={'yoga-in-rich-page padding-normal'}>
+                <Yoga maxCol={2} className={'yoga-in-rich-page padding-normal'}>
                   {news.map((n, i) => (
                     <NewsCard key={i} {...n as any} />
                   ))}
