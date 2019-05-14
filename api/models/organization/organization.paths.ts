@@ -17,29 +17,10 @@ export const organizationPaths: SchemaDefinition = {
   locations: [
     {
       geo: {
-        type: {
-          type: { type: String, required: true, enum: ['Point'], default: 'Point' },
-          coordinates: [{ type: Number, required: true }]
-        },
-        required: false,
-        validate: (value: any) => {
-          // todo: make sire this works
-          return (
-            value.coordinates.length === 2 &&
-            value.coordinates[0]
-              .toString()
-              .match(
-                /^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/
-              ) &&
-            value.coordinates[1]
-              .toString()
-              .match(
-                /^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/
-              )
-          )
-        }
+        type: { type: String, required: true, enum: ['Point'], default: 'Point' },
+        coordinates: [{ type: Number, required: true }]
       },
-      address: { type: String, required: true, maxlength: 250 }
+      address: { type: String, maxlength: 250 }
     }
   ],
   website: { type: String, maxlength: 100, validate: /\w+:(\/?\/?)[^\s]+/ },

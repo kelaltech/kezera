@@ -24,11 +24,11 @@ export type IOrganization = {
   motto?: string
   bio: string
   locations: {
-    geo?: {
+    geo: {
       type: 'Point'
       coordinates: [number, number]
     }
-    address: string
+    address?: string
   }[]
   website?: string
 
@@ -75,3 +75,5 @@ OrganizationModel.collection.ensureIndex(
     }
   }
 )
+
+OrganizationModel.collection.createIndex({ 'locations.geo': '2dsphere' })

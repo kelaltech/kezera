@@ -9,9 +9,11 @@ export type IOrganizationRequest = {
   motto?: string
   bio: string
   locations: {
-    latitude?: number
-    longitude?: number
-    address: string
+    geo: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+    address?: string
   }[]
   website?: string
 
@@ -35,9 +37,11 @@ export type IOrganizationResponse = {
   motto?: string
   bio: string
   locations: {
-    latitude?: number
-    longitude?: number
-    address: string
+    geo: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+    address?: string
   }[]
   website?: string
 
