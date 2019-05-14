@@ -33,7 +33,7 @@ export default function TaskCard({ request }: ITaskProps) {
     }
   }
 
-  return !request ? null : (
+  return (
     <Content>
       <Card imgSrc={request.picture}>
         <Title size={'L'} className={'center'}>

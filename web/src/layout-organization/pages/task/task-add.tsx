@@ -43,35 +43,6 @@ export default function TaskAdd(props: ITaskProps) {
           label={'Number of Participants'}
         />
       </Block>
-
-      <Yoga maxCol={2}>
-        <Block>
-          <Title>Start Time</Title>
-        </Block>
-        <Block>
-          <Title>End Time</Title>
-        </Block>
-      </Yoga>
-
-      <Yoga maxCol={2}>
-        <Block>
-          <Input
-            required={true}
-            className={'full-width'}
-            onChange={e => emitChange({ startTime: e.target.value })}
-            value={task.startTime}
-            type={'date'}
-          />
-        </Block>
-        <Block>
-          <Input
-            className={'full-width'}
-            onChange={e => emitChange({ endTime: e.target.value })}
-            value={task.endTime}
-            type={'date'}
-          />
-        </Block>
-      </Yoga>
     </Content>
   )
 }
