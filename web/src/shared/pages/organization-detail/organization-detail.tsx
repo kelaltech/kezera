@@ -150,7 +150,7 @@ function OrganizationDetail({
       title={
         organization && (
           <Anchor to={`/organization/${organization._id}`}>
-            <h1>{organization.account.displayName}</h1>
+            <h1 className={'margin-none'}>{organization.account.displayName}</h1>
           </Anchor>
         )
       }

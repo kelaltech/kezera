@@ -130,12 +130,17 @@ function RichPage({
             <>
               <Block first className={`padding-horizontal-none`}>
                 <Flex>
-                  <>{typeof title === 'string' ? <h1>{title}</h1> : title}</>
+                  <div className={'margin-vertical-auto'}>
+                    {typeof title === 'string' ? <h1>{title}</h1> : title}
+                  </div>
 
                   <FlexSpacer />
 
                   {actions.map((action, i) => (
-                    <span key={i} className={'rich-page-action-vaults'}>
+                    <span
+                      key={i}
+                      className={'rich-page-action-vaults margin-vertical-auto'}
+                    >
                       <Button {...action as any}>
                         {action.value || action.children}
                       </Button>

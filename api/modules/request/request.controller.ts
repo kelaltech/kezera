@@ -23,7 +23,11 @@ export async function removeRequest(id: Schema.Types.ObjectId | string): Promise
 }
 
 export async function getRequest(_id: ObjectId): Promise<any> {
-  const request = await get(RequestModel, _id)
+  const request = await get(RequestModel, _id, {
+    postQuery: query =>
+      query.populate({ path: 'volunteers', populate: { path: 'account' } })
+  })
+  console.log(JSON.stringify(request.volunteers))
 
   const ret = request.toJSON()
   ret.picture = '/api/request/picture/' + request._id
@@ -43,6 +47,12 @@ export async function getRequest(_id: ObjectId): Promise<any> {
   ret._by = await organizationDocumentToResponse(
     await get(OrganizationModel, null, { conditions: { account: request._by } })
   )
+
+  for (let i = 0; i < request.volunteers.length; i++) {
+    ;(request.volunteers[i] as any).account = (await accountDocumentToPublicResponse(
+      (request.volunteers[i] as any).account
+    )) as any
+  }
 
   return ret
 }
@@ -179,7 +189,7 @@ export async function toggleRequestVolunteer(
   let request = await get(RequestModel, request_id)
   let volunteer = await get(VolunteerModel, null, { conditions: { account: account_id } })
 
-  if (request.volunteers.includes(volunteer._id)) {
+  if (request.volunteers.map(v => v.toString()).includes(volunteer._id.toString())) {
     request.volunteers.splice(request.volunteers.indexOf(volunteer._id), 1)
   } else {
     request.volunteers.push(volunteer._id)
@@ -187,16 +197,7 @@ export async function toggleRequestVolunteer(
 
   await edit(RequestModel, request._id, request.toJSON())
 
-  request = await get(RequestModel, request_id, {
-    postQuery: query =>
-      query.populate({ path: 'volunteers', populate: { path: 'account' } })
-  })
-  for (let i = 0; i < request.volunteers.length; i++) {
-    ;(request.volunteers[i] as any).account = (await accountDocumentToPublicResponse(
-      (request.volunteers[i] as any).account
-    )) as any
-  }
-  return request as any
+  return getRequest(request._id)
 }
 
 // todo
