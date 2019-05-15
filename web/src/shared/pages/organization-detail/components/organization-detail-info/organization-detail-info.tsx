@@ -4,9 +4,17 @@ import { Anchor, Block, Content, Flex, Yoga } from 'gerami'
 import './organization-detail-info.scss'
 import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
+import { LngLat } from 'mapbox-gl'
 
 interface Props {
   organization: IOrganizationResponse
+}
+
+const parseGeo = (lngLat: LngLat): string => {
+  const factor = 100000
+  return `${Math.round(lngLat.lat * factor) / factor}° ${
+    lngLat.lat > 0 ? 'N' : 'S'
+  }, ${Math.round(lngLat.lng * factor) / factor}°  ${lngLat.lng > 0 ? 'E' : 'W'}`
 }
 
 function OrganizationDetailInfo({ organization }: Props) {
@@ -111,8 +119,24 @@ function OrganizationDetailInfo({ organization }: Props) {
                   <div style={{ flex: 5 }}>
                     {(organization.locations || []).map((location, i) => (
                       <div key={i}>
-                        {location.address}
-                      </div> /* todo: (latitude, longitude) => google maps in new tab */
+                        {location.address}{' '}
+                        {location.geo && (
+                          <Anchor
+                            href={`https://www.google.com/maps/@${
+                              location.geo.coordinates[1]
+                            },${location.geo.coordinates[0]},13z`}
+                            target={'_blank'}
+                            rel={'noopener'}
+                          >
+                            {parseGeo(
+                              new LngLat(
+                                location.geo.coordinates[0],
+                                location.geo.coordinates[1]
+                              )
+                            )}
+                          </Anchor>
+                        )}
+                      </div>
                     ))}
                   </div>
                 ) : (
