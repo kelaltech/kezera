@@ -7,25 +7,31 @@ import { accountResponseToRequest } from '../../../apiv/filters/account.filter'
 export function reloadAccount(
   accountDispatch: (action: Action) => void,
   silentFail = false,
-  account?: IAccountResponse
+  account?: IAccountResponse,
+  onReload?: () => void,
+  onError?: (e: any) => void
 ): void {
-  const reload = (account?: IAccountResponse): void => {
+  const reload = async (account?: IAccountResponse): Promise<void> => {
     if (!account) throw Error('Account not found.')
     if (!account._id) throw Error('Received account data is malformed.')
 
     window.localStorage.setItem('account', JSON.stringify(account))
     accountDispatch({ type: 'set', account })
+
+    if (onReload) onReload()
   }
 
   if (account) {
-    reload(account)
+    reload(account).catch(e => {
+      if (!silentFail && onError) onError(e)
+    })
   } else {
     Axios.get<IAccountResponse>('/api/account/me', { withCredentials: true })
-      .then(response => response.data)
-      .then(reload)
+      .then(response => reload(response.data))
       .catch(e => {
-        if (!silentFail) throw e
         accountDispatch({ type: 'unset' })
+        if (!silentFail && onError && (e.response && e.response.status !== 401))
+          onError(e)
       })
   }
 }
@@ -37,7 +43,9 @@ export function updateAccount(
   account: IAccountResponse,
   timeout = 0,
   currentPassword?: string,
-  newPassword?: string
+  newPassword?: string,
+  onUpdate?: () => void,
+  onError?: (e: any) => void
 ): void {
   if (updateAccountTimeout !== null) clearTimeout(updateAccountTimeout)
   if (updateAccountCancellation !== null) updateAccountCancellation.cancel()
@@ -51,11 +59,11 @@ export function updateAccount(
       { withCredentials: true, cancelToken: updateAccountCancellation.token }
     )
       .then(response => response.data)
-      .then(data => reloadAccount(accountDispatch, false, data))
-      .catch(err => {
-        if (!Axios.isCancel(err)) {
-          console.error(err)
-          reloadAccount(accountDispatch)
+      .then(data => reloadAccount(accountDispatch, false, data, onUpdate, onError))
+      .catch(e => {
+        if (!Axios.isCancel(e)) {
+          if (onError) onError(e)
+          reloadAccount(accountDispatch, undefined, undefined, undefined, onError)
         }
       })
 
@@ -65,14 +73,51 @@ export function updateAccount(
   accountDispatch({ type: 'set', account })
 }
 
+export function login(
+  accountDispatch: (action: Action) => void,
+  data: { email: string; password: string },
+  onLogin?: () => void,
+  onError?: (e: any) => void
+): void {
+  Axios.post<void>('/api/account/login', data)
+    .then(response => {
+      const responseUrl: string = response.request.responseURL.toLowerCase()
+      if (
+        responseUrl.includes('success=false') &&
+        responseUrl.includes('code=wrong_credentials')
+      ) {
+        if (onError) onError(new Error('WRONG_CREDENTIALS'))
+      } else {
+        // success
+        reloadAccount(
+          accountDispatch,
+          undefined,
+          undefined,
+          () => {
+            if (onLogin) onLogin()
+          },
+          onError
+        )
+      }
+    })
+    .catch(e => {
+      if (onError) onError(e)
+    })
+}
+
 export function logout(
   accountDispatch: (action: Action) => void,
-  onLogout?: () => void
+  onLogout?: () => void,
+  onError?: (e: any) => void
 ): void {
-  Axios.post('/api/account/logout').then(() => {
-    window.localStorage.removeItem('account')
-    accountDispatch({ type: 'unset' })
+  Axios.post<void>('/api/account/logout')
+    .then(() => {
+      window.localStorage.removeItem('account')
+      accountDispatch({ type: 'unset' })
 
-    if (onLogout) onLogout()
-  })
+      if (onLogout) onLogout()
+    })
+    .catch(e => {
+      if (onError) onError(e)
+    })
 }

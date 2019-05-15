@@ -1,5 +1,4 @@
 import Axios from 'axios'
-import * as qs from 'qs'
 
 Axios.interceptors.response.use(
   response => {
@@ -25,6 +24,6 @@ Axios.interceptors.response.use(
     }
     */
 
-    return Promise.reject(error.response.data)
+    return Promise.reject(error.response ? error.response.data : error)
   }
 )

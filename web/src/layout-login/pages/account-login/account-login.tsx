@@ -31,7 +31,8 @@ function AccountLogin({ history }: RouteComponentProps<{}>) {
   const accountDispatch = useAccountDispatch()
 
   const [drama, setDrama] = useState(true)
-  const [submitting, setSubmitting] = useState(false)
+  // const [error, setError] = useState<string>()
+  const [sending, setSending] = useState(false)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -53,12 +54,42 @@ function AccountLogin({ history }: RouteComponentProps<{}>) {
 
   const handleLogin = async (e: any): Promise<void> => {
     e.preventDefault()
-    setSubmitting(true)
+    setSending(true)
     e.target.submit()
   }
 
+  /*
+  const handleLogin = (e: any): void => {
+    e.preventDefault()
+    setSending(true)
+
+    const data = { email, password }
+
+    login(
+      accountDispatch,
+      data,
+      () => {
+        setPassword('')
+        setSending(false)
+        alert('hi')
+        history.push('/')
+      },
+      e => {
+        setError(
+          e.message === 'WRONG_CREDENTIALS'
+            ? t`account:wrong-credentials`
+            : e.response && e.response.data
+            ? e.response.data.prettyMessage || e.response.data.message
+            : e.message
+        )
+        setSending(false)
+      }
+    )
+  }
+  */
+
   const handleLogout = async (): Promise<void> => {
-    setSubmitting(true)
+    setSending(true)
     logout(accountDispatch)
   }
 
@@ -77,10 +108,10 @@ function AccountLogin({ history }: RouteComponentProps<{}>) {
                   </Anchor>
                 </span>
                 <FlexSpacer />
-                {submitting ? (
+                {sending ? (
                   <Loading className={'padding-none'} />
                 ) : (
-                  <Button onClick={handleLogout} disabled={submitting} primary>
+                  <Button onClick={handleLogout} disabled={sending} primary>
                     {t`account:logout`}
                   </Button>
                 )}
@@ -89,7 +120,14 @@ function AccountLogin({ history }: RouteComponentProps<{}>) {
           </Content>
         ) : (
           <>
-            {query.success == 'false' &&
+            {/*
+              error && (
+                <Content size={'XL'} className={'margin-bottom-big'}>
+                  <Warning shy problem={error} />
+                </Content>
+              )
+              */
+            query.success == 'false' &&
               (query.status == '401' || query.code == 'WRONG_CREDENTIALS') && (
                 <Content size={'XL'} className={'margin-bottom-big'}>
                   <Warning shy problem={t`account:wrong-credentials`} />
@@ -121,7 +159,7 @@ function AccountLogin({ history }: RouteComponentProps<{}>) {
                       name={'email'}
                       type={'email'}
                       label={t`account:email`}
-                      disabled={submitting}
+                      disabled={sending}
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       tabIndex={1}
@@ -134,7 +172,7 @@ function AccountLogin({ history }: RouteComponentProps<{}>) {
                       name={'password'}
                       type={'password'}
                       label={t`account:password`}
-                      disabled={submitting}
+                      disabled={sending}
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       tabIndex={2}
@@ -161,7 +199,7 @@ function AccountLogin({ history }: RouteComponentProps<{}>) {
                         {t`account:create-new-account`}
                       </Anchor>
                       <FlexSpacer />
-                      {submitting ? (
+                      {sending ? (
                         <Loading className={'padding-none'} />
                       ) : (
                         <Button
