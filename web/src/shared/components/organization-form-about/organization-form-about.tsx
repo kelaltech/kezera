@@ -1,19 +1,20 @@
-import React from 'react'
-import { Block, Content, Flex } from 'gerami'
+import React, { useState } from 'react'
+import { Anchor, Block, Content, Flex } from 'gerami'
 import {
   FormControl,
   Input as MatInput,
   InputLabel,
   MenuItem,
-  Select,
-  TextField
+  Select
 } from '@material-ui/core'
+import { LngLat } from 'mapbox-gl'
 
 import useLocale from '../../hooks/use-locale/use-locale'
 import { IOrganizationRequest } from '../../../../../api/modules/organization/organization.apiv'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useField from '../../hooks/use-field/use-field'
 import { IOrganizationType } from '../../../../../api/models/organization/organization.model'
+import LocationPickerDialog from '../location-picker-dialog/location-picker-dialog'
 
 interface Props {
   organization: IOrganizationRequest
@@ -26,6 +27,13 @@ const organizationTypes: IOrganizationType[] = [
   'GOVERNMENTAL',
   'PRIVATE'
 ] // todo: update these manually or go full dynamic
+
+const parseGeo = (lngLat: LngLat): string => {
+  const factor = 100000
+  return `${Math.round(lngLat.lat * factor) / factor}° ${
+    lngLat.lat > 0 ? 'N' : 'S'
+  }, ${Math.round(lngLat.lng * factor) / factor}°  ${lngLat.lng > 0 ? 'E' : 'W'}`
+}
 
 function OrganizationFormAbout({ organization, setOrganization }: Props) {
   const { loading, t } = useLocale(['organization'])
@@ -45,6 +53,7 @@ function OrganizationFormAbout({ organization, setOrganization }: Props) {
     [organization.type]
   )
 
+  // todo: temp
   const address = useField(
     {
       initialValue: organization.locations.length
@@ -58,6 +67,23 @@ function OrganizationFormAbout({ organization, setOrganization }: Props) {
     undefined,
     [organization.locations, organization.locations.length]
   )
+
+  const [locationPickerOpen, setLocationPickerOpen] = useState(false)
+  const [lngLat, setLngLatOnState] = useState<LngLat>()
+
+  const setLngLat = (lngLat?: LngLat) => {
+    setLngLatOnState(lngLat)
+    emitChanges({
+      locations: lngLat
+        ? [
+            {
+              geo: { type: 'Point', coordinates: [lngLat.lng, lngLat.lat] },
+              address: undefined
+            }
+          ]
+        : []
+    })
+  }
 
   return (
     loading || (
@@ -91,19 +117,41 @@ function OrganizationFormAbout({ organization, setOrganization }: Props) {
           </Flex>
         </Block>
 
-        {/* todo: accept array of locations */}
         <Block last>
-          {/* todo: make use of latitude and longitude (and google maps) */}
           <Flex>
-            <div style={{ margin: 'auto auto auto 0', width: 40 }}>
+            <div style={{ margin: 'auto 0 auto 0', width: 40 }}>
               <FontAwesomeIcon icon={'map-marker'} />
             </div>
-            {/* todo: address may not be attached in request or addressed in the back-end, investigate! */}
-            <TextField
-              className={'margin-vertical-normal margin-auto full-width'}
-              {...address.inputProps}
-              label={`Address (Optional)`}
-            />
+            <div>
+              <div className={'margin-top-normal'}>
+                {!organization.locations.length ? (
+                  <span className={'fg-blackish italic'}>Location not selected.</span>
+                ) : (
+                  <span>
+                    {parseGeo(
+                      new LngLat(
+                        organization.locations[0].geo.coordinates[0],
+                        organization.locations[0].geo.coordinates[1]
+                      )
+                    )}{' '}
+                    (<Anchor onClick={() => setLngLat(undefined)}>&times;</Anchor>)
+                  </span>
+                )}
+              </div>
+
+              <div className={'margin-top-normal'}>
+                <Anchor onClick={() => setLocationPickerOpen(!locationPickerOpen)}>
+                  Pick a Location on Map
+                </Anchor>
+              </div>
+
+              <LocationPickerDialog
+                open={locationPickerOpen}
+                onClose={() => setLocationPickerOpen(!locationPickerOpen)}
+                lngLat={lngLat}
+                setLngLat={setLngLat}
+              />
+            </div>
           </Flex>
         </Block>
       </Content>
