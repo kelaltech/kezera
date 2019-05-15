@@ -3,15 +3,7 @@ import './volunteer-task.scss'
 import { url } from 'koa-router'
 import RequestCard from '../../../shared/components/request/request-card'
 import {
-  Checkbox,
   Collapse,
-  FormControlLabel,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  ListSubheader,
   MenuItem
 } from '@material-ui/core'
 
@@ -39,11 +31,10 @@ const taskTypes = [
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faCertificate,
   faChevronCircleDown,
   faChild
 } from '@fortawesome/free-solid-svg-icons'
-import { Card, Yoga } from 'gerami'
+import {  Yoga } from 'gerami'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 function VolunteerTask() {
   const [expanded, setExpanded] = useState(false)
