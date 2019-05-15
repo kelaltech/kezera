@@ -15,5 +15,5 @@ const ORGAN_TYPE: IOrganType[] = [
 export const organPaths: SchemaDefinition = {
   type: { type: ObjectId },
   requestId: { type: ObjectId, ref: 'request', required: true },
-  OrganType: { type: String, enum: ORGAN_TYPE, required: true }
+  organType: { type: String, enum: ORGAN_TYPE, required: true }
 }

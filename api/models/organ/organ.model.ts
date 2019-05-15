@@ -14,7 +14,7 @@ export type IOrganType =
 
 export interface IOrgan extends Document {
   requestId: ObjectId
-  OrganType: IOrganType
+  organType: IOrganType
   type: ObjectId
 }
 

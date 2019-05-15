@@ -19,7 +19,9 @@ export const requestRouter = new Router({ prefix: '/api/request' })
 requestRouter.get('/list', async ctx => {
   ctx.body = await listRequests()
 })
-
+requestRouter.get('/search?term=:term', async ctx => {
+  ctx.body = await searchRequest(ctx.params.term)
+})
 //GET /api/request/:_id
 requestRouter.get('/:_id', async ctx => {
   console.log(ctx.params._id, '')
@@ -35,9 +37,7 @@ requestRouter.delete('/:_id', async ctx => {
   ctx.body = await removeRequest(ctx.params._id)
 })
 
-requestRouter.get('/search?term=:term', async ctx => {
-  ctx.body = await searchRequest(ctx.params.term)
-})
+
 
 // POST /api/request/add
 requestRouter.post('/add', async ctx => {
