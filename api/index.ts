@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
+
 import './configs/passport.config'
 
 import { ServerApp } from 'meseret'
