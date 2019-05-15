@@ -27,6 +27,11 @@ export type IAccount = {
 
   displayName: string
   phoneNumber?: string
+
+  lastLocation: {
+    type?: 'Point'
+    coordinates?: [number, number]
+  }
 }
 
 export const accountModelFactory = new ModelFactory<IAccount, typeof accountMethods>({

@@ -19,6 +19,15 @@ export function reloadAccount(
     accountDispatch({ type: 'set', account })
 
     if (onReload) onReload()
+
+    window.navigator.geolocation.getCurrentPosition(position => {
+      const { longitude, latitude } = position.coords
+      Axios.put(
+        '/api/account/set-last-location',
+        { longitude, latitude },
+        { withCredentials: true }
+      ).catch(console.error)
+    }, console.error)
   }
 
   if (account) {
