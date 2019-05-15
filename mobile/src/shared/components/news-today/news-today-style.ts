@@ -8,8 +8,8 @@ export default StyleSheet.create({
     position: 'relative'
   },
   cardStyle: {
-    borderRadius: 15,
     height: 250,
+    borderRadius: 15,
     ...classes.marginSmall
   },
 
@@ -19,12 +19,19 @@ export default StyleSheet.create({
 
   actionStyle: {
     position: 'absolute',
-    bottom: 40,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    backgroundColor: values.color.whitish,
+    bottom: 35,
+    ...classes.marginSmall,
     ...classes.row
   },
 
   actionChild: {
+    marginTop: values.space.small,
     ...classes.grow,
-    ...classes.paddingBottomSmall
+    ...classes.paddingBottomSmall,
+    ...classes.row,
+    justifyContent: 'center'
   }
 })
