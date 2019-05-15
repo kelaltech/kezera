@@ -5,20 +5,34 @@ import {
   NavigationInjectedProps,
   withNavigation
 } from 'react-navigation'
-import { Button, ButtonProps } from 'react-native-elements'
+import { Button, ButtonProps, Image } from 'react-native-elements'
 
 import styles from './header-styles'
 import values from '../../../assets/styles/values'
 import { useAccountState } from '../../../app/stores/account/account-provider'
+import { baseUrl } from '../../../app/configs/setup-axios'
 
 type IHeaderProps = NavigationInjectedProps<{}> & {
   title: string
 
+  /**
+   * @default true if logged in, false if not.
+   */
+  showAccount?: boolean
+  /**
+   * @default false
+   */
   showBack?: boolean
   backBtnProps?: ButtonProps
 }
 
-function Header({ navigation, title, showBack, backBtnProps = {} }: IHeaderProps) {
+function Header({
+  navigation,
+  title,
+  showAccount,
+  showBack,
+  backBtnProps = {}
+}: IHeaderProps) {
   const { account } = useAccountState()
 
   return (
@@ -34,17 +48,26 @@ function Header({ navigation, title, showBack, backBtnProps = {} }: IHeaderProps
 
       <Text style={styles.title}>{title}</Text>
 
-      {account && (
+      {account && (showAccount === undefined || showAccount) && (
         <TouchableOpacity
+          style={styles.accountCircle}
           onPress={() =>
             navigation.dispatch(
               NavigationActions.navigate({ routeName: 'AccountSettings' })
             )
           }
         >
-          <Text>
-            account{'\n'}circle{'\n'}(temp UI){/* todo */}
-          </Text>
+          {account.photoUri ? (
+            <Image
+              style={styles.accountCircleImage}
+              source={{ uri: `${baseUrl}${account.photoUri}` }}
+              resizeMode={'cover'}
+            />
+          ) : (
+            <Text style={styles.accountCircleText}>
+              {account.displayName.substr(0, 1).toUpperCase()}
+            </Text>
+          )}
         </TouchableOpacity>
       )}
     </View>

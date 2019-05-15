@@ -145,10 +145,10 @@ export async function getEventPicture(id: Schema.Types.ObjectId): Promise<Stream
 }
 
 export async function toggleLike(
-  _newsId: Schema.Types.ObjectId,
+  eventId: Schema.Types.ObjectId,
   account: Document & IAccount
 ): Promise<IEvent> {
-  const doc = await get(EventModel, _newsId)
+  const doc = await get(EventModel, eventId)
 
   if (doc.likes.length == 0) {
     doc.likes.push(account._id)

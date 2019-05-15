@@ -13,7 +13,7 @@ const ORGAN_TYPE: IOrganType[] = [
   'BLOOD'
 ]
 export const organPaths: SchemaDefinition = {
-  _at: { type: Date, default: Date.now },
-  request: { type: ObjectId, ref: 'request' },
-  type: { type: String, enum: ORGAN_TYPE, required: true }
+  type: { type: ObjectId },
+  requestId: { type: ObjectId, ref: 'request', required: true },
+  OrganType: { type: String, enum: ORGAN_TYPE, required: true }
 }

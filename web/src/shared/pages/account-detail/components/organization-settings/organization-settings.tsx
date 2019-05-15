@@ -24,7 +24,7 @@ const defaultOrganizationRequest: IOrganizationRequest = {
     displayName: '',
     email: '',
     password: '',
-    phoneNumber: null
+    phoneNumber: undefined
   },
 
   // legal

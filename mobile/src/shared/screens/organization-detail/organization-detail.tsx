@@ -28,8 +28,9 @@ import { baseUrl } from '../../../app/configs/setup-axios'
 type param = {
   id: string
 }
+
 function OrganizationDetail({ navigation }: NavigationInjectedProps<param>) {
-  const { loading, t } = useLocale([])
+  const { loading, t } = useLocale(['organization'])
   let id = navigation.getParam('id')
   let [organization, setOrganization] = useState()
   let { account } = useAccountState()
@@ -81,7 +82,7 @@ function OrganizationDetail({ navigation }: NavigationInjectedProps<param>) {
                 handleUnsubscribe()
               }}
             >
-              <Text> unsubscribe </Text>
+              <Text> {t`organization:unsubscribe`} </Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -100,6 +101,8 @@ function OrganizationDetail({ navigation }: NavigationInjectedProps<param>) {
 
 function NewEvents({ navigation }: NavigationInjectedProps<param>) {
   let [events, setEvents] = useState([])
+  const { loading, t } = useLocale(['event'])
+
   useEffect(() => {
     Axios.get('/api/event/organization/' + navigation.getParam('id'))
       .then(resp => {
@@ -111,7 +114,7 @@ function NewEvents({ navigation }: NavigationInjectedProps<param>) {
   return events.length != 0 ? (
     <>
       <View style={eventStyle.sectionTitle}>
-        <Text style={eventStyle.sections}> Events </Text>
+        <Text style={eventStyle.sections}> {t`events`} </Text>
         <TouchableWithoutFeedback
           onPress={() => console.log('Clicked view more')}
           style={{ width: 80, justifyContent: 'flex-end', padding: 5 }}
@@ -123,14 +126,14 @@ function NewEvents({ navigation }: NavigationInjectedProps<param>) {
                   routeName: 'EventList',
                   params: {
                     url: '/api/event/organization/' + navigation.getParam('id'),
-                    title: 'Events'
+                    title: t`event:events`
                   }
                 })
               )
             }}
             style={eventStyle.viewMoreButton}
           >
-            View more
+            {t`view more`}
           </Text>
         </TouchableWithoutFeedback>
       </View>
@@ -141,20 +144,22 @@ function NewEvents({ navigation }: NavigationInjectedProps<param>) {
     </>
   ) : (
     <View>
-      <Text style={eventStyle.sections}> Events </Text>
+      <Text style={eventStyle.sections}> {t`events`} </Text>
       <View>
-        <Text>&emsp;&emsp; No Events found </Text>
+        <Text>&emsp;&emsp; {t`no events found`} </Text>
       </View>
     </View>
   )
 }
 
 function Bio(props: { organization: IOrganizationResponse }) {
+  const { loading, t } = useLocale(['organization'])
+
   return (
     <Card>
       <View style={style.descriptionContainer}>
         <View style={style.paddingBottomMeduim}>
-          <Text style={style.title}> Bio. </Text>
+          <Text style={style.title}> {t`organization:bio`}. </Text>
         </View>
         <Divider />
         <Text> {props.organization.bio} </Text>
@@ -164,11 +169,13 @@ function Bio(props: { organization: IOrganizationResponse }) {
 }
 
 function Contact(props: { organization: IOrganizationResponse }) {
+  const { loading, t } = useLocale(['organization'])
+
   return (
     <Card>
       <View style={style.paddingMedium}>
         <View style={style.paddingBottomMeduim}>
-          <Text style={style.title}> Contact </Text>
+          <Text style={style.title}> {t`contact`} </Text>
         </View>
         <Divider />
         <View style={style.contact}>

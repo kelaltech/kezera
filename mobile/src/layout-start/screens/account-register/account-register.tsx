@@ -14,7 +14,8 @@ import { Button, Image, Input } from 'react-native-elements'
 import { IAccountRequest } from '../../../apiv/account.apiv'
 import { login } from '../../../app/stores/account/account-actions'
 import { useAccountDispatch } from '../../../app/stores/account/account-provider'
-import values from '../../../assets/styles/values'
+import Footer from '../../../shared/components/footer/footer'
+import classes from '../../../assets/styles/classes'
 
 type Params = {
   email?: string
@@ -29,7 +30,7 @@ function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
     displayName: '',
     email: navigation.getParam('email', '') || '',
     password: '',
-    phoneNumber: ''
+    phoneNumber: undefined
   }
   const [data, setData] = useState({ ...initialData, repeatPassword: '' })
 
@@ -57,13 +58,23 @@ function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
             navigation.dispatch(NavigationActions.navigate({ routeName: 'Init' }))
           },
           e => {
-            Alert.alert(t`error` + '(' + t`account:login` + ')', e.message)
+            Alert.alert(
+              t`error` + '(' + t`account:login` + ')',
+              e.response && e.response.data
+                ? e.response.data.prettyMessage || e.response.data.message
+                : e.message
+            )
             setSending(false)
           }
         )
       )
       .catch(e => {
-        Alert.alert(t`error`, e.message)
+        Alert.alert(
+          t`error`,
+          e.response && e.response.data
+            ? e.response.data.prettyMessage || e.response.data.message
+            : e.message
+        )
         setSending(false)
       })
   }
@@ -126,7 +137,9 @@ function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
             keyboardType={'phone-pad'}
             placeholder={t`account:phone-number` + ' (' + t`optional` + ')'}
             value={data.phoneNumber || ''}
-            onChangeText={phoneNumber => setData({ ...data, phoneNumber })}
+            onChangeText={phoneNumber =>
+              setData({ ...data, phoneNumber: phoneNumber || undefined })
+            }
             editable={!sending}
           />
         </View>
@@ -160,7 +173,7 @@ function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
           <Text>{t`account:already-have-an-account-login`}</Text>
         </TouchableOpacity>
 
-        <View style={{ height: values.space.big }} />
+        <Footer style={classes.marginTopBig} />
       </ScrollView>
     )
   )

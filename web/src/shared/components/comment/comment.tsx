@@ -15,6 +15,41 @@ interface ICommentProps {
   comment: ICommentRequest // Change these any
 }
 
+function getDate(d: any) {
+  var now = new Date()
+  var date: any = new Date('' + d)
+  var output = ''
+  var difference = 0
+  if (date.getFullYear() === now.getFullYear()) {
+    if (date.getMonth() === now.getMonth()) {
+      if (date.getDay() === now.getDay()) {
+        if (date.getHours() === now.getHours()) {
+          if (date.getMinutes() === now.getMinutes()) {
+            output = now.getSeconds() + ' seconds ago'
+          } else {
+            difference = date.getMinutes() - now.getMinutes()
+            output = (difference < 1 ? -1 * difference : difference) + ' minutes ago'
+          }
+        } else {
+          difference = date.getHours() - now.getHours()
+          output = (difference < 1 ? -1 * difference : difference) + ' hours ago'
+        }
+      } else {
+        difference = date.getDate() - now.getDate()
+        output = (difference < 1 ? -1 * difference : difference) + ' days ago'
+      }
+    } else {
+      difference = date.getMonth() - now.getMonth()
+      output = (difference < 1 ? -1 * difference : difference) + ' month ago'
+    }
+  } else {
+    difference = date.getFullYear() - now.getFullYear()
+    output = (difference < 1 ? -1 * difference : difference) + ' years ago'
+  }
+  console.log(output)
+  return output
+}
+
 export default function Comment(props: ICommentProps) {
   let [open, setOpen] = useState(false)
   let [reply, setReply] = useState(false)
@@ -80,13 +115,6 @@ export default function Comment(props: ICommentProps) {
       .catch(console.error)
   }
 
-  let GetDate = function(date: Date) {
-    let D = new Date(date)
-    let now = new Date()
-    let returnDate = '2 hours ago'
-    return returnDate
-  }
-
   return (
     <Content
       transparent
@@ -112,7 +140,7 @@ export default function Comment(props: ICommentProps) {
           <div>
             <span className={'font-S'}>
               {' '}
-              <i> {GetDate(props.comment._at)} </i>{' '}
+              <i> {getDate(props.comment._at)} </i>{' '}
             </span>
           </div>
         </div>

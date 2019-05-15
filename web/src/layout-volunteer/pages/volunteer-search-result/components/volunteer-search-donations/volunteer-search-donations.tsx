@@ -15,7 +15,7 @@ function DonationSearchResult(props: IDonationResult) {
         setDonations(requests.data)
       })
       .catch((e: any) => console.log(e))
-  }, [])
+  }, [term])
 
   return (
     <div>

@@ -7,5 +7,7 @@ export const taskPaths: SchemaDefinition = {
   type: { type: ObjectId },
   startTime: { type: Date, required: true },
   endTime: { type: Date, required: true },
-  requestId: { type: ObjectId, refs: 'request', required: true }
+  requestId: { type: ObjectId, refs: 'request', required: true },
+  going: [{ id: { type: ObjectId, refs: 'account' } }],
+  attended: [{ id: { type: ObjectId, refs: 'account' } }]
 }

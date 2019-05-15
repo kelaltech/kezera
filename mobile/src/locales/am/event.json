@@ -1,1 +1,20 @@
-{}
+{
+  "event": "ዝግጅት",
+  "events": "ዝግጅቶች",
+  "upcoming events": "መጪ ዝግጅቶች",
+  "new events": "አዲስ ዝግጅቶች",
+  "events near you": "አቅራቢያ ያሉ ዝግጅቶች",
+  "comments": "አስተያየት",
+  "send": "ላክ",
+  "message": "መልክት",
+  "going": "መጣለሁ",
+  "add reply": "ምላሽ አስገባ",
+  "view replies": "ምላሾች አሳይ",
+  "edit": "አስተካክል",
+  "view more": "ተጨማሪ ልይ",
+  "delete": "አጥፋ",
+  "report": "አመልክት",
+  "no events found": "ምንም ዝግጅቶች የለም",
+  "no comments": "ምንም አስተያየት የለም",
+  "event not found": "ዝግጅቱ አልተገኘም"
+}

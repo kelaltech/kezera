@@ -1,4 +1,20 @@
 {
   "event": "Event",
-  "events": "Events"
+  "events": "Events",
+  "upcoming events": "Upcoming events",
+  "new events": "New events",
+  "events near you": "Events near you",
+  "comments": "Comments",
+  "send": "Send",
+  "message": "Message",
+  "going": "I'm going",
+  "add reply": "Add reply",
+  "view replies": "View replies",
+  "edit": "Edit",
+  "view more": "View more",
+  "delete": "delete",
+  "report": "report",
+  "no events found": "No events found",
+  "no comments": "No comments",
+  "event not found": "Event not found"
 }

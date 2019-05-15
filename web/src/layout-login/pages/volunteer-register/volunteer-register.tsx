@@ -16,7 +16,7 @@ function VolunteerRegister({ history }: RouteComponentProps) {
     displayName: '',
     email: '',
     password: '',
-    phoneNumber: null
+    phoneNumber: undefined
   })
 
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true })
@@ -58,7 +58,10 @@ function VolunteerRegister({ history }: RouteComponentProps) {
 
           <Block last className={'padding-horizontal-none right'}>
             <Flex>
-              <Anchor className={'margin-vertical-auto'} to={'/login/apply'}>
+              <Anchor
+                className={'margin-vertical-auto left margin-right-normal'}
+                to={'/login/apply'}
+              >
                 {t`account:are-you-an-organization`}
               </Anchor>
 

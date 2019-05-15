@@ -47,6 +47,8 @@ function Events({ navigation }: NavigationInjectedProps) {
 
 function EventsNear({ navigation }: NavigationInjectedProps) {
   let [events, setEvents] = useState([])
+  const { loading, t } = useLocale(['event'])
+
   useEffect(() => {
     Axios.get('/api/event/all')
       .then(resp => {
@@ -58,7 +60,7 @@ function EventsNear({ navigation }: NavigationInjectedProps) {
   return (
     <>
       <View style={eventStyle.sectionTitle}>
-        <Text style={eventStyle.sections}> Events near you</Text>
+        <Text style={eventStyle.sections}> {t`events near you`}</Text>
         <TouchableWithoutFeedback
           onPress={() => console.log('Clicked view more')}
           style={{ width: 80, justifyContent: 'flex-end', padding: 5 }}
@@ -74,7 +76,7 @@ function EventsNear({ navigation }: NavigationInjectedProps) {
             }}
             style={eventStyle.viewMoreButton}
           >
-            View more
+            {t`view more`}
           </Text>
         </TouchableWithoutFeedback>
       </View>
@@ -89,6 +91,7 @@ function EventsNear({ navigation }: NavigationInjectedProps) {
 
 function NewEvents({ navigation }: NavigationInjectedProps) {
   let [events, setEvents] = useState([])
+  const { loading, t } = useLocale(['event'])
   useEffect(() => {
     Axios.get('/api/event/latest')
       .then(resp => {
@@ -100,7 +103,7 @@ function NewEvents({ navigation }: NavigationInjectedProps) {
   return (
     <>
       <View style={eventStyle.sectionTitle}>
-        <Text style={eventStyle.sections}> New Events </Text>
+        <Text style={eventStyle.sections}> {t`new events`} </Text>
         <TouchableWithoutFeedback
           onPress={() => console.log('Clicked view more')}
           style={{ width: 80, justifyContent: 'flex-end', padding: 5 }}
@@ -116,7 +119,7 @@ function NewEvents({ navigation }: NavigationInjectedProps) {
             }}
             style={eventStyle.viewMoreButton}
           >
-            View more
+            {t`view more`}
           </Text>
         </TouchableWithoutFeedback>
       </View>
@@ -129,6 +132,7 @@ function NewEvents({ navigation }: NavigationInjectedProps) {
 
 function UpcomingEvents({ navigation }: NavigationInjectedProps) {
   let [events, setEvents] = useState([])
+  const { loading, t } = useLocale(['event'])
   //todo change this
   useEffect(() => {
     Axios.get('/api/event/upcoming')
@@ -141,7 +145,7 @@ function UpcomingEvents({ navigation }: NavigationInjectedProps) {
   return (
     <>
       <View style={eventStyle.sectionTitle}>
-        <Text style={eventStyle.sections}> Upcoming Events </Text>
+        <Text style={eventStyle.sections}> {t`upcoming events`} </Text>
         <TouchableWithoutFeedback
           onPress={() => console.log('Clicked view more')}
           style={{ width: 80, justifyContent: 'flex-end' }}
@@ -152,12 +156,15 @@ function UpcomingEvents({ navigation }: NavigationInjectedProps) {
               navigation!.dispatch(
                 NavigationActions.navigate({
                   routeName: 'EventList',
-                  params: { url: '/api/event/upcoming', title: 'Upcoming events' }
+                  params: {
+                    url: '/api/event/upcoming',
+                    title: t`upcoming events:upcoming events`
+                  }
                 })
               )
             }}
           >
-            View more
+            {t`view more`}
           </Text>
         </TouchableWithoutFeedback>
       </View>

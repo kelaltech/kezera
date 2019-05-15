@@ -167,8 +167,8 @@ adminRouter.get('/events/likes', authorize(['ADMIN']), async ctx => {
   ctx.body = await GetEventsLikes()
 })
 
-// /api/admin/events/going
-adminRouter.get('/events/going', authorize(['ADMIN']), async ctx => {
+// /api/admin/events/goingVolunteers
+adminRouter.get('/events/goingVolunteers', authorize(['ADMIN']), async ctx => {
   ctx.body = await GetEventsGoingUsers()
 })
 

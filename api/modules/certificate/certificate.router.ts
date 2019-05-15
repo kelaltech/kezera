@@ -10,25 +10,11 @@ export const certificateRouter = new Router({ prefix: '/api/certificate' })
 
 /* ISSUES */
 
-// POST /api/certificate/issue-donation-certificate *
+// POST /api/certificate/issue *
 certificateRouter.post(
-  '/issue-donation-certificate',
+  '/issue',
   authorize(['ORGANIZATION']),
-  handle(CertificateController, (c, s) => c.issue('DONATION', s))
-)
-
-// POST /api/certificate/issue-event-certificate *
-certificateRouter.post(
-  '/issue-event-certificate',
-  authorize(['ORGANIZATION']),
-  handle(CertificateController, (c, s) => c.issue('EVENT_ATTENDANCE', s))
-)
-
-// POST /api/certificate/issue-membership-certificate *
-certificateRouter.post(
-  '/issue-membership-certificate',
-  authorize(['ORGANIZATION']),
-  handle(CertificateController, (c, s) => c.issue('MEMBERSHIP', s))
+  handle(CertificateController, (c, s) => c.issue(s))
 )
 
 /* GENERAL */

@@ -1,259 +1,3 @@
-/*
-import React, { useEffect, useState } from 'react'
-import { View, Text, Image, Picker, TextInput, TouchableHighlight } from 'react-native'
-import {style} from './comment-style'
-import { Divider, Button, Icon, Input, Overlay, ListItem } from 'react-native-elements'
-import Axios from 'axios'
-import { Schema } from 'mongoose'
-import { ICommentRequest } from '../../../../../../api/modules/comment/comment.apiv'
-import values from '../../../../assets/styles/values'
-import { useAccountState } from '../../../../app/stores/account/account-provider'
-import { func } from 'prop-types'
-
-const primary=values.color.primary;
-const secondary=values.color.secondary;
-
-interface ICommentProps {
-  reply?:ICommentRequest
-  id?:string
-  fetch?:()=>void
-  body?:string
-}
-
-function AddComment(props:ICommentProps) {
-  let [comment,setComment]=useState({
-    body:''
-  })
-  let AddComment=function(){
-    if(comment.body.trim()!= ''){
-      let formData = new FormData()
-      formData.append('body', comment.body)
-      formData.append('type', 'EVENT')
-      formData.append('TypeId', props.id)
-      Axios.post('/api/comment/add', formData)
-        .then(()=>{
-          if(props.fetch)
-            props.fetch()
-      })
-        .catch(console.error)
-    }
-  }
-  return(
-    <View style={{flex:1,flexDirection:"row"}}>
-      <View style={style.messageInput}>
-        <TextInput
-          multiline={true}
-          placeholder={"message..."}
-          underlineColorAndroid={"grey"}
-          style={style.messageInputText}
-          value={comment.body}
-          onChangeText={body => setComment({ ...comment, body})}
-        />
-      </View>
-      <View style={style.sendButtonContainer}>
-        <Icon
-          name={"send"}
-          type={"material"}
-          color={primary}
-          onPress={()=> AddComment() }
-          iconStyle={{padding:10}}
-        />
-      </View>
-      <Divider/>
-    </View>
-  )
-}
-
-function EditComment(props:ICommentProps) {
-  let [comment,setComment]=useState({
-    body:props.body
-  })
-  let EditComment=function(){
-    if(comment.body!=undefined && comment.body.trim()!= ''){
-      let formData = new FormData()
-      formData.append('body', comment.body)
-      Axios.put(`/api/comment/${props.id}`, formData)
-        .then(() => {})
-        .catch(console.error)
-    }
-  }
-
-  return(
-    <View style={{flex:1,flexDirection:"row"}}>
-      <View style={style.messageInput}>
-        <TextInput
-          multiline={true}
-          placeholder={"message..."}
-          underlineColorAndroid={"grey"}
-          style={style.messageInputText}
-          value={comment.body}
-          onChangeText={body => setComment({ ...comment, body})}
-        />
-      </View>
-      <View style={style.sendButtonContainer}>
-        <Icon
-          name={"send"}
-          type={"material"}
-          color={primary}
-          onPress={()=> EditComment() }
-          iconStyle={{padding:10}}
-        />
-      </View>
-      <Divider/>
-    </View>
-  )
-}
-
-export function Comment(props:ICommentProps) {
-  let [open,setOpen]=useState(false)
-  let [editMessage,setEditMessage]=useState(false)
-  let [replyForm,setReplyForm]=useState(false)
-  let [comments,setComments]=useState([])
-  let [replies,setReplies]=useState([])
-  let {account}=useAccountState()
-  let FetchComments = function() {
-    Axios.get(`/api/event/${props.id}/comments`)
-      .then(resp => setComments(resp.data))
-      .catch(console.error)
-  }
-
-  let FetchReplies = function(id: Schema.Types.ObjectId) {
-    Axios.get(`/api/comment/${id}/replies`)
-      .then(resp => {
-        setReplies(resp.data)
-      })
-      .catch(console.error)
-  }
-  let DeletComment=function(id:string){
-    // Axios.delete()
-  }
-  useEffect(()=>{
-   FetchComments()
-  },[])
-
-  return(
-    <View style={style.commentContainer}>
-      <AddComment id={props.id} fetch={()=>FetchComments()}/>
-      {comments.length != 0?
-       <View>
-         {comments.map((comment:ICommentRequest,index)=>
-         <View key={index}>
-          <View style={style.commentDetail}>
-            <View style={style.userImage}>
-              <Image source={require("../../../../assets/images/event.jpg")} style={{width:40,height:40,borderRadius:50}}/>
-            </View>
-            <View style={style.commentUser}>
-              <Text> {comment.displayName}</Text>
-              <Text> 3 min.</Text>
-            </View>
-            <View  style={style.reply}>
-              <Button
-                type={'clear'}
-                icon={
-                  <Icon
-                    name="reply"
-                    type={'material'}
-                    size={15}
-                    color={primary}
-                  />
-                }
-                onPress={()=>{
-                  setReplyForm(!replyForm)
-                }}
-              />
-              <Text>&nbsp;</Text>
-              <Icon
-                name={'ellipsis-v'}
-                type={'font-awesome'}
-                iconStyle={{color:primary,fontWeight:"100"}}
-                containerStyle={{paddingTop:10}}
-                onPress={()=>{setOpen(!open)}}
-               />
-               <Overlay onBackdropPress={()=>setOpen(!open)} isVisible={open} width={150} height={'auto'} onDismiss={()=>setOpen(!open)}>
-                 <>
-                   {comment._by.toString() === account!._id ?
-                     <>
-                       <ListItem
-                         leftIcon={{ name: "edit", color: primary }}
-                         title={"Edit"}
-                         titleProps={{
-                           onPress: () => {
-                             setEditMessage(!editMessage);
-                             setOpen(!open)
-                           }
-                         }
-                         }
-                       />
-                     </>
-                     : <></>
-                   }
-                   {comment._by.toString() === account!._id?
-                     <>
-                       <Divider/>
-                       <ListItem
-                         leftIcon={{name:"delete",color:secondary}}
-                         title={"Delete"}
-                         titleProps={{onPress:()=>{
-                           }
-                         }
-                         }
-                       />
-                     </>:<></>}
-
-                     <Divider/>
-                     <ListItem
-                       leftIcon={{name:"reply",color:primary}}
-                       title={"Report"}
-                       titleProps={{onPress:()=>{
-                          }
-                         }
-                       }
-                     />
-                   <Divider/>
-                 </>
-               </Overlay>
-            </View>
-          </View>
-           {editMessage?
-             <>
-               <EditComment id={comment._id} body={comment.body}/>
-             </>:
-             <>
-               <View style={style.commentMessage}>
-                 <Text style={style.messageText}>
-                   {comment.body}
-                 </Text>
-               </View>
-             </>}
-
-          {comment.replies.length!=0?
-            <View style={style.viewReplyButton}>
-              <Button title={"View replies"} type={'clear'} onPress={()=>{}}/>
-            </View>
-          :<></>}
-          <View key={index} style={{display:replyForm?"flex":"none", flex:1,flexDirection:"row"}}>
-            <View style={style.messageInput}>
-              <TextInput
-                multiline={true}
-                placeholder={"Add reply..."}
-                underlineColorAndroid={"grey"}
-                style={style.messageInputText}
-              />
-            </View>
-            <View style={style.sendButtonContainer}>
-              <Button title={"Send"} style={style.sendButton} titleStyle={{fontSize:12}}/>
-            </View>
-            <Divider/>
-          </View>
-        </View>
-         )}
-      </View>
-        :<Text> No comments </Text>}
-      <Divider/>
-    </View>
-  )
-}*/
-
 import { TextInput, View, Text, Image } from 'react-native'
 import Axios from 'axios'
 import { useEffect, useState } from 'react'
@@ -267,28 +11,68 @@ import values from '../../../../assets/styles/values'
 import React from 'react'
 import { useAccountState } from '../../../../app/stores/account/account-provider'
 import { Schema } from 'mongoose'
+import useLocale from '../../../hooks/use-locale/use-locale'
 
 interface ICommentProps {
   reply?: ICommentRequest
   id?: string
   fetch?: () => void
   body?: string
+  onChange?: () => void
+}
+
+function getDate(d: any) {
+  var now = new Date()
+  var date: any = new Date('' + d)
+  var output = ''
+  var difference = 0
+  if (date.getFullYear() === now.getFullYear()) {
+    if (date.getMonth() === now.getMonth()) {
+      if (date.getDay() === now.getDay()) {
+        if (date.getHours() === now.getHours()) {
+          if (date.getMinutes() === now.getMinutes()) {
+            output = now.getSeconds() + ' seconds ago'
+          } else {
+            difference = date.getMinutes() - now.getMinutes()
+            output = (difference < 1 ? -1 * difference : difference) + ' minutes ago'
+          }
+        } else {
+          difference = date.getHours() - now.getHours()
+          output = (difference < 1 ? -1 * difference : difference) + ' hours ago'
+        }
+      } else {
+        difference = date.getDate() - now.getDate()
+        output = (difference < 1 ? -1 * difference : difference) + ' days ago'
+      }
+    } else {
+      difference = date.getMonth() - now.getMonth()
+      output = (difference < 1 ? -1 * difference : difference) + ' month ago'
+    }
+  } else {
+    difference = date.getFullYear() - now.getFullYear()
+    output = (difference < 1 ? -1 * difference : difference) + ' years ago'
+  }
+  console.log(output)
+  return output
 }
 
 export function Comment(props: ICommentProps) {
   let [comments, setComments] = useState([])
+  const { loading, t } = useLocale(['event'])
+
   let FetchComments = function() {
     Axios.get(`/api/event/${props.id}/comments`)
       .then(resp => setComments(resp.data))
       .catch(console.error)
   }
+
   useEffect(() => {
     FetchComments()
   }, [])
 
   return (
     <View>
-      <AddComment id={props.id} fetch={() => FetchComments} />
+      <AddComment id={props.id} fetch={FetchComments} />
       {comments.length != 0 ? (
         <>
           {comments.map((comment: ICommentRequest, index) => (
@@ -296,30 +80,38 @@ export function Comment(props: ICommentProps) {
               comment={comment}
               id={props.id!.toString()}
               parentId={comment._id}
+              fetch={FetchComments}
             />
           ))}
         </>
       ) : (
-        <Text> No Comments </Text>
+        <Text> {t`no comments`} </Text>
       )}
     </View>
   )
 }
-function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: string }) {
+
+function CommentCard(props: {
+  comment: ICommentRequest
+  id: string
+  parentId?: string
+  fetch?: () => void
+}) {
   let [reply, setReply] = useState({
     body: ''
   })
+  const { loading, t } = useLocale(['event'])
   let [replies, setReplies] = useState([])
   let [open, setOpen] = useState(false)
   let [replyForm, setReplyForm] = useState(false)
   let [editMessage, setEditMessage] = useState(false)
   let { account } = useAccountState()
 
-  let HandleReply = function() {
+  let HandleReply = function(id: string) {
     let formData = new FormData()
     formData.append('body', reply)
     Axios.post(`/api/comment/${props.comment._id}/reply`, formData)
-      .then()
+      .then(() => FetchReplies(id))
       .catch(console.error)
   }
 
@@ -337,9 +129,12 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
         props.parentId ? props.parentId : `NULL`
       }`
     )
-      .then()
+      .then(() => {
+        if (props.fetch) props.fetch()
+      })
       .catch()
   }
+
   return (
     <View>
       <View style={style.commentDetail}>
@@ -351,7 +146,7 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
         </View>
         <View style={style.commentUser}>
           <Text> {props.comment.displayName}</Text>
-          <Text> 3 min.</Text>
+          <Text> {getDate(props.comment._at)} </Text>
         </View>
         <View style={style.reply}>
           <Button
@@ -369,11 +164,15 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
             }}
           />
           <Text>&nbsp;</Text>
-          <Icon
-            name={'ellipsis-v'}
-            type={'font-awesome'}
-            iconStyle={{ color: values.color.primary, fontWeight: '100' }}
-            containerStyle={{ paddingTop: 10 }}
+          <Button
+            type={'clear'}
+            icon={
+              <Icon
+                name={'ellipsis-v'}
+                type={'font-awesome'}
+                iconStyle={{ color: values.color.primary, fontWeight: '100' }}
+              />
+            } // containerStyle={{ paddingTop: 10,paddingRight:10}}
             onPress={() => {
               setOpen(!open)
             }}
@@ -381,7 +180,7 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
           <Overlay
             onBackdropPress={() => setOpen(!open)}
             isVisible={open}
-            width={150}
+            width={165}
             height={'auto'}
             onDismiss={() => setOpen(!open)}
           >
@@ -390,7 +189,7 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
                 <>
                   <ListItem
                     leftIcon={{ name: 'edit', color: values.color.primary }}
-                    title={'Edit'}
+                    title={t`edit`}
                     titleProps={{
                       onPress: () => {
                         setEditMessage(!editMessage)
@@ -407,7 +206,7 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
                   <Divider />
                   <ListItem
                     leftIcon={{ name: 'delete', color: values.color.secondary }}
-                    title={'Delete'}
+                    title={t`delete`}
                     titleProps={{
                       onPress: () => {
                         handleDelete(props.comment._id)
@@ -422,7 +221,7 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
               <Divider />
               <ListItem
                 leftIcon={{ name: 'reply', color: values.color.primary }}
-                title={'Report'}
+                title={t`report`}
                 titleProps={{ onPress: () => {} }}
               />
               <Divider />
@@ -433,7 +232,14 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
       <View style={{ flex: 1 }}>
         {editMessage ? (
           <>
-            <EditComment id={props.comment._id} body={props.comment.body} />
+            <EditComment
+              id={props.comment._id}
+              body={props.comment.body}
+              fetch={() => {
+                if (props.fetch) props.fetch()
+              }}
+              onChange={() => setEditMessage(!editMessage)}
+            />
           </>
         ) : (
           <>
@@ -450,7 +256,7 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
         <View style={style.messageInput}>
           <TextInput
             multiline={true}
-            placeholder={'Add reply...'}
+            placeholder={t`add reply`}
             underlineColorAndroid={'grey'}
             style={style.messageInputText}
             onChangeText={body => setReply({ ...reply, body })}
@@ -462,7 +268,7 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
             type={'material'}
             color={values.color.primary}
             onPress={() => {
-              HandleReply()
+              HandleReply(props.comment._id)
             }}
             iconStyle={{ padding: 10 }}
           />
@@ -472,7 +278,7 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
       {props.comment.replies.length != 0 ? (
         <View style={style.viewReplyButton}>
           <Button
-            title={'View replies'}
+            title={t`view replies`}
             type={'clear'}
             onPress={() => {
               FetchReplies(props.comment._id)
@@ -496,6 +302,7 @@ function CommentCard(props: { comment: ICommentRequest; id: string; parentId?: s
 }
 
 function AddComment(props: ICommentProps) {
+  const { loading, t } = useLocale(['event'])
   let [comment, setComment] = useState({
     body: ''
   })
@@ -508,6 +315,7 @@ function AddComment(props: ICommentProps) {
       Axios.post('/api/comment/add', formData)
         .then(() => {
           if (props.fetch) props.fetch()
+          setComment({ body: '' })
         })
         .catch(console.error)
     }
@@ -517,7 +325,7 @@ function AddComment(props: ICommentProps) {
       <View style={style.messageInput}>
         <TextInput
           multiline={true}
-          placeholder={'message...'}
+          placeholder={t`message`}
           underlineColorAndroid={'grey'}
           style={style.messageInputText}
           value={comment.body}
@@ -539,6 +347,7 @@ function AddComment(props: ICommentProps) {
 }
 
 function EditComment(props: ICommentProps) {
+  const { loading, t } = useLocale(['event'])
   let [comment, setComment] = useState({
     body: props.body
   })
@@ -547,7 +356,10 @@ function EditComment(props: ICommentProps) {
       let formData = new FormData()
       formData.append('body', comment.body)
       Axios.put(`/api/comment/${props.id}`, formData)
-        .then(() => {})
+        .then(() => {
+          if (props.fetch) props.fetch()
+          if (props.onChange) props.onChange()
+        })
         .catch(console.error)
     }
   }
@@ -557,7 +369,7 @@ function EditComment(props: ICommentProps) {
       <View style={style.messageInput}>
         <TextInput
           multiline={true}
-          placeholder={'message...'}
+          placeholder={t`message`}
           underlineColorAndroid={'grey'}
           style={style.messageInputText}
           value={comment.body}

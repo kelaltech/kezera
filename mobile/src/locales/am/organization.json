@@ -1,1 +1,11 @@
-{}
+{
+  "organization": "ድርጅት",
+  "organizations": "ድርጅቶች",
+  "bio": "መረጃ",
+  "my-subscriptions": "የኔ ምዝገባዎች",
+  "contact": "መግናኛ",
+  "subscribe": "ተከተል",
+  "unsubscribe": "መክተል አቁም",
+  "news": "ዜና",
+  "requests": "የእርዳታ ጥሪ"
+}

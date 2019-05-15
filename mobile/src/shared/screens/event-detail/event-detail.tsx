@@ -9,6 +9,7 @@ import { Comment } from './comment/comment'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import { HandleLike } from '../../../layout-default/stores/events/events.action'
 import { IVolunteerEventResponse } from '../../../../../api/modules/event/event.apiv'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 
 const primary = '#3f51b5'
 
@@ -20,10 +21,11 @@ type Params = {
 
 function EventDetail({ navigation }: NavigationInjectedProps<Params>) {
   let id = navigation.getParam('id')
-  const { loading, t } = useLocale([])
+  const { loading, t } = useLocale(['event'])
   let [liked, setLiked] = useState(false)
   let [going, setGoing] = useState(false)
   let [event, setEvent] = useState()
+  let { account } = useAccountState()
 
   let FetchEvent = function() {
     Axios.get(`/api/event/${id}`)
@@ -33,16 +35,19 @@ function EventDetail({ navigation }: NavigationInjectedProps<Params>) {
       })
       .catch(console.error)
   }
+
   let HandleLike = function(id: string) {
     Axios.put('/api/event/' + id + '/like')
-      .then()
+      .then(() => FetchEvent())
       .catch()
   }
+
   let HandleGoing = function(id: string) {
     Axios.put(`/api/event/${id}/going`)
       .then(resp => setGoing(!going))
       .catch(console.error)
   }
+
   let IsGoing = function() {
     Axios.get(`/api/event/${id}/isGoing`)
       .then(resp => setGoing(resp.data.going))
@@ -75,7 +80,7 @@ function EventDetail({ navigation }: NavigationInjectedProps<Params>) {
               <Icon
                 name={'heart'}
                 type={'font-awesome'}
-                color={liked ? 'red' : 'white'}
+                color={event.likes.includes(account!._id) ? 'red' : 'white'}
                 onPress={() => {
                   setLiked(!liked)
                   HandleLike(id!.toString())
@@ -87,7 +92,7 @@ function EventDetail({ navigation }: NavigationInjectedProps<Params>) {
             <View style={eventDetailStyle.inlineBlock}>
               <Text style={eventDetailStyle.eventTitle}> {event.title}</Text>
               <View style={eventDetailStyle.eventAttendSwitch}>
-                <Text style={eventDetailStyle.eventAttendText}>Attend</Text>
+                <Text style={eventDetailStyle.eventAttendText}>{t`event:going`}</Text>
                 <Switch
                   value={going}
                   onValueChange={() => {
@@ -142,13 +147,13 @@ function EventDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
           <Divider />
           <View>
-            <Text style={eventDetailStyle.commentText}> Comments </Text>
+            <Text style={eventDetailStyle.commentText}> {t`event:comments`} </Text>
             <Comment id={id} />
           </View>
         </ScrollView>
       </>
     ) : (
-      <Text> aaaa </Text>
+      <Text> {t`event:event not found`} </Text>
     ))
   )
 }

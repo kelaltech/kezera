@@ -6,7 +6,7 @@ export default StyleSheet.create({
    Layout
    */
 
-  grow: { flexGrow: 1 },
+  grow: { flex: 1 },
 
   row: { flexDirection: 'row' },
   rowReverse: { flexDirection: 'row-reverse' },
