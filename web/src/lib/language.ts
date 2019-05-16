@@ -14,16 +14,21 @@ export type Namespace =
   | 'comment'
   | 'event'
   | 'fundraising'
+  | 'landing'
   | 'material-donation'
+  | 'volunteer-my-organization'
   | 'news'
   | 'not-found'
   | 'organ-donation'
   | 'organization'
   | 'request'
+  | 'portfolio'
+  |'search-result'
   | 'spam'
   | 'task'
   | 'verifier'
   | 'volunteer'
+  | 'volunteer-discovery'
 export const supportedNamespaces: Namespace[] = [
   'common',
   'account',
@@ -33,16 +38,21 @@ export const supportedNamespaces: Namespace[] = [
   'comment',
   'event',
   'fundraising',
+  'landing',
   'material-donation',
+  'volunteer-my-organization',
   'news',
   'not-found',
   'organ-donation',
   'organization',
+  'portfolio',
   'request',
+  'search-result',
   'spam',
   'task',
   'verifier',
-  'volunteer'
+  'volunteer',
+  'volunteer-discovery'
 ]
 export const defaultNamespaces: Namespace[] = ['common']
 

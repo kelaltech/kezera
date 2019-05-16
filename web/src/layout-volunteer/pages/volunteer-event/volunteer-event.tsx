@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Block, Yoga } from 'gerami'
-import ProductSlider from '../../components/volunteer-product-slider/volunteer-product-slider'
 
 import './volunteer-event.scss'
 import axios from 'axios'
 import EventCard from '../../../shared/components/event-card/event-card'
 import Slider from 'react-slick'
 import RichPage from '../../../shared/components/rich-page/rich-page'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 const settings = {
   infinite: true,
@@ -40,6 +40,7 @@ const settings = {
   ]
 }
 function VolunteerEvents() {
+  const { loading, t} = useLocale(['event'])
   const [events, setEvents] = useState([])
   const [nearEvents, setNearEvents] = useState([])
 
@@ -58,11 +59,11 @@ function VolunteerEvents() {
       })
       .catch(e => console.log(e))*/
   }, [])
-  return (
+  return loading || (
     <div className={'events-container'}>
-      <RichPage title={'Events'}>
+      <RichPage title={t`event:title`}>
         <div className={'e-slider events-list-container'}>
-          <h2>Events around you </h2>
+          <h2>{t`event:events-aroud`} </h2>
           <Slider {...settings}>
             {events.map((event: any) => (
               <div className={'slider-event-list'}>
@@ -78,7 +79,7 @@ function VolunteerEvents() {
         </div>
         <Block />
         <div className={'events-list-container'}>
-          <h2>Upcoming events... </h2>
+          <h2>{t`event:upcoming-events`}</h2>
           <Yoga maxCol={2}>
             {events.map((event: any) => (
               <Block>

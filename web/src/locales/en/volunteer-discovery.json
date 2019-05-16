@@ -1,0 +1,13 @@
+{
+  "title": "Discovery",
+  "description": "Discover the wold of SPVA",
+  "news": "News",
+  "no-news": "There is no News...!",
+  "most-recent": "Most recent",
+  "event": "Event",
+  "no-events": "There are no Events...!",
+  "organizations": "Organizations",
+  "no-organizations":"There are no organizations...!",
+  "request":"Requests",
+  "no-requests":"There re no requests...!"
+}

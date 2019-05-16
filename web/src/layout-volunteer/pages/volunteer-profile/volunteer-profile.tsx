@@ -34,8 +34,10 @@ import {
   ICertificatePurpose
 } from '../../../../../api/models/certificate/certificate.model'
 import { ICertificateResponse } from '../../../apiv/certificate.apiv'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 function Profile() {
+  const { loading, t} = useLocale(['portfolio'])
   const Settings = {
     dots: false,
     infinite: true,
@@ -94,7 +96,7 @@ function Profile() {
       })
   }, [])
 
-  return (
+  return loading || (
     <div className={'profile-container'}>
       <Block first />
       <Content className={'general-profile'}>
@@ -136,13 +138,13 @@ function Profile() {
 
       <Content className={'general-profile'}>
         <div className={'pro-activity-header'}>
-          <span>Activities</span>
+          <span>{t`landing:activities`}</span>
         </div>
 
         <div className={'pro-act-stat-cont'}>
           <div className={'pro-stat'}>
             <div>
-              <List subheader={<ListSubheader>Achievements</ListSubheader>}>
+              <List subheader={<ListSubheader>{t`landing:achievements`}</ListSubheader>}>
                 <ListItem>
                   <ListItemIcon>
                     <FontAwesomeIcon icon={faCertificate} />
@@ -224,7 +226,7 @@ function Profile() {
 
       <Content className={'general-profile'}>
         <div className={'pro-activity-header event-header'}>
-          <span>Recent Events</span>
+          <span>{t`landing:recent-events`}</span>
         </div>
         <div className={'pro-event-attended'}>
           <Slider {...Settings}>
@@ -243,7 +245,7 @@ function Profile() {
 
       <Content className={'general-profile'}>
         <div className={'pro-activity-header '}/>
-          <span>Certificates</span>
+          <span>{t`landing:certificates`}</span>
           <Yoga maxCol={2}>
             {certificate.map((c, i) => (
               <CertificateCard certificate={c} key={i} />

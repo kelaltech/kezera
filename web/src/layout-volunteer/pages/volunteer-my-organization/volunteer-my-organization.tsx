@@ -5,8 +5,10 @@ import { Warning, Yoga, Block } from 'gerami'
 import axios from 'axios'
 import { RouteComponentProps } from 'react-router'
 import RichPage from '../../../shared/components/rich-page/rich-page'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 function MyOrganization({  }: RouteComponentProps) {
+  const {loading, t} = useLocale(['volunteer-my-organization'])
   const [organizations, setOrganizations] = useState([])
   const [myOrganizations, setMyOrganization] = useState([])
 
@@ -29,13 +31,13 @@ function MyOrganization({  }: RouteComponentProps) {
       })
       .catch(e => console.log(e))
   }
-  return (
-    <RichPage title={'My Organizations'}>
+  return loading || (
+    <RichPage title={t`volunteer-my-organization:title`}>
       <div className={'my-organization-list-container'}>
         <div>
-          <h3>My Organizations</h3>
+          <h3>{t`volunteer-my-organization:my-organization`}</h3>
           {myOrganizations.length === 0 ? (
-            <Block className={'fg-blackish'}>subscribe or join organizations...</Block>
+            <Block className={'fg-blackish'}>{t`volunteer-my-organization:no-my-organization`}</Block>
           ) : (
             <Yoga maxCol={4}>
               {myOrganizations.map((organization: any) => (
@@ -46,15 +48,15 @@ function MyOrganization({  }: RouteComponentProps) {
         </div>
 
         <div>
-          <h3>Discover organizations around you.</h3>
+          <h3>{t`volunteer-my-organization:organization-around`}</h3>
           {organizations.length === 0 ? (
             <div>
               <Block className={'fg-blackish'}>
-                we couldn't find organizations around you!
+                {t`volunteer-my-organization:no-organization-near`}
               </Block>
               <Warning
-                problem={'This might be due to your location setting '}
-                title={'warning'}
+                problem={t`volunteer-my-organization:warning-problem`}
+                title={t`volunteer-my-organization:warning-title`}
                 shy
               />
             </div>

@@ -36,7 +36,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import {  Yoga } from 'gerami'
 import RichPage from '../../../shared/components/rich-page/rich-page'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 function VolunteerTask() {
+  const {loading, t} = useLocale(['task'])
   const [expanded, setExpanded] = useState(false)
   const [tasks, setTasks] = useState([])
 
@@ -59,8 +61,8 @@ function VolunteerTask() {
       })
       .catch(e => console.log(e))
   }
-  return (
-    <RichPage title={'Tasks'}>
+  return loading || (
+    <RichPage title={t`task:title`}>
       <div className={'tasks-list-container'}>
         <div className={'col-bar-container'}>
           <div className={'collapse-controller'}>
@@ -160,7 +162,7 @@ function VolunteerTask() {
         </div>
 
         <div className={'task-label'}>
-          <h3>Upcoming tasks</h3>
+          <h3>{t`task:upcoming-task`}</h3>
         </div>
         <div className={'vol-task-container'}>
           {/*tasks.map((t:any)=>(

@@ -5,7 +5,6 @@ import {
   faHandHoldingUsd,
   faArrowAltCircleDown,
   faToolbox,
-  faCalendarCheck,
   faTasks,
   faHandHoldingHeart
 } from '@fortawesome/free-solid-svg-icons'
@@ -14,39 +13,42 @@ import { Card, Content, Yoga, Button, Block } from 'gerami'
 import LandingCard from './components/landing-card/landing-card'
 import LandingCard2 from './components/landing-card-2/landing-card-2'
 import CircularStat from './components/statistics/circular-stat'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 // import { Button } from '@material-ui/core'
 function Landing() {
-  return (
+
+  const { loading, t} = useLocale(['landing'])
+  return loading || (
     <div className={'landing-container'}>
       <div className={'top-hero-section'}>
         <div className={'hero-content'}>
           <div className={'hero-slogan'}>
             <Block>
-              <h1>Love Humanity Love Voluntary Love us!</h1>
+              <h1>{t`landing:motto`}</h1>
             </Block>
           </div>
         </div>
         <Content size={'S'} className={'card-top-container'}>
-          <h1>Social</h1>
-          <h1>Platform</h1>
-          <h1>For</h1>
-          <h1>Voluntary</h1>
-          <h1>Actions</h1>
+          <h1>{t`landing:social`}</h1>
+          <h1>{t`landing:platform`}</h1>
+          <h1>{t`landing:for`}</h1>
+          <h1>{t`landing:voluntary`}</h1>
+          <h1>{t`landing:actions`}</h1>
         </Content>
       </div>
       <div className={'l-volunteer-activities'}>
         <div className={'l-right-card'}>
           <LandingCard
             icon={faHandHoldingUsd}
-            title={'Money'}
+            title={t`landing:card-title-money`}
             actionTo={'/login'}
-            actionName={'Donate'}
+            actionName={t`landing:action-donate`}
           />
           <LandingCard
             icon={faToolbox}
-            title={'Material'}
+            title={t`landing:card-title-material`}
             actionTo={'/login'}
-            actionName={'Donate'}
+            actionName={t`landing:action-donate`}
           />
         </div>
         <div className={'l-center-text'}>
@@ -78,59 +80,59 @@ function Landing() {
         <div className={'l-left-card'}>
           <LandingCard
             icon={faTasks}
-            title={'Tasks'}
+            title={t`landing:card-title-task`}
             actionTo={'/login'}
-            actionName={'Volunteer'}
+            actionName={t`landing:action-volunteer`}
           />
           <LandingCard
             icon={faHandHoldingHeart}
-            title={'Organ'}
+            title={t`landing:card-title-organ`}
             actionTo={'/login'}
-            actionName={'Pledge'}
+            actionName={t`landing:action-pledge`}
           />
         </div>
       </div>
 
       <div className={'l-organization-hero'}>
-        <h1>Get the latest News and Events!</h1>
+        <h1>{t`landing:hero-2-title`}</h1>
       </div>
 
       <div className={'l-org-activity'}>
         <LandingCard2
           className={'l2-card-news'}
-          description={'News updates from all organizations'}
-          title={'News'}
+          description={t`landing:org-activity-n-description`}
+          title={t`landing:org-activity-n-title`}
           actionTo={'/login'}
-          actionName={'Read more'}
+          actionName={t`landing:org-activity-n-action`}
         />
         <LandingCard2
-          description={'Filtered Events based on your location and more'}
-          title={'Events'}
+          description={t`landing:org-activity-e-description`}
+          title={t`landing:org-activity-e-title`}
           actionTo={'/login'}
-          actionName={'Explore'}
+          actionName={t`landing:org-activity-n-action`}
         />
       </div>
 
       <div className={'l-stat-cont'}>
-        <CircularStat count={'300'} title={'Events'} />
-        <CircularStat count={'+12,300'} title={'Donations'} />
-        <CircularStat count={'150'} title={'Organizations'} />
-        <CircularStat count={'+1000'} title={'Volunteers'} />
+        <CircularStat count={'300'} title={t`landing:stat-e-title`} />
+        <CircularStat count={'+12,300'} title={t`landing:stat-d-title`} />
+        <CircularStat count={'150'} title={t`landing:stat-o-title`} />
+        <CircularStat count={'+1000'} title={t`landing:stat-v-title`} />
       </div>
 
       <div className={'l-d-app'}>
         <div className={'l-d-title'}>
-          <h1>For volunteers like you</h1>
-          <p>Download the App and join the world of SPVA!</p>
+          <h1>{t`landing:for-volunteers`}</h1>
+          <p>{t`landing:download-motto`}</p>
         </div>
 
         <div className={'l-d-banner'}>
           <div className={'l-d-b-title'}>
-            <h1>Start Volunteering today</h1>
-            <p>by downloading the app..</p>
+            <h1>{t`landing:start-volunteering`}</h1>
+            <p>{t`landing:downloading`}</p>
           </div>
           <Button className={'l-d-b-btn-cont'}>
-            Download &nbsp;
+            {t`landing:download-btn`}&nbsp;
             <FontAwesomeIcon icon={faArrowAltCircleDown} />
           </Button>
         </div>

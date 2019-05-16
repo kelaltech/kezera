@@ -13,8 +13,10 @@ import DonationSearchResult from '../../pages/volunteer-search-result/components
 import OrganizationSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-organizations/volunteer-search-organizations'
 import TaskSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-tasks/volunteer-search-tasks'
 import VolSearchResult from '../../pages/volunteer-search-result/components/volunteer-search-volunteer/volunteer-search-volunteer'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 function VolunteerSearchResult() {
+  const {loading,t} = useLocale(['search-result'])
   let [value, setValue] = useState(0)
   let [isCollapsed, setCollapse] = useState(false)
   let [searchTerm, setSearchTerm] = useState('')
@@ -101,12 +103,12 @@ function VolunteerSearchResult() {
           variant="scrollable"
           scrollButtons="on"
         >
-          <Tab label={'Donations'} />
-          <Tab label={'News'} />
-          <Tab label={'Event'} />
-          <Tab label={'Task'} />
-          <Tab label={'Organization'} />
-          <Tab label={'Volunteer'} />
+          <Tab label={t`search-result:donations`} />
+          <Tab label={t`search-result:news`} />
+          <Tab label={t`search-result:events`} />
+          <Tab label={t`search-result:task`} />
+          <Tab label={t`search-result:organization`} />
+          <Tab label={t`search-result:volunteer`} />
         </Tabs>
 
         {value === 0 && (
