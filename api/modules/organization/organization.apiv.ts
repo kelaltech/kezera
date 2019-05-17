@@ -54,3 +54,37 @@ export type IOrganizationResponse = {
     id: string
   }[]
 }
+
+export type IOrganizationStats = {
+  requests: {
+    total: number
+    active: number
+
+    tasks: {
+      total: number
+      active: number
+    }
+    materialDonation: {
+      total: number
+      active: number
+    }
+    fundraising: {
+      total: number
+      active: number
+    }
+    organDonation: {
+      total: number
+      active: number
+    }
+  }
+
+  events: {
+    total: number
+    ongoing: number
+    upcoming: number
+  }
+
+  news: {
+    total: number
+  }
+}
