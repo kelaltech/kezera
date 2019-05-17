@@ -70,4 +70,3 @@ function LayoutVolunteer({ error, match }: Props) {
 }
 
 export default LayoutVolunteer
-

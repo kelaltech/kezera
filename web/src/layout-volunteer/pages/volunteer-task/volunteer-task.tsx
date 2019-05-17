@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './volunteer-task.scss'
 import { url } from 'koa-router'
 import RequestCard from '../../../shared/components/request/request-card'
-import {
-  Collapse,
-  MenuItem
-} from '@material-ui/core'
+import { Collapse, MenuItem } from '@material-ui/core'
 
 const taskTypes = [
   'Advocacy & Human Rights ',
@@ -30,11 +27,8 @@ const taskTypes = [
 ]
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faChevronCircleDown,
-  faChild
-} from '@fortawesome/free-solid-svg-icons'
-import {  Yoga } from 'gerami'
+import { faChevronCircleDown, faChild } from '@fortawesome/free-solid-svg-icons'
+import { Yoga } from 'gerami'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 function VolunteerTask() {
   const [expanded, setExpanded] = useState(false)

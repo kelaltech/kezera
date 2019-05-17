@@ -37,8 +37,6 @@ requestRouter.delete('/:_id', async ctx => {
   ctx.body = await removeRequest(ctx.params._id)
 })
 
-
-
 // POST /api/request/add
 requestRouter.post('/add', async ctx => {
   ctx.body = await addRequestWithPicture(

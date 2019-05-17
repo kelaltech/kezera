@@ -242,13 +242,13 @@ function Profile() {
       {/*<Block first />*/}
 
       <Content className={'general-profile'}>
-        <div className={'pro-activity-header '}/>
-          <span>Certificates</span>
-          <Yoga maxCol={2}>
-            {certificate.map((c, i) => (
-              <CertificateCard certificate={c} key={i} />
-            ))}
-          </Yoga>
+        <div className={'pro-activity-header '} />
+        <span>Certificates</span>
+        <Yoga maxCol={2}>
+          {certificate.map((c, i) => (
+            <CertificateCard certificate={c} key={i} />
+          ))}
+        </Yoga>
       </Content>
     </div>
   )
