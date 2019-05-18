@@ -123,9 +123,9 @@ export class Grid {
     return this.add(data, 'default', contentType)
   }
 
-  async remove(filename = 'default', check = true): Promise<void> {
+  async remove(filename = 'default', checkFilename = this.checkDocument): Promise<void> {
     await this._checkDocument()
-    if (check) await this._checkFilename(filename)
+    if (checkFilename) await this._checkFilename(filename)
 
     return new Promise<void>((resolve, reject) => {
       this._gfs.remove({ filename: this._getPath(filename) }, err =>
