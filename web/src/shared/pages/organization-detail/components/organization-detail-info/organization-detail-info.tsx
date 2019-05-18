@@ -104,9 +104,9 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
                         {location.address}{' '}
                         {location.geo && (
                           <Anchor
-                            href={`https://www.google.com/maps/@${
+                            href={`https://www.google.com/maps?q=${
                               location.geo.coordinates[1]
-                            },${location.geo.coordinates[0]},13z`}
+                            },${location.geo.coordinates[0]}`}
                             target={'_blank'}
                             rel={'noopener'}
                           >
