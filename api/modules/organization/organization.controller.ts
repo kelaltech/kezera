@@ -1,5 +1,5 @@
 import { ClientSession } from 'mongoose'
-import { createReadStream } from 'fs'
+import * as sharp from 'sharp'
 
 import { KoaController } from '../../lib/koa-controller'
 import {
@@ -31,20 +31,7 @@ export class OrganizationController extends KoaController {
     data: IOrganizationRequest = JSON.parse(
       super.getRequestBody<{ data: string }>().data
     ),
-    logoStream = super.getContext() &&
-    super.getContext()!.request &&
-    super.getContext()!.request.files &&
-    super.getContext()!.request.files!.logo &&
-    super.getContext()!.request.files!.logo.path
-      ? createReadStream(super.getContext()!.request.files!.logo!.path)
-      : undefined,
-    logoType = super.getContext() &&
-    super.getContext()!.request &&
-    super.getContext()!.request.files &&
-    super.getContext()!.request.files!.logo &&
-    super.getContext()!.request.files!.logo.type
-      ? super.getContext()!.request.files!.logo!.type
-      : undefined
+    ctx = super.getContext()
   ): Promise<IOrganizationResponse> {
     const application = await add(
       OrganizationApplicationModel,
@@ -75,14 +62,24 @@ export class OrganizationController extends KoaController {
 
     if (session) await session.commitTransaction()
 
-    if (logoStream) {
+    const logo = ctx && ctx.request.files && ctx.request.files['photo']
+    if (logo) {
+      const stream = sharp(logo.path)
+        .resize(1080, 1080, { fit: 'cover' })
+        .jpeg({ quality: 100 })
+
       const grid = new Grid(
         serverApp,
         OrganizationApplicationModel,
         application._id,
         'logo'
       )
-      await grid.set(logoStream, logoType)
+      await new Promise<void>(async (resolve, reject) => {
+        stream.on('error', reject)
+
+        await grid.set(stream, 'image/jpeg')
+        resolve()
+      })
     }
 
     return await organizationDocumentToResponse(application, application.account)

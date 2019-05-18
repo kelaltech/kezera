@@ -15,7 +15,7 @@ verifierRouter.get(
   handle(VerifierController, (c, s) => c.getOrganizationApplication(s))
 )
 
-// GET /api/organization/get-organization-application-logo/:_id *
+// GET /api/organization/get-organization-application-logo/:_id?size={200}&quality={80} *
 verifierRouter.get(
   '/get-organization-application-logo/:_id',
   authorize(['VERIFIER', 'ADMIN']),
