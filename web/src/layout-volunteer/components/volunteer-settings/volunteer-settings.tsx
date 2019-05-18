@@ -41,21 +41,17 @@ const genderTypes = [
   }
 ]
 function VolunteerSettings({ readonly }: Props) {
-  const { loading, t } = useLocale([
-    /* todo: use some namespace */
-  ])
+  const { loading, t } = useLocale(['volunteer-setting'])
 
   const volunteerDispatch = useVolunteerDispatch()
   const { volunteer } = useVolunteerState()
   const [gender, setGender] = useState(volunteer ? volunteer.gender : '')
   const [country, setCountry] = useState(volunteer ? volunteer.country : '')
-  const [location, setLocation] = useState(volunteer ? volunteer.location : '')
   const [birthdate, setBirthdate] = useState<any>(volunteer ? volunteer.birthdate : '')
   const [username, setUsername] = useState(volunteer ? volunteer.username : '')
 
   const [editGender, setEditGender] = useState(false),
     [editCountry, setEditCountry] = useState(false),
-    [editLocation, setEditLocation] = useState(false),
     [editBirthdate, setEditBirthdate] = useState(false),
     [editUsername, setEditUsername] = useState(false)
 
@@ -107,7 +103,7 @@ function VolunteerSettings({ readonly }: Props) {
         <Content style={{ overflow: 'visible' }}>
           <Block first>
             <Flex>
-              <h3>{`User Setting`}</h3>
+              <h3>{t`volunteer-setting:User Setting`}</h3>
               <FlexSpacer />
             </Flex>
           </Block>
@@ -131,7 +127,7 @@ function VolunteerSettings({ readonly }: Props) {
                 />
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{`username: `}</span>
+                  <span className={'fg-blackish'}>{t`volunteer-setting:username: `}</span>
                   <span>{username}</span>
                 </div>
               )}
@@ -175,7 +171,7 @@ function VolunteerSettings({ readonly }: Props) {
                 </TextField>
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{`Gender: `}</span>
+                  <span className={'fg-blackish'}>{t`volunteer-setting:gender: `}</span>
                   <span>{gender}</span>
                 </div>
               )}
@@ -211,7 +207,7 @@ function VolunteerSettings({ readonly }: Props) {
                 />
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{`Country: `}</span>
+                  <span className={'fg-blackish'}>{t`volunteer-setting:country: `}</span>
                   <span>{country}</span>
                 </div>
               )}
@@ -247,7 +243,7 @@ function VolunteerSettings({ readonly }: Props) {
                 />
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{`Birthdate: `}</span>
+                  <span className={'fg-blackish'}>{t`volunteer-setting:birthdate: `}</span>
                   <span>{birthdate}</span>
                 </div>
               )}
@@ -270,7 +266,7 @@ function VolunteerSettings({ readonly }: Props) {
         <Content style={{ overflow: 'visible' }}>
           <Block first>
             <Flex>
-              <h3>{`Privacy Setting`}</h3>
+              <h3>{t`volunteer-setting:privacy-setting`}</h3>
               <FlexSpacer />
             </Flex>
           </Block>
@@ -288,7 +284,7 @@ function VolunteerSettings({ readonly }: Props) {
                     value={'certificate'}
                   />
                 }
-                label={'Certificate'}
+                label={t`volunteer-setting:certificate`}
               />
             </div>
 
@@ -304,7 +300,7 @@ function VolunteerSettings({ readonly }: Props) {
                     value={'event'}
                   />
                 }
-                label={'Event'}
+                label={t`volunteer-setting:event`}
               />
             </div>
 
@@ -320,7 +316,7 @@ function VolunteerSettings({ readonly }: Props) {
                     value={'material'}
                   />
                 }
-                label={'material'}
+                label={t`volunteer-setting:material`}
               />
             </div>
           </Block>
@@ -340,7 +336,7 @@ function VolunteerSettings({ readonly }: Props) {
                     value={'task'}
                   />
                 }
-                label={'Task'}
+                label={t`volunteer-setting:task`}
               />
             </div>
             <FlexSpacer />
@@ -355,7 +351,7 @@ function VolunteerSettings({ readonly }: Props) {
                     value={'money'}
                   />
                 }
-                label={'Money'}
+                label={t`volunteer-setting:Money`}
               />
             </div>
           </Block>

@@ -29,6 +29,7 @@ export type Namespace =
   | 'verifier'
   | 'volunteer'
   | 'volunteer-discovery'
+  | 'volunteer-setting'
 export const supportedNamespaces: Namespace[] = [
   'common',
   'account',
@@ -52,7 +53,8 @@ export const supportedNamespaces: Namespace[] = [
   'task',
   'verifier',
   'volunteer',
-  'volunteer-discovery'
+  'volunteer-discovery',
+  'volunteer-setting'
 ]
 export const defaultNamespaces: Namespace[] = ['common']
 
