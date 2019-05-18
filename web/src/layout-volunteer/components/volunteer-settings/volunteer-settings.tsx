@@ -103,7 +103,7 @@ function VolunteerSettings({ readonly }: Props) {
         <Content style={{ overflow: 'visible' }}>
           <Block first>
             <Flex>
-              <h3>{t`volunteer-setting:User Setting`}</h3>
+              <h3>{t`volunteer-setting:user-setting`}</h3>
               <FlexSpacer />
             </Flex>
           </Block>
@@ -127,7 +127,7 @@ function VolunteerSettings({ readonly }: Props) {
                 />
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{t`volunteer-setting:username: `}</span>
+                  <span className={'fg-blackish'}>{t`volunteer-setting:username`}:</span>
                   <span>{username}</span>
                 </div>
               )}
@@ -171,7 +171,7 @@ function VolunteerSettings({ readonly }: Props) {
                 </TextField>
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{t`volunteer-setting:gender: `}</span>
+                  <span className={'fg-blackish'}>{t`volunteer-setting:gender`}:</span>
                   <span>{gender}</span>
                 </div>
               )}
@@ -207,7 +207,7 @@ function VolunteerSettings({ readonly }: Props) {
                 />
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{t`volunteer-setting:country: `}</span>
+                  <span className={'fg-blackish'}>{t`volunteer-setting:country`}:</span>
                   <span>{country}</span>
                 </div>
               )}
@@ -243,7 +243,7 @@ function VolunteerSettings({ readonly }: Props) {
                 />
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{t`volunteer-setting:birthdate: `}</span>
+                  <span className={'fg-blackish'}>{t`volunteer-setting:birthdate`}:</span>
                   <span>{birthdate}</span>
                 </div>
               )}
@@ -351,7 +351,7 @@ function VolunteerSettings({ readonly }: Props) {
                     value={'money'}
                   />
                 }
-                label={t`volunteer-setting:Money`}
+                label={t`volunteer-setting:money`}
               />
             </div>
           </Block>
