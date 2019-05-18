@@ -277,7 +277,12 @@ function OrganizationDetail({
               {!isApplication && <Tab label={`News`} value={'news'} />}
             </Tabs>
 
-            {tab === 'info' && <OrganizationDetailInfo organization={organization} />}
+            {tab === 'info' && (
+              <OrganizationDetailInfo
+                organization={organization}
+                isApplication={isApplication || false}
+              />
+            )}
             {!isApplication && (
               <>
                 {tab === 'requests' && (

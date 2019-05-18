@@ -40,7 +40,7 @@ verifierRouter.post(
 
 // POST /api/verifier/reject-organization-application/:_id *
 verifierRouter.post(
-  '/approve-organization-application/:_id',
+  '/reject-organization-application/:_id',
   authorize(['VERIFIER', 'ADMIN']),
   handle(VerifierController, (c, s) => c.rejectOrganizationApplication(s))
 )

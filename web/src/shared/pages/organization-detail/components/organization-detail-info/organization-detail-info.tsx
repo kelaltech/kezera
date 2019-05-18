@@ -9,6 +9,7 @@ import OrganizationDetailStats from '../organization-detail-stats/organization-d
 
 interface Props {
   organization: IOrganizationResponse
+  isApplication: boolean
 }
 
 const parseGeo = (lngLat: LngLat): string => {
@@ -18,7 +19,7 @@ const parseGeo = (lngLat: LngLat): string => {
   }, ${Math.round(lngLat.lng * factor) / factor}°  ${lngLat.lng > 0 ? 'E' : 'W'}`
 }
 
-function OrganizationDetailInfo({ organization }: Props) {
+function OrganizationDetailInfo({ organization, isApplication }: Props) {
   const { loading, t } = useLocale(['organization'])
 
   return (
@@ -32,7 +33,7 @@ function OrganizationDetailInfo({ organization }: Props) {
           </Content>
         )}
 
-        <OrganizationDetailStats organization={organization} />
+        {!isApplication && <OrganizationDetailStats organization={organization} />}
 
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
           <Content className={'top'}>
