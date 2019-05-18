@@ -4,11 +4,13 @@ import { Block, Content, Title, Yoga } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { PieChart, Pie, Cell } from 'recharts'
 import { useFetch } from '../../../hooks/Fetch'
+import useLocale from '../../../../shared/hooks/use-locale/use-locale'
 
 const COLORS = ['#00C49F', '#FFBB28', '#0088FE', '#FF8042']
 
 export default function Events() {
   let news = useFetch('/api/admin/events')
+  let { t } = useLocale(['admin'])
   const data = [
     { name: 'Interested', value: useFetch('/api/admin/events/interested') },
     { name: 'Attended', value: useFetch('/api/admin/events/attended') },
@@ -20,7 +22,7 @@ export default function Events() {
     <Content transparent>
       <span className={'Events-Title'}>
         {' '}
-        <FontAwesomeIcon icon={'calendar'} /> Events{' '}
+        <FontAwesomeIcon icon={'calendar'} /> {t`events`}{' '}
       </span>
       <Block className={'center'}>
         <PieChart width={400} height={270}>
@@ -44,17 +46,18 @@ export default function Events() {
 }
 
 let Legend = function() {
+  let { t } = useLocale(['admin'])
   return (
     <Block>
       <Yoga maxCol={3}>
         <span>
-          <div className={'Attend'} /> Attended
+          <div className={'Attend'} /> {t`attended`}
         </span>
         <span>
-          <div className={'Going'} /> Going
+          <div className={'Going'} /> {t`going`}
         </span>
         <span>
-          <div className={'Interest'} /> Interested
+          <div className={'Interest'} /> {t`interested`}
         </span>
       </Yoga>
     </Block>

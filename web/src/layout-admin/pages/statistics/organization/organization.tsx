@@ -5,6 +5,7 @@ import { Cell, Pie, PieChart, Tooltip } from 'recharts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useFetch } from '../../../hooks/Fetch'
 import { ProgressBar } from '../../../components/progress-bar/progress-bar'
+import useLocale from '../../../../shared/hooks/use-locale/use-locale'
 
 interface IOrganizationProps {}
 
@@ -30,6 +31,7 @@ export default function Organization(props: IOrganizationProps) {
 }
 
 let Location = function() {
+  let { t } = useLocale(['admin'])
   let locations = [
     { percent: '38%', location: 'Addis Ababa' },
     { percent: '22%', location: 'Gondar' },
@@ -44,7 +46,7 @@ let Location = function() {
     <Content transparent className={'LocationListContainer'}>
       <Title>
         {' '}
-        &emsp;&emsp; <b> #Location </b>
+        &emsp;&emsp; <b> #{t`location`} </b>
       </Title>
       {locations.map(location => (
         <Block>
@@ -62,11 +64,12 @@ let Location = function() {
 }
 
 let Types = function() {
+  let { t } = useLocale(['admin'])
   const data = [
-    { name: 'Non-Governmental', value: useFetch('/api/admin/organization/ngo') },
-    { name: 'Private', value: useFetch('/api/admin/organization/private') },
-    { name: 'Hospitals', value: useFetch('/api/admin/organization/hospitals') },
-    { name: 'Governmental', value: useFetch('/api/admin/organization/governmental') }
+    { name: t`non-Governmental`, value: useFetch('/api/admin/organization/ngo') },
+    { name: t`private`, value: useFetch('/api/admin/organization/private') },
+    { name: t`hospitals`, value: useFetch('/api/admin/organization/hospitals') },
+    { name: t`governmental`, value: useFetch('/api/admin/organization/governmental') }
   ]
 
   return (
@@ -90,16 +93,16 @@ let Types = function() {
       <div className={'LocationsColors'}>
         <Yoga maxCol={2}>
           <span>
-            <div className={'Gov'} /> Governmental
+            <div className={'Gov'} /> {t`governmental`}
           </span>
           <span>
-            <div className={'Non'} /> Non-Governmental
+            <div className={'Non'} /> {t`non-governmental`}
           </span>
           <span>
-            <div className={'Hos'} /> Hospitals
+            <div className={'Hos'} /> {t`hospitals`}
           </span>
           <span>
-            <div className={'Pri'} /> Private
+            <div className={'Pri'} /> {t`private`}
           </span>
         </Yoga>
       </div>

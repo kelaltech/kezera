@@ -1,1 +1,15 @@
-{}
+{
+  "status": "ይዞታ",
+  "books": "መጽሀፍት",
+  "bed": "አልጋ",
+  "chair": "ወንበር",
+  "table": "ጠረጴዛ",
+  "clothes": "አልባሳት",
+  "house holds": "የቤት እቃዎች",
+  "new": "አዲስ",
+  "carpet": "ምንጣፍ",
+  "other": "ሌላ",
+  "old": "አሮጌ",
+  "slightly used": "በጥቂቱ ጥቅም ላይ የዋለ",
+  "type": "አይነት"
+}

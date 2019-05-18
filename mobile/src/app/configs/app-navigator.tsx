@@ -12,6 +12,7 @@ import OrganDonationDetail from '../../shared/screens/organ-donation-detail/orga
 import TaskDetail from '../../shared/screens/task-detail/task-detail'
 import NewsDetail from '../../shared/screens/news-detail/news-detail'
 import EventDetail from '../../shared/screens/event-detail/event-detail'
+import EventList from '../../shared/screens/event-list/event-list'
 
 const AppNavigator = createStackNavigator(
   {
@@ -28,7 +29,8 @@ const AppNavigator = createStackNavigator(
     OrganDonationDetail,
     TaskDetail,
     NewsDetail,
-    EventDetail
+    EventDetail,
+    EventList
   },
   {
     initialRouteName: 'Init',

@@ -5,32 +5,40 @@ import EventAdd from '../event-add/event-add'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './event.scss'
 import { useEventState } from '../../stores/events/events.provider'
+import RichPage from '../../../shared/components/rich-page/rich-page'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 export default function AccountSettings() {
   let [open, setOpen] = useState(false)
   let { events } = useEventState()
-
+  let [error, setError] = useState()
+  const { loading, t } = useLocale(['event'])
   return (
-    <Page>
-      <EventAdd open={open} onClose={() => setOpen(!open)} />
-      <Block className={'inline-block'}>
-        <Block className={'inline-block'}>
-          <Title size={'3XL'}> Events and Activities</Title>
-        </Block>
-      </Block>
-      <Block className="right right-search-input">
-        <Button primary onClick={() => setOpen(true)}>
-          {' '}
-          <FontAwesomeIcon icon="plus" /> &nbsp;Create event{' '}
-        </Button>
-      </Block>
-      {events && events.length > 0 ? (
-        <Yoga maxCol={5}>
-          {events && events.map((e: any) => <EventCard event={e} />)}
-        </Yoga>
-      ) : (
-        <Title size={'3XL'}> No events found</Title>
-      )}
-    </Page>
+    <RichPage
+      error={error}
+      title={t`events`}
+      actions={[
+        {
+          onClick: () => setOpen(true),
+          primary: true,
+          children: (
+            <>
+              <FontAwesomeIcon icon="plus" /> &nbsp;{t`create event`}
+            </>
+          )
+        }
+      ]}
+    >
+      <>
+        <EventAdd open={open} onClose={() => setOpen(!open)} />
+        {events && events.length > 0 ? (
+          <Yoga maxCol={3}>
+            {events && events.map((e: any) => <EventCard event={e} />)}
+          </Yoga>
+        ) : (
+          <Title size={'L'}> {t`no events found`}</Title>
+        )}
+      </>
+    </RichPage>
   )
 }

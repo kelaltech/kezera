@@ -11,10 +11,12 @@ import Table, {
 import { useFetch } from '../../hooks/Fetch'
 import { Timeline } from '../../../shared/components/timeline/timeline'
 import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 export default function VerifierDescription(props: any) {
   let v: any = useFetch('/api/admin/verifier/' + props.match.params._id)
   let org = useFetch(`/api/admin/verifier/organizations/${props.match.params._id}`)
+  let { t } = useLocale(['admin'])
   return (
     <Block className={'flex full-width'}>
       {v ? (
@@ -61,14 +63,14 @@ export default function VerifierDescription(props: any) {
 
             <Block className={'center'}>
               <Title size={'XL'}>
-                <b> Verified organizations </b>
+                <b> {t`verified organizations`} </b>
               </Title>
               {org.length > 0 ? (
                 <Table>
                   <TableHeader>
-                    <TableCell color={'white'}>Name</TableCell>
-                    <TableCell color={'white'}>Phone no.</TableCell>
-                    <TableCell color={'white'}>Verified date</TableCell>
+                    <TableCell color={'white'}>{t`name`}</TableCell>
+                    <TableCell color={'white'}>{t`phone no.`}</TableCell>
+                    <TableCell color={'white'}>{t`verified date`}</TableCell>
                   </TableHeader>
                   <TableBody>
                     {org &&
@@ -84,10 +86,10 @@ export default function VerifierDescription(props: any) {
                   </TableBody>
                 </Table>
               ) : (
-                <Title> No organizations verified </Title>
+                <Title> {t`no organizations verified`} </Title>
               )}
             </Block>
-            <Timeline />
+            <Timeline title={`Activities`} _id={v._id} />
           </Content>
         </>
       ) : (

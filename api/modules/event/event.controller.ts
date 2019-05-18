@@ -8,7 +8,8 @@ import { commentModel, IComment } from '../../models/comment/comment.model'
 import { KoaError } from '../../lib/koa-error'
 import { AccountModel, IAccount } from '../../models/account/account.model'
 import { getComment } from '../comment/comment.methods'
-
+import * as sharp from 'sharp'
+import { IAccountRequest } from '../account/account.apiv'
 export async function removeEvent(
   id: Schema.Types.ObjectId | string,
   orgId: Schema.Types.ObjectId | string
@@ -61,7 +62,9 @@ export async function attendedUsers(
   await event.save()
 }
 
-export async function getAttendedUsers(eventId: Schema.Types.ObjectId): Promise<any> {
+export async function getAttendedUsers(
+  eventId: Schema.Types.ObjectId
+): Promise<IAccountRequest[]> {
   const event = await get(EventModel, eventId)
   let userId = event.attendedVolunteers
   let users = []
@@ -103,11 +106,14 @@ export async function getComments(eventId: Schema.Types.ObjectId): Promise<IComm
   return comments
 }
 
-export async function addEvent(body: any, orgId: any, pic: Stream): Promise<IEvent> {
+export async function addEvent(body: any, orgId: any, ctx: any): Promise<IEvent> {
   const event = await add(EventModel, { ...body, organizationId: orgId })
   console.log(event)
+  const stream = sharp(ctx!.request.files!.image.path)
+    .resize(1080, 1080, { fit: 'cover' })
+    .jpeg({ quality: 100 })
   const grid = new Grid(serverApp, EventModel, event._id)
-  await Promise.all([grid.set(pic)])
+  await Promise.all([grid.set(stream)])
   return event
 }
 
@@ -115,14 +121,18 @@ export async function editEvent(
   id: Schema.Types.ObjectId,
   body: any,
   orgId: Schema.Types.ObjectId,
-  pic: Stream
+  ctx: any
 ): Promise<IEvent> {
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) {
-    let updated = await edit(EventModel, id, { ...body })
+    let updated = await edit(EventModel, id, body)
+    const stream = sharp(ctx!.request.files!.image.path)
+      .resize(1080, 1080, { fit: 'cover' })
+      .jpeg({ quality: 100 })
     await new Grid(serverApp, EventModel, id).remove()
-    await new Grid(serverApp, EventModel, id).set(pic)
-    return updated
+    await new Grid(serverApp, EventModel, id).set(stream)
+    console.log(updated)
+    return await get(EventModel, id)
   } else throw new KoaError('Not authorized', 401)
 }
 
@@ -144,19 +154,15 @@ export async function getEventPicture(id: Schema.Types.ObjectId): Promise<Stream
 }
 
 export async function toggleLike(
-  _newsId: Schema.Types.ObjectId,
+  eventId: Schema.Types.ObjectId,
   account: Document & IAccount
-): Promise<{
-  likes: number
-}> {
-  const doc = await get(EventModel, _newsId)
+): Promise<IEvent> {
+  const doc = await get(EventModel, eventId)
 
   if (doc.likes.length == 0) {
     doc.likes.push(account._id)
     await doc.save()
-    return {
-      likes: doc.likes.length
-    }
+    return doc
   }
 
   for (let i = 0; i < doc.likes.length; i++) {
@@ -167,24 +173,19 @@ export async function toggleLike(
     }
   }
   await doc.save()
-
-  return { likes: doc.likes.length }
+  return doc
 }
 
 export async function toggleAttend(
   _id: Schema.Types.ObjectId,
   account: Document & IAccount
-): Promise<{
-  interestedVolunteers: number
-}> {
+): Promise<IEvent> {
   const doc = await get(EventModel, _id)
 
   if (doc.interestedVolunteers.length == 0) {
     doc.interestedVolunteers.push(account._id)
     await doc.save()
-    return {
-      interestedVolunteers: doc.interestedVolunteers.length
-    }
+    return doc
   }
 
   for (let i = 0; i < doc.interestedVolunteers.length; i++) {
@@ -196,8 +197,7 @@ export async function toggleAttend(
     }
   }
   await doc.save()
-
-  return { interestedVolunteers: doc.interestedVolunteers.length }
+  return doc
 }
 
 export async function going(
@@ -236,11 +236,26 @@ export async function isGoing(
   let event = await get(EventModel, id)
   for (let i = 0; i < event.goingVolunteers.length; i++) {
     //@ts-ignore
+    console.log(userId + '---' + event.goingVolunteers[i]._id)
+    //@ts-ignore
     if (event.goingVolunteers[i]._id.toString() == userId.toString()) {
       return { going: true }
     }
   }
   return { going: false }
+}
+
+export async function isLiked(
+  id: Schema.Types.ObjectId,
+  userId: Schema.Types.ObjectId
+): Promise<any> {
+  let event = await get(EventModel, id)
+  for (let i = 0; i < event.likes.length; i++) {
+    if (event.likes[i] == userId.toString()) {
+      return { liked: true }
+    }
+  }
+  return { liked: false }
 }
 
 export async function getInterested(id: Schema.Types.ObjectId): Promise<any> {
@@ -252,4 +267,31 @@ export async function getInterested(id: Schema.Types.ObjectId): Promise<any> {
   }
   console.log(users)
   return users
+}
+
+export async function listLatestEvents(): Promise<IEvent[] | Document> {
+  let events = await EventModel.find({}).sort({ _at: 'desc' })
+  return events
+}
+
+export async function upcomingEvents(): Promise<IEvent[] | Document> {
+  let events: any = await list(EventModel)
+  let now = Date.now()
+  let difference: IEventDiff[] = []
+  for (let i = 0; i < events.length; i++) {
+    difference[i] = {
+      _id: events[i]._id,
+      difference: events[i]._startDate - now
+    }
+  }
+  let upcoming: IEvent[] = []
+  for (let j = 0; j < difference.length; j++) {
+    upcoming.push(await get(EventModel, difference[j]._id))
+  }
+  return upcoming
+}
+
+interface IEventDiff {
+  _id: any
+  difference: number
 }

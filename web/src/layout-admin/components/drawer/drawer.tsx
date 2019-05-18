@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import './drawer.scss'
 import { Anchor, Block, Content, Drawer, Flex } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 export default function AdminDrawer(props: any) {
   let [open, setOpen] = useState(true)
+  let { t } = useLocale(['admin'])
   return (
     <div className="inline-block flex full-width AdminDrawer">
       <div className={'AdminDrawerContent'}>
@@ -14,7 +16,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor to={'/'} className={'flex'}>
             {' '}
-            Dashboard{' '}
+            {t`dashboard`}
           </Anchor>
         </Block>
         <hr />
@@ -24,31 +26,31 @@ export default function AdminDrawer(props: any) {
             className={'primary margin-top-small flex'}
           />
           &emsp;
-          <a href={'/#ORGANIZATION'} className={'no-decoration flex'}>
+          <Anchor href={'/#ORGANIZATION'} className={'no-decoration flex'}>
             {' '}
-            Organizations{' '}
-          </a>
+            {t`organizations`}
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>
           <FontAwesomeIcon icon={'users'} className={'primary margin-top-small flex'} />
           &emsp;
-          <a
+          <Anchor
             href={'/#VOLUNTEER'}
             className={'no-decoration no-decoration no-decoration flex'}
           >
             {' '}
-            Volunteers{' '}
-          </a>
+            {t`volunteers`}
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>
           <FontAwesomeIcon icon={'donate'} className={'primary margin-top-small flex'} />
           &emsp;
-          <a href={'/#DONATION'} className={'no-decoration flex'}>
+          <Anchor href={'/#DONATION'} className={'no-decoration flex'}>
             {' '}
-            Donations{' '}
-          </a>
+            {t`requests`}
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>
@@ -57,10 +59,10 @@ export default function AdminDrawer(props: any) {
             className={'primary margin-top-small flex'}
           />
           &emsp;
-          <a href={'/#NEWS'} className={'no-decoration flex'}>
+          <Anchor href={'/#NEWS'} className={'no-decoration flex'}>
             {' '}
-            News{' '}
-          </a>
+            {t`news`}{' '}
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>
@@ -69,10 +71,10 @@ export default function AdminDrawer(props: any) {
             className={'primary margin-top-small flex'}
           />
           &emsp;
-          <a href={'/#NEWS'} className={'no-decoration flex'}>
+          <Anchor href={'/#NEWS'} className={'no-decoration flex'}>
             {' '}
-            Events
-          </a>
+            {t`events`}
+          </Anchor>
         </Block>
         <hr />
         <Block className={'flex'}>
@@ -83,7 +85,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor to={'/verifiers'} className={'flex'}>
             {' '}
-            Verifiers{' '}
+            {t`verifiers`}{' '}
           </Anchor>
         </Block>
         <hr />
@@ -95,19 +97,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor to={'/account'} className={'flex'}>
             {' '}
-            Account{' '}
-          </Anchor>
-        </Block>
-        <hr />
-        <Block className={'flex'}>
-          <FontAwesomeIcon
-            icon={'door-open'}
-            className={'primary margin-top-small flex'}
-          />
-          &emsp;
-          <Anchor to={'/statistics'} className={'flex'}>
-            {' '}
-            Logout{' '}
+            {t`account`}{' '}
           </Anchor>
         </Block>
         <hr />

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useFetch } from '../../../hooks/Fetch'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import Axios from 'axios'
+import useLocale from '../../../../shared/hooks/use-locale/use-locale'
 
 interface IconProps {
   icon: IconProp
@@ -30,26 +31,30 @@ export default function Summary() {
   let volunteers = useFetch('/api/admin/volunteers')
   let news = useFetch('/api/admin/news')
   let events = useFetch('/api/admin/events')
+  let { t } = useLocale(['admin'])
   let text = [
-    'Organizations',
-    'Volunteers',
-    'News',
-    'Events',
-    'Material requested',
-    'Funds requested',
-    'Organ requested',
-    'Task requested'
+    t`organizations`,
+    t`volunteers`,
+    t`news`,
+    t`events`,
+    t`material requested`,
+    t`funds requested`,
+    t`organ requested`,
+    t`tasks requested`
   ]
   let stateValues = [organization, volunteers, news, events, material, funds, organ, task]
 
   return (
     <Block className={''}>
-      <span className={'Dashoard'}> #Dashboard </span>
+      <span className={'Dashoard'}> #{t`dashboard`} </span>
       <Yoga maxCol={4}>
         {stateValues.map((val, index: number) => (
           <Content className={'SummaryCard'}>
             <div className="center">
-              <span className={'CardText'}> Total {text[index]} </span>
+              <span className={'CardText'}>
+                {' '}
+                {t`total`} {text[index]}{' '}
+              </span>
             </div>
             <hr />
             <Block className={'center flex'}>

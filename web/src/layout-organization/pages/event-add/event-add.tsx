@@ -16,6 +16,7 @@ import { useEventDispatch } from '../../stores/events/events.provider'
 import { AddEvents } from '../../stores/events/events.action'
 import useField from '../../../shared/hooks/use-field/use-field'
 import { IOrganizationEventRequest } from '../../../apiv/event.apiv'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 interface IEventAddProps {
   open: boolean
@@ -31,6 +32,7 @@ export default function EventAdd(props: IEventAddProps) {
     endDate: '',
     location: ''
   })
+  const { loading, t } = useLocale(['event'])
   let eventDispatch = useEventDispatch()
 
   let HandleAdd = function(e: any) {
@@ -39,22 +41,24 @@ export default function EventAdd(props: IEventAddProps) {
     data.append('event', JSON.stringify(event))
     data.append('image', e.target.image.files[0])
     AddEvents(data, eventDispatch)
+    props.onClose()
   }
   const emitChanges = (eventChanges: any): void => {
     setEvent({ ...event, ...eventChanges })
   }
   const TitleInput = useField<HTMLInputElement>({
-    minLength: 2,
+    minLength: 5,
     maxLength: 50,
     setValueHook: async value => {
       emitChanges({ title: value })
     }
   })
+
   const DescriptionInput = useField<HTMLInputElement>({
     minLength: 100,
     maxLength: 450,
     setValueHook: async value => {
-      emitChanges({ description: value })
+      emitChanges({ description: value.trim() })
     }
   })
   const StartDateInput = useField<HTMLTimeElement>({
@@ -64,6 +68,7 @@ export default function EventAdd(props: IEventAddProps) {
       emitChanges({ startDate: value })
     }
   })
+
   const EndDateInput = useField<HTMLTimeElement>({
     minLength: 5,
     maxLength: 25,
@@ -71,6 +76,7 @@ export default function EventAdd(props: IEventAddProps) {
       emitChanges({ endDate: value })
     }
   })
+
   const PeopleInput = useField<HTMLInputElement>({
     minLength: 1,
     maxLength: 10,
@@ -78,6 +84,7 @@ export default function EventAdd(props: IEventAddProps) {
       emitChanges({ amountOfPeople: value })
     }
   })
+
   const LocationInput = useField<HTMLInputElement>({
     minLength: 3,
     maxLength: 200,
@@ -85,6 +92,7 @@ export default function EventAdd(props: IEventAddProps) {
       emitChanges({ location: value })
     }
   })
+
   const image = useField<HTMLInputElement>()
 
   const validationError = (error: string | null) =>
@@ -101,7 +109,7 @@ export default function EventAdd(props: IEventAddProps) {
   return (
     <Dialog onClose={props.onClose} open={props.open}>
       <Block className={'center'}>
-        <Title size="XXL"> Create Event </Title>
+        <Title size="XXL"> {t`create event`} </Title>
       </Block>
       <Content size={'L'}>
         <form onSubmit={e => HandleAdd(e)} encType={'multipart/form-data'}>
@@ -111,7 +119,7 @@ export default function EventAdd(props: IEventAddProps) {
               <Input
                 name="title"
                 className={'margin-big full-width'}
-                placeholder={'Title'}
+                placeholder={t`name`}
                 inputRef={TitleInput.ref}
                 {...TitleInput.inputProps}
                 required
@@ -126,7 +134,7 @@ export default function EventAdd(props: IEventAddProps) {
               inputRef={DescriptionInput.ref}
               {...DescriptionInput.inputProps}
               className={'full-width'}
-              placeholder={'Description...'}
+              placeholder={t`description` + `...`}
             />
             {validationError(DescriptionInput.error)}
           </Block>
@@ -140,7 +148,7 @@ export default function EventAdd(props: IEventAddProps) {
                 <TextField
                   name="startDate"
                   className="full-width"
-                  label="Start date"
+                  label={t`start date`}
                   inputRef={StartDateInput.ref}
                   {...StartDateInput.inputProps}
                   type="date"
@@ -160,7 +168,7 @@ export default function EventAdd(props: IEventAddProps) {
                 <Input
                   name={'location'}
                   className="full-width"
-                  placeholder={'location'}
+                  placeholder={t`location`}
                   {...LocationInput.inputProps}
                   inputRef={LocationInput.ref}
                   required
@@ -177,7 +185,7 @@ export default function EventAdd(props: IEventAddProps) {
                 <TextField
                   name="endDate"
                   className="full-width"
-                  label="End date"
+                  label={t`end date`}
                   type="date"
                   inputRef={EndDateInput.ref}
                   {...EndDateInput.inputProps}
@@ -198,7 +206,7 @@ export default function EventAdd(props: IEventAddProps) {
                   name="amountOfPeople"
                   className="full-width"
                   type={'number'}
-                  placeholder={'Total people'}
+                  placeholder={t`amount of people`}
                   inputRef={PeopleInput.ref}
                   {...PeopleInput.inputProps}
                   required
@@ -208,17 +216,12 @@ export default function EventAdd(props: IEventAddProps) {
             </Block>
           </Yoga>
           <Block last className={'right'}>
-            <Button
-              type={'submit'}
-              onClick={() => props.onClose()}
-              primary={true}
-              className={''}
-            >
-              Create
+            <Button type={'submit'} onClick={() => {}} primary={true} className={''}>
+              {t`create`}
             </Button>
             &emsp;
             <Button onClick={() => props.onClose()} className={''}>
-              Cancel
+              {t`cancel`}
             </Button>
           </Block>
         </form>

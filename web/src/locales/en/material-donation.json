@@ -1,1 +1,15 @@
-{}
+{
+  "status": "Status",
+  "books": "Books",
+  "bed": "Bed",
+  "chair": "Chair",
+  "table": "Table",
+  "clothes": "Cloth",
+  "house holds": "House holds",
+  "new": "New",
+  "carpet": "Carpet",
+  "other": "Other",
+  "old": "Old",
+  "slightly used": "Slightly used",
+  "type": "Type"
+}

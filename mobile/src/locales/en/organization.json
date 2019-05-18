@@ -1,6 +1,11 @@
 {
   "organization": "Organization",
   "organizations": "Organizations",
-
+  "bio": "Bio",
+  "contact": "Contact",
+  "subscribe": "Subscribe",
+  "unsubscribe": "Unsubscribe",
+  "news": "News",
+  "requests": "Requests",
   "my-subscriptions": "My Subscriptions"
 }

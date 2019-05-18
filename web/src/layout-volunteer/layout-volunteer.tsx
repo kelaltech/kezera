@@ -11,7 +11,8 @@ import LayoutVolunteerRoutes from './configs/layout-volunteer-routes'
 import Search from '../shared/components/search/search'
 import './layout-volunteer.scss'
 import Sidenav from '../shared/components/volunteer-side-nav/side-nav'
-import LayoutVolunteerSidenavProviders from './configs/layout-vlunteer-sidenav-priovider'
+import LayoutVolunteerSidenavProviders from './configs/layout-vlunteer-sidenav-provider'
+
 interface Props extends RouteComponentProps<{}> {
   error?: any
 }

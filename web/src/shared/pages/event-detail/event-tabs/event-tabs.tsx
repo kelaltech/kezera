@@ -5,9 +5,11 @@ import { Block } from 'gerami'
 import Comments from '../comments/comments'
 import Likes from '../likes/likes'
 import Interested from '../interested/interested'
+import useLocale from '../../../hooks/use-locale/use-locale'
 
 export default function EventTabs(props: any) {
   let [value, setValue] = useState(0)
+  let { t } = useLocale(['event'])
   return (
     <div>
       <Tabs
@@ -16,9 +18,9 @@ export default function EventTabs(props: any) {
         indicatorColor="primary"
         textColor="primary"
       >
-        <Tab label="Comments"> One </Tab>
-        <Tab label="Likes"> Two </Tab>
-        <Tab label="Interested people"> Three </Tab>
+        <Tab label={t`comments`}> One </Tab>
+        <Tab label={t`likes`}> Two </Tab>
+        <Tab label={t`interested people`}> Three </Tab>
       </Tabs>
       {value === 0 && (
         <Block>

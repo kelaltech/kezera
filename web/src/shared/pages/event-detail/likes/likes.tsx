@@ -1,28 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Content, Image } from 'gerami'
+import { Content, Image, Title } from 'gerami'
 import './likes.scss'
 import Chip from '@material-ui/core/Chip'
 import { Avatar } from '@material-ui/core'
 import { Schema } from 'mongoose'
 import axios from 'axios'
-
-const users = [
-  {
-    Name: 'Anteneh Ashenafi',
-    Image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwVEXF33zeB0S-b9-BYeb14amnZW2GcCOOY3RlAqe6JC1-rjmw'
-  },
-  {
-    Name: 'Pompidou',
-    Image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwVEXF33zeB0S-b9-BYeb14amnZW2GcCOOY3RlAqe6JC1-rjmw'
-  },
-  {
-    Name: 'Natnael mesfin',
-    Image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwVEXF33zeB0S-b9-BYeb14amnZW2GcCOOY3RlAqe6JC1-rjmw'
-  }
-]
 
 export default function Likes(props: any) {
   let [user, setUser] = useState([])
@@ -37,19 +19,19 @@ export default function Likes(props: any) {
   }, [])
   return (
     <Content className={'UserLike'}>
-      {user.length >= 0 ? (
+      {user.length > 0 ? (
         <>
           {user.map((user: any) => (
             <Chip
               className={'LikeChip'}
-              avatar={<Avatar alt="Natacha" src={users[0].Image} />}
+              avatar={<Avatar alt="Natacha" src={`/api/account/get-photo/${user._id}`} />}
               label={user.displayName}
               variant={'outlined'}
             />
           ))}
         </>
       ) : (
-        ''
+        <Title size={'L'}> No volunteers liked this event </Title>
       )}
     </Content>
   )

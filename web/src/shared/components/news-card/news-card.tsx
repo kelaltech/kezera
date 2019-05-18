@@ -1,7 +1,7 @@
 import React, { CSSProperties, useState } from 'react'
 
 import './news-card.scss'
-import { Anchor, Content } from 'gerami'
+import { Content } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import ShareListDialog from '../share-list-dialog/share-list-dialog'
@@ -19,21 +19,20 @@ export interface INewsCardProps {
 }
 
 function NewsCard(props: INewsCardProps) {
-  let { description, commentCount, likeCount, title, imgSrc,shareCount, _id } = props
+  let { description, commentCount, likeCount, title, imgSrc, shareCount, _id } = props
   const [likeClicked, setLikeClicked] = useState(likeCount)
   const [shareClicked, setShareClicked] = useState(shareCount)
 
   const [shareListPicker, setShareListPicker] = useState(false)
 
-
-    const handleShareClick = ()=>{
+  const handleShareClick = () => {
     axios
       .put(`/api/news/${_id}/share`)
-      .then(news=>news.data)
-      .then(data=>{
+      .then(news => news.data)
+      .then(data => {
         setShareClicked(data.share)
       })
-      .catch(e=>{
+      .catch(e => {
         console.log(e) //todo handle error properly
       })
   }
@@ -60,9 +59,7 @@ function NewsCard(props: INewsCardProps) {
         />
         <div className={'news-card-content'}>
           {/*Content*/}
-          <Anchor to={`/news/${_id}`} className={'news-title-anchor'}>
-            <div className={'news-card-content-title'}>{title}</div>
-          </Anchor>
+          <div className={'news-card-content-title'}>{title}</div>
           <div className={'news-card-content-desc'}>
             {description.toString().slice(0, 200)}
           </div>
@@ -85,14 +82,14 @@ function NewsCard(props: INewsCardProps) {
             </span>
             <span onClick={() => setShareListPicker(!shareListPicker)}>
               <FontAwesomeIcon icon={['fas', 'share-alt']} />
-              &nbsp; Share &nbsp;{shareClicked==0?'':(shareClicked)}
+              &nbsp; Share &nbsp;{shareClicked == 0 ? '' : shareClicked}
             </span>
             <ShareListDialog
               open={shareListPicker}
               onClose={() => setShareListPicker(!shareListPicker)}
               title={title}
               _id={_id}
-              handleShare ={handleShareClick}
+              handleShare={handleShareClick}
               shareUrl={`https://spva-app.herokuapp.com`} //todo change share url to actual url
             />
           </div>

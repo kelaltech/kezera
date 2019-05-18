@@ -9,7 +9,7 @@ import { _ } from '../../lib/language'
 import NewsList from '../screens/news-list/news-list'
 import VolunteerSearch from '../screens/volunteer-search/volunteer-search'
 import LayoutRequests from '../../layout-requests/layout-requests'
-import EventList from '../screens/event-list/event-list'
+import Events from '../screens/events/events'
 import OrganizationSubscriptions from '../screens/organization-subscriptions/organization-subscriptions'
 
 const iconHeight = 28
@@ -46,8 +46,8 @@ const LayoutDefaultNavigator = createBottomTabNavigator(
         )
       }
     },
-    EventList: {
-      screen: EventList,
+    Events: {
+      screen: Events,
       navigationOptions: {
         tabBarLabel: ({ focused }: any) => (
           <TabBarLabel focused={focused}>{_`event:events`}</TabBarLabel>

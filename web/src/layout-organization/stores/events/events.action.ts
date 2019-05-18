@@ -1,5 +1,7 @@
 import Axios from 'axios'
 import { Action } from './events.reducer'
+import { addActivity } from '../../../shared/methods/methods'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 
 export function AddEvents(data: FormData, dispatch: (action: Action) => void) {
   Axios.post('/api/event/create', data, {
@@ -8,6 +10,7 @@ export function AddEvents(data: FormData, dispatch: (action: Action) => void) {
   })
     .then(resp => {
       dispatch({ type: 'ADD_EVENT', event: resp.data })
+      addActivity('Created an event', `/event/${resp.data._id}`)
     })
     .catch()
 }
@@ -24,6 +27,23 @@ export function EditEvent(
     .then(resp => {
       console.log(resp.data)
       dispatch({ type: 'EDIT_EVENT', event: resp.data })
+      addActivity('Updated event description', `/event/${resp.data._id}`)
+    })
+    .catch()
+}
+
+export function HandleInterested(id: string, dispatch: (action: Action) => void) {
+  Axios.put(`/api/event/${id}/interest`)
+    .then(resp => {
+      dispatch({ type: 'ADD_INTERESTED', event: resp.data })
+    })
+    .catch()
+}
+
+export function HandleLike(id: string, dispatch: (action: Action) => void) {
+  Axios.put('/api/event/' + id + '/like')
+    .then(resp => {
+      dispatch({ type: 'ADD_LIKE', event: resp.data })
     })
     .catch()
 }

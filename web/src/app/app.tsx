@@ -14,7 +14,7 @@ import { supportedNamespaces } from '../lib/language'
 export let socket = io('http://localhost:8900')
 
 let initSocket = function() {
-  socket.on('connection', () => {})
+  // socket.on('connection', () => {})
 }
 
 function App() {
