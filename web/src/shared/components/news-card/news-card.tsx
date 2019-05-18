@@ -1,10 +1,10 @@
-import React, { Component, CSSProperties, useEffect, useState } from 'react'
+import React, { CSSProperties, useState } from 'react'
 
 import './news-card.scss'
 import { Anchor, Content } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import ShareListDialog from '../share-list-dialog/share-list-dialog'
 
 export interface INewsCardProps {
   title: string
@@ -21,6 +21,7 @@ function NewsCard(props: INewsCardProps) {
   const [likeClicked, setLikeClicked] = useState(0)
   let { description, commentCount, likeCount, title, imgSrc, _id } = props
 
+  const [shareListPicker, setShareListPicker] = useState(false)
   function handleClick() {
     axios
       .put(`/api/news/${_id}/like`)
@@ -31,6 +32,7 @@ function NewsCard(props: INewsCardProps) {
         console.log(e)
       })
   }
+
   return (
     <div className={'news-card-container'}>
       <Content className={'news-card-box'}>
@@ -66,10 +68,16 @@ function NewsCard(props: INewsCardProps) {
               <FontAwesomeIcon icon={['far', 'comment-alt']} />
               &nbsp; Comment
             </span>
-            <span>
+            <span onClick={() => setShareListPicker(!shareListPicker)}>
               <FontAwesomeIcon icon={['fas', 'share-alt']} />
               &nbsp; Share
             </span>
+            <ShareListDialog
+              open={shareListPicker}
+              onClose={() => setShareListPicker(!shareListPicker)}
+              title={title}
+              shareUrl={`http://localhost:3000/news/${_id}`}
+            />
           </div>
         </div>
       </Content>

@@ -1,0 +1,14 @@
+@import '../../../assets/styles/theme';
+.share-list-container {
+}
+
+.share-btn-container {
+  text-align: center;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
