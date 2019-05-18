@@ -5,6 +5,7 @@ import './organization-detail-info.scss'
 import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
 import { LngLat } from 'mapbox-gl'
+import OrganizationDetailStats from '../organization-detail-stats/organization-detail-stats'
 
 interface Props {
   organization: IOrganizationResponse
@@ -31,15 +32,7 @@ function OrganizationDetailInfo({ organization }: Props) {
           </Content>
         )}
 
-        <Content className={'margin-top-big'}>
-          <Block first className={'bold'}>
-            Stats
-          </Block>
-
-          <hr />
-
-          <Block last>// todo: stats</Block>
-        </Content>
+        <OrganizationDetailStats organization={organization} />
 
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
           <Content className={'top'}>
@@ -50,19 +43,7 @@ function OrganizationDetailInfo({ organization }: Props) {
             <hr />
 
             <Block last>
-              <pre
-                style={{
-                  /* todo: move this to gerami v0.1.3 */
-                  margin: 0,
-                  padding: 0,
-                  font: 'inherit',
-                  overflowX: 'auto',
-                  whiteSpace: 'pre-wrap',
-                  wordWrap: 'break-word'
-                }}
-              >
-                {organization.bio}
-              </pre>
+              <pre>{organization.bio}</pre>
             </Block>
           </Content>
 
