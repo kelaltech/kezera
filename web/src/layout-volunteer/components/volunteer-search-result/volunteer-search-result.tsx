@@ -16,7 +16,7 @@ import VolSearchResult from '../../pages/volunteer-search-result/components/volu
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 function VolunteerSearchResult() {
-  const {loading,t} = useLocale(['search-result'])
+  const { loading, t } = useLocale(['search-result'])
   let [value, setValue] = useState(0)
   let [isCollapsed, setCollapse] = useState(false)
   let [searchTerm, setSearchTerm] = useState('')

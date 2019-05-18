@@ -7,7 +7,7 @@
   "event": "Event",
   "no-events": "There are no Events...!",
   "organizations": "Organizations",
-  "no-organizations":"There are no organizations...!",
-  "request":"Requests",
-  "no-requests":"There re no requests...!"
+  "no-organizations": "There are no organizations...!",
+  "request": "Requests",
+  "no-requests": "There re no requests...!"
 }

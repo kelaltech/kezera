@@ -23,7 +23,7 @@ export type Namespace =
   | 'organization'
   | 'request'
   | 'portfolio'
-  |'search-result'
+  | 'search-result'
   | 'spam'
   | 'task'
   | 'verifier'

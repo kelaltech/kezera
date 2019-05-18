@@ -7,7 +7,7 @@ import axios from 'axios'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 function VolunteerNews() {
-  const {loading, t } = useLocale(['news'])
+  const { loading, t } = useLocale(['news'])
   const [news, setNews] = useState([])
   useEffect(() => {
     axios

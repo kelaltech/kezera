@@ -40,7 +40,7 @@ const settings = {
   ]
 }
 function VolunteerEvents() {
-  const { loading, t} = useLocale(['event'])
+  const { loading, t } = useLocale(['event'])
   const [events, setEvents] = useState([])
   const [nearEvents, setNearEvents] = useState([])
 
@@ -59,37 +59,39 @@ function VolunteerEvents() {
       })
       .catch(e => console.log(e))*/
   }, [])
-  return loading || (
-    <div className={'events-container'}>
-      <RichPage title={t`event:title`}>
-        <div className={'e-slider events-list-container'}>
-          <h2>{t`event:events-aroud`} </h2>
-          <Slider {...settings}>
-            {events.map((event: any) => (
-              <div className={'slider-event-list'}>
-                <EventCard event={event} />
-              </div>
-            ))}
-            {/*   {nearEvents.map((event: any) => (//todo uncomment when map is done
+  return (
+    loading || (
+      <div className={'events-container'}>
+        <RichPage title={t`event:title`}>
+          <div className={'e-slider events-list-container'}>
+            <h2>{t`event:events-aroud`} </h2>
+            <Slider {...settings}>
+              {events.map((event: any) => (
+                <div className={'slider-event-list'}>
+                  <EventCard event={event} />
+                </div>
+              ))}
+              {/*   {nearEvents.map((event: any) => (//todo uncomment when map is done
               <div className={'slider-event-list'}>
                 <EventCard  event={event}  />
               </div>
             ))}*/}
-          </Slider>
-        </div>
-        <Block />
-        <div className={'events-list-container'}>
-          <h2>{t`event:upcoming-events`}</h2>
-          <Yoga maxCol={2}>
-            {events.map((event: any) => (
-              <Block>
-                <EventCard event={event} />
-              </Block>
-            ))}
-          </Yoga>
-        </div>
-      </RichPage>
-    </div>
+            </Slider>
+          </div>
+          <Block />
+          <div className={'events-list-container'}>
+            <h2>{t`event:upcoming-events`}</h2>
+            <Yoga maxCol={2}>
+              {events.map((event: any) => (
+                <Block>
+                  <EventCard event={event} />
+                </Block>
+              ))}
+            </Yoga>
+          </div>
+        </RichPage>
+      </div>
+    )
   )
 }
 

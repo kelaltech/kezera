@@ -4,6 +4,7 @@ import * as qs from 'qs'
 
 import { useAccountState } from '../../app/stores/account/account-provider'
 import { Flex } from 'gerami'
+import Sidenav from '../../shared/components/volunteer-side-nav/side-nav'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
@@ -53,10 +54,9 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       )}
 
       <Redirect exact from={`${p}/register`} to={'/login/register'} />
-
+      <Route exact path={`${p}/landing`} component={Landing} />
       <Route exact path={`${p}/discovery`} component={Discovery} />
       <Route exact path={`${p}/events`} component={Event} />
-      <Route exact path={`${p}/landing`} component={Landing} />
       {/*todo change the path to*/}
       <Route exact path={`${p}/my-organization`} component={MyOrganization} />
       <Route exact path={`${p}/news`} component={News} />
@@ -70,7 +70,6 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       <Route exact path={`${p}/event/:_id`} component={EventDetail} />
       <Route exact path={`${p}/news/:_id`} component={NewsDetail} />
       <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
-
       <Route component={NotFound} />
     </Switch>
   )

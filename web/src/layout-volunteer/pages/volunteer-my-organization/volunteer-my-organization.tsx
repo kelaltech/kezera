@@ -8,7 +8,7 @@ import RichPage from '../../../shared/components/rich-page/rich-page'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 function MyOrganization({  }: RouteComponentProps) {
-  const {loading, t} = useLocale(['volunteer-my-organization'])
+  const { loading, t } = useLocale(['volunteer-my-organization'])
   const [organizations, setOrganizations] = useState([])
   const [myOrganizations, setMyOrganization] = useState([])
 
@@ -31,13 +31,15 @@ function MyOrganization({  }: RouteComponentProps) {
       })
       .catch(e => console.log(e))
   }
-  return loading || (
+  return (
     <RichPage title={t`volunteer-my-organization:title`}>
       <div className={'my-organization-list-container'}>
         <div>
           <h3>{t`volunteer-my-organization:my-organization`}</h3>
           {myOrganizations.length === 0 ? (
-            <Block className={'fg-blackish'}>{t`volunteer-my-organization:no-my-organization`}</Block>
+            <Block
+              className={'fg-blackish'}
+            >{t`volunteer-my-organization:no-my-organization`}</Block>
           ) : (
             <Yoga maxCol={4}>
               {myOrganizations.map((organization: any) => (

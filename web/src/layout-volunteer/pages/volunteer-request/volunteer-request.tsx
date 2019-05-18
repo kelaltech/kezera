@@ -6,33 +6,35 @@ import { Tabs } from '@material-ui/core'
 import Tab from '@material-ui/core/es/Tab'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 function VolunteerRequest() {
-  const { loading, t} = useLocale(['request'])
+  const { loading, t } = useLocale(['request'])
   const [value, setValue] = useState(0)
   const handleValueChange = ({}, newValue: any) => {
     setValue(newValue)
   }
-  return loading || (
-    <div>
-      <div className={'request-list-container'}>
-        <Tabs
-          value={value}
-          onChange={handleValueChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          scrollButtons="auto"
-        >
-          <Tab label={'All'} />
-          <Tab label={t`request:material`}/>
-          <Tab label={t`request:fundraising`} />
-          <Tab label={t`request:organ`} />
-        </Tabs>
-        {value === 0 && <AllRequests />}
-        {value === 1 && <MaterialRequest />}
-        {value === 2 && <FundraisingRequest />}
-        {value === 3 && <OrganRequest />}
+  return (
+    loading || (
+      <div>
+        <div className={'request-list-container'}>
+          <Tabs
+            value={value}
+            onChange={handleValueChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            scrollButtons="auto"
+          >
+            <Tab label={'All'} />
+            <Tab label={t`request:material`} />
+            <Tab label={t`request:fundraising`} />
+            <Tab label={t`request:organ`} />
+          </Tabs>
+          {value === 0 && <AllRequests />}
+          {value === 1 && <MaterialRequest />}
+          {value === 2 && <FundraisingRequest />}
+          {value === 3 && <OrganRequest />}
+        </div>
       </div>
-    </div>
+    )
   )
 }
 

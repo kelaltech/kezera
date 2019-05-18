@@ -4,7 +4,6 @@ import axios from 'axios'
 import PropTypes from 'prop-types'
 import NewsCard from '../../../shared/components/news-card/news-card'
 
-
 import EventCard from '../../../shared/components/event-card/event-card'
 import Slider from 'react-slick'
 import RequestCard from '../../../shared/components/request/request-card'
@@ -15,7 +14,7 @@ import { richTextToDisplayText } from '../../../lib/richTextConverter'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 function DiscoveryPage() {
-  const { loading, t }  = useLocale(['volunteer-discovery'])
+  const { loading, t } = useLocale(['volunteer-discovery'])
   const [news, setNews] = useState([])
   const [event, setEvent] = useState([])
   const [organization, setOrganization] = useState([])
@@ -95,87 +94,100 @@ function DiscoveryPage() {
       })
       .catch(e => console.log(e))
   }
-  return loading || (
-    <RichPage title={t`volunteer-discovery:title`} description={t`volunteer-discovery:description`}>
-      <div className={'discovery-container'}>
-        <div className={'discovery-result-container'}>
-          <div>
-            <h2>{t`volunteer-discovery:news`}</h2>
-            <div className={'dis-slider'}>
-              {news.length === 0 ? (
-                <Block className={'fg-blackish'}>{t`volunteer-discovery:no-news`}</Block>
-              ) : (
-                <div>
-                  {t`volunteer-discovery:most-recent`}
-                  <Slider {...settings} {...settingsNews}>
-                    {news.map((n: any) => (
+  return (
+    loading || (
+      <RichPage
+        title={t`volunteer-discovery:title`}
+        description={t`volunteer-discovery:description`}
+      >
+        <div className={'discovery-container'}>
+          <div className={'discovery-result-container'}>
+            <div>
+              <h2>{t`volunteer-discovery:news`}</h2>
+              <div className={'dis-slider'}>
+                {news.length === 0 ? (
+                  <Block
+                    className={'fg-blackish'}
+                  >{t`volunteer-discovery:no-news`}</Block>
+                ) : (
+                  <div>
+                    {t`volunteer-discovery:most-recent`}
+                    <Slider {...settings} {...settingsNews}>
+                      {news.map((n: any) => (
+                        <div className={'slider-list'}>
+                          <NewsCard
+                            _id={n._id}
+                            commentCount={n.comments.length}
+                            imgSrc={`/api/news/${n._id}/pic`}
+                            title={n.title}
+                            likeCount={n.likes.length}
+                            description={n.description}
+                          />
+                        </div>
+                      ))}
+                    </Slider>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className={'result '}>
+              <h2>{t`volunteer-discovery:event`}</h2>
+              <div className={'dis-slider'}>
+                {event.length === 0 ? (
+                  <Block
+                    className={'fg-blackish'}
+                  >{t`volunteer-discovery:no-events`}</Block>
+                ) : (
+                  <Slider {...settings} {...settingsEvents}>
+                    {event.map((n: any) => (
                       <div className={'slider-list'}>
-                        <NewsCard
-                          _id={n._id}
-                          commentCount={n.comments.length}
-                          imgSrc={`/api/news/${n._id}/pic`}
-                          title={n.title}
-                          likeCount={n.likes.length}
-                          description={n.description}
-                        />
+                        <EventCard event={n} />
                       </div>
                     ))}
                   </Slider>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-          <div className={'result '}>
-            <h2>{t`volunteer-discovery:event`}</h2>
-            <div className={'dis-slider'}>
-              {event.length === 0 ? (
-                <Block className={'fg-blackish'}>{t`volunteer-discovery:no-events`}</Block>
-              ) : (
-                <Slider {...settings} {...settingsEvents}>
-                  {event.map((n: any) => (
+            <div className={'result'}>
+              <h2>{t`volunteer-discovery:organizations`}</h2>
+              <div className={'dis-slider dis-sli-event'}>
+                {organization.length === 0 ? (
+                  <Block
+                    className={'fg-blackish'}
+                  >{t`volunteer-discovery:no-organizations`}</Block>
+                ) : (
+                  <Slider {...settings} {...settingsOrganization}>
                     <div className={'slider-list'}>
-                      <EventCard event={n} />
+                      {organization.map((o: any) => (
+                        <OrganizationCard organization={o} />
+                      ))}
                     </div>
-                  ))}
-                </Slider>
-              )}
+                  </Slider>
+                )}
+              </div>
             </div>
-          </div>
-          <div className={'result'}>
-            <h2>{t`volunteer-discovery:organizations`}</h2>
-            <div className={'dis-slider dis-sli-event'}>
-              {organization.length === 0 ? (
-                <Block className={'fg-blackish'}>{t`volunteer-discovery:no-organizations`}</Block>
-              ) : (
-                <Slider {...settings} {...settingsOrganization}>
-                  <div className={'slider-list'}>
-                    {organization.map((o: any) => (
-                      <OrganizationCard organization={o} />
+            <div className={'result-request'}>
+              <h2>{t`volunteer-discovery:requests`}</h2>
+              <div className={'dis-slider'}>
+                {request.length === 0 ? (
+                  <Block
+                    className={'fg-blackish'}
+                  >{t`volunteer-discovery:no-requests`}</Block>
+                ) : (
+                  <Slider {...settings} {...settingsRequest}>
+                    {request.map((r: any) => (
+                      <div className={'slider-list'}>
+                        <RequestCard {...r} />
+                      </div>
                     ))}
-                  </div>
-                </Slider>
-              )}
-            </div>
-          </div>
-          <div className={'result-request'}>
-            <h2>{t`volunteer-discovery:requests`}</h2>
-            <div className={'dis-slider'}>
-              {request.length === 0 ? (
-                <Block className={'fg-blackish'}>{t`volunteer-discovery:no-requests`}</Block>
-              ) : (
-                <Slider {...settings} {...settingsRequest}>
-                  {request.map((r: any) => (
-                    <div className={'slider-list'}>
-                      <RequestCard {...r} />
-                    </div>
-                  ))}
-                </Slider>
-              )}
+                  </Slider>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </RichPage>
+      </RichPage>
+    )
   )
 }
 DiscoveryPage.propTypes = {
