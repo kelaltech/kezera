@@ -48,7 +48,7 @@ type ObjectId = Schema.Types.ObjectId
 export interface IActivity {
   __v: number
   _at: Date
-  activityTypes: IVolunteerActivity | IOrganizationActivity | IVerifierActivity
+  activityTypes?: IVolunteerActivity | IOrganizationActivity | IVerifierActivity
   data: string
   link: string
   accountId: ObjectId

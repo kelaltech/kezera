@@ -12,6 +12,7 @@ import {
   HandleLike
 } from '../../../layout-organization/stores/events/events.action'
 import { useAccountState } from '../../../app/stores/account/account-provider'
+import useLocale from '../../hooks/use-locale/use-locale'
 
 interface IEventProps {
   event: IOrganizationEventResponse
@@ -20,6 +21,7 @@ interface IEventProps {
 export default function EventCard(props: IEventProps) {
   let [open, setOpen] = useState(false)
   let { account } = useAccountState()
+  const { loading, t } = useLocale(['event'])
   let months = [
     'Jan.',
     'Feb.',
@@ -57,7 +59,7 @@ export default function EventCard(props: IEventProps) {
         </div>
         <div className={'EventDateContainer'}>
           {months[new Date(`${props.event.startDate}`).getMonth()]}
-          <br /> {new Date(`${props.event.startDate}`).getDay()}
+          <br /> {new Date(`${props.event.startDate}`).getDate()}
         </div>
       </div>
       <div className={'padding-horizontal-big'}>
@@ -73,17 +75,17 @@ export default function EventCard(props: IEventProps) {
           {' '}
           {props.event.description.substr(0, 90)}...
           {/* //todo add id */}
-          <Link to={`/event/${props.event._id}`}>view</Link>{' '}
+          <Link to={`/event/${props.event._id}`}>{t`view more`}</Link>{' '}
         </p>
       </div>
       <div className="EventField ">
         <FontAwesomeIcon icon={'calendar'} size={'sm'} /> &nbsp;
         <span>
           {months[new Date(`${props.event.startDate}`).getMonth()]}{' '}
-          {new Date(`${props.event.startDate}`).getDay()}
+          {new Date(`${props.event.startDate}`).getDate()}
           &nbsp; to &nbsp; {
             months[new Date(`${props.event.endDate}`).getMonth()]
-          } &nbsp; {new Date(`${props.event.endDate}`).getDay()} &nbsp;{' '}
+          } &nbsp; {new Date(`${props.event.endDate}`).getDate()} &nbsp;{' '}
           {new Date(`${props.event.endDate}`).getFullYear()}
         </span>
       </div>
@@ -95,9 +97,14 @@ export default function EventCard(props: IEventProps) {
         <span className={'full-width flex'}>
           <Button
             onClick={() => HandleInterested(props.event._id.toString(), eventDispatch)}
-            className={'ActionButton'}
+            className={'ActionButton HoverState'}
           >
-            <FontAwesomeIcon icon={'smile'} size={'1x'} className={'InterestedIcon'} />{' '}
+            <FontAwesomeIcon
+              icon={'smile'}
+              size={'1x'}
+              className={'InterestedIcon'}
+              title={'Interested'}
+            />{' '}
             {props.event.interestedVolunteers.length == 0
               ? ''
               : props.event.interestedVolunteers.length}
@@ -106,14 +113,19 @@ export default function EventCard(props: IEventProps) {
         <span className={'full-width flex'}>
           <Button
             onClick={() => HandleLike(props.event._id.toString(), eventDispatch)}
-            className={'ActionButton'}
+            className={'ActionButton HoverState'}
           >
-            <FontAwesomeIcon icon={'heart'} size={'1x'} className="LikeIcon" />{' '}
+            <FontAwesomeIcon
+              icon={'heart'}
+              size={'1x'}
+              className="LikeIcon"
+              title={'Like event'}
+            />{' '}
             {props.event.likes.length == 0 ? '' : props.event.likes.length}
           </Button>
         </span>
         <span className={'full-width flex'}>
-          <Link to={`/event/${props.event._id}`}>
+          <Link to={`/event/${props.event._id}`} className={'HoverState'}>
             {' '}
             <FontAwesomeIcon icon={['far', 'comment-alt']} />
           </Link>
@@ -124,14 +136,14 @@ export default function EventCard(props: IEventProps) {
           <Flex className={'full-width '} />
           <Flex className={'full-width '} />
           <span className={'full-width flex '}>
-            <Button onClick={() => setOpen(true)} className={'ActionButton'}>
+            <Button onClick={() => setOpen(true)} className={'ActionButton HoverState'}>
               <FontAwesomeIcon icon={'pencil-alt'} className={'EditIcon'} />
             </Button>
           </span>
           <span className={'full-width flex'}>
             <Button
               onClick={() => RemoveEvent(props.event._id.toString())}
-              className={'ActionButton '}
+              className={'ActionButton HoverState'}
             >
               <FontAwesomeIcon icon={'trash'} className={'TrashIcon'} />
             </Button>

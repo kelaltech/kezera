@@ -57,18 +57,9 @@ export default function RequestList() {
       {!requests.length && <Content size={'3XL'}>No requests found.</Content>}
 
       <Yoga size={'3XL'} maxCol={3} className={'request-list-yoga yoga-in-rich-page'}>
-        {requests.map((request, i) => {
-          switch (request.type) {
-            case 'Fundraising':
-              return <FundCard key={i} request={request} />
-            case 'Task':
-              return <TaskCard key={i} request={request} />
-            case 'Material':
-              return <TaskCard key={i} request={request} />
-            case 'Organ':
-              return <TaskCard key={i} request={request} />
-          }
-        })}
+        {requests.map((request, i) => (
+          <RequestCard request={request} key={i} />
+        ))}
       </Yoga>
     </RichPage>
   )

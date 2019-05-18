@@ -4,25 +4,21 @@ import axios from 'axios'
 import { RouteComponentProps, withRouter } from 'react-router'
 
 function RequestGoing({ match }: RouteComponentProps<{ _id: string }>) {
-  let [volunteers, setVolunteers] = useState<any[]>([])
+  let [request, setRequest] = useState<any[]>([])
   let getGoing = function() {
     axios
       .get(`/api/request/list-request-volunteers/${match.params._id}`)
-      .then((resp: any) => setVolunteers(resp.data))
+      .then((resp: any) => setRequest(resp.data))
       .catch(console.error)
   }
   useEffect(() => {
     getGoing()
   }, [])
 
-  return !volunteers ? null : (
+  return (
     <Content>
-      <Yoga maxCol={5}>
-        {volunteers.map(volunteer => {
-          ;<div>{volunteer.username}</div>
-        })}
-      </Yoga>
+      <Yoga maxCol={5} />
     </Content>
   )
 }
-export default withRouter(RequestGoing)
+export default RequestGoing

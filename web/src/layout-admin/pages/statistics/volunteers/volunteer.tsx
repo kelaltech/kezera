@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useFetch } from '../../../hooks/Fetch'
 import { ProgressBar } from '../../../components/progress-bar/progress-bar'
 import Axios from 'axios'
+import useLocale from '../../../../shared/hooks/use-locale/use-locale'
 const months = [
   'January',
   'February',
@@ -96,6 +97,7 @@ interface IJoinedVolunteer {
 let Chart = function(props: any) {
   let statistics: IJoinedVolunteer[] = []
   let [stat, setStat] = useState([])
+  let { t } = useLocale(['admin'])
 
   useEffect(() => {
     Axios.get('/api/admin/volunteer/joined')
@@ -123,7 +125,7 @@ let Chart = function(props: any) {
             <Tooltip />
             <Area
               type="monotone"
-              dataKey="Joined_Volunteers"
+              dataKey={`Joined_Volunteers`}
               stroke="#8884d8"
               fill="#8884d8"
               fillOpacity={0.2}
@@ -138,6 +140,7 @@ let Chart = function(props: any) {
 }
 
 let Total = function() {
+  let { t } = useLocale(['admin'])
   let volunteers = useFetch('/api/admin/volunteers')
   return (
     <Block className={'VolunteersDesc'}>
@@ -148,13 +151,14 @@ let Total = function() {
         <FontAwesomeIcon size={'4x'} icon={'users'} />
       </Block>
       <Block className={'center'}>
-        <Title size={'XXL'}> Volunteers </Title>
+        <Title size={'XXL'}> {t`volunteers`} </Title>
       </Block>
     </Block>
   )
 }
 
 let Location = function() {
+  let { t } = useLocale(['admin'])
   let locations = [
     { percent: '38%', location: 'Addis Ababa' },
     { percent: '22%', location: 'Gondar' },
@@ -168,8 +172,7 @@ let Location = function() {
   return (
     <Content transparent className={'LocationListContainer'}>
       <Title>
-        {' '}
-        &emsp;&emsp; <b> #Location </b>
+        &emsp;&emsp; <b> #{t`location`} </b>
       </Title>
       {locations.map(location => (
         <Block>

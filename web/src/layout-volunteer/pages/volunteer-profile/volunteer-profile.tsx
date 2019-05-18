@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Card, Content } from 'gerami'
+import { Block, Card, Content, Yoga } from 'gerami'
 import './volunteer-profile.scss'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import { useVolunteerState } from '../../stores/volunteer/volunteer-provider'
@@ -33,6 +33,7 @@ import {
   ICertificatePrivacy,
   ICertificatePurpose
 } from '../../../../../api/models/certificate/certificate.model'
+import { ICertificateResponse } from '../../../apiv/certificate.apiv'
 
 function Profile() {
   const Settings = {
@@ -74,6 +75,7 @@ function Profile() {
   const { account } = useAccountState()
   const { volunteer } = useVolunteerState()
   const [events, setEvents] = useState([])
+  const [certificate, setCertificate] = useState<ICertificateResponse[]>([])
   useEffect(() => {
     axios
       .get('/api/event/all')
@@ -81,6 +83,15 @@ function Profile() {
         setEvents(events.data)
       })
       .catch(e => console.log(e))
+
+    axios
+      .get<ICertificateResponse[]>(`/api/certificate/list/${volunteer!._id}`)
+      .then(c => {
+        setCertificate(c.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
   }, [])
 
   return (
@@ -231,9 +242,13 @@ function Profile() {
       {/*<Block first />*/}
 
       <Content className={'general-profile'}>
-        <div className={'pro-activity-header '}>
-          <span>Certificates</span>
-        </div>
+        <div className={'pro-activity-header '} />
+        <span>Certificates</span>
+        <Yoga maxCol={2}>
+          {certificate.map((c, i) => (
+            <CertificateCard certificate={c} key={i} />
+          ))}
+        </Yoga>
       </Content>
     </div>
   )

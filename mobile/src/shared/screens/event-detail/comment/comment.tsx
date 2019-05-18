@@ -22,6 +22,7 @@ interface ICommentProps {
 }
 
 function getDate(d: any) {
+  let { t } = useLocale(['comment'])
   var now = new Date()
   var date: any = new Date('' + d)
   var output = ''
@@ -31,26 +32,27 @@ function getDate(d: any) {
       if (date.getDay() === now.getDay()) {
         if (date.getHours() === now.getHours()) {
           if (date.getMinutes() === now.getMinutes()) {
-            output = now.getSeconds() + ' seconds ago'
+            output = now.getSeconds() + ' ' + t`seconds ago`
           } else {
             difference = date.getMinutes() - now.getMinutes()
-            output = (difference < 1 ? -1 * difference : difference) + ' minutes ago'
+            output =
+              (difference < 1 ? -1 * difference : difference) + ' ' + t`minutes ago`
           }
         } else {
           difference = date.getHours() - now.getHours()
-          output = (difference < 1 ? -1 * difference : difference) + ' hours ago'
+          output = (difference < 1 ? -1 * difference : difference) + ' ' + t`hours ago`
         }
       } else {
         difference = date.getDate() - now.getDate()
-        output = (difference < 1 ? -1 * difference : difference) + ' days ago'
+        output = (difference < 1 ? -1 * difference : difference) + ' ' + t`days ago`
       }
     } else {
       difference = date.getMonth() - now.getMonth()
-      output = (difference < 1 ? -1 * difference : difference) + ' month ago'
+      output = (difference < 1 ? -1 * difference : difference) + ' ' + t`month ago`
     }
   } else {
     difference = date.getFullYear() - now.getFullYear()
-    output = (difference < 1 ? -1 * difference : difference) + ' years ago'
+    output = (difference < 1 ? -1 * difference : difference) + ' ' + t`years ago`
   }
   console.log(output)
   return output

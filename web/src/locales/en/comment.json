@@ -1,1 +1,8 @@
-{}
+{
+  "seconds ago": "seconds ago",
+  "minutes ago": "minutes ago",
+  "hours ago": "hours ago",
+  "days ago": "days ago",
+  "months ago": "months ago",
+  "years ago": "years ago"
+}

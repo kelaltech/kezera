@@ -4,9 +4,12 @@ import Comment from '../../../components/comment/comment'
 import Axios from 'axios'
 import { useEffect } from 'react'
 import { socket } from '../../../../app/app'
+import useLocale from '../../../hooks/use-locale/use-locale'
+import { useAccountState } from '../../../../app/stores/account/account-provider'
 
 export default function Comments(props: any) {
   let [comments, setComments] = useState([])
+  let { t } = useLocale(['event'])
   let handleComment = function(e: any) {
     e.preventDefault()
     let formData = new FormData()
@@ -45,18 +48,14 @@ export default function Comments(props: any) {
     <>
       <Content className={' padding-normal'}>
         <form onSubmit={e => handleComment(e)}>
-          <TextArea
-            className={'full-width'}
-            name={'body'}
-            placeholder={'Add a comment...'}
-          />
+          <TextArea className={'full-width'} name={'body'} placeholder={t`message`} />
           <Block className={'right'}>
-            <Button type="submit"> Send </Button>
+            <Button type="submit"> {t`send`} </Button>
           </Block>
         </form>
       </Content>
       <div>
-        <Title size={'3XL'}> Comments </Title>
+        <Title size={'3XL'}> {t`comments`} </Title>
         {comments.length > 0 ? (
           <>
             {comments.map((comment: any) => (
@@ -69,7 +68,7 @@ export default function Comments(props: any) {
             ))}
           </>
         ) : (
-          'No comments'
+          <>{t`no comments`}</>
         )}
       </div>
     </>

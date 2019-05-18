@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import './comment.scss'
-import { Button, Content, Block, Image, Title, TextArea } from 'gerami'
+import {
+  Button,
+  Content,
+  Block,
+  Image,
+  Title,
+  MenuDrop,
+  MenuItem,
+  TextArea
+} from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios from 'axios'
 import { Schema } from 'mongoose'
 import { socket } from '../../../app/app'
 import { ICommentRequest } from '../../../apiv/comment.apiv'
-import { Menu, MenuItem } from '@material-ui/core'
+// import { Menu } from '@material-ui/core'
+import useLocale from '../../hooks/use-locale/use-locale'
+import { useAccountState } from '../../../app/stores/account/account-provider'
+import SpamReportDrop from '../spam-report-drop/spam-report-drop'
 
 interface ICommentProps {
   ParentId: Schema.Types.ObjectId
@@ -16,6 +28,7 @@ interface ICommentProps {
 }
 
 function getDate(d: any) {
+  let { t } = useLocale(['comment'])
   var now = new Date()
   var date: any = new Date('' + d)
   var output = ''
@@ -25,26 +38,27 @@ function getDate(d: any) {
       if (date.getDay() === now.getDay()) {
         if (date.getHours() === now.getHours()) {
           if (date.getMinutes() === now.getMinutes()) {
-            output = now.getSeconds() + ' seconds ago'
+            output = now.getSeconds() + ' ' + t`seconds ago`
           } else {
             difference = date.getMinutes() - now.getMinutes()
-            output = (difference < 1 ? -1 * difference : difference) + ' minutes ago'
+            output =
+              (difference < 1 ? -1 * difference : difference) + ' ' + t`minutes ago`
           }
         } else {
           difference = date.getHours() - now.getHours()
-          output = (difference < 1 ? -1 * difference : difference) + ' hours ago'
+          output = (difference < 1 ? -1 * difference : difference) + ' ' + t`hours ago`
         }
       } else {
         difference = date.getDate() - now.getDate()
-        output = (difference < 1 ? -1 * difference : difference) + ' days ago'
+        output = (difference < 1 ? -1 * difference : difference) + ' ' + t`days ago`
       }
     } else {
       difference = date.getMonth() - now.getMonth()
-      output = (difference < 1 ? -1 * difference : difference) + ' month ago'
+      output = (difference < 1 ? -1 * difference : difference) + ' ' + t`month ago`
     }
   } else {
     difference = date.getFullYear() - now.getFullYear()
-    output = (difference < 1 ? -1 * difference : difference) + ' years ago'
+    output = (difference < 1 ? -1 * difference : difference) + ' ' + t`years ago`
   }
   console.log(output)
   return output
@@ -52,7 +66,10 @@ function getDate(d: any) {
 
 export default function Comment(props: ICommentProps) {
   let [open, setOpen] = useState(false)
+  let [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
   let [reply, setReply] = useState(false)
+  let { loading, t } = useLocale(['event'])
+  let { account } = useAccountState()
   let [replies, setReplies] = useState([])
   let [edit, setEdit] = useState(false)
 
@@ -147,47 +164,64 @@ export default function Comment(props: ICommentProps) {
         <div className={'inline-block right'}>
           <Button onClick={() => setReply(!reply)} className={'ActionButtons'}>
             {' '}
-            <FontAwesomeIcon icon={'reply'} /> &nbsp; Reply
+            <FontAwesomeIcon icon={'reply'} /> &nbsp; {t`reply`}
           </Button>
           &emsp;
           <button onClick={() => setOpen(!open)} className={'ActionButtons'}>
             <FontAwesomeIcon size={'1x'} icon={'ellipsis-v'} />
           </button>
-          <Menu open={open} onClose={() => setOpen(false)}>
+          <MenuDrop open={open} onClose={() => setOpen(false)}>
+            {account!._id === props.comment._by.toString() ? (
+              <MenuItem>
+                {' '}
+                <Button
+                  onClick={() => {
+                    setEdit(true)
+                    setOpen(false)
+                  }}
+                  className="ActionButtons"
+                >
+                  {' '}
+                  <FontAwesomeIcon icon={'pencil-alt'} /> &nbsp; {t`edit`}{' '}
+                </Button>{' '}
+              </MenuItem>
+            ) : (
+              ''
+            )}
+            {account!._id === props.comment._by.toString() ? (
+              <MenuItem>
+                {' '}
+                <Button
+                  className="ActionButtons"
+                  onClick={() => {
+                    setOpen(false)
+                    handleDelete(props.comment._id)
+                  }}
+                >
+                  {' '}
+                  <FontAwesomeIcon icon={'trash'} /> &nbsp; {t`delete`}{' '}
+                </Button>{' '}
+              </MenuItem>
+            ) : (
+              ''
+            )}
             <MenuItem>
               {' '}
               <Button
-                onClick={() => {
-                  setEdit(true)
-                  setOpen(false)
-                }}
+                onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
                 className="ActionButtons"
               >
-                {' '}
-                <FontAwesomeIcon icon={'pencil-alt'} /> &nbsp; Edit{' '}
-              </Button>{' '}
-            </MenuItem>
-            <MenuItem>
-              {' '}
-              <Button className="ActionButtons">
                 {' '}
                 <FontAwesomeIcon icon={'reply'} /> &nbsp; Report
               </Button>{' '}
             </MenuItem>
-            <MenuItem>
-              {' '}
-              <Button
-                className="ActionButtons"
-                onClick={() => {
-                  setOpen(false)
-                  handleDelete(props.comment._id)
-                }}
-              >
-                {' '}
-                <FontAwesomeIcon icon={'trash'} /> &nbsp; Delete{' '}
-              </Button>{' '}
-            </MenuItem>
-          </Menu>
+          </MenuDrop>
+          <SpamReportDrop
+            type={'ORGANIZATION'}
+            ids={[props.comment._id]}
+            open={isSpamReportDropOpen}
+            onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+          />
         </div>
       </Block>
       <Block className={'CommentMessage'}>
@@ -200,9 +234,9 @@ export default function Comment(props: ICommentProps) {
                 name="body"
               />
               <div className="right">
-                <Button type="submit"> Update </Button>
+                <Button type="submit"> {t`update`} </Button>
                 &emsp;
-                <Button onClick={() => setEdit(false)}> Cancel </Button>
+                <Button onClick={() => setEdit(false)}> {t`cancel`} </Button>
               </div>
             </form>
           </>
@@ -216,7 +250,7 @@ export default function Comment(props: ICommentProps) {
             onClick={() => FetchReplies(props.comment._id)}
             className={'margin-small ActionButtons LeftPadding'}
           >
-            View replies
+            {t`view replies`}
           </Button>
         </div>
       ) : (
@@ -224,14 +258,14 @@ export default function Comment(props: ICommentProps) {
       )}
       <Block style={{ display: reply ? 'block' : 'none' }}>
         <form onSubmit={e => handleReply(e)}>
-          <TextArea className={'full-width'} name={'body'} placeholder={'message...'} />
+          <TextArea className={'full-width'} name={'body'} placeholder={t`add reply`} />
           <Block className={'right'}>
             <Button type="submit" onClick={() => setReply(false)}>
               {' '}
-              Send{' '}
+              {t`send`}{' '}
             </Button>
             &emsp;
-            <Button onClick={() => setReply(false)}> Cancel </Button>
+            <Button onClick={() => setReply(false)}> {t`cancel`} </Button>
           </Block>
         </form>
       </Block>

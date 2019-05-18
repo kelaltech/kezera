@@ -1,24 +1,27 @@
+@import '../../../assets/styles/theme';
 .news-card-container {
   width: 100%;
 }
 .news-card-box {
-  width: inherit;
-  height: inherit;
+  width: 100%;
+  height: auto;
   display: flex;
   flex-wrap: wrap;
-  @media screen and (max-width: 700px) {
-    flex-direction: column;
-    flex-wrap: nowrap;
+  box-shadow: 0 7px 7px -4px rgba(0, 0, 0, 0.3);
+  @media screen and (max-width: 750px) {
   }
 }
 
 .news-card-image {
   flex: 50%;
+  width: 50%;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   @media screen and (max-width: 750px) {
     height: 200px;
+    flex: 100%;
+    width: 100%;
   }
 }
 .news-card-content {
@@ -27,13 +30,18 @@
   padding-right: 5px;
 }
 
+.news-title-anchor {
+  color: $fg !important;
+  &:hover {
+    color: $primary !important;
+  }
+}
 .news-card-content-title {
   font-family: 'ZCOOL XiaoWei', serif;
   font-weight: 400;
   font-size: 1.2em;
   letter-spacing: 0.3px;
   margin-top: 5px;
-  margin-bottom: 5px;
   @media screen and (max-width: 700px) {
     font-size: 1.25em;
   }

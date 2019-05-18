@@ -36,5 +36,10 @@ export const accountPaths: SchemaDefinition = {
     index: true,
     unique: true,
     sparse: true
+  },
+
+  lastLocation: {
+    type: { type: String, required: true, enum: ['Point'], default: 'Point' },
+    coordinates: [{ type: Number, required: true }]
   }
 }

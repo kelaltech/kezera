@@ -8,9 +8,11 @@ import Table, {
   TableRow
 } from '../../../../shared/components/Table/Table'
 import axios from 'axios'
+import useLocale from '../../../../shared/hooks/use-locale/use-locale'
 
 export default function EventVerification(props: any) {
   let [all, setAll] = useState(false)
+  let { t } = useLocale(['event'])
   let user: any = []
   let [volunteer, setVolunteer] = useState([])
   let handleSelect = function(id: any) {
@@ -21,7 +23,7 @@ export default function EventVerification(props: any) {
   let verify = function(id: any) {
     axios
       .put(`/api/event/${id}/attended`, user)
-      .then()
+      .then(() => FetchUsers())
       .catch(console.error)
   }
   let FetchUsers = function() {
@@ -39,7 +41,7 @@ export default function EventVerification(props: any) {
   return (
     <Page>
       <Block>
-        <Title size="XXL"> Volunteers </Title>
+        <Title size="XXL"> {t`volunteers`} </Title>
       </Block>
       {volunteer.length > 0 ? (
         <>
@@ -47,23 +49,23 @@ export default function EventVerification(props: any) {
             <TableHeader>
               <TableCell color={'white'}>
                 {' '}
-                <label> No. </label>{' '}
+                <label> {`no.`} </label>{' '}
               </TableCell>
               <TableCell color={'white'}>
                 {' '}
-                <label> Name </label>{' '}
+                <label> {t`name`} </label>{' '}
               </TableCell>
               <TableCell color={'white'}>
                 {' '}
-                <label> Email </label>{' '}
+                <label> {t`email`} </label>{' '}
               </TableCell>
               <TableCell color={'white'}>
                 {' '}
-                <label> Phone no. </label>{' '}
+                <label> {t`phone no.`} </label>{' '}
               </TableCell>
               <TableCell color={'white'}>
                 {' '}
-                <label> Attended </label>{' '}
+                <label> {t`attended?`} </label>{' '}
               </TableCell>
             </TableHeader>
             <TableBody>
@@ -98,7 +100,7 @@ export default function EventVerification(props: any) {
           <Block className={'right'}>
             <Button primary onClick={() => verify(props.match.params._id)}>
               {' '}
-              Verify{' '}
+              {t`verify`}
             </Button>
           </Block>
         </>

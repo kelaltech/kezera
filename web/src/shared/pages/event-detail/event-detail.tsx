@@ -5,11 +5,15 @@ import EventTabs from './event-tabs/event-tabs'
 import axios from 'axios'
 import { Switch } from '@material-ui/core'
 import { useAccountState } from '../../../app/stores/account/account-provider'
+import useLocale from '../../hooks/use-locale/use-locale'
+import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
 
 export default function EventDetail(props: any) {
   let [event, setEvent] = useState()
+  let [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
   let [toggle, setToggle] = useState(false)
   let account = useAccountState()
+  let { t } = useLocale(['event'])
   let months = [
     'Jan.',
     'Feb.',
@@ -37,13 +41,17 @@ export default function EventDetail(props: any) {
   let handleGoing = function() {
     axios
       .put(`/api/event/${props.match.params._id}/going`)
-      .then(resp => setToggle(!toggle))
+      .then(resp => {
+        setToggle(!toggle)
+        FetchDetail()
+      })
       .catch(console.error)
   }
+
   let isGoing = function() {
     axios
       .get(`/api/event/${props.match.params._id}/isGoing`)
-      .then(resp => setToggle(resp.data.goingVolunteers))
+      .then(resp => setToggle(resp.data.going))
       .catch()
   }
   useEffect(() => {
@@ -65,17 +73,54 @@ export default function EventDetail(props: any) {
                 {event.title}
               </Title>
               <div className="inline-block" style={{ float: 'right' }}>
+                <Title size={'M'} className={'inline-block'}>
+                  {event.goingVolunteers.length <=
+                  Number.parseInt(event.amountOfPeople) ? (
+                    <>
+                      {Number.parseInt(event.amountOfPeople) -
+                        event.goingVolunteers.length}{' '}
+                      {t`seats remaining`} &emsp;
+                    </>
+                  ) : (
+                    <> {t`event full`} </>
+                  )}
+                </Title>
                 {account && account!.account!.role == 'VOLUNTEER' ? (
                   <label>
-                    <Title className="inline-block">
-                      {' '}
-                      <b> I'm going </b>{' '}
-                    </Title>
-                    <Switch checked={toggle} onChange={() => handleGoing()} />
+                    {!(event.goingVolunteers.length >= event.amountOfPeople) ? (
+                      <>
+                        <Title className="inline-block">
+                          {' '}
+                          <b> {t`going`} </b>{' '}
+                        </Title>
+                        <Switch checked={toggle} onChange={() => handleGoing()} />
+                      </>
+                    ) : (
+                      <> {t`event full`} </>
+                    )}
                   </label>
                 ) : (
                   ''
                 )}
+
+                {account && account!.account!.role == 'VOLUNTEER' ? (
+                  <>
+                    <Button
+                      onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                    >
+                      Report
+                    </Button>
+                    <SpamReportDrop
+                      type={'EVENT'}
+                      ids={[event._id]}
+                      open={isSpamReportDropOpen}
+                      onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                    />
+                  </>
+                ) : (
+                  ''
+                )}
+
                 {account && account!.account!.role == 'ORGANIZATION' ? (
                   <>
                     <Anchor
@@ -85,14 +130,14 @@ export default function EventDetail(props: any) {
                       button
                     >
                       <FontAwesomeIcon icon={['far', 'user-circle']} />
-                      &nbsp; Attendance{' '}
+                      &nbsp; {t`attending`}
                     </Anchor>
                     &emsp;
                     <Anchor
                       to={`/organization/event/${props.match.params._id}/attended`}
                       button
                     >
-                      <FontAwesomeIcon icon={'check-circle'} /> &nbsp;Attended{' '}
+                      <FontAwesomeIcon icon={'check-circle'} /> &nbsp;{t`attended`}
                     </Anchor>
                   </>
                 ) : (
@@ -113,11 +158,11 @@ export default function EventDetail(props: any) {
                   <Content transparent>
                     {' '}
                     From {months[new Date(`${event.startDate}`).getMonth()]}{' '}
-                    {new Date(`${event.startDate}`).getDay()}
+                    {new Date(`${event.startDate}`).getDate()}
                     &nbsp; to &nbsp; {
                       months[new Date(`${event.endtDate}`).getMonth()]
                     }{' '}
-                    &nbsp; {new Date(`${event.endDate}`).getDay()} &nbsp;{' '}
+                    &nbsp; {new Date(`${event.endDate}`).getDate()} &nbsp;{' '}
                     {new Date(`${event.endDate}`).getFullYear()}{' '}
                   </Content>
                 </label>
@@ -139,7 +184,7 @@ export default function EventDetail(props: any) {
                     {event.interestedVolunteers.length >= 0
                       ? event.interestedVolunteers.length
                       : 0}
-                    &emsp;people interested{' '}
+                    &emsp;{t`people interested`}
                   </Content>
                 </label>
 
@@ -149,7 +194,7 @@ export default function EventDetail(props: any) {
                     icon={['far', 'user-circle']}
                   />
                   <Content className={'full-width'} transparent>
-                    {event.amountOfPeople} people invited{' '}
+                    {event.amountOfPeople} {t`people invited`}
                   </Content>
                 </label>
               </Block>
@@ -158,7 +203,7 @@ export default function EventDetail(props: any) {
           </Content>
         </>
       ) : (
-        <Title size={'3XL'}>Event doesn't exist </Title>
+        <Title size={'L'}>{t`event doesn't exist`} </Title>
       )}
     </>
   )

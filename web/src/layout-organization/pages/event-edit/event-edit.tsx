@@ -19,6 +19,8 @@ import { Schema } from 'mongoose'
 import useField from '../../../shared/hooks/use-field/use-field'
 import { useEventDispatch } from '../../stores/events/events.provider'
 import { EditEvent } from '../../stores/events/events.action'
+import { string } from 'prop-types'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 interface IEventEditProps {
   event: IOrganizationEventResponse
@@ -27,63 +29,17 @@ interface IEventEditProps {
 }
 
 export default function EventEdit(props: IEventEditProps) {
-  let [newEvent, setNewEvent] = useState(event)
+  const { loading, t } = useLocale(['event'])
+
+  let [newEvent, setNewEvent] = useState({
+    title: props.event.title,
+    description: props.event.description,
+    amountOfPeople: props.event.amountOfPeople,
+    startDate: props.event.startDate,
+    endDate: props.event.endDate,
+    location: props.event.location
+  })
   let eventDispatch = useEventDispatch()
-
-  const emitChanges = (eventChanges: any): void => {
-    setNewEvent({ ...newEvent, ...eventChanges })
-    console.log(props.event)
-  }
-
-  const TitleInput = useField<HTMLInputElement>({
-    minLength: 5,
-    maxLength: 50,
-    setValueHook: async value => {
-      emitChanges({ title: value })
-    }
-  })
-
-  const DescriptionInput = useField<HTMLInputElement>({
-    minLength: 100,
-    maxLength: 450,
-    setValueHook: async value => {
-      emitChanges({ description: value })
-    }
-  })
-
-  const StartDateInput = useField<HTMLTimeElement>({
-    minLength: 5,
-    maxLength: 25,
-    setValueHook: async value => {
-      emitChanges({ startDate: value })
-    }
-  })
-
-  const EndDateInput = useField<HTMLTimeElement>({
-    minLength: 5,
-    maxLength: 25,
-    setValueHook: async value => {
-      emitChanges({ endDate: value })
-    }
-  })
-
-  const PeopleInput = useField<HTMLInputElement>({
-    minLength: 1,
-    maxLength: 10,
-    setValueHook: async value => {
-      emitChanges({ amountOfPeople: value })
-    }
-  })
-
-  const LocationInput = useField<HTMLInputElement>({
-    minLength: 3,
-    maxLength: 200,
-    setValueHook: async value => {
-      emitChanges({ location: value })
-    }
-  })
-
-  const image = useField<HTMLInputElement>()
 
   let HandleUpdate = function(e: any, id: string) {
     e.preventDefault()
@@ -93,20 +49,13 @@ export default function EventEdit(props: IEventEditProps) {
     EditEvent(id, body, eventDispatch)
   }
 
-  const validationError = (error: string | null) =>
-    error === null ? null : (
-      <div
-        className={'font-L bold fg-accent margin-left-normal margin-auto'}
-        title={error}
-        style={{ color: 'red', cursor: 'default' }}
-      >
-        !
-      </div>
-    )
   return (
     <Dialog onClose={props.onClose} open={props.open}>
       <Block className={'center'}>
-        <Title size="XXL"> Edit Event </Title>
+        <Title size="XXL">
+          {' '}
+          {t`edit`} {t`event`}{' '}
+        </Title>
       </Block>
       <Content size={'L'}>
         <form
@@ -123,13 +72,11 @@ export default function EventEdit(props: IEventEditProps) {
               <Input
                 name="title"
                 className={'margin-big full-width'}
-                placeholder={'Title'}
-                inputRef={TitleInput.ref}
-                {...TitleInput.inputProps}
+                placeholder={t`name`}
                 required
                 defaultValue={props.event.title}
+                onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
               />
-              {validationError(TitleInput.error)}
             </Flex>
           </Block>
           <Block>
@@ -138,11 +85,11 @@ export default function EventEdit(props: IEventEditProps) {
               name="description"
               className={'full-width'}
               placeholder={'Description...'}
-              inputRef={DescriptionInput.ref}
-              {...DescriptionInput.inputProps}
               defaultValue={props.event.description}
+              onChange={e =>
+                setNewEvent({ ...newEvent, description: e.target.value.trim() })
+              }
             />
-            {validationError(DescriptionInput.error)}
           </Block>
           <Yoga maxCol={2}>
             <Block>
@@ -154,16 +101,16 @@ export default function EventEdit(props: IEventEditProps) {
                 <TextField
                   name="startDate"
                   className="full-width"
-                  label="Start date"
+                  label={t`start date`}
                   type="date"
-                  defaultValue={Date.now()}
+                  defaultValue={new Date().toLocaleDateString()}
                   InputLabelProps={{
                     shrink: true
                   }}
-                  inputRef={StartDateInput.ref}
-                  {...StartDateInput.inputProps}
+                  onChange={e =>
+                    setNewEvent({ ...newEvent, startDate: new Date(e.target.value) })
+                  }
                 />
-                {validationError(StartDateInput.error)}
               </label>
               <label className={'flex'}>
                 <FontAwesomeIcon
@@ -173,13 +120,11 @@ export default function EventEdit(props: IEventEditProps) {
                 <Input
                   name={'location'}
                   className="full-width"
-                  placeholder={'location'}
+                  placeholder={t`location`}
                   defaultValue={props.event.location}
-                  {...LocationInput.inputProps}
-                  inputRef={LocationInput.ref}
+                  onChange={e => setNewEvent({ ...newEvent, location: e.target.value })}
                   required
                 />
-                {validationError(LocationInput.error)}
               </label>
             </Block>
             <Block>
@@ -191,16 +136,16 @@ export default function EventEdit(props: IEventEditProps) {
                 <TextField
                   name="endDate"
                   className="full-width"
-                  label="End date"
+                  label={t`end date`}
                   type="date"
-                  defaultValue={Date.now()}
+                  defaultValue={new Date().toLocaleDateString()}
                   InputLabelProps={{
                     shrink: true
                   }}
-                  inputRef={EndDateInput.ref}
-                  {...EndDateInput.inputProps}
+                  onChange={e =>
+                    setNewEvent({ ...newEvent, endDate: new Date(e.target.value) })
+                  }
                 />
-                {validationError(EndDateInput.error)}
               </label>
               <label className={'flex'}>
                 <FontAwesomeIcon
@@ -210,14 +155,17 @@ export default function EventEdit(props: IEventEditProps) {
                 <Input
                   name="amountOfPeople"
                   className="full-width"
-                  type={'text'}
-                  placeholder={'Total people'}
+                  type={'number'}
+                  placeholder={t`amount of people`}
                   defaultValue={'' + props.event.amountOfPeople}
-                  inputRef={PeopleInput.ref}
-                  {...PeopleInput.inputProps}
+                  onChange={e =>
+                    setNewEvent({
+                      ...newEvent,
+                      amountOfPeople: Number.parseInt(e.target.value)
+                    })
+                  }
                   required
                 />
-                {validationError(PeopleInput.error)}
               </label>
             </Block>
           </Yoga>
@@ -228,11 +176,11 @@ export default function EventEdit(props: IEventEditProps) {
               primary={true}
               className={''}
             >
-              Update
+              {t`update`}
             </Button>
             &emsp;
             <Button onClick={() => props.onClose()} className={''}>
-              Cancel
+              {t`cancel`}
             </Button>
           </Block>
         </form>

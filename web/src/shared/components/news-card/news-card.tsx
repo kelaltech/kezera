@@ -4,6 +4,7 @@ import './news-card.scss'
 import { Content } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 export interface INewsCardProps {
   title: string

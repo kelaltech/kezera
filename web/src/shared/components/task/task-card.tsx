@@ -48,7 +48,7 @@ export default function TaskCard({ request }: ITaskProps) {
           <label>{new Date(request.endDate).toDateString().substr(3)}</label>
         </Flex>
         <h5 className={'center'}>{request.type}</h5>
-        <Title className={'center'}>{request.task.numberNeeded}</Title>
+        {/*<Title className={'center'}>{request.task.numberNeeded}</Title>*/}
         <hr />
 
         <Flex>

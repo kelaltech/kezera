@@ -25,7 +25,6 @@ import {
   listLatestEvents,
   upcomingEvents
 } from './event.controller'
-import * as fs from 'fs'
 
 export const eventRouter = new Router({ prefix: '/api/event' })
 
@@ -63,11 +62,7 @@ eventRouter.get('/search', async ctx => {
 eventRouter.post('/create', async ctx => {
   console.log(ctx.request.body.event)
   console.log(ctx.request.files!.image.path)
-  ctx.body = await addEvent(
-    JSON.parse(ctx.request.body.event),
-    ctx.state.user._id,
-    fs.createReadStream(ctx.request.files!.image.path)
-  )
+  ctx.body = await addEvent(JSON.parse(ctx.request.body.event), ctx.state.user._id, ctx)
 })
 
 eventRouter.put('/:_id/attended', async ctx => {
@@ -86,7 +81,7 @@ eventRouter.put('/:_id', async ctx => {
     ctx.params._id,
     JSON.parse(ctx.request.body.event),
     ctx.state.user._id,
-    fs.createReadStream(ctx.request.files!.image.path)
+    ctx
   )
 })
 

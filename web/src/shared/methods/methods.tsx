@@ -1,10 +1,11 @@
 import Axios from 'axios'
+import { useAccountState } from '../../app/stores/account/account-provider'
 
-export function addActivity(data: string, link: string, type: any) {
+export function addActivity(displayData: string, link: string) {
   let body = new FormData()
-  body.append('data', data)
+  body.append('data', displayData)
   body.append('link', link)
-  body.append('activityType', type)
+
   Axios.post('/api/activity/add', body)
     .then()
     .catch()

@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Editor, createEditorState, ImageSideButton } from 'medium-draft'
 import axios from 'axios'
 import { convertToRaw, convertFromRaw, EditorState, addNewBlock, Block } from 'draft-js'
 import './news-add.scss'
 import 'medium-draft/lib/index.css'
-import { Button, ImageInput } from 'gerami'
+import { Button, ImageInput, Loading } from 'gerami'
 import { withRouter } from 'react-router'
 import { useMyOrganizationState } from '../../stores/my-organization/my-organization-provider'
-// import 'https://unpkg.com/medium-draft@0.3.10/dist/medium-draft.js'
-
-interface INewsAddState {
-  title: any
-  description: any
-  article: any
-  error: any
-}
+import RichPage from '../../../shared/components/rich-page/rich-page'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface INewsAddProps {
   edit: boolean
@@ -34,25 +28,18 @@ function NewsAdd({
   const [title, setTitle] = useState(createEditorState())
   const [description, setDescription] = useState(createEditorState())
   const [article, setArticle] = useState(createEditorState())
+  const [picture, setPicture] = useState()
+  const [imageSrc, setImageSrc] = useState()
   const [error, setError] = useState('')
-
-  let refsEditor = React.createRef()
+  const [submitting, setSubmitting] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const { myOrganization } = useMyOrganizationState()
   useEffect(() => {
     if (edit) {
       getNews()
     }
-    // @ts-ignore
-    refsEditor.current.focus()
   }, [])
-
-  const sideButtons = [
-    {
-      title: 'Add Your Cover Image',
-      component: CustomImageSideButton
-    }
-  ]
 
   const publishClicked = () => {
     addNews()
@@ -69,7 +56,8 @@ function NewsAdd({
     setArticle(article)
   }
 
-  const addNews = () => {
+  const addNews = async (): Promise<void> => {
+    setSubmitting(true)
     const publication = {
       title: JSON.stringify(convertToRaw(title.getCurrentContent())),
       description: JSON.stringify(convertToRaw(description.getCurrentContent())),
@@ -78,13 +66,29 @@ function NewsAdd({
     }
 
     axios
-      .post('/api/news/new', publication)
+      .post(`/api/news/new`, publication, {
+        withCredentials: true
+      })
+      .then(news => news.data)
       .then(data => {
-        console.log('successfully added')
-        console.log(data)
+        const formData = new FormData()
+        formData.append('file', picture)
+        axios
+          .post(`/api/news/${data._id}/addpic`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+            withCredentials: true
+          })
+          .then((data: any) => {
+            setSubmitting(false)
+          })
+          .catch(e =>
+            setError(
+              'something went wrong! cant add image for this news.\n Please try again!'
+            )
+          )
       })
       .catch(e => {
-        console.log(e)
+        setError('something went wrong! adding new story failed...! try again  ')
       })
   }
 
@@ -92,7 +96,6 @@ function NewsAdd({
     axios
       .get(`/api/news/${match.params._id}`)
       .then((data: any) => {
-        console.log('successfully fetched!!')
         setTitle(
           EditorState.createWithContent(convertFromRaw(JSON.parse(data.data.title)))
         )
@@ -102,95 +105,153 @@ function NewsAdd({
         setArticle(
           EditorState.createWithContent(convertFromRaw(JSON.parse(data.data.article)))
         )
+        setImageSrc(`/api/news/${match.params._id}/pic`)
       })
-      .catch(e => console.log(e))
+      .catch(() => setError('sorry something went wrong! cant get the news.'))
   }
 
-  const updateNews = () => {
+  const updateNews = async (): Promise<void> => {
+    setSubmitting(true)
     const publication = {
       title: JSON.stringify(convertToRaw(title.getCurrentContent())),
       description: JSON.stringify(convertToRaw(description.getCurrentContent())),
       article: JSON.stringify(convertToRaw(article.getCurrentContent()))
     }
+
     axios
       .put(`/api/news/${match.params._id}`, publication)
+      .then(data => data)
       .then(data => {
-        console.log('successfully edited')
+        console.log('this is data', data)
+        const formData = new FormData()
+        formData.append('file', picture)
+        axios
+          .post(`/api/news/${match.params._id}/addpic`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+            withCredentials: true
+          })
+          .then((data: any) => {
+            setSubmitting(false)
+            getNews()
+          })
+          .catch(e =>
+            setError(
+              'something went wrong! cant add image for this news.\n Please try again!'
+            )
+          )
       })
       .catch(e => {
-        console.log(e)
+        setError('something went wrong! cant update the story.\n Please try again')
       })
   }
 
   const myBlockStyle = () => {
     return 'myOwnClass'
   }
+
+  const handleInputChange = async (): Promise<void> => {
+    if (inputRef.current && inputRef.current.files && inputRef.current.files.length) {
+      setPicture(inputRef.current.files[0])
+      let reader = new FileReader()
+      reader.onload = e => {
+        setImageSrc((e.target as any).result)
+      }
+      reader.readAsDataURL(inputRef.current.files[0])
+    }
+  }
+
   return (
-    <div className={'news-card-add-top-container'}>
-      <div>
-        {edit ? (
-          <Button onClick={updateNews}>Save changes</Button>
-        ) : (
-          <Button onClick={publishClicked}>Publish</Button>
-        )}
+    <RichPage
+      title={'Create a story'}
+      description={'create your stories here'}
+      error={error}
+      actions={
+        edit
+          ? [
+              {
+                onClick: updateNews,
+                primary: !submitting,
+                children: (
+                  <>
+                    {submitting ? (
+                      <Loading className={'padding-none'} />
+                    ) : (
+                      <>
+                        <FontAwesomeIcon
+                          icon={'pencil-alt'}
+                          className={'margin-right-normal font-S'}
+                        />
+                        Save changes
+                      </>
+                    )}
+                  </>
+                )
+              }
+            ]
+          : [
+              {
+                onClick: publishClicked,
+                primary: !submitting,
+                children: (
+                  <>
+                    {submitting ? (
+                      <Loading className={'padding-none'} />
+                    ) : (
+                      <>
+                        <FontAwesomeIcon
+                          icon={'pencil-alt'}
+                          className={'margin-right-normal font-S'}
+                        />
+                        Publish
+                      </>
+                    )}
+                  </>
+                )
+              }
+            ]
+      }
+    >
+      <div className={'news-card-add-top-container'}>
+        <div className={'news-card-add-container'}>
+          <div
+            className={'news-img-container'}
+            style={{
+              backgroundImage: `url(${imageSrc ? imageSrc : ''})`
+            }}
+            onClick={() => inputRef.current && inputRef.current.click()}
+          >
+            <div style={{ display: 'none' }}>
+              <input type={'file'} ref={inputRef} onChange={handleInputChange} />
+            </div>
+            <div className={'img-add-placeholder fg-blackish'}>
+              <span>click here to add a cover image for your story</span>
+            </div>
+          </div>
+          <Editor
+            placeholder={'Title'}
+            editorState={title}
+            onChange={titleOnChange}
+            sideButtons={[]}
+          />
+          <Editor
+            placeholder={'Description'}
+            className={'news-card-add-title'}
+            editorState={description}
+            sideButtons={[]}
+            onChange={descriptionOnChange}
+          />
+          <Editor
+            placeholder={'Article'}
+            className={'news-card-add-title'}
+            editorState={article}
+            sideButtons={[]}
+            onChange={articleOnChange}
+            blockStyleFn={myBlockStyle}
+          />
+        </div>
       </div>
-      <div className={'news-card-add-container'}>
-        <ImageInput />
-        <Editor
-          placeholder={'Title'}
-          editorState={title}
-          onChange={titleOnChange}
-          sideButtons={[]}
-        />
-        <Editor
-          ref={refsEditor}
-          placeholder={'Description'}
-          className={'news-card-add-title'}
-          editorState={description}
-          onChange={descriptionOnChange}
-          sideButtons={sideButtons}
-        />
-        <Editor
-          placeholder={'Article'}
-          className={'news-card-add-title'}
-          editorState={article}
-          sideButtons={[]}
-          onChange={articleOnChange}
-          blockStyleFn={myBlockStyle}
-        />
-      </div>
-    </div>
+    </RichPage>
   )
 }
 
 export default withRouter(NewsAdd)
-
-class CustomImageSideButton extends ImageSideButton<any, any> {
-  onChange(e: any) {
-    const newsid = window.location.pathname.split('/')[3]
-
-    const file = e.target.files[0]
-    if (file.type.indexOf('image/') === 0) {
-      // This is a post request to server endpoint with image as `image`
-      const formData = new FormData()
-      formData.append('file', file)
-      axios
-        .post(`/api/news/${newsid}/addpic`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-          withCredentials: true
-        })
-        .then((data: any) => {
-          console.log(data)
-          if (data.url) {
-            this.props.setEditorState(
-              addNewBlock(this.props.getEditorState(), Block.IMAGE, {
-                src: data.url
-              })
-            )
-          }
-        })
-        .catch(() => {})
-    }
-    this.props.close()
-  }
-}

@@ -2,7 +2,11 @@ import { ActivityModel, IActivity } from '../../models/activity/activity.model'
 import { add, list } from '../../lib/crud'
 import { Schema } from 'mongoose'
 
-export async function AddActivity(body: IActivity): Promise<IActivity> {
+export async function AddActivity(
+  body: IActivity,
+  userId: Schema.Types.ObjectId
+): Promise<IActivity> {
+  body.accountId = userId
   return await add(ActivityModel, body)
 }
 

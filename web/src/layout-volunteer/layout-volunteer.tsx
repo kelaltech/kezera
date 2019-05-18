@@ -67,15 +67,3 @@ function LayoutVolunteer({ error, match }: Props) {
 }
 
 export default LayoutVolunteer
-
-/*
-*   <div className={'arrow-sidenav'} onClick={handleSidenavWidth}>
-              <span>
-                {iconRight ? (
-                  <FontAwesomeIcon icon={faChevronLeft} />
-                ) : (
-                  <FontAwesomeIcon icon={faChevronRight} />
-                )}
-              </span>
-            </div>
-            {mini ? <MiniNav /> : <Sidenav />}*/

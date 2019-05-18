@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import './drawer.scss'
 import { Anchor, Block, Content, Drawer, Flex } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 export default function AdminDrawer(props: any) {
   let [open, setOpen] = useState(true)
+  let { t } = useLocale(['admin'])
   return (
     <div className="inline-block flex full-width AdminDrawer">
       <div className={'AdminDrawerContent'}>
@@ -14,7 +16,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor to={'/'} className={'flex'}>
             {' '}
-            Dashboard{' '}
+            {t`dashboard`}
           </Anchor>
         </Block>
         <hr />
@@ -26,7 +28,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor href={'/#ORGANIZATION'} className={'no-decoration flex'}>
             {' '}
-            Organizations{' '}
+            {t`organizations`}
           </Anchor>
         </Block>
         <hr />
@@ -38,7 +40,7 @@ export default function AdminDrawer(props: any) {
             className={'no-decoration no-decoration no-decoration flex'}
           >
             {' '}
-            Volunteers{' '}
+            {t`volunteers`}
           </Anchor>
         </Block>
         <hr />
@@ -47,7 +49,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor href={'/#DONATION'} className={'no-decoration flex'}>
             {' '}
-            Donations{' '}
+            {t`requests`}
           </Anchor>
         </Block>
         <hr />
@@ -59,7 +61,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor href={'/#NEWS'} className={'no-decoration flex'}>
             {' '}
-            News{' '}
+            {t`news`}{' '}
           </Anchor>
         </Block>
         <hr />
@@ -71,7 +73,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor href={'/#NEWS'} className={'no-decoration flex'}>
             {' '}
-            Events
+            {t`events`}
           </Anchor>
         </Block>
         <hr />
@@ -83,7 +85,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor to={'/verifiers'} className={'flex'}>
             {' '}
-            Verifiers{' '}
+            {t`verifiers`}{' '}
           </Anchor>
         </Block>
         <hr />
@@ -95,19 +97,7 @@ export default function AdminDrawer(props: any) {
           &emsp;
           <Anchor to={'/account'} className={'flex'}>
             {' '}
-            Account{' '}
-          </Anchor>
-        </Block>
-        <hr />
-        <Block className={'flex'}>
-          <FontAwesomeIcon
-            icon={'door-open'}
-            className={'primary margin-top-small flex'}
-          />
-          &emsp;
-          <Anchor to={'/statistics'} className={'flex'}>
-            {' '}
-            Logout{' '}
+            {t`account`}{' '}
           </Anchor>
         </Block>
         <hr />

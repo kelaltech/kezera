@@ -27,12 +27,21 @@ import RequestMaterialDetail from './request-material/request-material'
 import RequestOrganDetail from './request-organ/request-organ-detail'
 import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
 import { useVolunteerState } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
+import RequestGoing from './request-going/request-going'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const [request, setRequest] = useState<any>()
 
   const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
   let { myOrganization } = useMyOrganizationState()
+
+  let [volunteers, setVolunteers] = useState<any[]>([])
+  let getGoing = function() {
+    axios
+      .get(`/api/request/list-request-volunteers/${match.params._id}`)
+      .then((resp: any) => setVolunteers(resp.data))
+      .catch(console.error)
+  }
 
   let isGoing = function() {
     axios
@@ -55,7 +64,7 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
 
   useEffect(() => {
     getRequest()
-    isGoing()
+    getGoing()
   }, [])
   const { account } = useAccountState()
   const { volunteer } = useVolunteerState()
@@ -72,7 +81,10 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
             {
               children: (
                 <Switch
-                  checked={request.volunteers.includes(volunteer)}
+                  checked={
+                    volunteer &&
+                    request.volunteers.map((v: any) => v._id).includes(volunteer._id)
+                  }
                   onChange={() => isGoing()}
                 >
                   Attend

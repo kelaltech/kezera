@@ -49,11 +49,11 @@ adminRouter.get('/verifier/list', authorize(['ADMIN']), async ctx => {
 
 // /api/admin/verifier/add
 adminRouter.post('/verifier/add', authorize(['ADMIN']), async ctx => {
-  console.log('Adding a verifier')
+  console.log(ctx.request.body.data)
   ctx.body = await transact(s => {
     return AddVerifier(
       s,
-      ctx.request.body,
+      JSON.parse(ctx.request.body.data),
       fs.createReadStream(ctx.request.files!.image.path)
     )
   })

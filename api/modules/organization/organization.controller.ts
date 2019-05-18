@@ -144,7 +144,28 @@ export class OrganizationController extends KoaController {
       session,
       conditions,
       since,
-      count
+      count,
+      postQuery: (query, s) => {
+        if (
+          !account ||
+          !account.lastLocation.coordinates ||
+          !account.lastLocation.coordinates.length
+        )
+          return query
+
+        return query
+          .find({
+            'locations.geo': {
+              $nearSphere: {
+                $geometry: {
+                  type: 'Point',
+                  coordinates: account.lastLocation.coordinates
+                }
+              }
+            }
+          })
+          .session(s)
+      }
     })
     return await Promise.all(
       organizations.map(organization => organizationDocumentToResponse(organization))

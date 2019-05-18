@@ -72,3 +72,12 @@ accountRouter.post('/login', login({ strategyName: 'local' }))
 
 // all /api/account/logout
 accountRouter.all('/logout', logout({}))
+
+/* TRACKING */
+
+// POST /api/account/set-last-location
+accountRouter.put(
+  '/set-last-location',
+  authenticate(),
+  handle(AccountController, (c, s) => c.setLastLocation(s))
+)

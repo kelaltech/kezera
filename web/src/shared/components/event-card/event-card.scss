@@ -78,8 +78,31 @@
 
 .LikeIcon {
   color: rgba(255, 0, 0, 0.747);
+  &:hover {
+    width: 15px;
+    height: 15px;
+  }
 }
 
 .InterestedIcon {
   color: rgba(40, 40, 231, 0.89);
+  &:hover {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.HoverState {
+  &:hover {
+    background-color: white;
+  }
+  &:active {
+    background-color: white;
+  }
+  &:after {
+    background-color: white;
+  }
+  &:focus {
+    background-color: white;
+  }
 }
