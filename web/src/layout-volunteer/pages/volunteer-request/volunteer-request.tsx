@@ -47,7 +47,8 @@ function AllRequests() {
     axios
       .get('/api/request/list')
       .then(request => {
-        // setRequest(request.data)
+        /*console.log(request.data)
+        setRequest(request.data)*/
         setRequest([]) //todo uncomment the above
       })
       .catch(e => console.log(e))

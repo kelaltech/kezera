@@ -1,13 +1,13 @@
 {
-  "user-setting":"መቼት",
-  "username":"የተጠቃሚ ስም",
-  "gender":"ፆታ",
-  "country":"ሃገር",
-  "birthdate":"የትውልድ ቀን",
-  "privacy-setting":"ግላዊ መቼት",
-  "certificate":"የምስክር ወረቀት",
-  "event":"ፕሮግራም",
-  "material":"ቁሳቁስ",
-  "task":"የበጎፍቃድ ስራዎች",
-  "money":"ገንዘብ"
+  "user-setting": "መቼት",
+  "username": "የተጠቃሚ ስም",
+  "gender": "ፆታ",
+  "country": "ሃገር",
+  "birthdate": "የትውልድ ቀን",
+  "privacy-setting": "ግላዊ መቼት",
+  "certificate": "የምስክር ወረቀት",
+  "event": "ፕሮግራም",
+  "material": "ቁሳቁስ",
+  "task": "የበጎፍቃድ ስራዎች",
+  "money": "ገንዘብ"
 }
