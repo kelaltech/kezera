@@ -64,7 +64,8 @@ function OrganizationDetailNews({ organization }: Props) {
                       commentCount={n.comments.length}
                       description={n.description}
                       imgSrc={`/api/news/${n._id}/pic`}
-                      _id={n._id}/>
+                      _id={n._id}
+                    />
                   ))}
                 </Yoga>
                 {news.length && news.length % count === 0 && (

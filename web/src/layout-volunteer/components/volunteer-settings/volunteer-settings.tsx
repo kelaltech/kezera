@@ -50,7 +50,7 @@ function VolunteerSettings({ readonly }: Props) {
   const [gender, setGender] = useState(volunteer ? volunteer.gender : '')
   const [country, setCountry] = useState(volunteer ? volunteer.country : '')
   const [location, setLocation] = useState(volunteer ? volunteer.location : '')
-  const [birthdate, setBirthdate] = useState(volunteer ? volunteer.birthdate : '')
+  const [birthdate, setBirthdate] = useState<any>(volunteer ? volunteer.birthdate : '')
   const [username, setUsername] = useState(volunteer ? volunteer.username : '')
 
   const [editGender, setEditGender] = useState(false),
@@ -60,16 +60,17 @@ function VolunteerSettings({ readonly }: Props) {
     [editUsername, setEditUsername] = useState(false)
 
   const [visibility, setVisibility] = useState({
-    task: true,
-    money: true,
-    material: true,
-    event: true,
-    certificate: true
+    task: volunteer!.privacy.task,
+    money: volunteer!.privacy.money,
+    material: volunteer!.privacy.material,
+    event: volunteer!.privacy.event,
+    certificate: volunteer!.privacy.certificate
   })
 
   const handleVisibility = (name: string) => (e: any) => {
-    setVisibility({ ...visibility, [name]: e.target.checked })
-    emitChange({ visibility })
+    const data = { ...visibility, [name]: e.target.checked }
+    setVisibility({ ...data })
+    emitChange({ privacy: data })
   }
 
   const emitChange = (volunteerChanges: any): void => {
@@ -98,11 +99,6 @@ function VolunteerSettings({ readonly }: Props) {
     e.preventDefault()
     emitChange({ country })
     setEditCountry(false)
-  }
-  const handleLocationChange = (e: any) => {
-    e.preventDefault()
-    emitChange({ location })
-    setEditLocation(false)
   }
 
   return (
@@ -135,7 +131,7 @@ function VolunteerSettings({ readonly }: Props) {
                 />
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{`username`}</span>
+                  <span className={'fg-blackish'}>{`username: `}</span>
                   <span>{username}</span>
                 </div>
               )}
@@ -179,7 +175,7 @@ function VolunteerSettings({ readonly }: Props) {
                 </TextField>
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{`Gender`}</span>
+                  <span className={'fg-blackish'}>{`Gender: `}</span>
                   <span>{gender}</span>
                 </div>
               )}
@@ -215,7 +211,7 @@ function VolunteerSettings({ readonly }: Props) {
                 />
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{`Country`}</span>
+                  <span className={'fg-blackish'}>{`Country: `}</span>
                   <span>{country}</span>
                 </div>
               )}
@@ -232,43 +228,6 @@ function VolunteerSettings({ readonly }: Props) {
           <div className={'padding-horizontal-very-big padding-vertical-normal'}>
             <hr style={{ opacity: 0.5 }} />
           </div>
-
-          <form method={'POST'} onSubmit={handleLocationChange}>
-            <Block
-              className={`${
-                editLocation ? 'setting-general-field-editing' : ''
-              } setting-general-field`}
-            >
-              <FontAwesomeIcon className={'margin-right-big'} icon={faSearchLocation} />
-              {editLocation ? (
-                <Input
-                  className={'full-width'}
-                  type={'text'}
-                  label={`Location`}
-                  name={'location'}
-                  value={location}
-                  onChange={e => setLocation(e.target.value)}
-                />
-              ) : (
-                <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{`Location`}</span>
-                  <span>{location}</span>
-                </div>
-              )}
-
-              <Button
-                type={!editLocation ? 'submit' : 'button'}
-                className={'small-circle-button margin-left-big'}
-                onClick={() => setEditLocation(!editLocation)}
-              >
-                <FontAwesomeIcon icon={editLocation ? 'check' : 'pencil-alt'} />
-              </Button>
-            </Block>
-          </form>
-          <div className={'padding-horizontal-very-big padding-vertical-normal'}>
-            <hr style={{ opacity: 0.5 }} />
-          </div>
-
           <form method={'POST'} onSubmit={handleBirthdate}>
             <Block
               className={`${
@@ -279,16 +238,16 @@ function VolunteerSettings({ readonly }: Props) {
               {editBirthdate ? (
                 <Input
                   className={'full-width'}
-                  type={'text'}
+                  type={'date'}
                   label={`Birthdate`}
                   name={'birthdate'}
                   // @ts-ignore
                   value={birthdate}
-                  onChange={e => setBirthdate(new Date(e.target.value))}
+                  onChange={e => setBirthdate(e.target.value)}
                 />
               ) : (
                 <div className={'full-width'}>
-                  <span className={'fg-blackish'}>{`Birthdate`}</span>
+                  <span className={'fg-blackish'}>{`Birthdate: `}</span>
                   <span>{birthdate}</span>
                 </div>
               )}
