@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Content, Flex, FlexSpacer, Loading, Warning, Yoga } from 'gerami'
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  Pie,
-  PieChart,
-  Tooltip,
-  XAxis,
-  YAxis
-} from 'recharts'
+import { Block, Content, Flex, Loading, Warning, Yoga } from 'gerami'
+import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts'
 import Axios from 'axios'
 
 import {
@@ -30,15 +20,10 @@ function OrganizationDetailStats({ organization }: Props) {
     { type: string; total: number; active: number }[]
   >([])
 
-  const [eventsData, setEventsData] = useState<{ type: string; total: number }[]>([])
-
   useEffect(() => {
     Axios.get<IOrganizationStats>(`/api/organization/stats/${organization._id}`)
       .then(response => response.data)
       .then(data => {
-        data.events.total = 14
-        data.events.upcoming = 3
-        data.events.ongoing = 1
         setStats(data)
 
         const newRequestsData: { type: string; total: number; active: number }[] = []
@@ -63,15 +48,6 @@ function OrganizationDetailStats({ organization }: Props) {
           active: data.requests.organDonation.active
         })
         setRequestsData(newRequestsData)
-
-        const newEventsData: { type: string; total: number }[] = []
-        newEventsData.push({ type: 'Ongoing', total: data.events.ongoing })
-        newEventsData.push({ type: 'Upcoming', total: data.events.upcoming })
-        newEventsData.push({
-          type: 'Past',
-          total: data.events.total - (data.events.ongoing + data.events.upcoming)
-        })
-        setEventsData(newEventsData)
       })
       .catch(e =>
         setError(
