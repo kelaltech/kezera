@@ -42,19 +42,7 @@ function SpamReportCard({ spamReport, className }: Props) {
 
             {spamReport.description && (
               <div className={'margin-top-normal'}>
-                <pre
-                  style={{
-                    /* todo: move this to gerami v0.1.3 */
-                    margin: 0,
-                    padding: 0,
-                    font: 'inherit',
-                    overflowX: 'auto',
-                    whiteSpace: 'pre-wrap',
-                    wordWrap: 'break-word'
-                  }}
-                >
-                  {spamReport.description}
-                </pre>
+                <pre>{spamReport.description}</pre>
               </div>
             )}
           </div>

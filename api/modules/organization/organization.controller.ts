@@ -1,8 +1,12 @@
 import { ClientSession } from 'mongoose'
-import { createReadStream } from 'fs'
+import * as sharp from 'sharp'
 
 import { KoaController } from '../../lib/koa-controller'
-import { IOrganizationRequest, IOrganizationResponse } from './organization.apiv'
+import {
+  IOrganizationRequest,
+  IOrganizationResponse,
+  IOrganizationStats
+} from './organization.apiv'
 import { add, edit, get, list, search } from '../../lib/crud'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
@@ -27,20 +31,7 @@ export class OrganizationController extends KoaController {
     data: IOrganizationRequest = JSON.parse(
       super.getRequestBody<{ data: string }>().data
     ),
-    logoStream = super.getContext() &&
-    super.getContext()!.request &&
-    super.getContext()!.request.files &&
-    super.getContext()!.request.files!.logo &&
-    super.getContext()!.request.files!.logo.path
-      ? createReadStream(super.getContext()!.request.files!.logo!.path)
-      : undefined,
-    logoType = super.getContext() &&
-    super.getContext()!.request &&
-    super.getContext()!.request.files &&
-    super.getContext()!.request.files!.logo &&
-    super.getContext()!.request.files!.logo.type
-      ? super.getContext()!.request.files!.logo!.type
-      : undefined
+    ctx = super.getContext()
   ): Promise<IOrganizationResponse> {
     const application = await add(
       OrganizationApplicationModel,
@@ -71,14 +62,24 @@ export class OrganizationController extends KoaController {
 
     if (session) await session.commitTransaction()
 
-    if (logoStream) {
+    const logo = ctx && ctx.request.files && ctx.request.files['photo']
+    if (logo) {
+      const stream = sharp(logo.path)
+        .resize(1080, 1080, { fit: 'cover' })
+        .jpeg({ quality: 100 })
+
       const grid = new Grid(
         serverApp,
         OrganizationApplicationModel,
         application._id,
         'logo'
       )
-      await grid.set(logoStream, logoType)
+      await new Promise<void>(async (resolve, reject) => {
+        stream.on('error', reject)
+
+        await grid.set(stream, 'image/jpeg')
+        resolve()
+      })
     }
 
     return await organizationDocumentToResponse(application, application.account)
@@ -172,8 +173,80 @@ export class OrganizationController extends KoaController {
     )
   }
 
-  async stats(): Promise<void> {
-    // todo
+  async stats(
+    session?: ClientSession,
+    organization_id = super.getParam('organization_id')
+  ): Promise<IOrganizationStats> {
+    const organization = await get(OrganizationModel, organization_id, { session })
+    const account_id = organization.account
+
+    const now = Date.now()
+
+    return {
+      requests: {
+        total: await RequestModel.find({ _by: account_id }).count(),
+        active: await RequestModel.find({ _by: account_id, status: true }).count(),
+
+        tasks: {
+          total: await RequestModel.find({ _by: account_id, type: 'Task' }).count(),
+          active: await RequestModel.find({
+            _by: account_id,
+            type: 'Task',
+            status: true
+          }).count()
+        },
+
+        materialDonation: {
+          total: await RequestModel.find({ _by: account_id, type: 'Material' }).count(),
+          active: await RequestModel.find({
+            _by: account_id,
+            type: 'Material',
+            status: true
+          }).count()
+        },
+
+        fundraising: {
+          total: await RequestModel.find({
+            _by: account_id,
+            type: 'Fundraising'
+          }).count(),
+          active: await RequestModel.find({
+            _by: account_id,
+            type: 'Fundraising',
+            status: true
+          }).count()
+        },
+
+        organDonation: {
+          total: await RequestModel.find({ _by: account_id, type: 'Organ' }).count(),
+          active: await RequestModel.find({
+            _by: account_id,
+            type: 'Organ',
+            status: true
+          }).count()
+        }
+      },
+
+      events: {
+        total: await EventModel.find({
+          organizationId: account_id /* todo: Check if this is correct after Anteneh pushes */
+        }).count(),
+        ongoing: await EventModel.find({
+          organizationId: account_id /* todo: Check if this is correct after Anteneh pushes */,
+          startDate: { $gte: now },
+          endDate: { $lte: now }
+        }).count(),
+        upcoming: await EventModel.find({
+          organizationId: account_id /* todo: Check if this is correct after Anteneh pushes */,
+          startDate: { $gt: now },
+          endDate: { $gt: now }
+        }).count()
+      },
+
+      news: {
+        total: await NewsModel.find({ _by: organization._id }).count()
+      }
+    }
   }
 
   async editMe(

@@ -34,8 +34,10 @@ import {
   ICertificatePurpose
 } from '../../../../../api/models/certificate/certificate.model'
 import { ICertificateResponse } from '../../../apiv/certificate.apiv'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 function Profile() {
+  const { loading, t } = useLocale(['portfolio'])
   const Settings = {
     dots: false,
     infinite: true,
@@ -95,162 +97,166 @@ function Profile() {
   }, [])
 
   return (
-    <div className={'profile-container'}>
-      <Block first />
-      <Content className={'general-profile'}>
-        <div>
-          <div
-            style={{
-              backgroundImage: `url(${account!.photoUri})`
-            }}
-            className={'pro-acc-pic-back'}
-          />
-          <div
-            style={{
-              backgroundImage: `url(${account!.photoUri})`
-            }}
-            className={'pro-acc-pic'}
-          />
-        </div>
-
-        <div>
-          <div className={'account-head-display-name'}>
-            <span className={'account-head-display-name-text'}>
-              {account!.displayName}
-            </span>
-          </div>
-        </div>
-        <div className={'pro-general-info'}>
+    loading || (
+      <div className={'profile-container'}>
+        <Block first />
+        <Content className={'general-profile'}>
           <div>
-            <span>{'Ethiopia'}</span>
-            <span>{'22 years old'}</span>
+            <div
+              style={{
+                backgroundImage: `url(${account!.photoUri})`
+              }}
+              className={'pro-acc-pic-back'}
+            />
+            <div
+              style={{
+                backgroundImage: `url(${account!.photoUri})`
+              }}
+              className={'pro-acc-pic'}
+            />
           </div>
+
           <div>
-            <span>{account!.email}</span>
-            <span>{account!.phoneNumber}</span>
-          </div>
-        </div>
-      </Content>
-
-      {/*<Block first />*/}
-
-      <Content className={'general-profile'}>
-        <div className={'pro-activity-header'}>
-          <span>Activities</span>
-        </div>
-
-        <div className={'pro-act-stat-cont'}>
-          <div className={'pro-stat'}>
-            <div>
-              <List subheader={<ListSubheader>Achievements</ListSubheader>}>
-                <ListItem>
-                  <ListItemIcon>
-                    <FontAwesomeIcon icon={faCertificate} />
-                  </ListItemIcon>
-                  <ListItemText primary="Certificate Achieved" />
-                  <ListItemSecondaryAction>
-                    {volunteer!.portfolio.certificate.length === 0
-                      ? '-'
-                      : volunteer!.portfolio.certificate.length}
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <FontAwesomeIcon icon={faCalendarCheck} />
-                  </ListItemIcon>
-                  <ListItemText primary="Event Attended" />
-                  <ListItemSecondaryAction>
-                    {volunteer!.portfolio.events.length === 0
-                      ? '-'
-                      : volunteer!.portfolio.events.length}
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <FontAwesomeIcon icon={faTasks} />
-                  </ListItemIcon>
-                  <ListItemText primary="Task Accomplished" />
-                  <ListItemSecondaryAction>
-                    {volunteer!.portfolio.tasks.length === 0
-                      ? '-'
-                      : volunteer!.portfolio.tasks.length}
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <FontAwesomeIcon icon={faToolbox} />
-                  </ListItemIcon>
-                  <ListItemText primary="Material Donated" />
-                  <ListItemSecondaryAction>
-                    {volunteer!.portfolio.material.length === 0
-                      ? '-'
-                      : volunteer!.portfolio.material.length}
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <FontAwesomeIcon icon={faHandHoldingUsd} />
-                  </ListItemIcon>
-                  <ListItemText primary="Money Donated" />
-                  <ListItemSecondaryAction>
-                    {volunteer!.portfolio.money.length === 0
-                      ? '-'
-                      : volunteer!.portfolio.money.length}
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <FontAwesomeIcon icon={faHandHoldingHeart} />
-                  </ListItemIcon>
-                  <ListItemText primary="Organ Pledged" />
-                  <ListItemSecondaryAction>
-                    {volunteer!.portfolio.organ.length === 0
-                      ? '-'
-                      : volunteer!.portfolio.organ.length}
-                  </ListItemSecondaryAction>
-                </ListItem>
-              </List>
+            <div className={'account-head-display-name'}>
+              <span className={'account-head-display-name-text'}>
+                {account!.displayName}
+              </span>
             </div>
           </div>
-          <div className={'pro-icon-stat'}>
-            <span>
-              <FontAwesomeIcon icon={faParachuteBox} size={'10x'} />
-            </span>
+          <div className={'pro-general-info'}>
+            <div>
+              <span>{'Ethiopia'}</span>
+              <span>{'22 years old'}</span>
+            </div>
+            <div>
+              <span>{account!.email}</span>
+              <span>{account!.phoneNumber}</span>
+            </div>
           </div>
-        </div>
-      </Content>
+        </Content>
 
-      {/*<Block first />*/}
+        {/*<Block first />*/}
 
-      <Content className={'general-profile'}>
-        <div className={'pro-activity-header event-header'}>
-          <span>Recent Events</span>
-        </div>
-        <div className={'pro-event-attended'}>
-          <Slider {...Settings}>
-            {events.map(e => (
+        <Content className={'general-profile'}>
+          <div className={'pro-activity-header'}>
+            <span>{t`landing:activities`}</span>
+          </div>
+
+          <div className={'pro-act-stat-cont'}>
+            <div className={'pro-stat'}>
               <div>
-                <Block>
-                  <EventCard event={e} />
-                </Block>
+                <List
+                  subheader={<ListSubheader>{t`landing:achievements`}</ListSubheader>}
+                >
+                  <ListItem>
+                    <ListItemIcon>
+                      <FontAwesomeIcon icon={faCertificate} />
+                    </ListItemIcon>
+                    <ListItemText primary="Certificate Achieved" />
+                    <ListItemSecondaryAction>
+                      {volunteer!.portfolio.certificate.length === 0
+                        ? '-'
+                        : volunteer!.portfolio.certificate.length}
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <FontAwesomeIcon icon={faCalendarCheck} />
+                    </ListItemIcon>
+                    <ListItemText primary="Event Attended" />
+                    <ListItemSecondaryAction>
+                      {volunteer!.portfolio.events.length === 0
+                        ? '-'
+                        : volunteer!.portfolio.events.length}
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <FontAwesomeIcon icon={faTasks} />
+                    </ListItemIcon>
+                    <ListItemText primary="Task Accomplished" />
+                    <ListItemSecondaryAction>
+                      {volunteer!.portfolio.tasks.length === 0
+                        ? '-'
+                        : volunteer!.portfolio.tasks.length}
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <FontAwesomeIcon icon={faToolbox} />
+                    </ListItemIcon>
+                    <ListItemText primary="Material Donated" />
+                    <ListItemSecondaryAction>
+                      {volunteer!.portfolio.material.length === 0
+                        ? '-'
+                        : volunteer!.portfolio.material.length}
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <FontAwesomeIcon icon={faHandHoldingUsd} />
+                    </ListItemIcon>
+                    <ListItemText primary="Money Donated" />
+                    <ListItemSecondaryAction>
+                      {volunteer!.portfolio.money.length === 0
+                        ? '-'
+                        : volunteer!.portfolio.money.length}
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <FontAwesomeIcon icon={faHandHoldingHeart} />
+                    </ListItemIcon>
+                    <ListItemText primary="Organ Pledged" />
+                    <ListItemSecondaryAction>
+                      {volunteer!.portfolio.organ.length === 0
+                        ? '-'
+                        : volunteer!.portfolio.organ.length}
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
               </div>
+            </div>
+            <div className={'pro-icon-stat'}>
+              <span>
+                <FontAwesomeIcon icon={faParachuteBox} size={'10x'} />
+              </span>
+            </div>
+          </div>
+        </Content>
+
+        {/*<Block first />*/}
+
+        <Content className={'general-profile'}>
+          <div className={'pro-activity-header event-header'}>
+            <span>{t`landing:recent-events`}</span>
+          </div>
+          <div className={'pro-event-attended'}>
+            <Slider {...Settings}>
+              {events.map(e => (
+                <div>
+                  <Block>
+                    <EventCard event={e} />
+                  </Block>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        </Content>
+
+        {/*<Block first />*/}
+
+        <Content className={'general-profile'}>
+          <div className={'pro-activity-header '} />
+          <span>{t`landing:certificates`}</span>
+          <Yoga maxCol={2}>
+            {certificate.map((c, i) => (
+              <CertificateCard certificate={c} key={i} />
             ))}
-          </Slider>
-        </div>
-      </Content>
-
-      {/*<Block first />*/}
-
-      <Content className={'general-profile'}>
-        <div className={'pro-activity-header '} />
-        <span>Certificates</span>
-        <Yoga maxCol={2}>
-          {certificate.map((c, i) => (
-            <CertificateCard certificate={c} key={i} />
-          ))}
-        </Yoga>
-      </Content>
-    </div>
+          </Yoga>
+        </Content>
+      </div>
+    )
   )
 }
 

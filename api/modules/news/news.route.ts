@@ -1,4 +1,4 @@
-import Route = require('koa-router')
+import * as Route from 'koa-router'
 
 import {
   addComment,

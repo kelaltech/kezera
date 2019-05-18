@@ -10,11 +10,9 @@ import layoutVolunteerNavigation from './configs/layout-volunteer-navigation'
 import LayoutVolunteerRoutes from './configs/layout-volunteer-routes'
 import Search from '../shared/components/search/search'
 import './layout-volunteer.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import Sidenav from '../shared/components/volunteer-side-nav/side-nav'
-import MiniNav from './components/volunteer-mini-nav/volunteer-mini-nav'
-import { Page } from 'gerami'
+import LayoutVolunteerSidenavProviders from './configs/layout-vlunteer-sidenav-provider'
+
 interface Props extends RouteComponentProps<{}> {
   error?: any
 }
@@ -43,25 +41,27 @@ function LayoutVolunteer({ error, match }: Props) {
 
   return (
     <LayoutVolunteerProviders>
-      <Layout
-        noShell={noShell}
-        preHeader={null}
-        headerOptions={{
-          navigation: layoutVolunteerNavigation(t, account),
-          centerNode: <Search to={'/volunteer/search-result'} />
-        }}
-        error={error}
-        nonContentHeight={164}
-      >
-        <div className={'volunteer-layout-container'}>
-          <div className={'vol-sidenav-container'} id={'sidenav-vol'}>
-            <Sidenav />
+      <LayoutVolunteerSidenavProviders>
+        <Layout
+          noShell={noShell}
+          preHeader={null}
+          headerOptions={{
+            navigation: layoutVolunteerNavigation(t, account),
+            centerNode: <Search to={'/volunteer/search-result'} />
+          }}
+          error={error}
+          nonContentHeight={164}
+        >
+          <div className={'volunteer-layout-container'}>
+            <div className={'vol-sidenav-container'} id={'sidenav-vol'}>
+              <Sidenav />
+            </div>
+            <div className={'vol-content-container'}>
+              <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
+            </div>
           </div>
-          <div className={'vol-content-container'}>
-            <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
-          </div>
-        </div>
-      </Layout>
+        </Layout>
+      </LayoutVolunteerSidenavProviders>
     </LayoutVolunteerProviders>
   )
 }

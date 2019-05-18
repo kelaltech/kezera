@@ -7,7 +7,8 @@ import {
   faCalendarCheck,
   faNewspaper,
   faSuitcase,
-  faTasks
+  faTasks,
+  faSearchPlus
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function MiniNav() {
@@ -15,37 +16,37 @@ export default function MiniNav() {
     <div>
       <div className={'mini-sidenav-container'}>
         <div className={'mini-sidenav-links'}>
-          <div className={'sid-link'}>
-            <span className={'icon-link discovery '}>
-              <a title={'discover'} href="/discovery">
+          <div title={'discover'} className={'sid-link'}>
+            <span className={'fg-blackish icon-link discovery '}>
+              <a href="/discovery">
+                <FontAwesomeIcon icon={faSearchPlus} />
+              </a>
+            </span>
+          </div>
+          <div title={'news'} className={'sid-link'}>
+            <span className={'fg-blackish icon-link discovery '}>
+              <a href="/news">
                 <FontAwesomeIcon icon={faNewspaper} />
               </a>
             </span>
           </div>
-          <div className={'sid-link'}>
-            <span className={'icon-link discovery '}>
-              <a title={'news'} href="/news">
-                <FontAwesomeIcon icon={faNewspaper} />
-              </a>
-            </span>
-          </div>
-          <div className={'sid-link'}>
-            <span className={'icon-link event '}>
-              <a title={'events'} href="/events">
+          <div title={'events'} className={'sid-link'}>
+            <span className={'fg-blackish icon-link event '}>
+              <a href="/events">
                 <FontAwesomeIcon icon={faCalendarCheck} />
               </a>
             </span>
           </div>
-          <div className={'sid-link'}>
-            <span className={'icon-link task '}>
-              <a title={'tasks'} href="/tasks">
+          <div title={'tasks'} className={'sid-link'}>
+            <span className={' fg-blackish icon-link task '}>
+              <a href="/tasks">
                 <FontAwesomeIcon icon={faTasks} />
               </a>
             </span>
           </div>
-          <div className={'sid-link'}>
-            <span className={'icon-link organization '}>
-              <a title={'organizations'} href="/my-organization">
+          <div title={'organizations'} className={'sid-link'}>
+            <span className={'fg-blackish icon-link organization '}>
+              <a href="/my-organization">
                 <FontAwesomeIcon icon={faSuitcase} />
               </a>
             </span>

@@ -10,6 +10,7 @@ export type INewsRequest = {
 }
 
 export type INewsResponse = {
+  _id: ObjectId
   _at: Date | Number
   title: string
   description: string

@@ -163,7 +163,11 @@ function OrganizationApply() {
                   className={'margin-vertical-auto'}
                   htmlFor={'accept-terms-checkbox'}
                 >
-                  I accept the <Anchor to={'/terms'}>terms & conditions</Anchor>.
+                  I accept the{' '}
+                  <Anchor href={'/terms'} target={'_blank'} rel={'noopener'}>
+                    terms & conditions
+                  </Anchor>
+                  .
                 </InputLabel>
               </Flex>
               <FlexSpacer />

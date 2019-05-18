@@ -5,14 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './header.scss'
 import useLocale from '../../../hooks/use-locale/use-locale'
 import { INavigationItem } from './interfaces'
-import logo128 from '../../../../assets/images/logo-128.png'
+import wordmark from '../../../../assets/images/wordmark-512.png'
 
 export interface IHeaderProps {
   centerNode?: ReactNode | null
   className?: string
   leftImage?: ReactNode | null
-  leftSpace?: ReactNode | null
-  leftTitle?: ReactNode | null
   navigation?: INavigationItem[]
   overrideLeftNode?: ReactNode | null
   overrideRightNode?: ReactNode | null
@@ -23,8 +21,6 @@ export default function Header({
   centerNode,
   className,
   leftImage,
-  leftSpace,
-  leftTitle,
   navigation,
   overrideLeftNode,
   overrideRightNode,
@@ -47,27 +43,11 @@ export default function Header({
                       ? undefined
                       : leftImage || (
                           <Image
-                            src={logo128}
+                            src={wordmark}
                             className="header-logo middle"
                             to="/"
                             title={t`app-name` + ' | ' + t`Homepage`}
                           />
-                        )}
-                    {leftSpace === null
-                      ? undefined
-                      : leftSpace || (
-                          <span className="header-separator middle light">|</span>
-                        )}
-                    {leftTitle === null
-                      ? undefined
-                      : leftTitle || (
-                          <Anchor
-                            to="/"
-                            className="header-wordmark middle"
-                            title={t`app-name` + ' | ' + t`Homepage`}
-                          >
-                            <span className="bold">{t`app-name`}</span>
-                          </Anchor>
                         )}
                   </div>
                 )}
