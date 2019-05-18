@@ -12,7 +12,7 @@ export interface INewsCardProps {
   commentCount: number
   description: string
   imgSrc: string
-  _id: string
+  _id: string | number | any
   style?: CSSProperties
   flex?: CSSProperties
 }
