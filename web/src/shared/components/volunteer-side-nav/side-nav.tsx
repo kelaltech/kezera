@@ -78,7 +78,7 @@ function Sidenav(props: any) {
           </div>
           <div className={'sidenav-links'}>
             <div className={'sid-link'}>
-              <a href="/discovery" className={'a'}>
+              <a href="/" className={'a'}>
                 <span className={'icon-link fg-blackish discovery '}>
                   <FontAwesomeIcon icon={faSearchPlus} />
                 </span>

@@ -18,7 +18,7 @@ export default function MiniNav() {
         <div className={'mini-sidenav-links'}>
           <div title={'discover'} className={'sid-link'}>
             <span className={'fg-blackish icon-link discovery '}>
-              <a href="/discovery">
+              <a href="/">
                 <FontAwesomeIcon icon={faSearchPlus} />
               </a>
             </span>
