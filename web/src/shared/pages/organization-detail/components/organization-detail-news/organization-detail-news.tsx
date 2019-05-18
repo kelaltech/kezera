@@ -60,6 +60,7 @@ function OrganizationDetailNews({ organization }: Props) {
                   {news.map((n, i) => (
                     <NewsCard
                       title={n.title}
+                      shareCount={n.share.length}
                       likeCount={n.likes.length}
                       commentCount={n.comments.length}
                       description={n.description}

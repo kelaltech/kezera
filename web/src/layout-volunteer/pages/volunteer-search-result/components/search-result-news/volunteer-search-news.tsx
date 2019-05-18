@@ -27,6 +27,7 @@ function NewsSearchResult(props: INewsResult) {
         {news.map((n: any) => (
           <NewsCard
             title={n.title}
+            shareCount={n.share.length}
             likeCount={n.likeCount}
             commentCount={n.commentCount}
             description={n.description}

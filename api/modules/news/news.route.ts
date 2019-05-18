@@ -15,7 +15,9 @@ import {
   getPictureFromNews,
   addPictureForNews,
   recentNews,
-  getComments
+  getComments,
+  addShare,
+  getShare
 } from './news.controller'
 import * as fs from 'fs'
 
@@ -86,6 +88,12 @@ newsRouter.get('/:_newsId/likes', async ctx => {
   //return the users profile
 
   ctx.body = await getLikes(ctx.params._newsId)
+})
+newsRouter.get('/:_newsId/share',async ctx=>{
+  ctx.body = await getShare(ctx.params._newsId)
+})
+newsRouter.put('/:_newsId/share',async ctx=>{
+  ctx.body = await addShare(ctx.params._newsId,ctx.state.user)
 })
 
 //PUT /api/news/:_newsId

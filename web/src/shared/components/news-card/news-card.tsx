@@ -10,6 +10,7 @@ export interface INewsCardProps {
   title: string
   likeCount: number
   commentCount: number
+  shareCount: number
   description: string
   imgSrc: string
   _id: string | number | any
@@ -18,10 +19,25 @@ export interface INewsCardProps {
 }
 
 function NewsCard(props: INewsCardProps) {
-  const [likeClicked, setLikeClicked] = useState(0)
-  let { description, commentCount, likeCount, title, imgSrc, _id } = props
+  let { description, commentCount, likeCount, title, imgSrc,shareCount, _id } = props
+  const [likeClicked, setLikeClicked] = useState(likeCount)
+  const [shareClicked, setShareClicked] = useState(shareCount)
 
   const [shareListPicker, setShareListPicker] = useState(false)
+
+
+    const handleShareClick = ()=>{
+    axios
+      .put(`/api/news/${_id}/share`)
+      .then(news=>news.data)
+      .then(data=>{
+        setShareClicked(data.share)
+      })
+      .catch(e=>{
+        console.log(e) //todo handle error properly
+      })
+  }
+
   function handleClick() {
     axios
       .put(`/api/news/${_id}/like`)
@@ -53,8 +69,7 @@ function NewsCard(props: INewsCardProps) {
           <div className={'news-card-content-stat'}>
             <span>
               <FontAwesomeIcon icon={['fas', 'heart']} />
-              &nbsp; {likeCount == 0 ? '' : likeCount}
-              {likeClicked === 0 ? '' : ' you liked this'}
+              &nbsp;{likeClicked === 0 ? '' : likeClicked}
             </span>
             <span>{commentCount == 0 ? '' : commentCount} comments</span>
           </div>
@@ -70,13 +85,15 @@ function NewsCard(props: INewsCardProps) {
             </span>
             <span onClick={() => setShareListPicker(!shareListPicker)}>
               <FontAwesomeIcon icon={['fas', 'share-alt']} />
-              &nbsp; Share
+              &nbsp; Share &nbsp;{shareClicked==0?'':(shareClicked)}
             </span>
             <ShareListDialog
               open={shareListPicker}
               onClose={() => setShareListPicker(!shareListPicker)}
               title={title}
-              shareUrl={`http://localhost:3000/news/${_id}`}
+              _id={_id}
+              handleShare ={handleShareClick}
+              shareUrl={`https://spva-app.herokuapp.com`} //todo change share url to actual url
             />
           </div>
         </div>
