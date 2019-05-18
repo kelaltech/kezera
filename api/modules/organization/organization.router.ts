@@ -33,6 +33,12 @@ organizationRouter.get(
   handle(OrganizationController, (c, s) => c.discover(s))
 )
 
+// GET /api/organization/stats/:organization_id
+organizationRouter.get(
+  '/stats/:organization_id',
+  handle(OrganizationController, (c, s) => c.stats(s))
+)
+
 // PUT /api/organization/edit-me *
 organizationRouter.put(
   '/edit-me',

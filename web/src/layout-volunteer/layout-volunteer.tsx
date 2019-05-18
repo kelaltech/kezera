@@ -66,13 +66,3 @@ function LayoutVolunteer({ error, match }: Props) {
 }
 
 export default LayoutVolunteer
-
-/*
-*   <div className={'volunteer-layout-container'}>
-            <div className={'vol-sidenav-container'} id={'sidenav-vol'}>
-              <Sidenav />
-            </div>
-            <div className={'vol-content-container'}>
-              <LayoutVolunteerRoutes prefix={match.url.replace(/\/$/, '')} />
-            </div>
-          </div>*/
