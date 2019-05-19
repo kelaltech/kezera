@@ -1,7 +1,5 @@
 import React from 'react'
-
-import './volunteer-mini-nav.scss'
-import { Button } from 'gerami'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCalendarCheck,
@@ -11,6 +9,8 @@ import {
   faSearchPlus
 } from '@fortawesome/free-solid-svg-icons'
 
+import './volunteer-mini-nav.scss'
+
 export default function MiniNav() {
   return (
     <div>
@@ -18,37 +18,37 @@ export default function MiniNav() {
         <div className={'mini-sidenav-links'}>
           <div title={'discover'} className={'sid-link'}>
             <span className={'fg-blackish icon-link discovery '}>
-              <a href="/">
+              <Link to="/">
                 <FontAwesomeIcon icon={faSearchPlus} />
-              </a>
+              </Link>
             </span>
           </div>
           <div title={'news'} className={'sid-link'}>
             <span className={'fg-blackish icon-link discovery '}>
-              <a href="/news">
+              <Link to="/news">
                 <FontAwesomeIcon icon={faNewspaper} />
-              </a>
+              </Link>
             </span>
           </div>
           <div title={'events'} className={'sid-link'}>
             <span className={'fg-blackish icon-link event '}>
-              <a href="/events">
+              <Link to="/events">
                 <FontAwesomeIcon icon={faCalendarCheck} />
-              </a>
+              </Link>
             </span>
           </div>
           <div title={'tasks'} className={'sid-link'}>
             <span className={' fg-blackish icon-link task '}>
-              <a href="/tasks">
+              <Link to="/tasks">
                 <FontAwesomeIcon icon={faTasks} />
-              </a>
+              </Link>
             </span>
           </div>
           <div title={'organizations'} className={'sid-link'}>
             <span className={'fg-blackish icon-link organization '}>
-              <a href="/my-organization">
+              <Link to="/my-organization">
                 <FontAwesomeIcon icon={faSuitcase} />
-              </a>
+              </Link>
             </span>
           </div>
         </div>
