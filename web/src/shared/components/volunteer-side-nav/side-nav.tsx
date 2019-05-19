@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Axios from 'axios'
+
 import './side-nav.scss'
 import { Button, Warning } from 'gerami'
 import { Collapse } from '@material-ui/core'
@@ -80,28 +82,28 @@ function Sidenav(props: any) {
           </div>
           <div className={'sidenav-links'}>
             <div className={'sid-link'}>
-              <a title={'discovery'} href="/" className={'a'}>
+              <Link title={'discovery'} to="/" className={'a'}>
                 <span className={'icon-link fg-blackish discovery '}>
                   <FontAwesomeIcon icon={faSearchPlus} />
                 </span>
                 <span>Discover</span>
-              </a>
+              </Link>
             </div>
             <div className={'sid-link'}>
-              <a title={'news'} href="/news" className={'a'}>
+              <Link title={'news'} to="/news" className={'a'}>
                 <span className={'icon-link fg-blackish news'}>
                   <FontAwesomeIcon icon={faNewspaper} />
                 </span>
                 <span>News</span>
-              </a>
+              </Link>
             </div>
             <div className={'sid-link'}>
-              <a title={'events'} href="/events" className={'a'}>
+              <Link title={'events'} to="/events" className={'a'}>
                 <span className={'icon-link fg-blackish event'}>
                   <FontAwesomeIcon icon={faCalendarCheck} />
                 </span>
                 <span>Events</span>
-              </a>
+              </Link>
             </div>
             <div title={'tasks'} className={'sid-link'} onClick={handleTaskExpand}>
               <span className={'icon-link fg-blackish  task'}>
@@ -112,9 +114,9 @@ function Sidenav(props: any) {
             <div className={'sid-link-sub'}>
               <Collapse in={open.task} timeout="auto" unmountOnExit>
                 <div className={'task-sub-title'}>
-                  <a title={'pending tasks'} href="/tasks" className={'a'}>
+                  <Link title={'pending tasks'} to="/tasks" className={'a'}>
                     <h5>pending tasks</h5>
-                  </a>
+                  </Link>
                 </div>
                 <hr />
                 <div className={'task-sub-links'}>
@@ -122,9 +124,9 @@ function Sidenav(props: any) {
                     <Warning problem={errorForT} shy />
                   ) : (
                     task.map((t: any, k) => (
-                      <a key={k} href={`/request/${t._id}`}>
+                      <Link key={k} to={`/request/${t._id}`}>
                         {t.title}
-                      </a>
+                      </Link>
                     ))
                   )}
                 </div>
@@ -143,13 +145,13 @@ function Sidenav(props: any) {
             <div className={'sid-link-sub'}>
               <Collapse in={open.organization} timeout="auto" unmountOnExit>
                 <div className={'task-sub-title'}>
-                  <a
+                  <Link
                     title={'joined organizations'}
-                    href="/my-organization"
+                    to="/my-organization"
                     className={'a'}
                   >
                     <h5>joined organizations</h5>
-                  </a>
+                  </Link>
                 </div>
                 <hr />
                 <div className={'task-sub-links'}>
@@ -157,9 +159,9 @@ function Sidenav(props: any) {
                     <Warning problem={errorForO} shy />
                   ) : (
                     organization.map((o: any, k) => (
-                      <a key={k} href={`/organization/${o._id}`}>
+                      <Link key={k} to={`/organization/${o._id}`}>
                         {o.account.displayName}
-                      </a>
+                      </Link>
                     ))
                   )}
                 </div>

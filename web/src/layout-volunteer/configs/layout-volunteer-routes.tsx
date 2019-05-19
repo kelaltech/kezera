@@ -41,13 +41,14 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
   return (
     <Switch>
       {account && <Redirect from={`${p}/register`} to={`/login/redirect/account`} />}
+
+      {/* todo: change the path to / and move to the bottom of LayoutDefaultRoutes */}
+      <Route exact path={`${p}/landing`} component={Landing} />
+
       {account ? (
         <>
-          <Route exact path={`${p}`} component={Discovery} />
           <Route exact path={`${p}/account`} component={AccountDetail} />
-          <Route exact path={`${p}/landing`} component={Landing} />
           <Route exact path={`${p}/events`} component={Event} />
-          {/*todo change the path to*/}
           <Route exact path={`${p}/my-organization`} component={MyOrganization} />
           <Route exact path={`${p}/news`} component={News} />
           <Route exact path={`${p}/tasks`} component={Task} />
@@ -60,6 +61,8 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
           <Route exact path={`${p}/event/:_id`} component={EventDetail} />
           <Route exact path={`${p}/news/:_id`} component={NewsDetail} />
           <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
+
+          <Route exact path={`${p}/`} component={Discovery} />
         </>
       ) : (
         <Redirect
@@ -68,7 +71,9 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
           to={`/login?${qs.stringify({ continue: `${p}/account` })}`}
         />
       )}
+
       <Redirect exact from={`${p}/register`} to={'/login/register'} />
+
       <Route component={NotFound} />
     </Switch>
   )

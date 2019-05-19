@@ -1,6 +1,7 @@
 import React, { lazy } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { useAccountState } from '../stores/account/account-provider'
+import { Loading } from 'gerami'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
@@ -19,8 +20,12 @@ export default function AppRoutes() {
     <Switch>
       <Redirect exact path={`/index.html`} to={`/`} />
 
-      {account && account.role === 'ADMIN' ? (
-        <Route path={'/admin'} component={LayoutAdmin} />
+      {/* todo: change LayoutVolunteer below to LayoutDefault */}
+      <Route path={'/default'} component={LayoutVolunteer} />
+      <Route path={'/login'} component={LayoutLogin} />
+
+      {account && account.role === 'VOLUNTEER' ? (
+        <Route path={'/verifier'} component={LayoutVerifier} />
       ) : null}
       {account && account.role === 'ORGANIZATION' ? (
         <Route path={'/organization'} component={LayoutOrganization} />
@@ -28,18 +33,17 @@ export default function AppRoutes() {
       {account && account.role === 'VERIFIER' ? (
         <Route path={'/verifier'} component={LayoutVerifier} />
       ) : null}
-      {
-        /* todo: create LayoutDefault, refactor, and secure this */
-        <Route path={'/volunteer'} component={LayoutVolunteer} />
-      }
-
-      <Route path={'/login'} component={LayoutLogin} />
+      {account && account.role === 'ADMIN' ? (
+        <Route path={'/admin'} component={LayoutAdmin} />
+      ) : null}
 
       <Route
         path={''}
         component={
-          !account
-            ? LayoutVolunteer /* todo: change to LayoutDefault */
+          account === undefined
+            ? () => <Loading delay />
+            : account === null
+            ? LayoutVolunteer /* todo: ...change to LayoutDefault */
             : account.role === 'VOLUNTEER'
             ? LayoutVolunteer
             : account.role === 'ORGANIZATION'
