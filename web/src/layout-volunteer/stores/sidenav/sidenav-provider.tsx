@@ -13,14 +13,11 @@ const contextForSidenav = createContext<ISidenav>(initialState)
 const contextForSidenavDispatch = createContext<Dispatch<Action>>(() => {})
 export function SidenavProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState)
-  // const [mini, setMini] = useState(false)
 
-  // useEffect(()=>{
-  //
-  // },[])
-  // const updateMini = ()=>{
-  //   setMini(!mini)
-  // }
+  useEffect(() => {
+    dispatch({ type: 'set' })
+    window.localStorage.setItem('mini', JSON.stringify(state.mini))
+  }, [])
   return (
     <contextForSidenav.Provider value={state}>
       <contextForSidenavDispatch.Provider value={dispatch}>

@@ -2,8 +2,9 @@ export interface ISidenav {
   mini: boolean
 }
 
+const miniStringFromStorage = window.localStorage.getItem('mini')
 export const initialState: ISidenav = {
-  mini: false
+  mini: miniStringFromStorage ? JSON.parse(miniStringFromStorage) : false
 }
 
 export type Action = { type: 'set' }
