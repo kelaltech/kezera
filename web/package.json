@@ -26,6 +26,7 @@
     "@types/react-dom": "16.8.3",
     "@types/react-loadable": "^5.5.0",
     "@types/react-router-dom": "^4.3.1",
+    "@types/react-share": "^2.1.1",
     "@types/recharts": "^1.1.16",
     "@types/socket.io-client": "^1.4.32",
     "animate.css": "^3.7.0",

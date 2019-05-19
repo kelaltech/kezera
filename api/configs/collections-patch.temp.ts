@@ -9,7 +9,7 @@ setTimeout(async () => {
   // db should be connected by now
 
   const dbConn = serverApp.dbConn
-  const creations: Promise<void>[] = []
+  const creations: Promise<any>[] = []
 
   for (const model of serverApp.config.models || []) {
     const name = pluralize()(model.modelName)

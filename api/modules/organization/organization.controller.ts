@@ -326,13 +326,15 @@ export class OrganizationController extends KoaController {
     since = Number(super.getQuery('since')) || Date.now(),
     count = Number(super.getQuery('count')) || 10
   ): Promise<IRequest[]> {
+    // todo: remove the next line when Event.organizationId gets fixed
+    const organization = await get(OrganizationModel, organization_id)
     // todo: filter?
     // todo: attach type-specific fields using a refactored method from Request Module
     return await list(RequestModel, {
       session,
       since,
       count,
-      conditions: { _by: organization_id }
+      conditions: { _by: organization.account }
     })
   }
 
