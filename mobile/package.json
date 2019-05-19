@@ -5,7 +5,7 @@
   "scripts": {
     "run-s": "run-s",
     "run-p": "run-p",
-    "prod": "run-s format tsc",
+    "prod": "cross-env NODE_ENV=production run-s format tsc",
     "clean-android": "cd android && gradlew clean",
     "apk": "set ENVFILE=.env.staging&& run-s clean-android && cd android && gradlew assembleRelease",
     "android": "react-native run-android",
@@ -45,6 +45,7 @@
     "@types/react-navigation": "^3.0.6",
     "@types/react-test-renderer": "^16.8.1",
     "babel-jest": "^24.8.0",
+    "cross-env": "^5.2.0",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.54.0",
     "npm-run-all": "^4.1.5",
