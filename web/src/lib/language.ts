@@ -29,6 +29,7 @@ export type Namespace =
   | 'verifier'
   | 'volunteer'
   | 'volunteer-discovery'
+  | 'volunteer-event'
   | 'volunteer-setting'
 export const supportedNamespaces: Namespace[] = [
   'common',
@@ -54,6 +55,7 @@ export const supportedNamespaces: Namespace[] = [
   'verifier',
   'volunteer',
   'volunteer-discovery',
+  'volunteer-event',
   'volunteer-setting'
 ]
 export const defaultNamespaces: Namespace[] = ['common']

@@ -40,7 +40,7 @@ const settings = {
   ]
 }
 function VolunteerEvents() {
-  const { loading, t } = useLocale(['event'])
+  const { loading, t } = useLocale(['volunteer-event'])
   const [events, setEvents] = useState([])
   const [nearEvents, setNearEvents] = useState([])
 
@@ -62,9 +62,9 @@ function VolunteerEvents() {
   return (
     loading || (
       <div className={'events-container'}>
-        <RichPage title={t`event:title`}>
+        <RichPage title={t`volunteer-event:title`} description={t`volunteer-event:description`}>
           <div className={'e-slider events-list-container'}>
-            <h2>{t`event:events-aroud`} </h2>
+            <h2>{t`volunteer-event:events-aroud`} </h2>
             <Slider {...settings}>
               {events.map((event: any) => (
                 <div className={'slider-event-list'}>
@@ -80,7 +80,7 @@ function VolunteerEvents() {
           </div>
           <Block />
           <div className={'events-list-container'}>
-            <h2>{t`event:upcoming-events`}</h2>
+            <h2>{t`volunteer-event:upcoming-events`}</h2>
             <Yoga maxCol={2}>
               {events.map((event: any) => (
                 <Block>
