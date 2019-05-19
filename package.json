@@ -19,7 +19,6 @@
     "dev": "cross-env EMAIL_FROM=spva.dev@gmail.com EMAIL_PASS=uY3gYisZRC6CKga HOSTNAME=0.0.0.0 nodemon -w dist dist/index.js",
     "lint": "prettier {.,**}/*.{css,md,js,json,jsx,sass,scss,ts,tsx}",
     "format": "prettier --write {.,**}/*.{css,md,js,json,jsx,sass,scss,ts,tsx}",
-    "precommit": "cross-env CI=true run-s prod && cd web && run-s prod && cd ../mobile && run-s prod && cd .. && git update-index --again",
     "prod": "cross-env NODE_ENV=production run-s format build",
     "run-p": "node ./node_modules/npm-run-all/bin/run-p/index.js",
     "run-s": "node ./node_modules/npm-run-all/bin/run-s/index.js",
@@ -54,5 +53,10 @@
     "qs": "^6.6.0",
     "sharp": "^0.22.0",
     "socket.io": "^2.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "cross-env CI=true run-s prod && cd web && run-s prod && cd ../mobile && run-s prod && cd .. && git update-index --again"
+    }
   }
 }
