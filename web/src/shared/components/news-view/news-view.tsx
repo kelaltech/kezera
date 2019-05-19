@@ -66,16 +66,20 @@ class NewsView extends React.Component<any, INewsAddState> {
   }
 
   handleDeleteNews = () => {
-    const { match } = this.props
+    const { match, history } = this.props
     let check = confirm('are you sure you want to delete the news')
 
     if (check) {
       axios
         .delete(`/api/news/${match.params._id}`)
         .then(() => {
-          alert('successfully removed')
+          history.push({
+            pathname: `/news`
+          })
         })
-        .catch(e => console.log(e))
+        .catch(e => {
+          alert('something went wrong try again!')
+        })
     } else {
       alert('canceled')
     }

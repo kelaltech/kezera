@@ -122,7 +122,12 @@ export async function toggleLike(
 
 export async function removeNews(_newsId: ObjectId, pictureID = 'default'): Promise<any> {
   const grid = new Grid(serverApp, NewsModel, _newsId)
-  await grid.remove(pictureID)
+  await grid
+    .has()
+    .then(async () => {
+      await grid.remove(pictureID)
+    })
+    .catch(() => console.log('no picture found'))
   return await remove(NewsModel, _newsId)
 }
 

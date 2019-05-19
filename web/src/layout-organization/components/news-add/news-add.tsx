@@ -22,6 +22,7 @@ const toolbarConfig = {
 
 function NewsAdd({
   match,
+  history,
   edit,
   ...rest
 }: INewsAddProps & RouteComponentProps<{ _id: string }>) {
@@ -78,14 +79,23 @@ function NewsAdd({
             headers: { 'Content-Type': 'multipart/form-data' },
             withCredentials: true
           })
-          .then((data: any) => {
+          .then((pic: any) => {
             setSubmitting(false)
+            history.push({
+              pathname: `/news/${data._id}`
+            })
           })
           .catch(e =>
-            //todo remove the added news if countered an error
-            setError(
-              'something went wrong! cant add image for this news.\n Please try again!'
-            )
+            axios
+              .delete(`/api/news/${data._id}`)
+              .then(() => {
+                setSubmitting(false)
+              })
+              .catch(e => {
+                setError(
+                  'something went wrong! cant add image for this news.\n Please try again!'
+                )
+              })
           )
       })
       .catch(e => {
@@ -123,9 +133,9 @@ function NewsAdd({
       .put(`/api/news/${match.params._id}`, publication)
       .then(data => data)
       .then(data => {
-        console.log('this is data', data)
-        const formData = new FormData()
-        formData.append('file', picture)
+        setSubmitting(false)
+        /*      const formData = new FormData()
+        formData.append('picture', picture)
         axios
           .post(`/api/news/${match.params._id}/addpic`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
@@ -139,7 +149,7 @@ function NewsAdd({
             setError(
               'something went wrong! cant add image for this news.\n Please try again!'
             )
-          )
+          )*/
       })
       .catch(e => {
         setError('something went wrong! cant update the story.\n Please try again')
