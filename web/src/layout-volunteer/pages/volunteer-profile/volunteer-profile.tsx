@@ -247,8 +247,8 @@ function Profile() {
         {/*<Block first />*/}
 
         <Content className={'general-profile'}>
-          <div className={'pro-activity-header '} >
-          <span>{t`portfolio:certificates`}</span>
+          <div className={'pro-activity-header '}>
+            <span>{t`portfolio:certificates`}</span>
           </div>
           <Yoga maxCol={2}>
             {certificate.map((c, i) => (

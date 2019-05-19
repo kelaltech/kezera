@@ -62,7 +62,10 @@ function VolunteerEvents() {
   return (
     loading || (
       <div className={'events-container'}>
-        <RichPage title={t`volunteer-event:title`} description={t`volunteer-event:description`}>
+        <RichPage
+          title={t`volunteer-event:title`}
+          description={t`volunteer-event:description`}
+        >
           <div className={'e-slider events-list-container'}>
             <h2>{t`volunteer-event:events-aroud`} </h2>
             <Slider {...settings}>
