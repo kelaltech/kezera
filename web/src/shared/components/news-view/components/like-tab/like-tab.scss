@@ -1,10 +1,20 @@
+@import '../../../../../assets/styles/theme';
 .UserLike {
   border-radius: 0;
 }
-.UserPic {
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
+.like-container {
+  display: flex;
+  text-align: center;
+
+  span {
+    padding: $padding-S;
+    align-self: center;
+  }
+}
+.like-UserPic {
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
   margin-top: 5px;
 }
 .UserName {

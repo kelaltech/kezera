@@ -23,8 +23,13 @@
 }
 
 .btn-link {
+  width: 100%;
   text-align: center;
   margin-bottom: $padding-M;
+
+  .gerami-anchor {
+    width: 100%;
+  }
 }
 .sidenav-links {
   .sid-link {
@@ -37,7 +42,7 @@
       cursor: pointer;
 
       .icon-link {
-        color: #177be6 !important;
+        color: $accent !important;
       }
     }
     font-size: $font-M - 2;
@@ -50,23 +55,6 @@
     .icon-link {
       margin-right: 3px;
     }
-
-    /*   .discovery {
-      color: #177be6;
-    }
-    .news {
-      color: #177be6;
-    }
-
-    .event {
-      color: #ffb53a;
-    }
-    .task {
-      color: dodgerblue;
-    }
-    .organization {
-      color: lightcoral;
-    }*/
   }
 }
 

@@ -38,7 +38,7 @@ function VolunteerTask() {
 
   useEffect(() => {
     axios
-      .get('/api/task/list')
+      .get('/api/request/list')
       .then(task => {
         setTasks(task.data)
       })
@@ -159,11 +159,11 @@ function VolunteerTask() {
           <div className={'task-label'}>
             <h3>{t`task:upcoming-task`}</h3>
           </div>
-          <div className={'vol-task-container'}>
-            {/*tasks.map((t:any)=>(
-            <RequestCard request={...t} />
-          ))*/}
-          </div>
+          <Yoga maxCol={2} className={'vol-task-container'}>
+            {tasks.map((t:any)=>(
+            <RequestCard request={t} />
+          ))}
+          </Yoga>
         </div>
       </RichPage>
     )

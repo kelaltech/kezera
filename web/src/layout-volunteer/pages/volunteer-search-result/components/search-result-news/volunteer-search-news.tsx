@@ -31,8 +31,8 @@ function NewsSearchResult(props: INewsResult) {
             likeCount={n.likeCount}
             commentCount={n.commentCount}
             description={n.description}
-            imgSrc={n.imgSrc}
-            _id={n.id}
+            imgSrc={`/api/news/${n._id}/pic`}
+            _id={n._id}
           />
         ))}
       </Yoga>

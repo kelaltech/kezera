@@ -10,7 +10,7 @@ function DonationSearchResult(props: IDonationResult) {
 
   useEffect(() => {
     axios
-      .get('/api/request/search?term=' + term)
+      .get(`/api/request/search?term=${term}`)
       .then((requests: any) => {
         setDonations(requests.data)
       })
