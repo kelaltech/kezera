@@ -30,7 +30,7 @@
     "test": "echo \"This script is a no-op, so far.\"",
     "tsc": "tsc",
     "watch": "tsc -w",
-    "postinstall": "cd web && yarn install && yarn build"
+    "postinstall": "cd web && yarn install && yarn prod"
   },
   "dependencies": {
     "@types/bcrypt": "^3.0.0",

@@ -14,17 +14,18 @@ cache:
   paths:
     - node_modules/
     - web/node_modules/
+    - mobile/node_modules/
 
 build_api:
   script:
     - yarn install
-    - yarn build
+    - yarn prod
 
-build_web:
+build_mobile:
   script:
-    - cd web/
+    - cd mobile/
     - yarn install
-    - yarn build
+    - yarn prod
 
 #test_web: # DISABLED UNTIL ISSUE #3 (BUG) GETS RESOLVED
   #script:
