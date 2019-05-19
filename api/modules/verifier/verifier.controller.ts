@@ -1,5 +1,6 @@
 import { ClientSession, Document } from 'mongoose'
 import { Stream } from 'stream'
+import * as sharp from 'sharp'
 
 import { KoaController } from '../../lib/koa-controller'
 import { add, get, remove, search } from '../../lib/crud'
@@ -29,7 +30,10 @@ export class VerifierController extends KoaController {
 
   async getOrganizationApplicationLogo(
     session?: ClientSession,
-    _id = super.getParam('_id')
+    _id = super.getParam('_id'),
+    size = Number(super.getQuery('size')) || 200,
+    quality = Number(super.getQuery('quality')) || 80,
+    ctx = super.getContext()
   ): Promise<Stream> {
     const application = await get(OrganizationApplicationModel, _id, { session })
     const applicationGrid = new Grid(
@@ -39,7 +43,14 @@ export class VerifierController extends KoaController {
       'logo',
       false
     )
-    return await applicationGrid.get()
+
+    if (ctx) ctx.type = await applicationGrid.getType()
+
+    const resize = sharp()
+      .resize(size, size, { fit: 'cover' })
+      .jpeg({ quality, chromaSubsampling: '4:4:4' })
+
+    return (await applicationGrid.get()).pipe(resize)
   }
 
   async searchOrganizationApplications(

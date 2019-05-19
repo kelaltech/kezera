@@ -1,53 +1,54 @@
 import React from 'react'
-
-import './volunteer-mini-nav.scss'
-import { Button } from 'gerami'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCalendarCheck,
   faNewspaper,
   faSuitcase,
-  faTasks
+  faTasks,
+  faSearchPlus
 } from '@fortawesome/free-solid-svg-icons'
+
+import './volunteer-mini-nav.scss'
 
 export default function MiniNav() {
   return (
     <div>
       <div className={'mini-sidenav-container'}>
         <div className={'mini-sidenav-links'}>
-          <div className={'sid-link'}>
-            <a title={'discover'} href="/discovery">
-              <span className={'icon-link discovery '}>
-                <FontAwesomeIcon icon={faNewspaper} />
-              </span>
-            </a>
-          </div>
-          <div className={'sid-link'}>
-            <span className={'icon-link discovery '}>
-              <a title={'news'} href="/news">
-                <FontAwesomeIcon icon={faNewspaper} />
-              </a>
+          <div title={'discover'} className={'sid-link'}>
+            <span className={'fg-blackish icon-link discovery '}>
+              <Link to="/">
+                <FontAwesomeIcon icon={faSearchPlus} />
+              </Link>
             </span>
           </div>
-          <div className={'sid-link'}>
-            <span className={'icon-link event '}>
-              <a title={'events'} href="/events">
+          <div title={'news'} className={'sid-link'}>
+            <span className={'fg-blackish icon-link discovery '}>
+              <Link to="/news">
+                <FontAwesomeIcon icon={faNewspaper} />
+              </Link>
+            </span>
+          </div>
+          <div title={'events'} className={'sid-link'}>
+            <span className={'fg-blackish icon-link event '}>
+              <Link to="/events">
                 <FontAwesomeIcon icon={faCalendarCheck} />
-              </a>
+              </Link>
             </span>
           </div>
-          <div className={'sid-link'}>
-            <span className={'icon-link task '}>
-              <a title={'tasks'} href="/tasks">
+          <div title={'tasks'} className={'sid-link'}>
+            <span className={' fg-blackish icon-link task '}>
+              <Link to="/tasks">
                 <FontAwesomeIcon icon={faTasks} />
-              </a>
+              </Link>
             </span>
           </div>
-          <div className={'sid-link'}>
-            <span className={'icon-link organization '}>
-              <a title={'organizations'} href="/my-organization">
+          <div title={'organizations'} className={'sid-link'}>
+            <span className={'fg-blackish icon-link organization '}>
+              <Link to="/my-organization">
                 <FontAwesomeIcon icon={faSuitcase} />
-              </a>
+              </Link>
             </span>
           </div>
         </div>

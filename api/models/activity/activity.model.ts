@@ -2,41 +2,35 @@ import { ActivityPaths } from './activity.path'
 import { ModelFactory } from 'meseret/lib'
 import { Schema } from 'mongoose'
 
-export type IActivityTypes =
-  | 'COMMENT_NEWS'
-  | 'COMMENT_EVENT'
-  | 'LIKE_NEWS'
-  | 'LIKE_EVENT'
-  | 'DONATE'
-  | 'SUBSCRIBE'
-  | 'EVENT_GOING'
-  | 'EVENT_ATTEND'
-  | 'PROFILE_CHANGED'
-  | 'INTEREST_EVENT'
-  | 'INTEREST_NEWS'
-
-export const activityData = [
-  'Commented on an event',
-  'Liked an event',
-  'Liked a news',
-  'Donated to an organization',
-  'Subscribed to be an organization',
-  'Going to an event',
-  'Attended in an event',
-  'Updated  account information'
-]
-
-export const activityTypes: IActivityTypes[] = [
-  'COMMENT_EVENT',
-  'COMMENT_NEWS',
-  'LIKE_NEWS',
-  'LIKE_EVENT',
-  'DONATE',
-  'SUBSCRIBE',
-  'EVENT_GOING',
-  'EVENT_ATTEND',
+export const volunteerActivity: IVolunteerActivity[] = [
+  'SUBSCRIPTION',
+  'GOING_TO_EVENT',
+  'DONATION',
   'PROFILE_CHANGED'
 ]
+
+export type IVolunteerActivity =
+  | 'SUBSCRIPTION'
+  | 'GOING_TO_EVENT'
+  | 'DONATION'
+  | 'PROFILE_CHANGED'
+
+export const organizationActivity: IOrganizationActivity[] = [
+  'CREATED_EVENT',
+  'EDITED_EVENT',
+  'CREATE_NEWS',
+  'EDITED_NEWS',
+  'PROFILE_CHANGED',
+  'REQUESTED_DONATION'
+]
+
+export type IOrganizationActivity =
+  | 'CREATED_EVENT'
+  | 'EDITED_EVENT'
+  | 'CREATE_NEWS'
+  | 'EDITED_NEWS'
+  | 'PROFILE_CHANGED'
+  | 'REQUESTED_DONATION'
 
 export const verifierActivity = [
   'VERIFIED_ORGANIZATION',
@@ -44,16 +38,19 @@ export const verifierActivity = [
   'PROFILE_CHANGED',
   'SPAM_HANDLED'
 ]
+
 export type IVerifierActivity = [
   'VERIFIED_ORGANIZATION' | 'REMOVED_ORGANIZATION' | 'PROFILE_CHANGED' | 'SPAM_HANDLED'
 ]
+
 type ObjectId = Schema.Types.ObjectId
 
 export interface IActivity {
   __v: number
-  activityTypes: IActivityTypes
+  _at: Date
+  activityTypes?: IVolunteerActivity | IOrganizationActivity | IVerifierActivity
   data: string
-  date: Date
+  link: string
   accountId: ObjectId
 }
 

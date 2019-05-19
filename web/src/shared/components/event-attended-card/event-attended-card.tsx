@@ -3,52 +3,43 @@ import './event-attended-card.scss'
 import { Image, Content, Title, Block } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IAccount } from '../../../../../api/models/account/account.model'
+import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 
 interface IEventAttendedProps {
-  user: IAccount
+  user: IAccountResponse
 }
-const users = [
-  {
-    Name: 'Anteneh Ashnafi',
-    imageSrc: 'http://portal.bilardo.gov.tr/assets/pages/media/profile/profile_user.jpg',
-    Email: 'anteneh845@gmail.com',
-    Phone: '+251913055885'
-  }
-]
 
-export default function EventAttendedCard(props: any) {
+export default function EventAttendedCard(props: IEventAttendedProps) {
+  let user = props.user
   return (
     <>
-      {users.map(user => (
-        <>
-          <Block className={'center'}>
-            <Image src={user.imageSrc} className={'EventAttendedPic'} />
-          </Block>
-          <Content className={'UserAttended'}>
-            <Block className={'center'}>
-              <Title size={'L'}>{props.user.displayName}</Title>
-            </Block>
-            <Block className={'flex'}>
-              <span className={' flex'}>
-                <FontAwesomeIcon icon="phone" />
-              </span>
-              &emsp;
-              <span className={'full-width flex UserField'}>
-                {props.user.phoneNumber}
-              </span>
-            </Block>
-            <Block last className={'flex'}>
-              <span className={'flex'}>
-                <FontAwesomeIcon icon="envelope" />
-              </span>
-              &emsp;
-              <span className="flex full-width">
-                <span className="full-width flex UserField">{props.user.email}</span>
-              </span>
-            </Block>
-          </Content>
-        </>
-      ))}
+      <Block className={'center'}>
+        <Image
+          src={`/api/account/get-photo/${user._id}`}
+          className={'EventAttendedPic'}
+        />
+      </Block>
+      <Content className={'UserAttended'}>
+        <Block className={'center'}>
+          <Title size={'L'}>{props.user.displayName}</Title>
+        </Block>
+        <Block className={'flex'}>
+          <span className={' flex'}>
+            <FontAwesomeIcon icon="phone" />
+          </span>
+          &emsp;
+          <span className={'full-width flex UserField'}>{props.user.phoneNumber}</span>
+        </Block>
+        <Block last className={'flex'}>
+          <span className={'flex'}>
+            <FontAwesomeIcon icon="envelope" />
+          </span>
+          &emsp;
+          <span className="flex full-width">
+            <span className="full-width flex UserField">{props.user.email}</span>
+          </span>
+        </Block>
+      </Content>
     </>
   )
 }

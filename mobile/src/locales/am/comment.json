@@ -1,4 +1,10 @@
 {
   "comment": "አስተያየት",
-  "comments": "አስተያየቶች"
+  "comments": "አስተያየቶች",
+  "seconds ago": "ሰከንድስ በፊት",
+  "hours ago": "ሰዐታት በፊት",
+  "minutes ago": "ደቂቃዎች በፊት",
+  "days ago": "ቀናት በፊት",
+  "months ago": "ወራት በፊት",
+  "years ago": "አመት በፊት"
 }

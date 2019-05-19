@@ -5,8 +5,8 @@ import { commentModel } from '../../models/comment/comment.model'
 import { IAccount } from '../../models/account/account.model'
 import { Document, Schema } from 'mongoose'
 import { serverApp } from '../../index'
-import { Stream } from 'stream'
 import { getComment } from '../comment/comment.methods'
+import sharp = require('sharp')
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -26,35 +26,66 @@ export async function listAllNews() {
 export async function addNewsWithPicture(
   data: any,
   account: Document & IAccount,
-  pic: Stream
+  pic: any
 ): Promise<any> {
   data._by = await account._id
   const news = await add(NewsModel, data)
-
   const grid = new Grid(serverApp, NewsModel, news._id)
 
-  await grid.set(pic)
+  const compressedPic = sharp(pic.path)
+    .resize(1080, 1080, { fit: 'cover' })
+    .jpeg({ quality: 100 })
+
+  await grid.set(compressedPic, 'image/jpeg')
 
   return news
 }
 
-export async function addPictureForNews(pic: Stream, _newsId: ObjectId): Promise<any> {
+export async function addPictureForNews(pic: any, _newsId: ObjectId): Promise<any> {
   const grid = new Grid(serverApp, NewsModel, _newsId)
+  const compressedPic = sharp(pic.path)
+    .resize(1080, 1080, { fit: 'cover' })
+    .jpeg({ quality: 100 })
 
-  return await grid.set(pic)
+  return await grid.set(compressedPic, 'image/jpeg')
 }
 
 export async function getPictureFromNews(
   _newsId: ObjectId,
-  pictureID = 'default'
+  pictureID = 'default',
+  size: number,
+  quality: number
 ): Promise<any> {
   const grid = new Grid(serverApp, NewsModel, _newsId)
 
-  return await grid.get(pictureID)
+  const compress = sharp()
+    .resize(size, size, { fit: 'cover' })
+    .jpeg({ quality, chromaSubsampling: '4:4:4' })
+
+  return (await grid.get(pictureID)).pipe(compress)
 }
 
+export async function addShare(
+  news_id: ObjectId,
+  account: Document & IAccount
+): Promise<any> {
+  const docs = await get(NewsModel, news_id)
+  docs.share.push(account._id)
+  await docs.save()
+
+  return {
+    share: docs.share.length
+  }
+}
+
+export async function getShare(_newsId: ObjectId): Promise<any> {
+  const docs = await get(NewsModel, _newsId, {
+    postQuery: q => q.populate('share')
+  })
+
+  return docs.share
+}
 export async function getLikes(_newsId: ObjectId): Promise<any> {
-  // const docs = (await get(NewsModel,_newsId)).populate('likes')
   const docs = await get(NewsModel, _newsId, {
     postQuery: q => q.populate('likes')
   })

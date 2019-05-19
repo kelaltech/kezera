@@ -7,6 +7,7 @@ activityRouter.get('/:_id/list', async ctx => {
   ctx.body = await GetActivity(ctx.params._id)
 })
 
-activityRouter.post('/:_id/add', async ctx => {
-  ctx.body = await AddActivity(ctx.params._id, ctx.request.body.type)
+activityRouter.post('/add', async ctx => {
+  console.log(ctx.request.body)
+  ctx.body = await AddActivity(ctx.request.body, ctx.state.user._id)
 })

@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import Axios from 'axios'
 
 import './side-nav.scss'
-import { Button } from 'gerami'
+import { Button, Warning } from 'gerami'
 import { Collapse } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -10,23 +12,50 @@ import {
   faTasks,
   faSuitcase,
   faAngleDoubleLeft,
-  faAngleDoubleRight
+  faAngleDoubleRight,
+  faSearchPlus
 } from '@fortawesome/free-solid-svg-icons'
 import MiniNav from '../../../layout-volunteer/components/volunteer-mini-nav/volunteer-mini-nav'
-import { async } from 'q'
 import {
   useSidenavDispatch,
   useSidenavState
 } from '../../../layout-volunteer/stores/sidenav/sidenav-provider'
+import { useAccountState } from '../../../app/stores/account/account-provider'
 
 function Sidenav(props: any) {
   const [open, setOpen] = useState({
     task: false,
     organization: false
   })
-  // const [mini, setMini] =  useS
+  const [errorForT, setErrorForT] = useState<any>(null)
+  const [errorForO, setErrorForO] = useState<any>(null)
+  const [task, setTask] = useState([])
+  const [organization, setOrganization] = useState([])
+  const { account } = useAccountState()
   const { mini } = useSidenavState()
   const miniDispatch = useSidenavDispatch()
+
+  useEffect(() => {
+    Axios.get('/api/tasks/me')
+      .then(tasks => tasks.data)
+      .then(data => {
+        // setTask(data) todo uncomment this after ashe delivers the api
+        setTask([])
+      })
+      .catch(() => {
+        setErrorForT('cant load Tasks! check your connection')
+      })
+
+    Axios.get('/api/organization/subscriptions')
+      .then(o => o.data)
+      .then(data => {
+        setOrganization(data)
+      })
+      .catch(() => {
+        setErrorForO('cant load Organizations! check your connection')
+      })
+  }, [])
+
   const handleTaskExpand = () => {
     setOpen({ ...open, ['task']: !open.task })
   }
@@ -45,78 +74,96 @@ function Sidenav(props: any) {
       {mini ? (
         <MiniNav />
       ) : (
-        <div>
-          <div className={'btn-link'}>
-            <Button to={'/requests'}>Donate!</Button>
+        <div className={'wide-sidenav-cont'}>
+          <div className={'btn-link '}>
+            <Button className={'full-width'} primary to={'/requests'}>
+              Donate!
+            </Button>
           </div>
           <div className={'sidenav-links'}>
             <div className={'sid-link'}>
-              <a href="/discovery" className={'a'}>
-                <span className={'icon-link discovery '}>
-                  <FontAwesomeIcon icon={faNewspaper} />
+              <Link title={'discovery'} to="/" className={'a'}>
+                <span className={'icon-link fg-blackish discovery '}>
+                  <FontAwesomeIcon icon={faSearchPlus} />
                 </span>
                 <span>Discover</span>
-              </a>
+              </Link>
             </div>
             <div className={'sid-link'}>
-              <a href="/news" className={'a'}>
-                <span className={'icon-link news'}>
+              <Link title={'news'} to="/news" className={'a'}>
+                <span className={'icon-link fg-blackish news'}>
                   <FontAwesomeIcon icon={faNewspaper} />
                 </span>
                 <span>News</span>
-              </a>
+              </Link>
             </div>
             <div className={'sid-link'}>
-              <a href="/events" className={'a'}>
-                <span className={'icon-link event'}>
+              <Link title={'events'} to="/events" className={'a'}>
+                <span className={'icon-link fg-blackish event'}>
                   <FontAwesomeIcon icon={faCalendarCheck} />
                 </span>
                 <span>Events</span>
-              </a>
+              </Link>
             </div>
-            <div className={'sid-link'} onClick={handleTaskExpand}>
-              <a href="/tasks" className={'a'}>
-                <span className={'icon-link task'}>
-                  <FontAwesomeIcon icon={faTasks} />
-                </span>
-                <span>Tasks</span>
-              </a>
+            <div title={'tasks'} className={'sid-link'} onClick={handleTaskExpand}>
+              <span className={'icon-link fg-blackish  task'}>
+                <FontAwesomeIcon icon={faTasks} />
+              </span>
+              <span>Tasks</span>
             </div>
             <div className={'sid-link-sub'}>
               <Collapse in={open.task} timeout="auto" unmountOnExit>
                 <div className={'task-sub-title'}>
-                  <h5>pending tasks</h5>
+                  <Link title={'pending tasks'} to="/tasks" className={'a'}>
+                    <h5>pending tasks</h5>
+                  </Link>
                 </div>
                 <hr />
                 <div className={'task-sub-links'}>
-                  <a>title will be displayed here!</a>
-                  <a>this is task title</a>
-                  <a>this is task title</a>
-                  <a>this is task title</a>
-                  <a>this is task title</a>
-                  <a>this is task title</a>
+                  {errorForT ? (
+                    <Warning problem={errorForT} shy />
+                  ) : (
+                    task.map((t: any, k) => (
+                      <Link key={k} to={`/request/${t._id}`}>
+                        {t.title}
+                      </Link>
+                    ))
+                  )}
                 </div>
               </Collapse>
             </div>
-            <div className={'sid-link'} onClick={handleOrganizationExpand}>
-              <span className={'icon-link organization'}>
+            <div
+              title={'my organizations'}
+              className={'sid-link'}
+              onClick={handleOrganizationExpand}
+            >
+              <span className={'icon-link fg-blackish organization'}>
                 <FontAwesomeIcon icon={faSuitcase} />
               </span>
-              <a>Organization</a>
+              <span>Organization</span>
             </div>
             <div className={'sid-link-sub'}>
               <Collapse in={open.organization} timeout="auto" unmountOnExit>
                 <div className={'task-sub-title'}>
-                  <h5>joined organizations</h5>
+                  <Link
+                    title={'joined organizations'}
+                    to="/my-organization"
+                    className={'a'}
+                  >
+                    <h5>joined organizations</h5>
+                  </Link>
                 </div>
                 <hr />
                 <div className={'task-sub-links'}>
-                  <a>Merry joy</a>
-                  <a>Macedonian</a>
-                  <a>Abebech Gobena</a>
-                  <a>Muday </a>
-                  <a>Rotracter</a>
-                  <a>We believe in God</a>
+                  {errorForO ? (
+                    <Warning problem={errorForO} shy />
+                  ) : (
+                    organization.map((o: any, k) => (
+                      <Link key={k} to={`/organization/${o._id}`}>
+                        {o.account.displayName}
+                      </Link>
+                    ))
+                  )}
                 </div>
               </Collapse>
             </div>

@@ -7,27 +7,32 @@ import Organization from './organization/organization'
 import Events from './events/events'
 import Volunteer from './volunteers/volunteer'
 import Summary from './summary/summary'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 interface IStatistics {}
 export default function Statistics(props: IStatistics) {
+  let { t } = useLocale(['admin'])
   return (
     <Block className={'full-width'}>
       <div id={'#SUMMARY'} className={''}>
         <Summary />
         <div id={'ORGANIZATION'}>
-          <Title> #Organizations </Title>
+          <Title> #{t`organizations`} </Title>
           <Organization />
         </div>
         <Block id={'VOLUNTEER'}>
-          <Title> #Volunteers </Title>
+          <Title> #{t`volunteers`} </Title>
           <Volunteer />
         </Block>
         <Block id={'DONATION'}>
-          <Title> #Donations </Title>
+          <Title> #{t`requests`} </Title>
           <Donation />
         </Block>
         <Block id={'NEWS'}>
-          <Title> #News & Events </Title>
+          <Title>
+            {' '}
+            #{t`news`} & {t`events`}{' '}
+          </Title>
           <Content>
             <Yoga maxCol={2}>
               <News />

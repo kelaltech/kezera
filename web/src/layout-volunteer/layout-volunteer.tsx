@@ -10,12 +10,9 @@ import layoutVolunteerNavigation from './configs/layout-volunteer-navigation'
 import LayoutVolunteerRoutes from './configs/layout-volunteer-routes'
 import Search from '../shared/components/search/search'
 import './layout-volunteer.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import Sidenav from '../shared/components/volunteer-side-nav/side-nav'
-import MiniNav from './components/volunteer-mini-nav/volunteer-mini-nav'
-import { Page } from 'gerami'
-import LayoutVolunteerSidenavProviders from './configs/layout-vlunteer-sidenav-priovider'
+import LayoutVolunteerSidenavProviders from './configs/layout-vlunteer-sidenav-provider'
+
 interface Props extends RouteComponentProps<{}> {
   error?: any
 }
@@ -70,15 +67,3 @@ function LayoutVolunteer({ error, match }: Props) {
 }
 
 export default LayoutVolunteer
-
-/*
-*   <div className={'arrow-sidenav'} onClick={handleSidenavWidth}>
-              <span>
-                {iconRight ? (
-                  <FontAwesomeIcon icon={faChevronLeft} />
-                ) : (
-                  <FontAwesomeIcon icon={faChevronRight} />
-                )}
-              </span>
-            </div>
-            {mini ? <MiniNav /> : <Sidenav />}*/

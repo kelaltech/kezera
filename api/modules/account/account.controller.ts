@@ -194,4 +194,19 @@ export class AccountController extends KoaController {
   ): Promise<void> {
     return finishPasswordReset(AccountModel, data, { session })
   }
+
+  /* TRACKING */
+
+  async setLastLocation(
+    session?: ClientSession,
+    data = super.getRequestBody<{ longitude: number; latitude: number }>(),
+    account_id = super.getUser()!._id
+  ) {
+    await edit(
+      AccountModel,
+      account_id,
+      { lastLocation: { type: 'Point', coordinates: [data.longitude, data.latitude] } },
+      { session }
+    )
+  }
 }

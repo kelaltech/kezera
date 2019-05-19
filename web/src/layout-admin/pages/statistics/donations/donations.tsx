@@ -3,15 +3,17 @@ import './donations.scss'
 import { Block, Content, Title, Image, Flex, Yoga } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ProgressBar } from '../../../components/progress-bar/progress-bar'
+import useLocale from '../../../../shared/hooks/use-locale/use-locale'
 
 export default function Donation() {
+  let { t } = useLocale(['admin'])
   return (
     <Content className="left">
       <Yoga maxCol={2}>
         <Block>
           <Title size="L">
             {' '}
-            <FontAwesomeIcon icon={'tshirt'} /> &emsp; Material donated{' '}
+            <FontAwesomeIcon icon={'tshirt'} /> &emsp; {t`material`} {t`donated`}{' '}
           </Title>
           <ProgressBar
             width={'88%'}
@@ -23,7 +25,7 @@ export default function Donation() {
         <Block>
           <Title size="L">
             {' '}
-            <FontAwesomeIcon icon={'money-bill'} /> &emsp; Fund collection success{' '}
+            <FontAwesomeIcon icon={'money-bill'} /> &emsp; {t`fund collection success`}{' '}
           </Title>
           <ProgressBar
             width={'22%'}
@@ -35,7 +37,7 @@ export default function Donation() {
         <Block>
           <Title size="L">
             {' '}
-            <FontAwesomeIcon icon={'tasks'} /> &emsp; Tasks accomplished{' '}
+            <FontAwesomeIcon icon={'tasks'} /> &emsp; {t`tasks accomplished`}{' '}
           </Title>
           <ProgressBar
             width={'62%'}
@@ -47,7 +49,7 @@ export default function Donation() {
         <Block>
           <Title size="L">
             {' '}
-            <FontAwesomeIcon icon={'heart'} /> &emsp; Organs donated{' '}
+            <FontAwesomeIcon icon={'heart'} /> &emsp; {t`organs donated`}{' '}
           </Title>
           <ProgressBar
             width={'82%'}

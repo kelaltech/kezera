@@ -32,5 +32,7 @@ export async function subscribedOrganization(account: Document & IAccount) {
   return await OrganizationModel.find({ subscribers: account._id })
 }
 export async function searchVolunteer(term: string) {
-  return await search(VolunteerModel, term)
+  return await search(VolunteerModel, term, {
+    postQuery: p => p.populate('account')
+  })
 }

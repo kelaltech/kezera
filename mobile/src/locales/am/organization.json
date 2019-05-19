@@ -1,6 +1,11 @@
 {
   "organization": "ድርጅት",
   "organizations": "ድርጅቶች",
-
-  "my-subscriptions": "የኔ ምዝገባዎች"
+  "bio": "መረጃ",
+  "my-subscriptions": "የኔ ምዝገባዎች",
+  "contact": "መግናኛ",
+  "subscribe": "ተከተል",
+  "unsubscribe": "መክተል አቁም",
+  "news": "ዜና",
+  "requests": "የእርዳታ ጥሪ"
 }

@@ -6,6 +6,7 @@ import { Dialog } from '@material-ui/core'
 import { AddVerifier } from '../../stores/admin-action'
 import { useAdminDispatch } from '../../stores/admin-provider'
 import useField from '../../../shared/hooks/use-field/use-field'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 interface IVerifierAddProps {
   open: boolean
@@ -14,6 +15,7 @@ interface IVerifierAddProps {
 
 export default function VerifierAdd(props: IVerifierAddProps) {
   let AdminDispatch = useAdminDispatch()
+  let { t } = useLocale(['admin'])
   let [verifier, setVerifier] = useState({
     displayName: '',
     email: '',
@@ -28,28 +30,28 @@ export default function VerifierAdd(props: IVerifierAddProps) {
     minLength: 2,
     maxLength: 50,
     setValueHook: async value => {
-      emitChanges({ title: value })
+      emitChanges({ displayName: value })
     }
   })
   const email = useField<HTMLInputElement>({
     minLength: 2,
     maxLength: 50,
     setValueHook: async value => {
-      emitChanges({ title: value })
+      emitChanges({ email: value })
     }
   })
   const phoneNumber = useField<HTMLInputElement>({
     minLength: 2,
     maxLength: 50,
     setValueHook: async value => {
-      emitChanges({ title: value })
+      emitChanges({ phoneNumber: value })
     }
   })
   const password = useField<HTMLInputElement>({
     minLength: 2,
     maxLength: 50,
     setValueHook: async value => {
-      emitChanges({ title: value })
+      emitChanges({ password: value })
     }
   })
   const validationError = (error: string | null) =>
@@ -88,7 +90,7 @@ export default function VerifierAdd(props: IVerifierAddProps) {
             <Flex className={' Fields Name-Input'}>
               <Input
                 name="displayName"
-                placeholder={'Full name'}
+                placeholder={t`name`}
                 {...displayName.inputProps}
                 inputRef={displayName.ref}
                 required
@@ -101,7 +103,7 @@ export default function VerifierAdd(props: IVerifierAddProps) {
             <Input
               name={'email'}
               className={'full-width'}
-              placeholder={'E-mail address'}
+              placeholder={t`email address`}
               inputRef={email.ref}
               {...email.inputProps}
             />
@@ -111,7 +113,7 @@ export default function VerifierAdd(props: IVerifierAddProps) {
             <Input
               name={'phone'}
               className={'full-width'}
-              placeholder={'Phone number'}
+              placeholder={t`phone no.`}
               inputRef={phoneNumber.ref}
               {...phoneNumber.inputProps}
             />
@@ -122,7 +124,7 @@ export default function VerifierAdd(props: IVerifierAddProps) {
               type="password"
               name={'password'}
               className={'full-width'}
-              placeholder={'Temporary password'}
+              placeholder={t`temporary password`}
               inputRef={password.ref}
               {...password.inputProps}
             />
@@ -135,11 +137,11 @@ export default function VerifierAdd(props: IVerifierAddProps) {
               primary={true}
               className={''}
             >
-              Create
+              {t`create`}
             </Button>
             &emsp;
             <Button onClick={() => props.onClose()} className={''}>
-              Cancel
+              {t`cancel`}
             </Button>
           </Block>
         </form>

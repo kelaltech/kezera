@@ -12,9 +12,11 @@ import VerifierAdd from '../verifier-add/verifier-add'
 import { useAdminDispatch, useAdminState } from '../../stores/admin-provider'
 import { DeleteVerifiers } from '../../stores/admin-action'
 import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 export default function VerifierList() {
   let [open, setOpen] = useState(false)
+  let { t } = useLocale(['admin'])
   let { verifiers } = useAdminState()
   const AdminDispatch = useAdminDispatch()
   let searchData: IAccountResponse[] = []
@@ -40,7 +42,7 @@ export default function VerifierList() {
   }
 
   let handleDelete = function(id: string) {
-    if (window.confirm('Are you sure you want to remove this user?')) {
+    if (window.confirm(t`Are you sure you want to remove this user` + '?')) {
       DeleteVerifiers(id, AdminDispatch)
     }
   }
@@ -48,7 +50,7 @@ export default function VerifierList() {
     <Block className={'flex full-width inline-block'}>
       <Block className={''}>
         <Title size={'3XL'}>
-          <FontAwesomeIcon icon={'user-shield'} /> &emsp; Verifiers{' '}
+          <FontAwesomeIcon icon={'user-shield'} /> &emsp; {t`verifiers`}{' '}
         </Title>
       </Block>
       <Block className={'right'}>
@@ -56,11 +58,11 @@ export default function VerifierList() {
           type={'search'}
           name={'Search'}
           onKeyUp={e => SearchEvent(e)}
-          placeholder={'Search Verifiers...'}
+          placeholder={t`search verifiers`}
         />
         <Button onClick={() => setOpen(true)}>
           {' '}
-          <FontAwesomeIcon icon={'user-shield'} /> &emsp; Create Verifier{' '}
+          <FontAwesomeIcon icon={'user-shield'} /> &emsp; {t`create verifier`}{' '}
         </Button>
       </Block>
       <VerifierAdd open={open} onClose={() => setOpen(false)} />
@@ -68,10 +70,10 @@ export default function VerifierList() {
         <Table>
           <TableHead className={'Verifier-Table-Header'}>
             <TableRow>
-              <TableCell className="Verifier-Table-Header-Cells">Name</TableCell>
-              <TableCell className="Verifier-Table-Header-Cells">Email</TableCell>
-              <TableCell className="Verifier-Table-Header-Cells">Phone no.</TableCell>
-              <TableCell className="Verifier-Table-Header-Cells">Action</TableCell>
+              <TableCell className="Verifier-Table-Header-Cells">{t`name`}</TableCell>
+              <TableCell className="Verifier-Table-Header-Cells">{t`email address`}</TableCell>
+              <TableCell className="Verifier-Table-Header-Cells">{t`phone no.`}</TableCell>
+              <TableCell className="Verifier-Table-Header-Cells">{t`action`}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -119,7 +121,7 @@ export default function VerifierList() {
         </Table>
       </Content>
       <Block className="center">
-        <Button onClick={() => alert('ayseram')}> View more </Button> &nbsp;
+        <Button onClick={() => alert('ayseram')}> {t`view more`} </Button> &nbsp;
       </Block>
     </Block>
   )

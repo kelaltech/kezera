@@ -3,8 +3,10 @@ import './news.scss'
 import { Block, Content, Flex, Title } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useFetch } from '../../../hooks/Fetch'
+import useLocale from '../../../../shared/hooks/use-locale/use-locale'
 
 export default function News() {
+  let { t } = useLocale(['admin'])
   let news = useFetch('/api/admin/news')
   let likes = useFetch('/api/admin/news/likes')
   let comments = useFetch('/api/admin/news/comments')
@@ -12,7 +14,7 @@ export default function News() {
     <Content transparent className="Admin-News-Compenent">
       <span className={'Events-Title'}>
         {' '}
-        <FontAwesomeIcon icon={'newspaper'} /> News{' '}
+        <FontAwesomeIcon icon={'newspaper'} /> {t`news`}
       </span>
       <Block className={'center'}>
         <Title size={'3XL'}>{news}</Title>
@@ -31,7 +33,7 @@ export default function News() {
         <Flex className={'full-width'}>
           <Title size={'XL'} className={'inline-block'}>
             {' '}
-            Likes{' '}
+            {t`likes`}
           </Title>
         </Flex>
       </Block>
@@ -43,7 +45,7 @@ export default function News() {
           </Title>
         </Flex>
         <Flex className={'inline-block full-width'}>
-          <Title size={'XL'}> Comments </Title>
+          <Title size={'XL'}> {t`comments`} </Title>
         </Flex>
       </Block>
     </Content>

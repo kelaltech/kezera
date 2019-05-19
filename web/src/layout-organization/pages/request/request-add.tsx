@@ -30,9 +30,11 @@ import FundAdd from '../fundraising/fund-add'
 import { Schema } from 'mongoose'
 import MaterialAdd from '../../components/material-add/material-add'
 import OrganAdd from '../organ/organ-add'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
+  let { t } = useLocale(['material-donation'])
   let [type, setType] = useState<any>(0)
   let [id, setId] = useState()
 

@@ -58,7 +58,16 @@ function OrganizationDetailNews({ organization }: Props) {
               <>
                 <Yoga maxCol={2} className={'yoga-in-rich-page padding-normal'}>
                   {news.map((n, i) => (
-                    <NewsCard key={i} {...n as any} />
+                    <NewsCard
+                      key={i}
+                      title={n.title}
+                      shareCount={n.share.length}
+                      likeCount={n.likes.length}
+                      commentCount={n.comments.length}
+                      description={n.description}
+                      imgSrc={`/api/news/${n._id}/pic`}
+                      _id={n._id}
+                    />
                   ))}
                 </Yoga>
                 {news.length && news.length % count === 0 && (

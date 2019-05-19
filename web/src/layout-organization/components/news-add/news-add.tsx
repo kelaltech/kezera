@@ -72,7 +72,7 @@ function NewsAdd({
       .then(news => news.data)
       .then(data => {
         const formData = new FormData()
-        formData.append('file', picture)
+        formData.append('picture', picture)
         axios
           .post(`/api/news/${data._id}/addpic`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
@@ -82,6 +82,7 @@ function NewsAdd({
             setSubmitting(false)
           })
           .catch(e =>
+            //todo remove the added news if countered an error
             setError(
               'something went wrong! cant add image for this news.\n Please try again!'
             )

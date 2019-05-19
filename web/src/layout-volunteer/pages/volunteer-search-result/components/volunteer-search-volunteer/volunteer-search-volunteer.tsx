@@ -27,7 +27,8 @@ function VolSearchResult(props: IVolunteerResult) {
           name={v.name}
           phone_number={v.phone_number}
           gender={v.Gender}
-          img={v.img}
+          _id={v.account._id}
+          img={`/api/account/get-photo/${v.account._id}`}
         />
       ))}
     </Yoga>

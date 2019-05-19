@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Block, Yoga } from 'gerami'
-import ProductSlider from '../../components/volunteer-product-slider/volunteer-product-slider'
 
 import './volunteer-event.scss'
 import axios from 'axios'
 import EventCard from '../../../shared/components/event-card/event-card'
 import Slider from 'react-slick'
 import RichPage from '../../../shared/components/rich-page/rich-page'
+import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 const settings = {
   infinite: true,
@@ -40,6 +40,7 @@ const settings = {
   ]
 }
 function VolunteerEvents() {
+  const { loading, t } = useLocale(['volunteer-event'])
   const [events, setEvents] = useState([])
   const [nearEvents, setNearEvents] = useState([])
 
@@ -59,36 +60,41 @@ function VolunteerEvents() {
       .catch(e => console.log(e))*/
   }, [])
   return (
-    <div className={'events-container'}>
-      <RichPage title={'Events'}>
-        <div className={'e-slider events-list-container'}>
-          <h2>Events around you </h2>
-          <Slider {...settings}>
-            {events.map((event: any) => (
-              <div className={'slider-event-list'}>
-                <EventCard event={event} />
-              </div>
-            ))}
-            {/*   {nearEvents.map((event: any) => (//todo uncomment when map is done
+    loading || (
+      <div className={'events-container'}>
+        <RichPage
+          title={t`volunteer-event:title`}
+          description={t`volunteer-event:description`}
+        >
+          <div className={'e-slider events-list-container'}>
+            <h2>{t`volunteer-event:events-aroud`} </h2>
+            <Slider {...settings}>
+              {events.map((event: any) => (
+                <div className={'slider-event-list'}>
+                  <EventCard event={event} />
+                </div>
+              ))}
+              {/*   {nearEvents.map((event: any) => (//todo uncomment when map is done
               <div className={'slider-event-list'}>
                 <EventCard  event={event}  />
               </div>
             ))}*/}
-          </Slider>
-        </div>
-        <Block />
-        <div className={'events-list-container'}>
-          <h2>Upcoming events... </h2>
-          <Yoga maxCol={2}>
-            {events.map((event: any) => (
-              <Block>
-                <EventCard event={event} />
-              </Block>
-            ))}
-          </Yoga>
-        </div>
-      </RichPage>
-    </div>
+            </Slider>
+          </div>
+          <Block />
+          <div className={'events-list-container'}>
+            <h2>{t`volunteer-event:upcoming-events`}</h2>
+            <Yoga maxCol={2}>
+              {events.map((event: any) => (
+                <Block>
+                  <EventCard event={event} />
+                </Block>
+              ))}
+            </Yoga>
+          </div>
+        </RichPage>
+      </div>
+    )
   )
 }
 

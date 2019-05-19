@@ -9,7 +9,10 @@ import {
   accountDocumentToPublicResponse,
   accountRequestToDocument
 } from '../account/account.filter'
-import { IAccount } from '../../models/account/account.model'
+import { AccountModel, IAccount } from '../../models/account/account.model'
+import { Grid } from '../../lib/grid'
+import { serverApp } from '../../index'
+import { OrganizationApplicationModel } from '../../models/organization-application/organization-application.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -75,6 +78,14 @@ export async function organizationDocumentToResponse(
     account ||
     ((await document.populate('account').execPopulate()).account as any).toJSON()
 
+  const hasLogo = await new Grid(
+    serverApp,
+    !isApplication ? AccountModel : OrganizationApplicationModel,
+    !isApplication ? populatedAccount._id : document._id,
+    !isApplication ? 'photo' : 'logo',
+    false
+  ).has()
+
   return {
     _at: new Date(document._at!).getTime(),
     _id: document._id,
@@ -83,7 +94,9 @@ export async function organizationDocumentToResponse(
 
     type: document.type,
 
-    logoUri: !isApplication
+    logoUri: !hasLogo
+      ? undefined
+      : !isApplication
       ? `/api/account/get-photo/${populatedAccount._id}`
       : `/api/verifier/get-organization-application-logo/${document._id}`,
     motto: document.motto,

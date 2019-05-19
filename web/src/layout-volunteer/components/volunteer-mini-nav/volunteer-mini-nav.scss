@@ -4,7 +4,7 @@
   top: 60px;
   width: 100%;
   height: auto;
-  background-color: darkorange;
+  //background-color: darkorange;
   padding: 15px;
   @media screen and (max-width: $mobile) {
     display: none;
@@ -13,8 +13,7 @@
 
 .mini-sidenav-links {
   .sid-link {
-    padding: $padding-S;
-    //margin: 2px;
+    padding: $padding-S 0;
     display: flex;
     &:hover {
       background-color: #d6d6d6;
@@ -27,6 +26,9 @@
       width: 100%;
       text-align: center;
 
+      &:hover {
+        color: $accent !important;
+      }
       a {
         text-decoration: none !important;
         -moz-appearance: none;
@@ -37,22 +39,33 @@
         }
       }
     }
+  }
+}
 
-    .discovery {
-      color: #177be6 !important;
+/*
+ .discovery {
+      &:hover {
+        color: #177be6 !important;
+      }
     }
     .news {
-      color: #177be6 !important;
+      &:hover {
+        color: $fg !important;
+      }
     }
 
     .event {
-      color: #ffb53a !important;
+     &:hover {
+       color: #ffb53a !important;
+     }
     }
     .task {
-      color: dodgerblue !important;
+      &:hover {
+        color: dodgerblue !important;
+      }
     }
     .organization {
-      color: lightcoral !important;
-    }
-  }
-}
+     &:hover {
+       color: lightcoral !important;
+     }
+    }*/

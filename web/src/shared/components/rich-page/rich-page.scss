@@ -54,5 +54,9 @@
     margin-right: -($space / 2) !important;
     margin-left: -($space / 2) !important;
     padding: ($space / 2) 0 !important;
+
+    > * {
+      vertical-align: top;
+    }
   }
 }

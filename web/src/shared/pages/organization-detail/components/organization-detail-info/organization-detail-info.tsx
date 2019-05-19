@@ -4,12 +4,22 @@ import { Anchor, Block, Content, Flex, Yoga } from 'gerami'
 import './organization-detail-info.scss'
 import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
+import { LngLat } from 'mapbox-gl'
+import OrganizationDetailStats from '../organization-detail-stats/organization-detail-stats'
 
 interface Props {
   organization: IOrganizationResponse
+  isApplication: boolean
 }
 
-function OrganizationDetailInfo({ organization }: Props) {
+const parseGeo = (lngLat: LngLat): string => {
+  const factor = 100000
+  return `${Math.round(lngLat.lat * factor) / factor}° ${
+    lngLat.lat > 0 ? 'N' : 'S'
+  }, ${Math.round(lngLat.lng * factor) / factor}°  ${lngLat.lng > 0 ? 'E' : 'W'}`
+}
+
+function OrganizationDetailInfo({ organization, isApplication }: Props) {
   const { loading, t } = useLocale(['organization'])
 
   return (
@@ -23,15 +33,7 @@ function OrganizationDetailInfo({ organization }: Props) {
           </Content>
         )}
 
-        <Content className={'margin-top-big'}>
-          <Block first className={'bold'}>
-            Stats
-          </Block>
-
-          <hr />
-
-          <Block last>// todo: stats</Block>
-        </Content>
+        {!isApplication && <OrganizationDetailStats organization={organization} />}
 
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
           <Content className={'top'}>
@@ -42,19 +44,7 @@ function OrganizationDetailInfo({ organization }: Props) {
             <hr />
 
             <Block last>
-              <pre
-                style={{
-                  /* todo: move this to gerami v0.1.3 */
-                  margin: 0,
-                  padding: 0,
-                  font: 'inherit',
-                  overflowX: 'auto',
-                  whiteSpace: 'pre-wrap',
-                  wordWrap: 'break-word'
-                }}
-              >
-                {organization.bio}
-              </pre>
+              <pre>{organization.bio}</pre>
             </Block>
           </Content>
 
@@ -111,8 +101,24 @@ function OrganizationDetailInfo({ organization }: Props) {
                   <div style={{ flex: 5 }}>
                     {(organization.locations || []).map((location, i) => (
                       <div key={i}>
-                        {location.address}
-                      </div> /* todo: (latitude, longitude) => google maps in new tab */
+                        {location.address}{' '}
+                        {location.geo && (
+                          <Anchor
+                            href={`https://www.google.com/maps?q=${
+                              location.geo.coordinates[1]
+                            },${location.geo.coordinates[0]}`}
+                            target={'_blank'}
+                            rel={'noopener'}
+                          >
+                            {parseGeo(
+                              new LngLat(
+                                location.geo.coordinates[0],
+                                location.geo.coordinates[1]
+                              )
+                            )}
+                          </Anchor>
+                        )}
+                      </div>
                     ))}
                   </div>
                 ) : (

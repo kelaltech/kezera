@@ -1,4 +1,5 @@
 @import '../../../assets/styles/theme';
+
 .sidenav-container {
   position: sticky;
   top: 60px;
@@ -11,6 +12,8 @@
     display: none;
   }
 }
+.wide-sidenav-cont {
+}
 .mini-width {
   width: 50px !important;
   padding: 15px 0 0 0 !important;
@@ -20,8 +23,13 @@
 }
 
 .btn-link {
+  width: 100%;
   text-align: center;
   margin-bottom: $padding-M;
+
+  .gerami-anchor {
+    width: 100%;
+  }
 }
 .sidenav-links {
   .sid-link {
@@ -32,8 +40,12 @@
       background-color: #d6d6d6;
       border-radius: $radius;
       cursor: pointer;
+
+      .icon-link {
+        color: $accent !important;
+      }
     }
-    font-size: $font-S;
+    font-size: $font-M - 2;
 
     .a {
       all: unset;
@@ -43,40 +55,34 @@
     .icon-link {
       margin-right: 3px;
     }
-
-    .discovery {
-      color: #177be6;
-    }
-    .news {
-      color: #177be6;
-    }
-
-    .event {
-      color: #ffb53a;
-    }
-    .task {
-      color: dodgerblue;
-    }
-    .organization {
-      color: lightcoral;
-    }
   }
 }
 
 .sid-link-sub {
-  padding: $padding-S;
-  margin: 2px;
+  padding: 0 $padding-S;
+  margin: 2px $space/2;
   display: flex;
-  font-size: $font-S;
+
+  .a {
+    all: unset;
+    width: 100%;
+    height: inherit;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
   .task-sub-title {
     h5 {
       font-weight: lighter;
-      font-size: $font-S;
+      font-size: $font-S + 2;
     }
   }
 
   .task-sub-links {
+    font-size: $font-S !important;
     margin-left: $space;
+    margin-bottom: $space + 20;
     a {
       display: block;
       margin: 2px;

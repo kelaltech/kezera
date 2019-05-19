@@ -1,4 +1,4 @@
-import Route = require('koa-router')
+import * as Router from 'koa-router'
 
 import {
   addComment,
@@ -15,11 +15,12 @@ import {
   getPictureFromNews,
   addPictureForNews,
   recentNews,
-  getComments
+  getComments,
+  addShare,
+  getShare
 } from './news.controller'
-import * as fs from 'fs'
 
-export const newsRouter = new Route({
+export const newsRouter = new Router({
   prefix: '/api/news'
 })
 
@@ -33,7 +34,7 @@ newsRouter.post('/new/withpic', async ctx => {
   ctx.body = await addNewsWithPicture(
     ctx.request.body,
     ctx.state.user,
-    fs.createReadStream(ctx.request.files!.picture.path)
+    ctx.request.files!.picture
   )
 })
 //POST /api/news/new
@@ -60,14 +61,19 @@ newsRouter.delete('/:_newsId', async ctx => {
 })
 //POST /api/news/:_newsId/addpic
 newsRouter.post('/:_newsId/addpic', async ctx => {
-  const files = ctx.request.files!.file
+  const picture = ctx.request.files!.picture
 
-  ctx.body = await addPictureForNews(fs.createReadStream(files.path), ctx.params._newsId)
+  ctx.body = await addPictureForNews(picture, ctx.params._newsId)
 })
 
-//GET /api/news/:_newsId/pic?pictureId=default
+//GET /api/news/:_newsId/pic?size={1080}&quality={100}  default values
 newsRouter.get('/:_newsId/pic', async ctx => {
-  ctx.body = await getPictureFromNews(ctx.params._newsId, ctx.query.pictureId)
+  ctx.body = await getPictureFromNews(
+    ctx.params._newsId,
+    ctx.query.pictureId,
+    Number(ctx.query.size ? ctx.query.size : 1080),
+    Number(ctx.query.quality ? ctx.query.quality : 100)
+  )
 })
 
 // GET /api/news/list?since&count
@@ -86,6 +92,12 @@ newsRouter.get('/:_newsId/likes', async ctx => {
   //return the users profile
 
   ctx.body = await getLikes(ctx.params._newsId)
+})
+newsRouter.get('/:_newsId/share', async ctx => {
+  ctx.body = await getShare(ctx.params._newsId)
+})
+newsRouter.put('/:_newsId/share', async ctx => {
+  ctx.body = await addShare(ctx.params._newsId, ctx.state.user)
 })
 
 //PUT /api/news/:_newsId

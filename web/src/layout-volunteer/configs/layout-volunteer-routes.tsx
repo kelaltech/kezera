@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import * as qs from 'qs'
 
 import { useAccountState } from '../../app/stores/account/account-provider'
-import { Flex } from 'gerami'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
@@ -42,8 +41,29 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
   return (
     <Switch>
       {account && <Redirect from={`${p}/register`} to={`/login/redirect/account`} />}
+
+      {/* todo: change the path to / and move to the bottom of LayoutDefaultRoutes */}
+      <Route exact path={`${p}/landing`} component={Landing} />
+
       {account ? (
-        <Route exact path={`${p}/account`} component={AccountDetail} />
+        <>
+          <Route exact path={`${p}/account`} component={AccountDetail} />
+          <Route exact path={`${p}/events`} component={Event} />
+          <Route exact path={`${p}/my-organization`} component={MyOrganization} />
+          <Route exact path={`${p}/news`} component={News} />
+          <Route exact path={`${p}/tasks`} component={Task} />
+          <Route exact path={`${p}/me`} component={Profile} />
+          <Route exact path={`${p}/requests`} component={Request} />
+          <Route exact path={`${p}/search-result`} component={SearchResult} />
+
+          <Route exact path={`${p}/request/:_id/going`} component={RequestGoing} />
+          <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
+          <Route exact path={`${p}/event/:_id`} component={EventDetail} />
+          <Route exact path={`${p}/news/:_id`} component={NewsDetail} />
+          <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
+
+          <Route exact path={`${p}/`} component={Discovery} />
+        </>
       ) : (
         <Redirect
           exact
@@ -53,23 +73,6 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       )}
 
       <Redirect exact from={`${p}/register`} to={'/login/register'} />
-
-      <Route exact path={`${p}/discovery`} component={Discovery} />
-      <Route exact path={`${p}/events`} component={Event} />
-      <Route exact path={`${p}/landing`} component={Landing} />
-      {/*todo change the path to*/}
-      <Route exact path={`${p}/my-organization`} component={MyOrganization} />
-      <Route exact path={`${p}/news`} component={News} />
-      <Route exact path={`${p}/tasks`} component={Task} />
-      <Route exact path={`${p}/me`} component={Profile} />
-      <Route exact path={`${p}/request`} component={Request} />
-      <Route exact path={`${p}/search-result`} component={SearchResult} />
-
-      <Route exact path={`${p}/request/:_id/going`} component={RequestGoing} />
-      <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
-      <Route exact path={`${p}/event/:_id`} component={EventDetail} />
-      <Route exact path={`${p}/news/:_id`} component={NewsDetail} />
-      <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
 
       <Route component={NotFound} />
     </Switch>

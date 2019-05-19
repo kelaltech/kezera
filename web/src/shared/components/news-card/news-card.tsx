@@ -1,25 +1,41 @@
-import React, { Component, CSSProperties, useEffect, useState } from 'react'
+import React, { CSSProperties, useState } from 'react'
 
 import './news-card.scss'
 import { Anchor, Content } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import ShareListDialog from '../share-list-dialog/share-list-dialog'
 
 export interface INewsCardProps {
   title: string
   likeCount: number
   commentCount: number
+  shareCount: number
   description: string
   imgSrc: string
-  _id: string
+  _id: string | number | any
   style?: CSSProperties
   flex?: CSSProperties
 }
 
 function NewsCard(props: INewsCardProps) {
-  const [likeClicked, setLikeClicked] = useState(0)
-  let { description, commentCount, likeCount, title, imgSrc, _id } = props
+  let { description, commentCount, likeCount, title, imgSrc, shareCount, _id } = props
+  const [likeClicked, setLikeClicked] = useState(likeCount)
+  const [shareClicked, setShareClicked] = useState(shareCount)
+
+  const [shareListPicker, setShareListPicker] = useState(false)
+
+  const handleShareClick = () => {
+    axios
+      .put(`/api/news/${_id}/share`)
+      .then(news => news.data)
+      .then(data => {
+        setShareClicked(data.share)
+      })
+      .catch(e => {
+        console.log(e) //todo handle error properly
+      })
+  }
 
   function handleClick() {
     axios
@@ -31,6 +47,7 @@ function NewsCard(props: INewsCardProps) {
         console.log(e)
       })
   }
+
   return (
     <div className={'news-card-container'}>
       <Content className={'news-card-box'}>
@@ -51,8 +68,7 @@ function NewsCard(props: INewsCardProps) {
           <div className={'news-card-content-stat'}>
             <span>
               <FontAwesomeIcon icon={['fas', 'heart']} />
-              &nbsp; {likeCount == 0 ? '' : likeCount}
-              {likeClicked === 0 ? '' : ' you liked this'}
+              &nbsp;{likeClicked === 0 ? '' : likeClicked}
             </span>
             <span>{commentCount == 0 ? '' : commentCount} comments</span>
           </div>
@@ -66,10 +82,18 @@ function NewsCard(props: INewsCardProps) {
               <FontAwesomeIcon icon={['far', 'comment-alt']} />
               &nbsp; Comment
             </span>
-            <span>
+            <span onClick={() => setShareListPicker(!shareListPicker)}>
               <FontAwesomeIcon icon={['fas', 'share-alt']} />
-              &nbsp; Share
+              &nbsp; Share &nbsp;{shareClicked == 0 ? '' : shareClicked}
             </span>
+            <ShareListDialog
+              open={shareListPicker}
+              onClose={() => setShareListPicker(!shareListPicker)}
+              title={title}
+              _id={_id}
+              handleShare={handleShareClick}
+              shareUrl={`https://spva-app.herokuapp.com`} //todo change share url to actual url
+            />
           </div>
         </div>
       </Content>

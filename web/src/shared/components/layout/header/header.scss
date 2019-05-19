@@ -24,10 +24,10 @@
 }
 
 .header-logo {
-  margin-top: -4px;
-  margin-bottom: -8px;
-  width: $font-L * 1.5;
-  height: $font-L * 1.5;
+  width: $font-L * 1.4 * 7 / 2;
+  height: $font-L * 1.4;
+  text-decoration: none !important;
+  box-shadow: none !important;
 }
 
 .header-separator {
