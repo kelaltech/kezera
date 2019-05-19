@@ -8,7 +8,6 @@ import com.swmansion.rnscreens.RNScreensPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -35,7 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactNativeConfigPackage(),
             new VectorIconsPackage(),
             new RNGestureHandlerPackage(),
-            new RNCWebViewPackage(),
             new AsyncStoragePackage()
       );
     }

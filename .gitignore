@@ -1,5 +1,5 @@
-# Custom
 dist/
+*.tsbuildinfo
 
 # Created by https://www.gitignore.io/api/node,visualstudio,jetbrains+all,visualstudiocode
 

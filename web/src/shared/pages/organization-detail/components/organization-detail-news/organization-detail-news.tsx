@@ -59,6 +59,7 @@ function OrganizationDetailNews({ organization }: Props) {
                 <Yoga maxCol={2} className={'yoga-in-rich-page padding-normal'}>
                   {news.map((n, i) => (
                     <NewsCard
+                      key={i}
                       title={n.title}
                       shareCount={n.share.length}
                       likeCount={n.likes.length}
