@@ -34,6 +34,7 @@
     "axios": "^0.18.0",
     "babel-plugin-recharts": "^1.2.0",
     "classnames": "^2.2.6",
+    "cross-env": "^5.2.0",
     "dotenv": "^8.0.0",
     "draft-js": "^0.10.5",
     "draft-js-image-plugin": "^2.0.6",
@@ -63,12 +64,12 @@
   "scripts": {
     "run-p": "run-p",
     "run-s": "run-s",
-    "prod": "run-s format build",
+    "prod": "cross-env NODE_ENV=production run-s format build",
     "lint": "prettier {.,**}/*.{css,md,js,json,jsx,sass,scss,ts,tsx}",
     "format": "prettier --write {.,**}/*.{css,md,js,json,jsx,sass,scss,ts,tsx}",
     "analyze": "source-map-explorer build/static/js/main.*",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

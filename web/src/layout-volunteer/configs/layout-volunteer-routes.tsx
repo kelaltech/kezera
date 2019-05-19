@@ -3,8 +3,6 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import * as qs from 'qs'
 
 import { useAccountState } from '../../app/stores/account/account-provider'
-import { Flex } from 'gerami'
-import Sidenav from '../../shared/components/volunteer-side-nav/side-nav'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))

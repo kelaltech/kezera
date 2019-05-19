@@ -160,9 +160,9 @@ function VolunteerTask() {
             <h3>{t`task:upcoming-task`}</h3>
           </div>
           <Yoga maxCol={2} className={'vol-task-container'}>
-            {tasks.map((t:any)=>(
-            <RequestCard request={t} />
-          ))}
+            {tasks.map((t: any) => (
+              <RequestCard request={t} />
+            ))}
           </Yoga>
         </div>
       </RichPage>
