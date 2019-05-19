@@ -1,35 +1,211 @@
+@import '../../../assets/styles/theme';
 .landing-container {
   width: 100%;
-  height: auto;
-  position: relative;
+  min-height: 130vh;
+
+  .top-hero-section {
+    position: relative;
+  }
 }
-.intro-svg {
+
+.hero-content {
   width: 100%;
-  border-bottom-right-radius: 100%;
-  height: 90vh;
-  background-color: #00b478;
+  height: 103vh;
+  background-image: url('../../../assets/images/labding-imgs/landing-bg2.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: $mobile) {
+    width: 100vw;
+    display: block;
+  }
+  .hero-slogan {
+    align-self: center;
+    color: $bg;
+
+    @media screen and (max-width: $mobile) {
+      text-align: left;
+      padding-top: $padding-L * 7;
+    }
+  }
 }
-.intro-card-top-svg {
-  width: 250px;
-  height: 300px;
-  background-color: chartreuse;
+
+.card-top-container {
   position: absolute;
-  top: 10%;
-  left: 70%;
+  left: 60%;
+  top: 34%;
+  width: 300px;
+  height: 300px;
+  box-shadow: 0 8px 6px -8px black;
+  text-align: center;
+  color: $primary;
+  border-radius: 10px;
+
+  @media screen and (max-width: $mobile) {
+    left: 50%;
+    top: 75%;
+    transform: translate(-50%, -50%);
+  }
 }
-.vol-cards-container {
+.l-volunteer-activities {
+  margin-top: 200px;
   width: 100%;
   height: auto;
-  background-color: #3f51b5;
-  position: relative;
+  display: flex;
+  justify-content: space-around;
+
+  @media screen and (max-width: $mobile) {
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  .l-right-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    @media screen and (max-width: $mobile) {
+      align-self: center;
+    }
+  }
+  .l-center-text {
+    display: flex;
+    font-size: 3em;
+    flex-direction: column;
+    @media screen and (max-width: $mobile) {
+      display: none;
+    }
+  }
+  .l-left-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    @media screen and (max-width: $mobile) {
+      align-self: center;
+    }
+  }
 }
-.vol-cards {
-  width: 250px;
-  height: 300px;
-  background-color: dodgerblue;
-  position: absolute;
+
+.l-organization-hero {
+  margin-top: 200px;
+  width: 100%;
+  height: 103vh;
+  background-image: url('../../../assets/images/labding-imgs/landing-second-hero.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+
+  @media screen and (max-width: $mobile) {
+    width: 100vw;
+
+    h1 {
+      height: 200px !important;
+      line-height: 200px;
+      font-size: 1.5em !important;
+    }
+  }
+  h1 {
+    height: 100vh;
+    line-height: 100vh;
+    color: $bg;
+    font-size: 2.5em;
+  }
 }
-.donate-card {
-  left: 20%;
-  background-color: #f02139;
+.l-org-activity {
+  display: flex;
+  justify-content: space-evenly;
+
+  @media screen and (max-width: $mobile) {
+    flex-direction: column;
+    .l2-card-news {
+      margin-top: 10px;
+      align-self: center;
+    }
+  }
+  .l2-card-news {
+    margin-top: 200px;
+  }
+}
+.l-stat-cont {
+  padding-top: $padding-L * 7;
+  display: flex;
+  justify-content: space-evenly;
+
+  @media screen and (max-width: $mobile) {
+    flex-direction: column;
+
+    * {
+      align-self: center;
+    }
+  }
+}
+
+.l-d-app {
+  margin-top: $padding-L * 7;
+  width: 100%;
+  height: 100vh;
+  @media screen and (max-width: $mobile) {
+    width: 100vw;
+  }
+  .l-d-title {
+    text-align: center;
+    p {
+      font-size: 1.5em;
+      font-weight: lighter;
+    }
+  }
+
+  .l-d-banner {
+    margin: 0 auto;
+    width: 90%;
+    height: 300px;
+    border-radius: 30px;
+    background-image: url('../../../assets/images/labding-imgs/banner.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: space-evenly;
+
+    @media screen and (max-width: $mobile) {
+      height: 350px;
+      width: 100vw;
+      transform: rotate(90deg);
+      .l-d-b-title,
+      .l-d-b-btn-cont {
+        width: 100% !important;
+        transform: rotate(-90deg);
+        padding: 0 !important;
+      }
+      .l-d-b-title {
+        padding-top: $padding-L * 11 !important;
+
+        p {
+          display: none;
+        }
+      }
+    }
+    .l-d-b-title {
+      padding-left: $padding-L * 2;
+      color: $bg !important;
+      align-self: center;
+      h1 {
+      }
+      p {
+        font-size: 1.5em;
+        text-align: center;
+        margin: 0 !important;
+        opacity: 0.8;
+      }
+    }
+    .l-d-b-btn-cont {
+      align-self: center;
+      width: 200px;
+      height: 60px;
+      background-color: #00b478;
+      border-color: #00b478;
+      color: $bg;
+      font-size: 1.5em;
+    }
+  }
 }

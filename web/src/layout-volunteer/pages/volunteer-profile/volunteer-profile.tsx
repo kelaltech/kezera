@@ -139,14 +139,14 @@ function Profile() {
 
         <Content className={'general-profile'}>
           <div className={'pro-activity-header'}>
-            <span>{t`landing:activities`}</span>
+            <span>{t`portfolio:activities`}</span>
           </div>
 
           <div className={'pro-act-stat-cont'}>
             <div className={'pro-stat'}>
               <div>
                 <List
-                  subheader={<ListSubheader>{t`landing:achievements`}</ListSubheader>}
+                  subheader={<ListSubheader>{t`portfolio:achievements`}</ListSubheader>}
                 >
                   <ListItem>
                     <ListItemIcon>
@@ -229,7 +229,7 @@ function Profile() {
 
         <Content className={'general-profile'}>
           <div className={'pro-activity-header event-header'}>
-            <span>{t`landing:recent-events`}</span>
+            <span>{t`portfolio:recent-events`}</span>
           </div>
           <div className={'pro-event-attended'}>
             <Slider {...Settings}>
@@ -247,8 +247,9 @@ function Profile() {
         {/*<Block first />*/}
 
         <Content className={'general-profile'}>
-          <div className={'pro-activity-header '} />
-          <span>{t`landing:certificates`}</span>
+          <div className={'pro-activity-header '} >
+          <span>{t`portfolio:certificates`}</span>
+          </div>
           <Yoga maxCol={2}>
             {certificate.map((c, i) => (
               <CertificateCard certificate={c} key={i} />
