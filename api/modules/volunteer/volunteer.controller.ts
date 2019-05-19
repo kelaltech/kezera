@@ -33,6 +33,6 @@ export async function subscribedOrganization(account: Document & IAccount) {
 }
 export async function searchVolunteer(term: string) {
   return await search(VolunteerModel, term, {
-    postQuery: p=>p.populate('account')
+    postQuery: p => p.populate('account')
   })
 }
