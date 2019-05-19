@@ -6,8 +6,10 @@ import Likes from '../../../components/news-view/components/like-tab/like-tab'
 import Comments from '../../../components/news-view/components/comment-tab/comment-tab'
 
 import './news-view-tab.scss'
-
-export default function NewsTabs() {
+interface INewsTab {
+  _id: string
+}
+export default function NewsTabs({ _id }: INewsTab) {
   let [value, setValue] = useState(0)
   return (
     <div>
@@ -22,16 +24,8 @@ export default function NewsTabs() {
           Two
         </Tab>
       </Tabs>
-      {value === 0 && (
-        <Block>
-          <Comments />
-        </Block>
-      )}
-      {value === 1 && (
-        <Block>
-          <Likes />
-        </Block>
-      )}
+      {value === 0 && <Comments _id={_id} />}
+      {value === 1 && <Likes />}
     </div>
   )
 }

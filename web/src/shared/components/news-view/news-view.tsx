@@ -212,7 +212,7 @@ class NewsView extends React.Component<any, INewsAddState> {
           </div>
         </div>
         <div className={'news-view-stat'}>
-          <NewsTabs />
+          <NewsTabs _id={match.params._id} />
         </div>
       </div>
     )

@@ -73,8 +73,8 @@ function Sidenav(props: any) {
         <MiniNav />
       ) : (
         <div className={'wide-sidenav-cont'}>
-          <div className={'btn-link'}>
-            <Button to={'/requests'}>Donate!</Button>
+          <div className={'btn-link '}>
+            <Button className={'full-width'} primary to={'/requests'}>Donate!</Button>
           </div>
           <div className={'sidenav-links'}>
             <div className={'sid-link'}>
