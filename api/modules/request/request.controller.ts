@@ -1,4 +1,4 @@
-import { RequestModel } from '../../models/request/request.model'
+import { IRequest, RequestModel } from '../../models/request/request.model'
 import { add, edit, get, list, remove, search } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
 import { IAccount } from '../../models/account/account.model'
@@ -7,7 +7,7 @@ import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
 import { AddTask, getTask } from '../task/task.controller'
 import { AddFund, editFund, getFund } from '../fundraising/fundraising.controller'
-import { AddMaterial, UpdateMaterial } from '../material/material.controller'
+import { AddMaterial, GetMaterial, UpdateMaterial } from '../material/material.controller'
 import { organizationDocumentToResponse } from '../organization/organization.filter'
 import { AddOrgan, getOrgan } from '../organ/organ.controller'
 import { OrganizationModel } from '../../models/organization/organization.model'
@@ -20,6 +20,31 @@ type ObjectId = Schema.Types.ObjectId | string
 
 export async function removeRequest(id: Schema.Types.ObjectId | string): Promise<void> {
   await remove(RequestModel, id)
+}
+
+export async function populateRequest(
+  request: IRequest & Document
+): Promise<IRequestResponse> {
+  const ret = request.toJSON()
+  ret.picture = '/api/request/picture/' + request._id
+
+  switch (ret.type) {
+    case 'Task':
+      ret.task = await getTask(request._id)
+      break
+    case 'Fundraising':
+      ret.fundraising = await getFund(request._id)
+      break
+    case 'Organ':
+      ret.organ = await getOrgan(request._id)
+      break
+  }
+
+  ret._by = await organizationDocumentToResponse(
+    await get(OrganizationModel, null, { conditions: { account: request._by } })
+  )
+
+  return ret
 }
 
 export async function getRequest(_id: ObjectId): Promise<any> {
@@ -81,17 +106,18 @@ export async function listRequests(): Promise<any> {
         case 'Fundraising':
           ret.fundraising = await getFund(request._id)
           break
+        case 'Material':
+          ret.task = await GetMaterial(request._id)
+          break
+        case 'Organ':
+          ret.fundraising = await getOrgan(request._id)
+          break
       }
       console.log(ret)
 
       return ret
     })
   )
-}
-
-export async function addRequest(data: any, account: Document & IAccount): Promise<any> {
-  data._by = await account._id
-  return await add(RequestModel, data)
 }
 
 export async function addRequestWithPicture(
@@ -145,41 +171,24 @@ export async function editRequest(
   await grid.set(pic)
 }
 
-/*export async function attended(
-  requestId: Schema.Types.ObjectId,
-  body: any
-): Promise<any> {
-  const request = await get(RequestModel, requestId)
-  for (let i = 0; i < body.length; i++) {
-    //@ts-ignore
-    if (body[i].toString() == request.goingVolunteers[i]._id.toString())
-      request.goingVolunteers.splice(i, 1)
-  }
-  request.attended.push(body)
-  await request.save()
-}
-
-export async function attendanceVerification(id: Schema.Types.ObjectId): Promise<any> {
-  const task = await get(RequestModel, id)
-  let volunteers = task.goingVolunteers
-  let acc = []
-  for (let i = 0; i < volunteers.length; i++) {
-    //@ts-ignore
-    acc.push(await get(AccountModel, volunteers[i]._id))
-  }
-  return acc
-}*/
-
 export async function listRequestVolunteers(
   request_id: ObjectId
 ): Promise<IVolunteerResponse[]> {
-  let request = await get(RequestModel, request_id)
+  let request = await get(RequestModel, request_id, {
+    postQuery: query =>
+      query.populate({ path: 'volunteers', populate: { path: 'account' } })
+  })
   for (let i = 0; i < request.volunteers.length; i++) {
     ;(request.volunteers[i] as any).account = (await accountDocumentToPublicResponse(
       (request.volunteers[i] as any).account
     )) as any
   }
   return request.volunteers as any
+}
+
+export async function listRequestsMe(account_id: ObjectId): Promise<IRequestResponse[]> {
+  let requests = await list(RequestModel, { conditions: { volunteers: account_id } })
+  return Promise.all(requests.map(request => populateRequest(request)))
 }
 
 export async function toggleRequestVolunteer(
@@ -199,33 +208,3 @@ export async function toggleRequestVolunteer(
 
   return getRequest(request._id)
 }
-
-// todo
-// const doc = await get(RequestModel, _id)
-//
-// if (doc.volunteers.length == 0) {
-//   doc.volunteers.push(account._id)
-//   await doc.save()
-//   return doc
-// }
-//
-// for (let i = 0; i < doc.volunteers.length; i++) {
-//   //@ts-ignore
-//   if (account._id.toString() === doc.volunteers[i]._id.toString()) {
-//     await doc.volunteers.splice(i, 1)
-//   } else {
-//     doc.volunteers.push(account._id)
-//   }
-// }
-// await doc.save()
-//
-// return doc
-
-// todo
-// let request = await get(RequestModel, id)
-// for (let i = 0; i < request.volunteers.length; i++) {
-//   //@ts-ignore
-//   if (request.volunteers[i].toString() == userId.toString())
-//     return { goingVolunteers: true }
-// }
-// return {goingVolunteers: false}
