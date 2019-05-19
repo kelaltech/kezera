@@ -12,7 +12,7 @@ export interface INews extends Document {
   likes: ObjectId[]
   comments: ObjectId[]
   _by: ObjectId
-  share:ObjectId[]
+  share: ObjectId[]
 }
 
 export const newsModelFactory = new ModelFactory<INews>({

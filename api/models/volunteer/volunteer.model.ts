@@ -34,3 +34,12 @@ export const volunteerModelFactory = new ModelFactory<IVolunteer>({
 })
 
 export const VolunteerModel = volunteerModelFactory.model
+
+VolunteerModel.collection.ensureIndex(
+  {
+    username: 'text'
+  },
+  {
+    name: 'volunteer_search'
+  }
+)

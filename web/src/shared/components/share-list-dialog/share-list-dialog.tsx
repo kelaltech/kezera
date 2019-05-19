@@ -29,11 +29,10 @@ import {
 type Props = DialogProps & {
   title?: string
   shareUrl?: string
-  _id:string
-  handleShare:any
+  _id: string
+  handleShare: any
 }
-function ShareListDialog({ shareUrl, title,_id,handleShare, ...dialogProps }: Props) {
-
+function ShareListDialog({ shareUrl, title, _id, handleShare, ...dialogProps }: Props) {
   return (
     <Dialog {...dialogProps} className={'share-list-container'}>
       <Content>
@@ -62,22 +61,33 @@ function ShareListDialog({ shareUrl, title,_id,handleShare, ...dialogProps }: Pr
             </div>
 
             <div className={'share-btn-container'}>
-              <TelegramShareButton url={shareUrl} title={title}
-              onShareWindowClose={handleShare}>
+              <TelegramShareButton
+                url={shareUrl}
+                title={title}
+                onShareWindowClose={handleShare}
+              >
                 <TelegramIcon size={32} round />
               </TelegramShareButton>
             </div>
 
             <div className={'share-btn-container'}>
-              <WhatsappShareButton url={shareUrl} title={title} separator=":: "
-              onShareWindowClose={handleShare}>
+              <WhatsappShareButton
+                url={shareUrl}
+                title={title}
+                separator=":: "
+                onShareWindowClose={handleShare}
+              >
                 <WhatsappIcon size={32} round />
               </WhatsappShareButton>
             </div>
 
             <div className={'share-btn-container'}>
-              <LinkedinShareButton url={shareUrl} windowWidth={750} windowHeight={600}
-              onShareWindowClose={handleShare}>
+              <LinkedinShareButton
+                url={shareUrl}
+                windowWidth={750}
+                windowHeight={600}
+                onShareWindowClose={handleShare}
+              >
                 <LinkedinIcon size={32} round />
               </LinkedinShareButton>
             </div>
@@ -95,14 +105,21 @@ function ShareListDialog({ shareUrl, title,_id,handleShare, ...dialogProps }: Pr
             </div>
 
             <div className={'share-btn-container'}>
-              <EmailShareButton url={shareUrl} subject={title} body="body"
-              onShareWindowClose={handleShare}>
+              <EmailShareButton
+                url={shareUrl}
+                subject={title}
+                body="body"
+                onShareWindowClose={handleShare}
+              >
                 <EmailIcon size={32} round />
               </EmailShareButton>
             </div>
             <div className={'share-btn-container'}>
-              <ViberShareButton url={shareUrl} title={title}
-              onShareWindowClose={handleShare}>
+              <ViberShareButton
+                url={shareUrl}
+                title={title}
+                onShareWindowClose={handleShare}
+              >
                 <ViberIcon size={32} round />
               </ViberShareButton>
             </div>

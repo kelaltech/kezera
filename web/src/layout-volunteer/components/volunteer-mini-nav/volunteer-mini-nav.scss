@@ -13,10 +13,8 @@
 
 .mini-sidenav-links {
   .sid-link {
-    padding: $padding-S;
-    margin: 2px;
+    padding: $padding-S 0;
     display: flex;
-
     &:hover {
       background-color: #d6d6d6;
       border-radius: $radius;

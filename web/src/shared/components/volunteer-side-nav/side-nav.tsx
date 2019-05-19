@@ -78,7 +78,7 @@ function Sidenav(props: any) {
           </div>
           <div className={'sidenav-links'}>
             <div className={'sid-link'}>
-              <a href="/" className={'a'}>
+              <a title={'discovery'} href="/" className={'a'}>
                 <span className={'icon-link fg-blackish discovery '}>
                   <FontAwesomeIcon icon={faSearchPlus} />
                 </span>
@@ -86,7 +86,7 @@ function Sidenav(props: any) {
               </a>
             </div>
             <div className={'sid-link'}>
-              <a href="/news" className={'a'}>
+              <a title={'news'} href="/news" className={'a'}>
                 <span className={'icon-link fg-blackish news'}>
                   <FontAwesomeIcon icon={faNewspaper} />
                 </span>
@@ -94,14 +94,14 @@ function Sidenav(props: any) {
               </a>
             </div>
             <div className={'sid-link'}>
-              <a href="/events" className={'a'}>
+              <a title={'events'} href="/events" className={'a'}>
                 <span className={'icon-link fg-blackish event'}>
                   <FontAwesomeIcon icon={faCalendarCheck} />
                 </span>
                 <span>Events</span>
               </a>
             </div>
-            <div className={'sid-link'} onClick={handleTaskExpand}>
+            <div title={'tasks'} className={'sid-link'} onClick={handleTaskExpand}>
               <span className={'icon-link fg-blackish  task'}>
                 <FontAwesomeIcon icon={faTasks} />
               </span>
@@ -110,7 +110,7 @@ function Sidenav(props: any) {
             <div className={'sid-link-sub'}>
               <Collapse in={open.task} timeout="auto" unmountOnExit>
                 <div className={'task-sub-title'}>
-                  <a href="/tasks" className={'a'}>
+                  <a title={'pending tasks'} href="/tasks" className={'a'}>
                     <h5>pending tasks</h5>
                   </a>
                 </div>
@@ -128,7 +128,11 @@ function Sidenav(props: any) {
                 </div>
               </Collapse>
             </div>
-            <div className={'sid-link'} onClick={handleOrganizationExpand}>
+            <div
+              title={'my organizations'}
+              className={'sid-link'}
+              onClick={handleOrganizationExpand}
+            >
               <span className={'icon-link fg-blackish organization'}>
                 <FontAwesomeIcon icon={faSuitcase} />
               </span>
@@ -137,7 +141,11 @@ function Sidenav(props: any) {
             <div className={'sid-link-sub'}>
               <Collapse in={open.organization} timeout="auto" unmountOnExit>
                 <div className={'task-sub-title'}>
-                  <a href="/my-organization" className={'a'}>
+                  <a
+                    title={'joined organizations'}
+                    href="/my-organization"
+                    className={'a'}
+                  >
                     <h5>joined organizations</h5>
                   </a>
                 </div>

@@ -16,6 +16,6 @@ export type INewsResponse = {
   description: string
   article: string
   likes: ObjectId[]
-  share:ObjectId[]
+  share: ObjectId[]
   comments: []
 }

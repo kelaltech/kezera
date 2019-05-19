@@ -10,5 +10,5 @@ export const newPaths: SchemaDefinition = {
   likes: [{ type: ObjectId, ref: 'account' }],
   comments: [{ type: ObjectId, ref: 'comment' }],
   _by: { type: ObjectId, ref: 'organization' },
-  share:[{type:ObjectId, ref:'volunteer'}]
+  share: [{ type: ObjectId, ref: 'volunteer' }]
 }

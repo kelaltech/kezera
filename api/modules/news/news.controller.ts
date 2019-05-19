@@ -53,8 +53,11 @@ export async function getPictureFromNews(
   return await grid.get(pictureID)
 }
 
-export async function addShare (news_id: ObjectId, account: Document & IAccount):Promise<any> {
-  const docs = await get(NewsModel,news_id)
+export async function addShare(
+  news_id: ObjectId,
+  account: Document & IAccount
+): Promise<any> {
+  const docs = await get(NewsModel, news_id)
   docs.share.push(account._id)
   await docs.save()
 
@@ -63,7 +66,7 @@ export async function addShare (news_id: ObjectId, account: Document & IAccount)
   }
 }
 
-export async function getShare (_newsId: ObjectId):Promise<any> {
+export async function getShare(_newsId: ObjectId): Promise<any> {
   const docs = await get(NewsModel, _newsId, {
     postQuery: q => q.populate('share')
   })

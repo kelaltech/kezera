@@ -89,11 +89,11 @@ newsRouter.get('/:_newsId/likes', async ctx => {
 
   ctx.body = await getLikes(ctx.params._newsId)
 })
-newsRouter.get('/:_newsId/share',async ctx=>{
+newsRouter.get('/:_newsId/share', async ctx => {
   ctx.body = await getShare(ctx.params._newsId)
 })
-newsRouter.put('/:_newsId/share',async ctx=>{
-  ctx.body = await addShare(ctx.params._newsId,ctx.state.user)
+newsRouter.put('/:_newsId/share', async ctx => {
+  ctx.body = await addShare(ctx.params._newsId, ctx.state.user)
 })
 
 //PUT /api/news/:_newsId
