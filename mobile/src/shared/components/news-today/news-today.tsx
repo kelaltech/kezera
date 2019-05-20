@@ -83,7 +83,10 @@ function NewsToday({
           onPress={() =>
             navigation.dispatch(
               NavigationActions.navigate({
-                routeName: 'NewsDetail'
+                routeName: 'NewsDetail',
+                params: {
+                  _id: _id
+                }
               })
             )
           }
@@ -120,7 +123,10 @@ function NewsToday({
             onPress={() =>
               navigation.dispatch(
                 NavigationActions.navigate({
-                  routeName: 'NewsDetail'
+                  routeName: 'NewsDetail',
+                  params: {
+                    _id: _id
+                  }
                 })
               )
             }
