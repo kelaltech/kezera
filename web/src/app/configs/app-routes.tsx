@@ -25,7 +25,7 @@ export default function AppRoutes() {
       <Route path={'/login'} component={LayoutLogin} />
 
       {account && account.role === 'VOLUNTEER' ? (
-        <Route path={'/verifier'} component={LayoutVerifier} />
+        <Route path={'/volunteer'} component={LayoutVolunteer} />
       ) : null}
       {account && account.role === 'ORGANIZATION' ? (
         <Route path={'/organization'} component={LayoutOrganization} />
