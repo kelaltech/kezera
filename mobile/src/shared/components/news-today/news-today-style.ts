@@ -19,10 +19,10 @@ export default StyleSheet.create({
 
   actionStyle: {
     position: 'absolute',
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
+    /*borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,*/
     backgroundColor: values.color.whitish,
-    bottom: 35,
+    bottom: 83,
     ...classes.marginSmall,
     ...classes.row
   },
