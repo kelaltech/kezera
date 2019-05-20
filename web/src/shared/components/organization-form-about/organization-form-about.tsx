@@ -125,17 +125,28 @@ function OrganizationFormAbout({ organization, setOrganization }: Props) {
             <div>
               <div className={'margin-top-normal'}>
                 {!organization.locations.length ? (
-                  <span className={'fg-blackish italic'}>Location not selected.</span>
+                  <div className={'fg-blackish italic'}>Location not selected.</div>
                 ) : (
-                  <span>
-                    {parseGeo(
-                      new LngLat(
-                        organization.locations[0].geo.coordinates[0],
+                  <div>
+                    <Anchor
+                      href={`https://www.google.com/maps?q=${
                         organization.locations[0].geo.coordinates[1]
-                      )
-                    )}{' '}
+                      },${organization.locations[0].geo.coordinates[0]}`}
+                      target={'_blank'}
+                      rel={'noopener'}
+                    >
+                      {parseGeo(
+                        new LngLat(
+                          organization.locations[0].geo.coordinates[0],
+                          organization.locations[0].geo.coordinates[1]
+                        )
+                      )}
+                    </Anchor>{' '}
                     (<Anchor onClick={() => setLngLat(undefined)}>&times;</Anchor>)
-                  </span>
+                    {organization.locations[0].address && (
+                      <div>{organization.locations[0].address}</div>
+                    )}
+                  </div>
                 )}
               </div>
 
