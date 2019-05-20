@@ -51,10 +51,10 @@ function DiscoveryPage() {
       }
     ]
   }
-  const settingsNews = { infinite: news.length > 1 }
-  const settingsOrganization = { infinite: organization.length > 1, slidesToShow: 1 }
-  const settingsRequest = { infinite: request.length > 1 }
-  const settingsEvents = { infinite: event.length > 1 }
+  const settingsNews = { infinite: news.length > 2 }
+  const settingsOrganization = { infinite: organization.length > 2, slidesToShow: 1 }
+  const settingsRequest = { infinite: request.length > 2 }
+  const settingsEvents = { infinite: event.length > 2 }
   useEffect(() => {
     fetchOrganization()
     fetchEvent()
