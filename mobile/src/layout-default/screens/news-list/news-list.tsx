@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ImageURISource, ScrollView, Text } from 'react-native'
+import { ScrollView, Text } from 'react-native'
 import { NavigationInjectedProps, withNavigation } from 'react-navigation'
 import Axios from 'axios'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'

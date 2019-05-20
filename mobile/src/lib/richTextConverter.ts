@@ -18,3 +18,18 @@ export function richTextToDisplayText(data: any) {
   }
   return data
 }
+
+export function richTextToDisplayDetail(data: any) {
+  let article = ''
+  let description = ''
+  let title = ''
+
+  JSON.parse(data.article).blocks.map((block: any) => (article += block.text))
+  JSON.parse(data.title).blocks.map((block: any) => (title += block.text))
+  JSON.parse(data.description).blocks.map((block: any) => (description += block.text))
+  data.article = article
+  data.title = title
+  data.description = description
+
+  return data
+}
