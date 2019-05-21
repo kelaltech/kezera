@@ -18,10 +18,12 @@ import { OrganizationApplicationModel } from '../../models/organization-applicat
 import { email } from '../../lib/email'
 import { KoaError } from '../../lib/koa-error'
 import { OrganizationModel } from '../../models/organization/organization.model'
-import { IRequest, RequestModel } from '../../models/request/request.model'
+import { RequestModel } from '../../models/request/request.model'
 import { EventModel, IEvent } from '../../models/event/event.model'
 import { INews, NewsModel } from '../../models/news/news.model'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
+import { populateRequest } from '../request/request.controller'
+import { IRequestResponse } from '../request/request.apiv'
 
 export class OrganizationController extends KoaController {
   /* GENERAL: */
@@ -325,17 +327,17 @@ export class OrganizationController extends KoaController {
     organization_id = super.getParam('organization_id'),
     since = Number(super.getQuery('since')) || Date.now(),
     count = Number(super.getQuery('count')) || 10
-  ): Promise<IRequest[]> {
+  ): Promise<IRequestResponse[]> {
     // todo: remove the next line when Event.organizationId gets fixed
     const organization = await get(OrganizationModel, organization_id)
-    // todo: filter?
-    // todo: attach type-specific fields using a refactored method from Request Module
-    return await list(RequestModel, {
-      session,
-      since,
-      count,
-      conditions: { _by: organization.account }
-    })
+    return Promise.all(
+      (await list(RequestModel, {
+        session,
+        since,
+        count,
+        conditions: { _by: organization.account }
+      })).map(request => populateRequest(request))
+    )
   }
 
   async events(
