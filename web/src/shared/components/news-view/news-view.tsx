@@ -9,7 +9,8 @@ import { convertToRaw, convertFromRaw, EditorState, AtomicBlockUtils } from 'dra
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { Anchor, Button, Flex } from 'gerami'
 import SpamReportDrop from '../../../shared/components/spam-report-drop/spam-report-drop'
-import { Modal } from '@material-ui/core'
+
+import ShareListDialog from '../../../shared/components/share-list-dialog/share-list-dialog'
 
 interface INewsAddState {
   title: any
@@ -17,8 +18,10 @@ interface INewsAddState {
   article: any
   error: any
   likeCount: number
+  shareCount: number
   liked: boolean
   isSpamReportDropOpen: boolean
+  shareListPicker: boolean
 }
 
 class NewsView extends React.Component<any, INewsAddState> {
@@ -31,15 +34,30 @@ class NewsView extends React.Component<any, INewsAddState> {
       article: EditorState.createEmpty(),
       error: '',
       likeCount: 0,
+      shareCount: 0,
       liked: false,
-      isSpamReportDropOpen: false
+      isSpamReportDropOpen: false,
+      shareListPicker: false
     }
   }
   componentDidMount(): void {
     //load message here
     this.loadNews()
   }
-
+  handleShareClick = () => {
+    const { match } = this.props
+    axios
+      .put(`/api/news/${match.params._id}/share`)
+      .then(news => news.data)
+      .then(data => {
+        this.setState({
+          shareCount: data.share
+        })
+      })
+      .catch(e => {
+        console.log(e) //todo handle error properly
+      })
+  }
   loadNews = () => {
     const { match } = this.props
     axios
@@ -55,7 +73,8 @@ class NewsView extends React.Component<any, INewsAddState> {
           article: EditorState.createWithContent(
             convertFromRaw(JSON.parse(data.data.article))
           ),
-          likeCount: data.data.likes.length
+          likeCount: data.data.likes.length,
+          shareCount: data.data.share.length
         })
       })
       .catch(e => {
@@ -66,16 +85,20 @@ class NewsView extends React.Component<any, INewsAddState> {
   }
 
   handleDeleteNews = () => {
-    const { match } = this.props
+    const { match, history } = this.props
     let check = confirm('are you sure you want to delete the news')
 
     if (check) {
       axios
         .delete(`/api/news/${match.params._id}`)
         .then(() => {
-          alert('successfully removed')
+          history.push({
+            pathname: `/news`
+          })
         })
-        .catch(e => console.log(e))
+        .catch(e => {
+          alert('something went wrong try again!')
+        })
     } else {
       alert('canceled')
     }
@@ -101,7 +124,15 @@ class NewsView extends React.Component<any, INewsAddState> {
 
   render() {
     const { match, role } = this.props
-    const { description, title, article, liked, likeCount } = this.state
+    const {
+      description,
+      title,
+      article,
+      liked,
+      likeCount,
+      shareListPicker,
+      shareCount
+    } = this.state
     return (
       <div className={'news-view-container'}>
         <div className={'news-view'} id={'news-view-cont'}>
@@ -138,18 +169,33 @@ class NewsView extends React.Component<any, INewsAddState> {
                     <FontAwesomeIcon className={'ico'} icon={['fas', 'heart']} />
                   </span>
                 ) : (
-                  <span className={'name-view-like-icon'} onClick={this.handleLike}>
+                  <span className={' name-view-like-icon'} onClick={this.handleLike}>
                     <FontAwesomeIcon icon={['far', 'heart']} />
                   </span>
                 )}
-                <span onClick={this.fetchLikes} className={'name-view-like-list'}>
+                <span onClick={this.fetchLikes} className={' name-view-like-list'}>
                   &nbsp; Likes&nbsp; <span>{likeCount == 0 ? '' : likeCount}</span>
                 </span>
               </span>
-              <span className={'news-view-share-icon'}>
+              <span
+                className={'news-view-share-icon'}
+                onClick={() =>
+                  this.setState({ shareListPicker: !this.state.shareListPicker })
+                }
+              >
                 <FontAwesomeIcon icon={['fas', 'share-alt']} />
-                &nbsp; Share
+                &nbsp; Share&nbsp; <span>{shareCount == 0 ? '' : shareCount}</span>
               </span>
+              <ShareListDialog
+                open={shareListPicker}
+                onClose={() =>
+                  this.setState({ shareListPicker: !this.state.shareListPicker })
+                }
+                title={title}
+                _id={match.params._id}
+                handleShare={this.handleShareClick}
+                shareUrl={`https://spva-app.herokuapp.com`} //todo change share url to actual url
+              />
               {role == 'ORGANIZATION' && (
                 <span>
                   <a

@@ -56,11 +56,13 @@ function AccountResetStart() {
 
           {status === 'SENT' && !error ? (
             <>
-              <Block last>{t`reset-email-sent-confirmation`}</Block>
+              <Block last>{t`account:reset-email-sent-confirmation`}</Block>
             </>
           ) : (
             <>
-              <Block className={'fg-blackish font-S'}>{t`reset-start-description`}</Block>
+              <Block
+                className={'fg-blackish font-S'}
+              >{t`account:reset-start-description`}</Block>
 
               <form onSubmit={handleSend}>
                 <Block>

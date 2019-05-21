@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
 import {
   Block,
   Button,
@@ -35,6 +35,7 @@ type Props = PropsWithChildren<{
   description?: string | JSX.Element
 
   actions?: IButtonProps[]
+  actionsOverride?: ReactNode
 
   error?: string | { prettyMessage?: string; message?: string }
   onErrorClose?: (error: undefined) => void
@@ -66,6 +67,7 @@ function RichPage({
   description,
 
   actions = [],
+  actionsOverride,
 
   error,
   onErrorClose
@@ -136,16 +138,17 @@ function RichPage({
 
                   <FlexSpacer />
 
-                  {actions.map((action, i) => (
-                    <span
-                      key={i}
-                      className={'rich-page-action-vaults margin-vertical-auto'}
-                    >
-                      <Button {...action as any}>
-                        {action.value || action.children}
-                      </Button>
-                    </span>
-                  ))}
+                  {actionsOverride ||
+                    actions.map((action, i) => (
+                      <span
+                        key={i}
+                        className={'rich-page-action-vaults margin-vertical-auto'}
+                      >
+                        <Button {...action as any}>
+                          {action.value || action.children}
+                        </Button>
+                      </span>
+                    ))}
                 </Flex>
               </Block>
 
