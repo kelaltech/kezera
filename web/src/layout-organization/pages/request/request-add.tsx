@@ -34,7 +34,7 @@ import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
-  let { t } = useLocale(['material-donation'])
+  let { loading, t } = useLocale(['material-donation', 'request'])
   let [type, setType] = useState<any>(0)
   let [id, setId] = useState()
 
@@ -88,7 +88,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
       <Content size={'L'}>
         <form onSubmit={e => addRequest(e)} method={'POST'}>
           <Block>
-            <Title size={'XXL'}>Make A Request</Title>
+            <Title size={'XXL'}>{t`request:make-a-request`}</Title>
           </Block>
           <hr />
           <Block>
@@ -97,7 +97,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
               className={'full-width'}
               name={'name'}
               type={'text'}
-              label={'Title of Request'}
+              label={t`request:title-of-request`}
             />
           </Block>
           <Block>
@@ -109,7 +109,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
               required={true}
               className={'full-width'}
               name={'description'}
-              label={'Description of Request'}
+              label={t`request:description-of-request`}
             />
           </Block>
 
@@ -139,7 +139,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
           <Block>
             <FormControl className={'full-width'}>
               <InputLabel htmlFor={'request-type-label-placeholder'} shrink>
-                Type of Request
+                {t`request:type-of-request`}
               </InputLabel>
               <Select
                 required={true}
@@ -153,10 +153,10 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
                   />
                 }
               >
-                <MenuItem value={'Fundraising'}>Fundraising</MenuItem>
-                <MenuItem value={'Material'}>Material</MenuItem>
-                <MenuItem value={'Organ'}>Organ</MenuItem>
-                <MenuItem value={'Task'}>Task</MenuItem>
+                <MenuItem value={'Fundraising'}>{t`request:fundraising`}</MenuItem>
+                <MenuItem value={'Material'}>{t`request:material`}</MenuItem>
+                <MenuItem value={'Organ'}>{t`request:organ`}</MenuItem>
+                <MenuItem value={'Task'}>{t`request:task`}</MenuItem>
               </Select>
             </FormControl>
           </Block>
@@ -165,10 +165,10 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
           {type == 'Material' && <MaterialAdd onChange={setSpecific} />}
           {type == 'Organ' && <OrganAdd onChange={setSpecific} />}
           <Block last className={'right'}>
-            <Button type={'submit'}>Make the Request</Button>
+            <Button type={'submit'}>{t`request:make-the-request`}</Button>
           </Block>
           <Button type={'submit'} to={`/organization/request/list`}>
-            Finish
+            {t`request:finish`}
           </Button>
         </form>
       </Content>

@@ -1,13 +1,39 @@
-import React from 'react'
-import { Text } from 'react-native'
-import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import React, { useEffect, useState } from 'react'
 
+import axios from 'axios'
+
+import './request-card.scss'
+import { useAccountState } from '../../../app/stores/account/account-provider'
+import { View } from 'react-native'
+import RequestMobileCard from '../../components/request-card/request-card'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
-function TaskList({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale(['task'])
+export default function TaskList() {
+  const [tasks, setTasks] = useState<any[]>([])
+  const { loading, t } = useLocale(['request'])
 
-  return loading || <Text>{t`app-name`}: TaskList Screen (in LayoutRequests)</Text>
+  let { account } = useAccountState()
+  useEffect(() => {
+    axios
+      .get('/api/request/list')
+      .then(res => {
+        setTasks(res.data)
+        console.log('successfully retrieved')
+        console.log(res.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }, [])
+
+  return (
+    loading ||
+    (!tasks ? null : (
+      <View>
+        {tasks.map((task, i) => (
+          <RequestMobileCard request={task} key={i} />
+        ))}
+      </View>
+    ))
+  )
 }
-
-export default withNavigation(TaskList)
