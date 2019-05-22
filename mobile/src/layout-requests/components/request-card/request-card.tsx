@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 
 import axios from 'axios'
 
-import './request-card.scss'
 import TaskCard from '../task-card/task-card'
 
 interface IRequestCard {
