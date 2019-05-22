@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Content, Title, Image, Flex, Button, Block } from 'gerami'
+import { Content, Title, Image, Flex, Button, Block, Anchor } from 'gerami'
 import './event-card.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
@@ -13,6 +13,7 @@ import {
 } from '../../../layout-organization/stores/events/events.action'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import useLocale from '../../hooks/use-locale/use-locale'
+import { LngLat } from 'mapbox-gl'
 
 interface IEventProps {
   event: IOrganizationEventResponse
@@ -36,6 +37,12 @@ export default function EventCard(props: IEventProps) {
     'Nov.',
     'Dec.'
   ]
+  const parseGeo = (lngLat: LngLat): string => {
+    const factor = 100000
+    return `${Math.round(lngLat.lat * factor) / factor}° ${
+      lngLat.lat > 0 ? 'N' : 'S'
+    }, ${Math.round(lngLat.lng * factor) / factor}°  ${lngLat.lng > 0 ? 'E' : 'W'}`
+  }
   let eventDispatch = useEventDispatch()
 
   let RemoveEvent = function(id: string) {
@@ -91,7 +98,19 @@ export default function EventCard(props: IEventProps) {
       </div>
       <div className="EventField">
         <FontAwesomeIcon icon={'map-marker'} size={'sm'} /> &nbsp;{' '}
-        <span> {props.event.location} </span>
+        <span>
+          <Anchor
+            href={`https://www.google.com/maps?q=${
+              props.event.location.geo.coordinates[1]
+            },${props.event.location.geo.coordinates[0]}`}
+            target={'_blank'}
+            rel={'noopener'}
+          >
+            {props.event.location!.address
+              ? props.event.location!.address
+              : props.event.location!.geo.coordinates}
+          </Anchor>
+        </span>
       </div>
       <div className="EventField flex">
         <span className={'full-width flex'}>

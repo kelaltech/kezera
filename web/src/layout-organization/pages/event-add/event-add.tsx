@@ -8,7 +8,8 @@ import {
   Input,
   TextArea,
   Yoga,
-  Title
+  Title,
+  Anchor
 } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Dialog, TextField } from '@material-ui/core'
@@ -17,6 +18,8 @@ import { AddEvents } from '../../stores/events/events.action'
 import useField from '../../../shared/hooks/use-field/use-field'
 import { IOrganizationEventRequest } from '../../../apiv/event.apiv'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import LocationPickerDialog from '../../../shared/components/location-picker-dialog/location-picker-dialog'
+import { LngLat } from 'mapbox-gl'
 
 interface IEventAddProps {
   open: boolean
@@ -24,14 +27,34 @@ interface IEventAddProps {
 }
 
 export default function EventAdd(props: IEventAddProps) {
+  const [lngLat, setLngLatOnState] = useState<LngLat>()
+  const setLngLat = (lngLat?: LngLat) => {
+    setLngLatOnState(lngLat)
+    emitChanges({
+      location: {
+        geo: {
+          type: 'Point',
+          coordinates: lngLat ? [lngLat.lng, lngLat.lat] : undefined
+        },
+        address: undefined
+      }
+    })
+  }
   let [event, setEvent] = useState({
     title: '',
     description: '',
     amountOfPeople: '',
     startDate: '',
     endDate: '',
-    location: ''
+    location: {
+      geo: {
+        type: 'Point',
+        coordinates: []
+      },
+      address: ''
+    }
   })
+  let [locationPickerOpen, setLocationPickerOpen] = useState(false)
   const { loading, t } = useLocale(['event'])
   let eventDispatch = useEventDispatch()
 
@@ -92,6 +115,13 @@ export default function EventAdd(props: IEventAddProps) {
       emitChanges({ location: value })
     }
   })
+
+  const parseGeo = (lngLat: LngLat): string => {
+    const factor = 100000
+    return `${Math.round(lngLat.lat * factor) / factor}° ${
+      lngLat.lat > 0 ? 'N' : 'S'
+    }, ${Math.round(lngLat.lng * factor) / factor}°  ${lngLat.lng > 0 ? 'E' : 'W'}`
+  }
 
   const image = useField<HTMLInputElement>()
 
@@ -165,7 +195,7 @@ export default function EventAdd(props: IEventAddProps) {
                   className={'margin-top-big margin-right-normal'}
                   icon={'map-marker'}
                 />
-                <Input
+                {/* <Input
                   name={'location'}
                   className="full-width"
                   placeholder={t`location`}
@@ -173,7 +203,46 @@ export default function EventAdd(props: IEventAddProps) {
                   inputRef={LocationInput.ref}
                   required
                 />
-                {validationError(LocationInput.error)}
+                {validationError(LocationInput.error)}*/}
+                <div>
+                  <div className={'margin-top-normal'}>
+                    {!event.location.geo.coordinates.length ? (
+                      <div className={'fg-blackish italic'}>Location not selected.</div>
+                    ) : (
+                      <div>
+                        <Anchor
+                          href={`https://www.google.com/maps?q=${
+                            event.location.geo.coordinates[1]
+                          },${event.location.geo.coordinates[0]}`}
+                          target={'_blank'}
+                          rel={'noopener'}
+                        >
+                          {parseGeo(
+                            new LngLat(
+                              event.location.geo.coordinates[0],
+                              event.location.geo.coordinates[1]
+                            )
+                          )}
+                        </Anchor>{' '}
+                        (<Anchor onClick={() => setLngLat(undefined)}>&times;</Anchor>)
+                        {event.location.address && <div>{event.location.address}</div>}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={'margin-top-normal'}>
+                    <Anchor onClick={() => setLocationPickerOpen(!locationPickerOpen)}>
+                      Pick a Location on Map
+                    </Anchor>
+                  </div>
+
+                  <LocationPickerDialog
+                    open={locationPickerOpen}
+                    onClose={() => setLocationPickerOpen(!locationPickerOpen)}
+                    lngLat={lngLat}
+                    setLngLat={setLngLat}
+                  />
+                </div>
               </label>
             </Block>
             <Block>

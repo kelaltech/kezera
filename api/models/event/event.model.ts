@@ -1,7 +1,6 @@
 import { ModelFactory } from 'meseret'
 import { Document, Schema } from 'mongoose'
 import { eventPaths } from './event.path'
-
 type ObjectId = Schema.Types.ObjectId | string
 
 export interface IEvent extends Document {
@@ -13,8 +12,13 @@ export interface IEvent extends Document {
   goingVolunteers: ObjectId[]
   startDate: Date
   endDate: Date
-  mapURL: string
-  location: string
+  location: {
+    geo: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+    address?: string
+  }
   likes: ObjectId[]
   comments: ObjectId[]
   organizationId: ObjectId
@@ -31,3 +35,5 @@ eventModelFactory.model.collection.ensureIndex({
   description: 'text'
 })
 export const EventModel = eventModelFactory.model
+
+EventModel.collection.createIndex({ 'locations.geo': '2dsphere' })
