@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Button, Content, Flex, Input, Loading, Yoga } from 'gerami'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Block, Button, Loading, Yoga } from 'gerami'
 import Axios, { CancelTokenSource } from 'axios'
 import * as qs from 'qs'
 
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import { IOrganizationResponse } from '../../../apiv/organization.apiv'
-import useField from '../../../shared/hooks/use-field/use-field'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
+import SearchBar from '../../../shared/components/search-bar/search-bar'
 
 const count = 12
 let searchCancellation: CancelTokenSource | null = null
@@ -16,7 +15,7 @@ let searchCancellation: CancelTokenSource | null = null
 function VerifierApplications() {
   const { loading, t } = useLocale([])
 
-  const term = useField<HTMLInputElement>()
+  const [term, setTerm] = useState('')
 
   const [ready, setReady] = useState(false)
   const [error, setError] = useState()
@@ -30,7 +29,7 @@ function VerifierApplications() {
       searchCancellation = Axios.CancelToken.source()
       const response = await Axios.get<IOrganizationResponse[]>(
         `/api/verifier/search-organization-applications?${qs.stringify({
-          term: term.value,
+          term: term,
           count,
           since
         })}`,
@@ -47,12 +46,7 @@ function VerifierApplications() {
 
   useEffect(() => {
     load().catch(setError)
-  }, [term.value])
-
-  useEffect(() => {
-    const timeout = setTimeout(() => term.ref.current && term.ref.current.focus(), 1000)
-    return () => clearInterval(timeout)
-  }, [loading])
+  }, [term])
 
   return (
     loading || (
@@ -64,43 +58,24 @@ function VerifierApplications() {
         error={error}
         onErrorClose={setError}
       >
-        <Content className={'margin-bottom-normal'}>
-          <label>
-            <Block className={'padding-bottom-big padding-horizontal-big'}>
-              <Flex>
-                <div className={'margin-top-auto padding-right-big fg-accent'}>
-                  <FontAwesomeIcon icon={'search'} />
-                </div>
-                <form
-                  className={'margin-vertical-auto full-width'}
-                  onSubmit={e => {
-                    e.preventDefault()
-                    setReady(false)
-                    load().catch(setError)
-                  }}
-                >
-                  <Input
-                    {...term.inputProps}
-                    inputRef={term.ref}
-                    placeholder={`Search for Organization Applications`}
-                    className={'full-width'}
-                    type={'search'}
-                  />
-                </form>
-              </Flex>
-            </Block>
-          </label>
-        </Content>
+        <SearchBar
+          onChange={setTerm}
+          onSubmit={e => {
+            e.preventDefault()
+            setReady(false)
+            load().catch(setError)
+          }}
+        />
 
         {!ready ? (
           <Loading delay />
         ) : !applications.length ? (
           <Block first className={'center fg-blackish'}>
             No organization application found
-            {term.value && (
+            {term && (
               <>
                 {' '}
-                using the term <q>{term.value}</q>
+                using the term <q>{term}</q>
               </>
             )}
             .
