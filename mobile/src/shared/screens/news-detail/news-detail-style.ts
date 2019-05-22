@@ -1,28 +1,29 @@
 import { StyleSheet } from 'react-native'
 
-import classes from '../../../assets/styles/classes'
 import values from '../../../assets/styles/values'
+import classes from '../../../assets/styles/classes'
 
 export default StyleSheet.create({
-  newsTodayParent: {
+  imageCont: {
     position: 'relative'
   },
-  cardStyle: {
-    height: 250,
-    borderRadius: 15,
-    ...classes.marginSmall
+  newsImage: {
+    // height: 400
   },
-
-  imageStyle: {
-    height: 250
-  },
-
-  actionStyle: {
+  title: {
+    textAlign: 'center',
     position: 'absolute',
-    /*borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,*/
+    fontSize: values.fontSize.big * 1.5,
+    bottom: 100,
+    ...classes.paddingHorizontalBig,
+    color: values.color.whitish
+  },
+  by: {
+    ...classes.paddingHorizontalBig,
+    ...classes.paddingVerticalBig
+  },
+  actionStyle: {
     backgroundColor: values.color.whitish,
-    bottom: 83,
     ...classes.marginSmall,
     ...classes.row
   },

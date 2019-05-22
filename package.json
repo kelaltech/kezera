@@ -23,7 +23,7 @@
     "prod": "cross-env NODE_ENV=production run-s format build",
     "run-p": "node ./node_modules/npm-run-all/bin/run-p/index.js",
     "run-s": "node ./node_modules/npm-run-all/bin/run-s/index.js",
-    "start": "cross-env NODE_ENV=production node --redirect-warnings=warnings.log .",
+    "start": "cross-env ENVFILE=.env.staging NODE_ENV=production node --redirect-warnings=warnings.log .",
     "no-ssl-start": "cross-env NO_SSL_REDIRECT=true run-s start",
     "local": "cross-env HOSTNAME=0.0.0.0 run-s start",
     "no-ssl-local": "cross-env NO_SSL_REDIRECT=true run-s local",
@@ -33,6 +33,7 @@
     "postinstall": "cd web && yarn install && yarn prod"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^3.0.0",
     "@types/dotenv": "^6.1.1",
     "@types/i18next": "^12.1.0",
@@ -41,6 +42,7 @@
     "@types/passport-local": "^1.0.33",
     "@types/qs": "^6.5.2",
     "@types/sharp": "^0.22.1",
+    "axios": "^0.18.0",
     "bcrypt": "^3.0.4",
     "cross-env": "^5.2.0",
     "dotenv": "^8.0.0",

@@ -28,9 +28,11 @@ import RequestOrganDetail from './request-organ/request-organ-detail'
 import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
 import { useVolunteerState } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
 import RequestGoing from './request-going/request-going'
+import useLocale from '../../hooks/use-locale/use-locale'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const [request, setRequest] = useState<any>()
+  const { loading, t } = useLocale(['request'])
 
   const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
   let { myOrganization } = useMyOrganizationState()
@@ -69,100 +71,108 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const { account } = useAccountState()
   const { volunteer } = useVolunteerState()
 
-  return !request ? null : (
-    <RichPage
-      ready={true}
-      documentTitle={request.name}
-      title={request.name}
-      covers={[request.picture]}
-      actions={
-        (account &&
-          ((account.role === 'VOLUNTEER' && [
-            {
-              children: (
-                <Switch
-                  checked={
-                    volunteer &&
-                    request.volunteers.map((v: any) => v._id).includes(volunteer._id)
+  return (
+    loading ||
+    (!request ? null : (
+      <RichPage
+        ready={true}
+        documentTitle={request.name}
+        title={request.name}
+        covers={[request.picture]}
+        actions={
+          (account &&
+            ((account.role === 'VOLUNTEER' && [
+              {
+                children: (
+                  <Switch
+                    checked={
+                      volunteer &&
+                      request.volunteers.map((v: any) => v._id).includes(volunteer._id)
+                    }
+                    onChange={() => isGoing()}
+                  >
+                    Attend
+                  </Switch>
+                )
+              }
+            ]) ||
+              (account.role === 'ORGANIZATION' &&
+                myOrganization &&
+                myOrganization._id === request._by._id && [
+                  {
+                    to: `/request/${request._id}/edit`,
+                    children: <>{t`edit`}</>
                   }
-                  onChange={() => isGoing()}
-                >
-                  Attend
-                </Switch>
-              )
-            }
-          ]) ||
-            (account.role === 'ORGANIZATION' &&
-              myOrganization &&
-              myOrganization._id === request._by._id && [
-                {
-                  to: `/request/${request._id}/edit`,
-                  children: <>Edit</>
-                }
-              ]))) ||
-        []
-      }
-    >
-      <div className={'fg-blackish padding-bottom-big'}>
-        <Flex>
-          {request.type} | Posted on {new Date(request._at).toDateString().substr(3)}
-          <FlexSpacer />
-          <Anchor to={`/organization/${request._by._id}`}>
-            {request._by.displayName}
-          </Anchor>
-        </Flex>
-      </div>
-      <Title size={'L'}>Description</Title>
-      <Yoga maxCol={2}>
-        <div>
-          {request.description}
-          <Title size={'L'} className={'bold center'}>
-            {request.type === 'Fundraising' && <RequestFundDetail request={request} />}
-            {request.type === 'Task' && <RequestTaskDetail request={request} />}
-            {request.type === 'Material' && <RequestMaterialDetail request={request} />}
-            {request.type === 'Organ' && <RequestOrganDetail request={request} />}
-          </Title>
+                ]))) ||
+          []
+        }
+      >
+        <div className={'fg-blackish padding-bottom-big'}>
+          <Flex>
+            {request.type} | {t`request:posted-on`}{' '}
+            {new Date(request._at).toDateString().substr(3)}
+            <FlexSpacer />
+            <Anchor to={`/organization/${request._by._id}`}>
+              {request._by.displayName}
+            </Anchor>
+          </Flex>
         </div>
-        <Content>
-          {/*<img src={request.picture} style={{height: 'inherit', width: '100%'}}/>*/}
-        </Content>
-      </Yoga>
-      <Block className={'center'}>
-        <label className="flex padding-small">
-          <FontAwesomeIcon className={'middle margin-right-big'} icon={'calendar'} />
-          <div className={'middle'}>
-            {new Date(request.startDate).toDateString().substr(3)} -{' '}
-            {new Date(request.endDate).toDateString().substr(3)}
+        <Title size={'L'}>{t`request:description`}</Title>
+        <Yoga maxCol={2}>
+          <div>
+            {request.description}
+            <Title size={'L'} className={'bold center'}>
+              {request.type === 'Fundraising' && <RequestFundDetail request={request} />}
+              {request.type === 'Task' && <RequestTaskDetail request={request} />}
+              {request.type === 'Material' && <RequestMaterialDetail request={request} />}
+              {request.type === 'Organ' && <RequestOrganDetail request={request} />}
+            </Title>
           </div>
-        </label>
-      </Block>
-      <hr />
-      <Block last className={'padding-horizontal-none'}>
-        <div className={'fg-blackish padding-bottom-normal'}>Requested by: </div>
-        <OrganizationCard organization={request._by} />
-      </Block>
-      <Block>
-        <Title size={'L'}>
-          <Anchor to={`/request/${request._id}/going`}>See Who's Going</Anchor>
-        </Title>
-      </Block>
-      <Block>
-        <Anchor
-          onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
-          title={`Report Organization as Spam`}
-        >
-          <FontAwesomeIcon icon={'user-slash'} />
-        </Anchor>
-        <SpamReportDrop
-          type={'REQUEST'}
-          ids={[request._id]}
-          open={isSpamReportDropOpen}
-          onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
-          align={'right'}
-          anchorOffset={18}
-        />
-      </Block>
-    </RichPage>
+          <Content>
+            {/*<img src={request.picture} style={{height: 'inherit', width: '100%'}}/>*/}
+          </Content>
+        </Yoga>
+        <Block className={'center'}>
+          <label className="flex padding-small">
+            <FontAwesomeIcon className={'middle margin-right-big'} icon={'calendar'} />
+            <div className={'middle'}>
+              {new Date(request.startDate).toDateString().substr(3)} -{' '}
+              {new Date(request.endDate).toDateString().substr(3)}
+            </div>
+          </label>
+        </Block>
+        <hr />
+        <Block last className={'padding-horizontal-none'}>
+          <div className={'fg-blackish padding-bottom-normal'}>
+            {t`request:requested-by`}:{' '}
+          </div>
+          <OrganizationCard organization={request._by} />
+        </Block>
+        <Block>
+          <Title size={'L'}>
+            <Anchor
+              to={`/request/${request._id}/going`}
+            >{t`request:see-who's-going`}</Anchor>
+          </Title>
+        </Block>
+        <Block>
+          <Anchor
+            onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+            title={`Report Organization as Spam`}
+          >
+            <FontAwesomeIcon icon={'user-slash'} />
+          </Anchor>
+          <SpamReportDrop
+            type={'REQUEST'}
+            ids={[request._id]}
+            open={isSpamReportDropOpen}
+            onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+            align={'right'}
+            anchorOffset={18}
+          />
+        </Block>
+      </RichPage>
+    ))
   )
 }
 export default withRouter(RequestDetail)

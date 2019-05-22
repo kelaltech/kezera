@@ -1,5 +1,26 @@
 {
   "material": "Material",
   "fundraising": "Fundraising",
-  "organ": "Organ"
+  "organ": "Organ",
+  "task": "Task",
+
+  "description": "Description",
+  "posted-on": "Posted on",
+  "requested-by": "Requested by",
+  "see-who's-going": "See Who's Going",
+
+  "request": "Requests",
+  "make-a-request": "Make a Request",
+  "no-requests-found": "No requests found",
+
+  "donate": "Donate",
+  "details": "Details",
+
+  "participate": "Participate",
+
+  "description-of-request": "Description of Request",
+  "title-of-request": "Title of Request",
+  "type-of-request": "Type of Request",
+  "make-the-request": "Make the Request",
+  "finish": "Finish"
 }

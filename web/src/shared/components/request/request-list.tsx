@@ -21,9 +21,11 @@ import RichPage from '../rich-page/rich-page'
 import Search from '../search/search'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import RequestSearch from '../../pages/request-search/request-search'
+import useLocale from '../../hooks/use-locale/use-locale'
 
 export default function RequestList() {
   const [requests, setRequests] = useState<any[]>([])
+  const { loading, t } = useLocale(['request'])
 
   let { account } = useAccountState()
   useEffect(() => {
@@ -40,27 +42,32 @@ export default function RequestList() {
   }, [])
 
   return (
-    <RichPage
-      title={<Title size={'XL'}>Requests</Title>}
-      actions={
-        (account &&
-          ((account.role === 'VOLUNTEER' && [{}]) ||
-            (account.role === 'ORGANIZATION' && [
-              {
-                to: '/organization/request/add',
-                children: <>Make a Request</>
-              }
-            ]))) ||
-        []
-      }
-    >
-      {!requests.length && <Content size={'3XL'}>No requests found.</Content>}
+    loading ||
+    (!requests ? null : (
+      <RichPage
+        title={<Title size={'XL'}>{t`request:request`}</Title>}
+        actions={
+          (account &&
+            ((account.role === 'VOLUNTEER' && [{}]) ||
+              (account.role === 'ORGANIZATION' && [
+                {
+                  to: '/organization/request/add',
+                  children: <>{t`request:make-a-request`}</>
+                }
+              ]))) ||
+          []
+        }
+      >
+        {!requests.length && (
+          <Content size={'3XL'}>{t`request:no-request-found`}</Content>
+        )}
 
-      <Yoga size={'3XL'} maxCol={3} className={'request-list-yoga yoga-in-rich-page'}>
-        {requests.map((request, i) => (
-          <RequestCard request={request} key={i} />
-        ))}
-      </Yoga>
-    </RichPage>
+        <Yoga size={'3XL'} maxCol={3} className={'request-list-yoga yoga-in-rich-page'}>
+          {requests.map((request, i) => (
+            <RequestCard request={request} key={i} />
+          ))}
+        </Yoga>
+      </RichPage>
+    ))
   )
 }
