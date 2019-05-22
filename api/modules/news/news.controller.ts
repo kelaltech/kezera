@@ -161,6 +161,43 @@ export async function getMyNews(account: Document & IAccount): Promise<any> {
     }
   })
 }
+
+export async function NearByNews(
+  account: Document & IAccount,
+  since: any,
+  count: any
+): Promise<any> {
+  const news = await list(NewsModel, {
+    since,
+    count,
+    postQuery: (q, s) => {
+      if (
+        !account ||
+        !account.lastLocation.coordinates ||
+        !account.lastLocation.coordinates.length
+      ) {
+        return q
+      }
+
+      return q
+        .find({
+          'locations.go': {
+            $nearSphere: {
+              $geometry: {
+                type: 'Point',
+                coordinates: account.lastLocation.coordinates,
+                $minDistance: 100,
+                $maxDistance: 2000
+              }
+            }
+          }
+        })
+        .session(s)
+    }
+  })
+
+  return news
+}
 /*export async function addNewsWithPicture(
   data: any,
   orgId: Schema.Types.ObjectId,
