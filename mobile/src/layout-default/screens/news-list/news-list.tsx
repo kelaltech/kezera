@@ -27,7 +27,7 @@ function NewsList({  }: NavigationInjectedProps<{}>) {
   return (
     loading || (
       <>
-        <Header title={t`news:today`} />
+        <Header  title={t`news:today`} />
         <Text>{t`app-name`}: NewsList Screen (in LayoutDefault)</Text>
         <ScrollView showsVerticalScrollIndicator={false}>
           {news.map((n: any, k) => (
