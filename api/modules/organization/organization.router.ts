@@ -71,20 +71,20 @@ organizationRouter.put(
 
 /* LINKS TO OTHER MODULES: */
 
-// GET /api/organization/requests/:organization_id?since={Date.now()}&count={10}
+// GET /api/organization/search-requests/:organization_id?term={''}&since={Date.now()}&count={10}
 organizationRouter.get(
-  '/requests/:organization_id',
-  handle(OrganizationController, (c, s) => c.requests(s))
+  '/search-requests/:organization_id',
+  handle(OrganizationController, (c, s) => c.searchRequests(s))
 )
 
-// GET /api/organization/events/:organization_id?since={Date.now()}&count={10}
+// GET /api/organization/search-events/:organization_id?term={''}&since={Date.now()}&count={10}
 organizationRouter.get(
-  '/events/:organization_id',
-  handle(OrganizationController, (c, s) => c.events(s))
+  '/search-events/:organization_id',
+  handle(OrganizationController, (c, s) => c.searchEvents(s))
 )
 
-// GET /api/organization/news/:organization_id?since={Date.now()}&count={10}
+// GET /api/organization/search-news/:organization_id?term={''}&since={Date.now()}&count={10}
 organizationRouter.get(
-  '/news/:organization_id',
-  handle(OrganizationController, (c, s) => c.news(s))
+  '/search-news/:organization_id',
+  handle(OrganizationController, (c, s) => c.searchNews(s))
 )
