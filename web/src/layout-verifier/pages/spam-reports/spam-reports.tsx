@@ -29,7 +29,7 @@ function SpamReports() {
       searchCancellation = Axios.CancelToken.source()
       const response = await Axios.get<ISpamReportResponse[]>(
         `/api/spam/search-reports?${qs.stringify({
-          term: term,
+          term,
           count,
           since
         })}`,
@@ -37,7 +37,7 @@ function SpamReports() {
       )
 
       setError(undefined)
-      setSpamReports(response.data)
+      setSpamReports((since ? spamReports : []).concat(response.data))
       setReady(true)
     } catch (e) {
       if (!Axios.isCancel(error)) setError(error)
@@ -59,8 +59,8 @@ function SpamReports() {
         onErrorClose={setError}
       >
         <SearchBar
-          onChange={setTerm}
-          onSubmit={e => {
+          onTerm={setTerm}
+          onSearch={e => {
             e.preventDefault()
             setReady(false)
             load().catch(setError)

@@ -29,7 +29,7 @@ function VerifierApplications() {
       searchCancellation = Axios.CancelToken.source()
       const response = await Axios.get<IOrganizationResponse[]>(
         `/api/verifier/search-organization-applications?${qs.stringify({
-          term: term,
+          term,
           count,
           since
         })}`,
@@ -37,7 +37,7 @@ function VerifierApplications() {
       )
 
       setError(undefined)
-      setApplications(response.data)
+      setApplications((since ? applications : []).concat(response.data))
       setReady(true)
     } catch (e) {
       if (!Axios.isCancel(error)) setError(error)
@@ -59,8 +59,8 @@ function VerifierApplications() {
         onErrorClose={setError}
       >
         <SearchBar
-          onChange={setTerm}
-          onSubmit={e => {
+          onTerm={setTerm}
+          onSearch={e => {
             e.preventDefault()
             setReady(false)
             load().catch(setError)

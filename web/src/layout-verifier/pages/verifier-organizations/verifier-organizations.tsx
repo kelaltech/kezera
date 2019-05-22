@@ -28,12 +28,12 @@ function VerifierOrganizations() {
       if (searchCancellation) searchCancellation.cancel()
       searchCancellation = Axios.CancelToken.source()
       const response = await Axios.get<IOrganizationResponse[]>(
-        `/api/organization/search?${qs.stringify({ term: term, count, since })}`,
+        `/api/organization/search?${qs.stringify({ term, count, since })}`,
         { withCredentials: true, cancelToken: searchCancellation.token }
       )
 
       setError(undefined)
-      setOrganizations(response.data)
+      setOrganizations((since ? organizations : []).concat(response.data))
       setReady(true)
     } catch (e) {
       if (!Axios.isCancel(error)) setError(error)
@@ -55,8 +55,8 @@ function VerifierOrganizations() {
         onErrorClose={setError}
       >
         <SearchBar
-          onChange={setTerm}
-          onSubmit={e => {
+          onTerm={setTerm}
+          onSearch={e => {
             e.preventDefault()
             setReady(false)
             load().catch(setError)

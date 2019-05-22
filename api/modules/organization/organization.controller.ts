@@ -322,16 +322,17 @@ export class OrganizationController extends KoaController {
 
   /* LINKS TO OTHER MODULES: */
 
-  async requests(
+  async searchRequests(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
+    term = super.getQuery('term'),
     since = Number(super.getQuery('since')) || Date.now(),
     count = Number(super.getQuery('count')) || 10
   ): Promise<IRequestResponse[]> {
     // todo: remove the next line when Event.organizationId gets fixed
     const organization = await get(OrganizationModel, organization_id)
     return Promise.all(
-      (await list(RequestModel, {
+      (await search(RequestModel, term, {
         session,
         since,
         count,
@@ -340,16 +341,17 @@ export class OrganizationController extends KoaController {
     )
   }
 
-  async events(
+  async searchEvents(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
+    term = super.getQuery('term'),
     since = Number(super.getQuery('since')) || Date.now(),
     count = Number(super.getQuery('count')) || 10
   ): Promise<IEvent[]> {
     // todo: remove the next line when Event.organizationId gets fixed
     const organization = await get(OrganizationModel, organization_id)
     // todo: filter?
-    return await list(EventModel, {
+    return await search(EventModel, term, {
       session,
       since,
       count,
@@ -357,14 +359,15 @@ export class OrganizationController extends KoaController {
     })
   }
 
-  async news(
+  async searchNews(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
+    term = super.getQuery('term'),
     since = Number(super.getQuery('since')) || Date.now(),
     count = Number(super.getQuery('count')) || 14
   ): Promise<INews[]> {
     // todo: filter?
-    return await list(NewsModel, {
+    return await search(NewsModel, term, {
       session,
       since,
       count,
