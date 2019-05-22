@@ -171,7 +171,19 @@ export default function EventDetail(props: any) {
                     className={'margin-top-small margin-right-big'}
                     icon={'map-marker'}
                   />
-                  <Content transparent> {event.location}</Content>
+                  <Content transparent>
+                    <Anchor
+                      href={`https://www.google.com/maps?q=${
+                        event.location.geo.coordinates[1]
+                      },${event.location.geo.coordinates[0]}`}
+                      target={'_blank'}
+                      rel={'noopener'}
+                    >
+                      {event.location!.address
+                        ? event.location!.address
+                        : event.location!.geo.coordinates}
+                    </Anchor>
+                  </Content>
                 </label>
               </Block>
               <Block>

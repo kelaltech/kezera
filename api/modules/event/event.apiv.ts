@@ -9,7 +9,13 @@ export type IOrganizationEventRequest = {
   likes: Schema.Types.ObjectId[]
   amountOfPeople: Number
   comments: Schema.Types.ObjectId[]
-  location?: string
+  location: {
+    geo: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+    address?: string
+  }
   interestedVolunteers: Schema.Types.ObjectId[]
   goingVolunteers: Schema.Types.ObjectId[]
   attendedVolunteers: Schema.Types.ObjectId[]
@@ -24,7 +30,13 @@ export type IOrganizationEventResponse = {
   likes: Schema.Types.ObjectId[]
   amountOfPeople: Number
   comments: Schema.Types.ObjectId[]
-  location?: string
+  location: {
+    geo: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+    address?: string
+  }
   interestedVolunteers: Schema.Types.ObjectId[]
   goingVolunteers: Schema.Types.ObjectId[]
   attendedVolunteers: Schema.Types.ObjectId[]
@@ -39,7 +51,13 @@ export type IVolunteerEventRequest = {
   likes: Schema.Types.ObjectId[]
   amountOfPeople: Number
   comments: Schema.Types.ObjectId[]
-  location?: string
+  location: {
+    geo: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+    address?: string
+  }
   interestedVolunteers: Schema.Types.ObjectId[]
   organizationId: string
 }
