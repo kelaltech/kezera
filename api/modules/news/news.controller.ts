@@ -7,6 +7,7 @@ import { Document, Schema } from 'mongoose'
 import { serverApp } from '../../index'
 import { getComment } from '../comment/comment.methods'
 import sharp = require('sharp')
+import { OrganizationModel } from '../../models/organization/organization.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -147,6 +148,17 @@ export async function recentNews(count: number): Promise<any> {
   return await list(NewsModel, {
     since: Date.now(),
     count
+  })
+}
+
+export async function getMyNews(account: Document & IAccount): Promise<any> {
+  const organization = await get(OrganizationModel, null, {
+    conditions: { account: account._id }
+  })
+  return await list(NewsModel, {
+    conditions: {
+      _by: organization._id
+    }
   })
 }
 /*export async function addNewsWithPicture(
