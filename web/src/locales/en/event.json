@@ -43,5 +43,6 @@
   "email": "Email",
   "phone no.": "Phone no.",
   "attended?": "Attended",
-  "verify": "Verify"
+  "verify": "Verify",
+  "create": "Create"
 }

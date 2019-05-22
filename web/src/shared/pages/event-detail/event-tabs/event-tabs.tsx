@@ -6,6 +6,7 @@ import Comments from '../comments/comments'
 import Likes from '../likes/likes'
 import Interested from '../interested/interested'
 import useLocale from '../../../hooks/use-locale/use-locale'
+import CommentComponent from '../../../components/comment/comment'
 
 export default function EventTabs(props: any) {
   let [value, setValue] = useState(0)
@@ -24,7 +25,7 @@ export default function EventTabs(props: any) {
       </Tabs>
       {value === 0 && (
         <Block>
-          <Comments _id={props.id} />
+          <CommentComponent _id={props.id} />
         </Block>
       )}
       {value === 1 && (

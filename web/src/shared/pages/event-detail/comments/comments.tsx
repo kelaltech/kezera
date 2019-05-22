@@ -8,7 +8,7 @@ import useLocale from '../../../hooks/use-locale/use-locale'
 import { useAccountState } from '../../../../app/stores/account/account-provider'
 
 export default function Comments(props: any) {
-  let [comments, setComments] = useState([])
+  /*let [comments, setComments] = useState([])
   let { t } = useLocale(['event'])
   let handleComment = function(e: any) {
     e.preventDefault()
@@ -72,5 +72,5 @@ export default function Comments(props: any) {
         )}
       </div>
     </>
-  )
+  )*/
 }
