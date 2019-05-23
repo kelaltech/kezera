@@ -19,11 +19,12 @@ import { email } from '../../lib/email'
 import { KoaError } from '../../lib/koa-error'
 import { OrganizationModel } from '../../models/organization/organization.model'
 import { RequestModel } from '../../models/request/request.model'
-import { EventModel, IEvent } from '../../models/event/event.model'
+import { EventModel } from '../../models/event/event.model'
 import { INews, NewsModel } from '../../models/news/news.model'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { populateRequest } from '../request/request.controller'
 import { IRequestResponse } from '../request/request.apiv'
+import { EventResponse } from '../event/event.filter'
 
 export class OrganizationController extends KoaController {
   /* GENERAL: */
@@ -347,16 +348,17 @@ export class OrganizationController extends KoaController {
     term = super.getQuery('term'),
     since = Number(super.getQuery('since')) || Date.now(),
     count = Number(super.getQuery('count')) || 10
-  ): Promise<IEvent[]> {
+  ): Promise<any[]> {
     // todo: remove the next line when Event.organizationId gets fixed
     const organization = await get(OrganizationModel, organization_id)
-    // todo: filter?
-    return await search(EventModel, term, {
-      session,
-      since,
-      count,
-      conditions: { organizationId: organization.account }
-    })
+    return Promise.all(
+      (await search(EventModel, term, {
+        session,
+        since,
+        count,
+        conditions: { organizationId: organization.account }
+      })).map(event => EventResponse(event))
+    )
   }
 
   async searchNews(
