@@ -38,12 +38,10 @@ export function reloadAccount(
     Axios.get<IAccountResponse>('/api/account/me', { withCredentials: true })
       .then(response => reload(response.data))
       .catch(e => {
-        if (e.response && e.response.status === 401) {
-          accountDispatch({ type: 'unset' })
-        }
-        if (!silentFail && onError && (e.response && e.response.status !== 401)) {
-          onError(e)
-        }
+        const isLoggedOutErrorType = e === 'Unauthorized'
+
+        if (isLoggedOutErrorType) accountDispatch({ type: 'unset' })
+        if (!silentFail && onError && !isLoggedOutErrorType) onError(e)
       })
   }
 }
@@ -122,9 +120,11 @@ export function logout(
   onLogout?: () => void,
   onError?: (e: any) => void
 ): void {
+  clearAllCachedPrivateData()
+
   Axios.post<void>('/api/account/logout')
     .then(() => {
-      window.localStorage.removeItem('account')
+      clearAllCachedPrivateData()
       accountDispatch({ type: 'unset' })
 
       if (onLogout) onLogout()
@@ -132,4 +132,21 @@ export function logout(
     .catch(e => {
       if (onError) onError(e)
     })
+}
+
+export function clearAllCachedPrivateData() {
+  const keys = [
+    // all
+    'account',
+
+    // volunteer
+    'volunteer',
+    'subscriptions',
+    'mini',
+
+    // organization
+    'my-organization'
+  ]
+
+  for (const key of keys) window.localStorage.removeItem(key)
 }

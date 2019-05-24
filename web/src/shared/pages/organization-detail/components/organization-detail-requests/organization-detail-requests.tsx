@@ -41,9 +41,13 @@ function OrganizationDetailRequest({ organization }: Props) {
         { withCredentials: true, cancelToken: searchCancellation.token }
       )
 
-      setError(undefined)
-      setRequests((since ? requests : []).concat(response.data))
-      setReady(true)
+      if (!Array.isArray(response.data)) {
+        setError('Response is malformed.')
+      } else {
+        setError(undefined)
+        setRequests((since ? requests : []).concat(response.data))
+        setReady(true)
+      }
     } catch (e) {
       if (!Axios.isCancel(error)) setError(error)
     }

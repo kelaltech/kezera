@@ -20,10 +20,11 @@ import OrganizationDetailInfo from './components/organization-detail-info/organi
 import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-requests'
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
 import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
+import OrganizationDetailSubscribers from './components/organization-detail-subscribers/organization-detail-subscribers'
 import { reloadSubscriptions } from '../../../layout-volunteer/stores/volunteer/volunteer-actions'
 import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
 
-type ITabName = 'info' | 'requests' | 'events' | 'news'
+type ITabName = 'info' | 'requests' | 'events' | 'news' | 'subscribers'
 
 type Props = RouteComponentProps<{ _id: string }> & {
   /**
@@ -117,6 +118,8 @@ function OrganizationDetail({
         return setTab('events')
       case 'news':
         return setTab('news')
+      case 'subscribers':
+        return setTab('subscribers')
     }
   }, [query.tab])
 
@@ -275,6 +278,7 @@ function OrganizationDetail({
               {!isApplication && <Tab label={`Requests`} value={'requests'} />}
               {!isApplication && <Tab label={`Events`} value={'events'} />}
               {!isApplication && <Tab label={`News`} value={'news'} />}
+              {!isApplication && <Tab label={`Subscribers`} value={'subscribers'} />}
             </Tabs>
 
             {tab === 'info' && (
@@ -292,6 +296,9 @@ function OrganizationDetail({
                   <OrganizationDetailEvents organization={organization} />
                 )}
                 {tab === 'news' && <OrganizationDetailNews organization={organization} />}
+                {tab === 'subscribers' && (
+                  <OrganizationDetailSubscribers organization={organization} />
+                )}
               </>
             )}
           </Content>

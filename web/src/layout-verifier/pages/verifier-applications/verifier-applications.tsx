@@ -36,9 +36,13 @@ function VerifierApplications() {
         { withCredentials: true, cancelToken: searchCancellation.token }
       )
 
-      setError(undefined)
-      setApplications((since ? applications : []).concat(response.data))
-      setReady(true)
+      if (!Array.isArray(response.data)) {
+        setError('Response is malformed.')
+      } else {
+        setError(undefined)
+        setApplications((since ? applications : []).concat(response.data))
+        setReady(true)
+      }
     } catch (e) {
       if (!Axios.isCancel(error)) setError(error)
     }

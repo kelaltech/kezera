@@ -5,8 +5,7 @@ import * as qs from 'qs'
 
 import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
-import { IOrganizationEventResponse } from '../../../../../apiv/event.apiv'
-import EventCard from '../../../../components/event-card/event-card'
+import { IAccountResponse } from '../../../../../../../api/modules/account/account.apiv'
 import SearchBar from '../../../../components/search-bar/search-bar'
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
 const count = 10
 let searchCancellation: CancelTokenSource | null = null
 
-function OrganizationDetailEvent({ organization }: Props) {
+function OrganizationDetailSubscribers({ organization }: Props) {
   const { loading, t } = useLocale(['organization'])
 
   const [term, setTerm] = useState('')
@@ -24,16 +23,16 @@ function OrganizationDetailEvent({ organization }: Props) {
   const [ready, setReady] = useState(false)
   const [error, setError] = useState<string>()
 
-  const [events, setEvents] = useState<IOrganizationEventResponse[]>([])
+  const [subscribers, setSubscribers] = useState<IAccountResponse[]>([])
 
   const load = async (since?: number): Promise<void> => {
     try {
-      if (!events.length) setReady(false)
+      if (!subscribers.length) setReady(false)
 
       if (searchCancellation) searchCancellation.cancel()
       searchCancellation = Axios.CancelToken.source()
-      const response = await Axios.get<IOrganizationEventResponse[]>(
-        `/api/organization/search-events/${organization._id}?${qs.stringify({
+      const response = await Axios.get<IAccountResponse[]>(
+        `/api/organization/search-subscribers/${organization._id}?${qs.stringify({
           term,
           count,
           since
@@ -45,7 +44,7 @@ function OrganizationDetailEvent({ organization }: Props) {
         setError('Response is malformed.')
       } else {
         setError(undefined)
-        setEvents((since ? events : []).concat(response.data))
+        setSubscribers((since ? subscribers : []).concat(response.data))
         setReady(true)
       }
     } catch (e) {
@@ -79,22 +78,26 @@ function OrganizationDetailEvent({ organization }: Props) {
           <Loading delay />
         ) : (
           <>
-            {!events.length ? (
+            {!subscribers.length ? (
               <div className={'padding-vertical-very-big center big fg-blackish'}>
-                This organization has not posted events yet.
+                This organization has no subscribers yet.
               </div>
             ) : (
               <>
                 <Yoga maxCol={4} className={'yoga-in-rich-page padding-normal'}>
-                  {events.map((e, i) => (
-                    <EventCard key={i} event={e} />
+                  {subscribers.map((s, i) => (
+                    <div key={i}>{s.displayName}</div>
                   ))}
                 </Yoga>
-                {events.length && events.length % count === 0 && (
+                {subscribers.length && subscribers.length % count === 0 && (
                   <Block last className={'center'}>
                     <Button
                       onClick={() =>
-                        load(new Date((events[events.length - 1] as any)._at).getTime())
+                        load(
+                          new Date(
+                            (subscribers[subscribers.length - 1] as any)._at
+                          ).getTime()
+                        )
                       }
                     >
                       Load More...
@@ -109,4 +112,4 @@ function OrganizationDetailEvent({ organization }: Props) {
   )
 }
 
-export default OrganizationDetailEvent
+export default OrganizationDetailSubscribers
