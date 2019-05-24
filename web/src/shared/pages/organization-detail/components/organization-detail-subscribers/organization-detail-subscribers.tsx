@@ -4,15 +4,17 @@ import Axios, { CancelTokenSource } from 'axios'
 import * as qs from 'qs'
 
 import useLocale from '../../../../hooks/use-locale/use-locale'
-import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
-import { IAccountResponse } from '../../../../../../../api/modules/account/account.apiv'
+import {
+  IOrganizationResponse,
+  IOrganizationSubscriber
+} from '../../../../../apiv/organization.apiv'
 import SearchBar from '../../../../components/search-bar/search-bar'
 
 interface Props {
   organization: IOrganizationResponse
 }
 
-const count = 10
+const count = 90
 let searchCancellation: CancelTokenSource | null = null
 
 function OrganizationDetailSubscribers({ organization }: Props) {
@@ -23,7 +25,7 @@ function OrganizationDetailSubscribers({ organization }: Props) {
   const [ready, setReady] = useState(false)
   const [error, setError] = useState<string>()
 
-  const [subscribers, setSubscribers] = useState<IAccountResponse[]>([])
+  const [subscribers, setSubscribers] = useState<IOrganizationSubscriber[]>([])
 
   const load = async (since?: number): Promise<void> => {
     try {
@@ -31,7 +33,7 @@ function OrganizationDetailSubscribers({ organization }: Props) {
 
       if (searchCancellation) searchCancellation.cancel()
       searchCancellation = Axios.CancelToken.source()
-      const response = await Axios.get<IAccountResponse[]>(
+      const response = await Axios.get<IOrganizationSubscriber[]>(
         `/api/organization/search-subscribers/${organization._id}?${qs.stringify({
           term,
           count,

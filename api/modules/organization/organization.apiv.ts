@@ -88,3 +88,7 @@ export type IOrganizationStats = {
     total: number
   }
 }
+
+export type IOrganizationSubscriber = IAccountPublicResponse & {
+  volunteerId: string
+}

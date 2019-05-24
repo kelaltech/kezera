@@ -5,7 +5,8 @@ import { KoaController } from '../../lib/koa-controller'
 import {
   IOrganizationRequest,
   IOrganizationResponse,
-  IOrganizationStats
+  IOrganizationStats,
+  IOrganizationSubscriber
 } from './organization.apiv'
 import { add, edit, get, list, search } from '../../lib/crud'
 import { Grid } from '../../lib/grid'
@@ -25,6 +26,8 @@ import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { populateRequest } from '../request/request.controller'
 import { IRequestResponse } from '../request/request.apiv'
 import { EventResponse } from '../event/event.filter'
+import { AccountModel } from '../../models/account/account.model'
+import { accountDocumentToPublicResponse } from '../account/account.filter'
 
 export class OrganizationController extends KoaController {
   /* GENERAL: */
@@ -331,7 +334,7 @@ export class OrganizationController extends KoaController {
     count = Number(super.getQuery('count')) || 10
   ): Promise<IRequestResponse[]> {
     // todo: remove the next line when Event.organizationId gets fixed
-    const organization = await get(OrganizationModel, organization_id)
+    const organization = await get(OrganizationModel, organization_id, { session })
     return Promise.all(
       (await search(RequestModel, term, {
         session,
@@ -350,7 +353,7 @@ export class OrganizationController extends KoaController {
     count = Number(super.getQuery('count')) || 10
   ): Promise<any[]> {
     // todo: remove the next line when Event.organizationId gets fixed
-    const organization = await get(OrganizationModel, organization_id)
+    const organization = await get(OrganizationModel, organization_id, { session })
     return Promise.all(
       (await search(EventModel, term, {
         session,
@@ -375,5 +378,52 @@ export class OrganizationController extends KoaController {
       count,
       conditions: { _by: organization_id }
     })
+  }
+
+  async searchSubscribers(
+    session?: ClientSession,
+    organization_id = super.getParam('organization_id'),
+    term = super.getQuery('term'),
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 14,
+    account = super.getUser()
+  ): Promise<IOrganizationSubscriber[]> {
+    const organization = await get(OrganizationModel, organization_id, { session })
+
+    return Promise.all(
+      (await search(AccountModel, term, {
+        session,
+        since,
+        count,
+        conditions: { _id: { $in: organization.subscribers } },
+        postQuery: (query, s) => {
+          if (
+            !account ||
+            !account.lastLocation.coordinates ||
+            !account.lastLocation.coordinates.length
+          )
+            return query
+
+          return query
+            .find({
+              'locations.geo': {
+                $nearSphere: {
+                  $geometry: {
+                    type: 'Point',
+                    coordinates: account.lastLocation.coordinates
+                  }
+                }
+              }
+            })
+            .session(s)
+        }
+      })).map(async account => ({
+        ...(await accountDocumentToPublicResponse(account)),
+        volunteerId: (await get(VolunteerModel, null, {
+          session,
+          conditions: { account: account._id }
+        }))._id.toString()
+      }))
+    )
   }
 }
