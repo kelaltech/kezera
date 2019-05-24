@@ -38,9 +38,12 @@ export function reloadAccount(
     Axios.get<IAccountResponse>('/api/account/me', { withCredentials: true })
       .then(response => reload(response.data))
       .catch(e => {
-        accountDispatch({ type: 'unset' })
-        if (!silentFail && onError && (e.response && e.response.status !== 401))
+        if (e.response && e.response.status === 401) {
+          accountDispatch({ type: 'unset' })
+        }
+        if (!silentFail && onError && (e.response && e.response.status !== 401)) {
           onError(e)
+        }
       })
   }
 }
