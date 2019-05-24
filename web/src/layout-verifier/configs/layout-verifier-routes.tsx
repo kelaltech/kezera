@@ -5,6 +5,7 @@ import { useAccountState } from '../../app/stores/account/account-provider'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
+const Landing = lazy(() => import('../../shared/pages/landing/landing'))
 
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
@@ -57,6 +58,7 @@ export default function LayoutVerifierRoutes({ prefix: p }: { prefix: string }) 
       <Route exact path={`${p}/event/:_id`} component={EventDetail} />
       <Route exact path={`${p}/news/:_id`} component={NewsDetail} />
 
+      <Route exact path={`${p}/about`} component={Landing} />
       <Route component={NotFound} />
     </Switch>
   )

@@ -357,7 +357,7 @@ export class OrganizationController extends KoaController {
         since,
         count,
         conditions: { organizationId: organization.account }
-      })).map(event => EventResponse(event))
+      })).map(EventResponse)
     )
   }
 

@@ -6,12 +6,12 @@ import { useAccountState } from '../../app/stores/account/account-provider'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
+const Landing = lazy(() => import('../../shared/pages/landing/landing'))
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
 )
 const Discovery = lazy(() => import('../pages/volunteer-discover/volunteer-discovery'))
 const Event = lazy(() => import('../pages/volunteer-event/volunteer-event'))
-const Landing = lazy(() => import('../pages/volunteer-landing/volunteer-landing'))
 const MyOrganization = lazy(() =>
   import('../pages/volunteer-my-organization/volunteer-my-organization')
 )
@@ -42,9 +42,6 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
     <Switch>
       {account && <Redirect from={`${p}/register`} to={`/login/redirect/account`} />}
 
-      {/* todo: change the path to / and move to the bottom of LayoutDefaultRoutes */}
-      <Route exact path={`${p}/landing`} component={Landing} />
-
       {account ? (
         <>
           <Route exact path={`${p}/account`} component={AccountDetail} />
@@ -74,6 +71,7 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
 
       <Redirect exact from={`${p}/register`} to={'/login/register'} />
 
+      <Route exact path={`${p}/about`} component={Landing} />
       <Route component={NotFound} />
     </Switch>
   )
