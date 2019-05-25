@@ -9,12 +9,13 @@ import {
   IOrganizationSubscriber
 } from '../../../../../apiv/organization.apiv'
 import SearchBar from '../../../../components/search-bar/search-bar'
+import AccountChip from '../../../../components/account-chip/account-chip'
 
 interface Props {
   organization: IOrganizationResponse
 }
 
-const count = 90
+const count = 120
 let searchCancellation: CancelTokenSource | null = null
 
 function OrganizationDetailSubscribers({ organization }: Props) {
@@ -25,7 +26,9 @@ function OrganizationDetailSubscribers({ organization }: Props) {
   const [ready, setReady] = useState(false)
   const [error, setError] = useState<string>()
 
-  const [subscribers, setSubscribers] = useState<IOrganizationSubscriber[]>([])
+  const [subscribers, setSubscribers] = useState<
+    (IOrganizationSubscriber & { selected?: boolean })[]
+  >([])
 
   const load = async (since?: number): Promise<void> => {
     try {
@@ -33,7 +36,9 @@ function OrganizationDetailSubscribers({ organization }: Props) {
 
       if (searchCancellation) searchCancellation.cancel()
       searchCancellation = Axios.CancelToken.source()
-      const response = await Axios.get<IOrganizationSubscriber[]>(
+      const response = await Axios.get<
+        (IOrganizationSubscriber & { selected?: boolean })[]
+      >(
         `/api/organization/search-subscribers/${organization._id}?${qs.stringify({
           term,
           count,
@@ -46,7 +51,14 @@ function OrganizationDetailSubscribers({ organization }: Props) {
         setError('Response is malformed.')
       } else {
         setError(undefined)
-        setSubscribers((since ? subscribers : []).concat(response.data))
+        setSubscribers(
+          (since ? subscribers : []).concat(
+            response.data.map(d => {
+              d.selected = false
+              return d
+            })
+          )
+        )
         setReady(true)
       }
     } catch (e) {
@@ -88,7 +100,26 @@ function OrganizationDetailSubscribers({ organization }: Props) {
               <>
                 <Yoga maxCol={4} className={'yoga-in-rich-page padding-normal'}>
                   {subscribers.map((s, i) => (
-                    <div key={i}>{s.displayName}</div>
+                    <AccountChip
+                      key={i}
+                      account={s}
+                      anchorProps={{
+                        to: `/v/${s.volunteerId}`,
+                        target: '_blank' // todo: should be conditional
+                      }}
+                      selected={s.selected}
+                      setSelected={
+                        /* todo: should be conditional */
+                        selected => {
+                          subscribers[i].selected = selected
+                          setSubscribers(
+                            ([] as (IOrganizationSubscriber & {
+                              selected?: boolean
+                            })[]).concat(subscribers)
+                          )
+                        }
+                      }
+                    />
                   ))}
                 </Yoga>
                 {subscribers.length && subscribers.length % count === 0 && (
