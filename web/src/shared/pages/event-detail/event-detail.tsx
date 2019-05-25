@@ -124,19 +124,14 @@ export default function EventDetail(props: any) {
                 {account && account!.account!.role == 'ORGANIZATION' ? (
                   <>
                     <Anchor
-                      to={`/organization/event/${
-                        props.match.params._id
-                      }/attendance/verify`}
+                      to={`/event/${props.match.params._id}/attendance/verify`}
                       button
                     >
                       <FontAwesomeIcon icon={['far', 'user-circle']} />
                       &nbsp; {t`attending`}
                     </Anchor>
                     &emsp;
-                    <Anchor
-                      to={`/organization/event/${props.match.params._id}/attended`}
-                      button
-                    >
+                    <Anchor to={`/event/${props.match.params._id}/attended`} button>
                       <FontAwesomeIcon icon={'check-circle'} /> &nbsp;{t`attended`}
                     </Anchor>
                   </>

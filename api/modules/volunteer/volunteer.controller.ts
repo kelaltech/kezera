@@ -1,11 +1,12 @@
-import { add, search } from '../../lib/crud'
+import { add, get, search } from '../../lib/crud'
 import { AccountController } from '../account/account.controller'
 import { IAccountRequest } from '../account/account.apiv'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { IAccount } from '../../models/account/account.model'
 import { OrganizationModel } from '../../models/organization/organization.model'
 import { IVolunteerRequest, IVolunteerResponse } from './volunteer.apiv'
-import { Document } from 'mongoose'
+import { ClientSession, Document, Schema } from 'mongoose'
+import { accountDocumentToPublicResponse } from '../account/account.filter'
 
 export async function RegisterVolunteer(data: IAccountRequest): Promise<any> {
   const doc = await new AccountController().add(undefined, data)
@@ -19,6 +20,19 @@ export async function volunteerInfo(user: Document & IAccount): Promise<any> {
   return ((await VolunteerModel.findOne({
     account: user._id
   })) as any) as IVolunteerResponse
+}
+
+export async function getVolunteer(
+  volunteer_id: Schema.Types.ObjectId | string,
+  session?: ClientSession
+): Promise<any> {
+  const ret = (await get(VolunteerModel, volunteer_id, {
+    session,
+    postQuery: query => query.populate('account')
+  })).toObject()
+  console.log(ret)
+  ret.account = (await accountDocumentToPublicResponse(ret.account as any)) as any
+  return ret
 }
 
 export async function editVolunteerInfo(

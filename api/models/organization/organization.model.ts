@@ -76,4 +76,7 @@ OrganizationModel.collection.ensureIndex(
   }
 )
 
-OrganizationModel.collection.createIndex({ 'locations.geo': '2dsphere' })
+OrganizationModel.collection.createIndex(
+  { 'locations.geo': '2dsphere' },
+  { sparse: true }
+)

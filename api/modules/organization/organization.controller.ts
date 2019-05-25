@@ -156,7 +156,7 @@ export class OrganizationController extends KoaController {
         if (
           !account ||
           !account.lastLocation.coordinates ||
-          !account.lastLocation.coordinates.length
+          account.lastLocation.coordinates.length !== 2
         )
           return query
 
@@ -400,13 +400,13 @@ export class OrganizationController extends KoaController {
           if (
             !account ||
             !account.lastLocation.coordinates ||
-            !account.lastLocation.coordinates.length
+            account.lastLocation.coordinates.length !== 2
           )
             return query
 
           return query
             .find({
-              'locations.geo': {
+              lastLocation: {
                 $nearSphere: {
                   $geometry: {
                     type: 'Point',

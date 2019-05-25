@@ -67,10 +67,7 @@ export default function OrganCard({ request }: IOrganProps) {
             <Button>Participate</Button>
           )}
           <FlexSpacer />
-          <Anchor
-            className={'margin-top-normal'}
-            to={`/organization/request/${request._id}`}
-          >
+          <Anchor className={'margin-top-normal'} to={`/request/${request._id}`}>
             Details
           </Anchor>
         </Flex>

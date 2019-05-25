@@ -59,3 +59,5 @@ AccountModel.collection.ensureIndex(
     }
   }
 )
+
+AccountModel.collection.createIndex({ lastLocation: '2dsphere' }, { sparse: true })

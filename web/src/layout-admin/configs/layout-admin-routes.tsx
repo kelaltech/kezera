@@ -17,6 +17,13 @@ const VerifierDescription = lazy(() =>
   import('../pages/verifier-description/verifier-description')
 )
 
+const OrganizationDetail = lazy(() =>
+  import('../../shared/pages/organization-detail/organization-detail')
+)
+const VolunteerProfile = lazy(() =>
+  import('../../shared/pages/volunteer-profile/volunteer-profile')
+)
+
 export default function LayoutAdminRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
 
@@ -32,6 +39,9 @@ export default function LayoutAdminRoutes({ prefix: p }: { prefix: string }) {
           <Route exact path={`${p}/verifier/:_id`} component={VerifierDescription} />
         </Flex>
       )}
+
+      <Route exact path={`${p}/v/:_id`} component={VolunteerProfile} />
+      <Route exact path={`${p}/o/:_id`} component={OrganizationDetail} />
 
       <Route exact path={`${p}/about`} component={Landing} />
       <Route component={NotFound} />
