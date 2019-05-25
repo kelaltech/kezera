@@ -390,21 +390,23 @@ export class OrganizationController extends KoaController {
   ): Promise<IOrganizationSubscriber[]> {
     const organization = await get(OrganizationModel, organization_id, { session })
 
-    return Promise.all(
-      (await search(AccountModel, term, {
-        session,
-        since,
-        count,
-        conditions: { _id: { $in: organization.subscribers } },
-        postQuery: (query, s) => {
-          if (
-            !account ||
-            !account.lastLocation.coordinates ||
-            account.lastLocation.coordinates.length !== 2
-          )
-            return query
+    let subscribers = await search(AccountModel, term, {
+      session,
+      since,
+      count,
+      conditions: { _id: { $in: organization.subscribers } }
+    })
 
-          return query
+    if (
+      account &&
+      account.lastLocation.coordinates &&
+      account.lastLocation.coordinates.length === 2
+    ) {
+      subscribers = await list(AccountModel, {
+        session,
+        conditions: { _id: { $in: subscribers.map(s => s._id) } },
+        postQuery: (query, s) =>
+          query
             .find({
               lastLocation: {
                 $nearSphere: {
@@ -416,8 +418,11 @@ export class OrganizationController extends KoaController {
               }
             })
             .session(s)
-        }
-      })).map(async account => ({
+      })
+    }
+
+    return Promise.all(
+      subscribers.map(async account => ({
         ...(await accountDocumentToPublicResponse(account)),
         volunteerId: (await get(VolunteerModel, null, {
           session,
