@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Button, Loading, Warning, Yoga } from 'gerami'
+import { Anchor, Block, Button, Flex, FlexSpacer, Loading, Warning, Yoga } from 'gerami'
 import Axios, { CancelTokenSource } from 'axios'
 import * as qs from 'qs'
 
@@ -10,6 +10,8 @@ import {
 } from '../../../../../apiv/organization.apiv'
 import SearchBar from '../../../../components/search-bar/search-bar'
 import AccountChip from '../../../../components/account-chip/account-chip'
+import { useMyOrganizationState } from '../../../../../layout-organization/stores/my-organization/my-organization-provider'
+import IssueCertificateDialog from '../../../../components/isuue-certificate-dialog/issue-certificate-dialog'
 
 interface Props {
   organization: IOrganizationResponse
@@ -70,6 +72,13 @@ function OrganizationDetailSubscribers({ organization }: Props) {
     load().catch(setError)
   }, [term])
 
+  const { myOrganization } = useMyOrganizationState()
+  const isOrganizationSelf = myOrganization && myOrganization._id === organization._id
+
+  const hasAtLeastOneSelected = !!subscribers.find(s => s.selected === true)
+
+  const [issueDialogOpen, setIssueDialogOpen] = useState(false)
+
   return (
     <div style={{ minHeight: '75vh' }}>
       <SearchBar
@@ -98,6 +107,62 @@ function OrganizationDetailSubscribers({ organization }: Props) {
               </div>
             ) : (
               <>
+                {isOrganizationSelf && (
+                  <>
+                    <Flex className={'margin-top-big font-S fg-blackish'}>
+                      <Anchor
+                        className={'fg-blackish'}
+                        onClick={() =>
+                          setSubscribers(
+                            subscribers.map(s => {
+                              s.selected = true
+                              return s
+                            })
+                          )
+                        }
+                      >
+                        Select All
+                      </Anchor>
+
+                      {hasAtLeastOneSelected && (
+                        <Anchor
+                          className={'margin-left-big fg-blackish'}
+                          onClick={() =>
+                            setSubscribers(
+                              subscribers.map(s => {
+                                s.selected = false
+                                return s
+                              })
+                            )
+                          }
+                        >
+                          Deselect All
+                        </Anchor>
+                      )}
+
+                      <FlexSpacer />
+
+                      {hasAtLeastOneSelected && (
+                        <Anchor
+                          className={'margin-left-big bold'}
+                          onClick={() => setIssueDialogOpen(!issueDialogOpen)}
+                        >
+                          Issue Certificate for Selected Volunteers
+                        </Anchor>
+                      )}
+                    </Flex>
+
+                    <IssueCertificateDialog
+                      open={issueDialogOpen}
+                      onClose={() => setIssueDialogOpen(!issueDialogOpen)}
+                      purpose={'MEMBERSHIP'}
+                      issueTo={subscribers
+                        .filter(s => s.selected === true)
+                        .map(s => s.volunteerId)}
+                    />
+                  </>
+                )}
+
                 <Yoga maxCol={4} className={'yoga-in-rich-page padding-normal'}>
                   {subscribers.map((s, i) => (
                     <AccountChip
@@ -105,19 +170,20 @@ function OrganizationDetailSubscribers({ organization }: Props) {
                       account={s}
                       anchorProps={{
                         to: `/v/${s.volunteerId}`,
-                        target: '_blank' // todo: should be conditional
+                        target: !isOrganizationSelf ? undefined : '_blank'
                       }}
                       selected={s.selected}
                       setSelected={
-                        /* todo: should be conditional */
-                        selected => {
-                          subscribers[i].selected = selected
-                          setSubscribers(
-                            ([] as (IOrganizationSubscriber & {
-                              selected?: boolean
-                            })[]).concat(subscribers)
-                          )
-                        }
+                        !isOrganizationSelf
+                          ? undefined
+                          : selected => {
+                              subscribers[i].selected = selected
+                              setSubscribers(
+                                ([] as (IOrganizationSubscriber & {
+                                  selected?: boolean
+                                })[]).concat(subscribers)
+                              )
+                            }
                       }
                     />
                   ))}

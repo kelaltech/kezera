@@ -19,7 +19,7 @@ function AccountChip({
   account,
   anchorProps: allAnchorProps = {},
 
-  setSelected = () => {},
+  setSelected,
   selected = false,
 
   className = '',

@@ -13,18 +13,20 @@ type Props = DialogProps & {
 }
 
 function IssueCertificateDialog({ purpose, issueTo, ...dialogProps }: Props) {
-  const [data, setData] = useState<ICertificateRequest>({
-    purpose,
-    issueTo,
-    description: ''
-  })
+  const [description, setDescription] = useState('')
 
   const [sending, setSending] = useState(false)
   const [error, setError] = useState()
 
   const handleIssue = (): void => {
+    const data: ICertificateRequest = {
+      purpose,
+      issueTo,
+      description
+    }
+
     setSending(true)
-    setError(true)
+    setError(undefined)
     Axios.post<ICertificateResponse>('/api/certificate/issue', data, {
       withCredentials: true
     })
@@ -53,8 +55,8 @@ function IssueCertificateDialog({ purpose, issueTo, ...dialogProps }: Props) {
           rows={5}
           placeholder={`Message on the certificate`}
           className={'full-width'}
-          value={data.description}
-          onChange={e => setData({ ...data, description: e.target.value })}
+          value={description}
+          onChange={e => setDescription(e.target.value)}
           disabled={sending}
           multiline
           autoFocus
@@ -63,7 +65,7 @@ function IssueCertificateDialog({ purpose, issueTo, ...dialogProps }: Props) {
 
       <hr className={'margin-bottom-none'} />
       <div className={'padding-big right bg-whitish'}>
-        <Button primary onClick={handleIssue} disabled={sending || !data.description}>
+        <Button primary onClick={handleIssue} disabled={sending || !description}>
           Issue Certificate
         </Button>
       </div>
