@@ -98,26 +98,38 @@ export class CertificateController extends KoaController {
       if ((i + 1) % 13 == 0) description += '\n'
     }
 
-    const svg = fs
-      .readFileSync('api/modules/certificate/templates/default/default.svg')
-      .toString('utf8')
-      // data entry...
-      .replace(/{PURPOSE}/g, certificate.purpose.replace(/_/g, ' ').toUpperCase())
-      .replace(/{DATE}/g, new Date(certificate._at!).toDateString().substr(3))
-      .replace(
-        /{DISPLAY_NAME}/,
-        ((((certificate.issuedTo as any) as IVolunteer).account as any) as IAccount)
-          .displayName
-      )
-      .replace(/{DESCRIPTION}/, description)
-      .replace(
-        /{ORGANIZATION_NAME}/,
-        ((((certificate.issuedBy as any) as IOrganization).account as any) as IAccount)
-          .displayName
-      )
+    return new Promise<Stream>(async (resolve, reject) => {
+      fs.readFile(
+        'api/modules/certificate/templates/default/default.svg',
+        { encoding: 'utf8', flag: 'r' },
+        async (err, data) => {
+          if (err) return reject(err)
 
-    if (ctx) ctx.type = 'png'
-    return sharp(Buffer.from(svg, 'utf8')).png()
+          const svg = data
+            // data entry...
+            .replace(/{PURPOSE}/g, certificate.purpose.replace(/_/g, ' ').toUpperCase())
+            .replace(/{DATE}/g, new Date(certificate._at!).toDateString().substr(3))
+            .replace(
+              /{DISPLAY_NAME}/,
+              ((((certificate.issuedTo as any) as IVolunteer).account as any) as IAccount)
+                .displayName
+            )
+            .replace(/{DESCRIPTION}/, description)
+            .replace(
+              /{ORGANIZATION_NAME}/,
+              ((((certificate.issuedBy as any) as IOrganization)
+                .account as any) as IAccount).displayName
+            )
+
+          const jpegStream = await sharp(Buffer.from(svg, 'utf8')).jpeg({
+            quality: 100
+          })
+
+          if (ctx) ctx.type = 'jpeg'
+          return resolve(jpegStream)
+        }
+      )
+    })
   }
 
   /* PRIVACY */
