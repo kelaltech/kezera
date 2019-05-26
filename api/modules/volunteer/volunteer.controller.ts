@@ -4,7 +4,7 @@ import { IAccountRequest } from '../account/account.apiv'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { IAccount } from '../../models/account/account.model'
 import { OrganizationModel } from '../../models/organization/organization.model'
-import { IVolunteerRequest, IVolunteerResponse } from './volunteer.apiv'
+import { IVolunteerRequest } from './volunteer.apiv'
 import { ClientSession, Document, Schema } from 'mongoose'
 import { accountDocumentToPublicResponse } from '../account/account.filter'
 
@@ -17,9 +17,12 @@ export async function RegisterVolunteer(data: IAccountRequest): Promise<any> {
 }
 
 export async function volunteerInfo(user: Document & IAccount): Promise<any> {
-  return ((await VolunteerModel.findOne({
-    account: user._id
-  })) as any) as IVolunteerResponse
+  const ret = (await get(VolunteerModel, null, {
+    conditions: { account: user._id },
+    postQuery: query => query.populate('account')
+  })).toObject()
+  ret.account = (await accountDocumentToPublicResponse(ret.account as any)) as any
+  return ret
 }
 
 export async function getVolunteer(
@@ -30,7 +33,6 @@ export async function getVolunteer(
     session,
     postQuery: query => query.populate('account')
   })).toObject()
-  console.log(ret)
   ret.account = (await accountDocumentToPublicResponse(ret.account as any)) as any
   return ret
 }

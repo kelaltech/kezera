@@ -64,7 +64,7 @@ function SpamReportDetail({ history, match }: RouteComponentProps<{ _id: string 
       setError(undefined)
       setSpamReport(data)
     } catch (e) {
-      setError(error)
+      setError(e)
     }
   }
 

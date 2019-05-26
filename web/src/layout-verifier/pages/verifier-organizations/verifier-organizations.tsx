@@ -40,7 +40,7 @@ function VerifierOrganizations() {
         setReady(true)
       }
     } catch (e) {
-      if (!Axios.isCancel(error)) setError(error)
+      if (!Axios.isCancel(error)) setError(e)
     }
   }
 
