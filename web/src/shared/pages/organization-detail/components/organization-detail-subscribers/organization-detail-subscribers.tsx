@@ -48,7 +48,6 @@ function OrganizationDetailSubscribers({ organization }: Props) {
         })}`,
         { withCredentials: true, cancelToken: searchCancellation.token }
       )
-      throw new Error('hi')
 
       if (!Array.isArray(response.data)) {
         setError('Response is malformed.')
