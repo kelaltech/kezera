@@ -95,7 +95,7 @@ export class CertificateController extends KoaController {
     const descriptionWords = certificate.description.split(' ')
     for (let i = 0; i < descriptionWords.length; i++) {
       description += descriptionWords[i] + ' '
-      if ((i + 1) % 13 == 0) description += '\n'
+      if ((i + 1) % 13 == 0) description += '\r'
     }
 
     return new Promise<Stream>(async (resolve, reject) => {
