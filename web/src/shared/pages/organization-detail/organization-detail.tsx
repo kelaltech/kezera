@@ -193,22 +193,23 @@ function OrganizationDetail({
                   </span>
                 </>
               )}
-              <span>
+              <>
                 <Anchor
                   onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
                   title={`Report Organization as Spam`}
                 >
                   <FontAwesomeIcon icon={'user-slash'} />
                 </Anchor>
-                <SpamReportDrop
-                  type={'ORGANIZATION'}
-                  ids={[organization._id]}
-                  open={isSpamReportDropOpen}
-                  onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
-                  align={'right'}
-                  anchorOffset={18}
-                />
-              </span>
+                <span className={'absolute inline-block padding-top-big'}>
+                  <SpamReportDrop
+                    type={'ORGANIZATION'}
+                    ids={[organization._id]}
+                    open={isSpamReportDropOpen}
+                    onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                    align={'right'}
+                  />
+                </span>
+              </>
             </Flex>
           </Yoga>
         ))
