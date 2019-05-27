@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { Anchor, Content, Flex, FlexSpacer, Warning } from 'gerami'
+import { Anchor, Content, Flex, FlexSpacer, Warning, Yoga } from 'gerami'
 import { IButtonProps } from 'gerami/src/components/Button/Button'
 import { Tab, Tabs } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -162,50 +162,55 @@ function OrganizationDetail({
         (!organization.motto && !organization.website ? (
           undefined
         ) : (
-          <Flex>
-            {!organization.motto ? null : (
-              <>
-                <span>{organization.type}</span>
-                <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
-                  |
-                </span>
-                <span>
-                  {!isApplication
-                    ? `${organization.subscribersCount || 'NO'} SUBSCRIBER${
-                        organization.subscribersCount === 1 ? '' : 'S'
-                      }`
-                    : `Sent on ${new Date(organization._at).toDateString().substr(3)}`}
-                </span>
-              </>
-            )}
-            <FlexSpacer />
-            {organization.account.status !== 'ACTIVE' || !organization.website ? null : (
-              <>
-                <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
-                  {organization.website}
+          <Yoga maxCol={2}>
+            <Flex>
+              {!organization ? null : (
+                <>
+                  <span>{organization.type}</span>
+                  <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
+                    |
+                  </span>
+                  <span>
+                    {!isApplication
+                      ? `${organization.subscribersCount || 'NO'} SUBSCRIBER${
+                          organization.subscribersCount === 1 ? '' : 'S'
+                        }`
+                      : `Sent on ${new Date(organization._at).toDateString().substr(3)}`}
+                  </span>
+                </>
+              )}
+            </Flex>
+
+            <Flex className={'right'}>
+              {organization.account.status !== 'ACTIVE' ||
+              !organization.website ? null : (
+                <>
+                  <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
+                    {organization.website}
+                  </Anchor>
+                  <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
+                    |
+                  </span>
+                </>
+              )}
+              <span>
+                <Anchor
+                  onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                  title={`Report Organization as Spam`}
+                >
+                  <FontAwesomeIcon icon={'user-slash'} />
                 </Anchor>
-                <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
-                  |
-                </span>
-              </>
-            )}
-            <span>
-              <Anchor
-                onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
-                title={`Report Organization as Spam`}
-              >
-                <FontAwesomeIcon icon={'user-slash'} />
-              </Anchor>
-              <SpamReportDrop
-                type={'ORGANIZATION'}
-                ids={[organization._id]}
-                open={isSpamReportDropOpen}
-                onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
-                align={'right'}
-                anchorOffset={18}
-              />
-            </span>
-          </Flex>
+                <SpamReportDrop
+                  type={'ORGANIZATION'}
+                  ids={[organization._id]}
+                  open={isSpamReportDropOpen}
+                  onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                  align={'right'}
+                  anchorOffset={18}
+                />
+              </span>
+            </Flex>
+          </Yoga>
         ))
       }
       actions={
@@ -273,6 +278,8 @@ function OrganizationDetail({
             <Tabs
               value={tab}
               onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
+              scrollable={true}
+              scrollButtons={'off'}
             >
               <Tab label={`Info.`} value={'info'} />
               {!isApplication && <Tab label={`Requests`} value={'requests'} />}

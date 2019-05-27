@@ -86,6 +86,7 @@ export type IOrganizationStats = {
 
   news: {
     total: number
+    today: number
   }
 }
 

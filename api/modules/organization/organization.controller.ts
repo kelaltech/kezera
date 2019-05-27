@@ -187,6 +187,7 @@ export class OrganizationController extends KoaController {
     const account_id = organization.account
 
     const now = Date.now()
+    const nowDate = new Date(now)
 
     return {
       requests: {
@@ -235,22 +236,36 @@ export class OrganizationController extends KoaController {
 
       events: {
         total: await EventModel.find({
-          organizationId: account_id /* todo: Check if this is correct after Anteneh pushes */
+          organizationId: account_id
         }).count(),
         ongoing: await EventModel.find({
-          organizationId: account_id /* todo: Check if this is correct after Anteneh pushes */,
-          startDate: { $gte: now },
-          endDate: { $lte: now }
+          organizationId: account_id,
+          startDate: { $lte: now },
+          endDate: { $gte: now }
         }).count(),
         upcoming: await EventModel.find({
-          organizationId: account_id /* todo: Check if this is correct after Anteneh pushes */,
+          organizationId: account_id,
           startDate: { $gt: now },
           endDate: { $gt: now }
         }).count()
       },
 
       news: {
-        total: await NewsModel.find({ _by: organization._id }).count()
+        total: await NewsModel.find({ _by: organization._id }).count(),
+        today: await NewsModel.find({
+          _by: organization._id,
+          _at: {
+            $gte: new Date(
+              nowDate.getFullYear(),
+              nowDate.getMonth(),
+              nowDate.getDate(),
+              0,
+              0,
+              0,
+              0
+            )
+          }
+        }).count()
       }
     }
   }
@@ -270,12 +285,20 @@ export class OrganizationController extends KoaController {
       organization.verifier,
       organization._id
     )
-    // no updates for:
+    // no updates for (important because overwrite: true option is passed to edit()):
+    request.subscribers = organization.subscribers
     request.account = organization.account as any
     request.licensedNames = organization.licensedNames
     request.registrations = organization.registrations
+    request.verifier = organization.verifier
 
-    await edit(OrganizationModel, organization._id, request, { session })
+    await edit(
+      OrganizationModel,
+      organization._id,
+      request,
+      { session },
+      { overwrite: true }
+    )
 
     organization = await get(OrganizationModel, organization._id, { session })
     return await organizationDocumentToResponse(organization)
