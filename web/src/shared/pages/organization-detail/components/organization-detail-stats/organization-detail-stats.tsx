@@ -125,8 +125,7 @@ function OrganizationDetailStats({ organization }: Props) {
                       Upcoming
                     </div>
                     <div className={'font-S fg-blackish'}>
-                      <span className={'fg-primary'}>{stats.events.total}</span> Past &
-                      Ongoing
+                      <span className={'fg-primary'}>{stats.events.total}</span> Total
                     </div>
                   </div>
                 </Content>

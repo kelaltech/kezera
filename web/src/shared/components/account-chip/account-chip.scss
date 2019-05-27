@@ -8,7 +8,8 @@
 
 .account-chip-selectable {
   .account-chip-photo:hover {
-    box-shadow: 0 0 ($space) ($space / 16) $accent;
+    transform: scale3d(1.1, 1.1, 1.1) translateX(-($space / 8));
+    box-shadow: 0 0 ($space / 2) (-$space / 16) $accent;
   }
 }
 
