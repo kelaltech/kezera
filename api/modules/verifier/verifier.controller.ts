@@ -135,7 +135,7 @@ export class VerifierController extends KoaController {
       )
 
       // delete application logo
-      await applicationGrid.remove()
+      // await applicationGrid.remove() // remove this line. Also, todo: log in ActivityModule
     }
 
     // return organization response
