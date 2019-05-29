@@ -140,16 +140,24 @@ export class CertificateController extends KoaController {
     _id = super.getParam('_id'),
     account_id = super.getUser()!._id
   ): Promise<ICertificateResponse> {
-    let certificate = await get(CertificateModel, _id, { session })
+    let certificate = (await get(CertificateModel, _id, { session })).toObject()
 
+    console.log({ ...certificate, privacy })
     await edit(
       CertificateModel,
       certificate._id,
       { ...certificate, privacy },
       {
         session,
-        preUpdate: async doc => {
-          if (certificate.issuedTo.toString() !== account_id)
+        preUpdate: async (doc, s) => {
+          const loggedInVolunteer = await VolunteerModel.findOne({
+            account: account_id
+          }).session(s)
+
+          if (
+            !loggedInVolunteer ||
+            certificate.issuedTo.toString() !== loggedInVolunteer._id.toString()
+          )
             throw new KoaError(
               `Cannot update somebody else's certificate privacy options.`,
               403,

@@ -20,7 +20,7 @@ export type ICertificateResponse = {
   issuedBy: string // organization
   issuedTo: string // volunteer
 
-  privacy: ICertificatePrivacy // true by default
+  privacy: ICertificatePrivacy
 
   printUri: string
 }

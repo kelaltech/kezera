@@ -309,7 +309,14 @@ function VolunteerProfile({ match }: RouteComponentProps<{ _id: string }>) {
           </div>
           <Yoga maxCol={2}>
             {certificate.map((c, i) => (
-              <CertificateCard certificate={c} key={i} />
+              <CertificateCard
+                key={i}
+                certificate={c}
+                onPrivacyUpdate={nc => {
+                  certificate[i] = nc
+                  setCertificate(([] as ICertificateResponse[]).concat(certificate))
+                }}
+              />
             ))}
           </Yoga>
         </Content>

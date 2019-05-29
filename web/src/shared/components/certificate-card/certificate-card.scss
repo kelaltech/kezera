@@ -1,6 +1,8 @@
 @import '../../../assets/styles/theme';
 
-.certificate-card-image {
+$certificate-control-height: $space * 4;
+
+@mixin certificate-card-size {
   display: block;
 
   margin-right: auto;
@@ -9,4 +11,54 @@
   width: 100%;
   max-width: 844px;
   height: auto;
+}
+
+.certificate-card {
+  @include certificate-card-size;
+
+  .certificate-card-controls-container {
+    opacity: 0;
+    transform: scale3d(1, 0, 1) translateY($certificate-control-height * 2);
+  }
+
+  &:hover {
+    .certificate-card-controls-container {
+      opacity: 1;
+      transform: scale3d(1, 1, 1) translateY(0);
+    }
+  }
+}
+
+.certificate-card-image {
+  @include certificate-card-size;
+}
+
+.certificate-card-controls-container {
+  @include certificate-card-size;
+
+  position: relative;
+  z-index: 1;
+
+  margin: (-$certificate-control-height - $space) ($space) ($space);
+  padding: 0 ($certificate-control-height / 2);
+
+  height: $certificate-control-height;
+  width: initial;
+
+  border-radius: $radius;
+
+  font-size: $font-S;
+  line-height: $certificate-control-height;
+  text-align: center;
+
+  background-color: transparentize($accent, 0.05);
+  color: $bg;
+  box-shadow: $shade-M;
+
+  transition: all 0.3s;
+
+  .gerami-anchor,
+  a {
+    color: inherit;
+  }
 }
