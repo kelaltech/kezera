@@ -98,6 +98,8 @@ export class AccountController extends KoaController {
       document.passwordSetOn,
       user!._id
     )
+    // keep these unchanged:
+    request.lastLocation = document.lastLocation
 
     await edit(
       AccountModel,

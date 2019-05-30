@@ -33,12 +33,7 @@ export async function accountRequestToLeanDocument(
     passwordSetOn,
 
     displayName: request.displayName,
-    phoneNumber: request.phoneNumber,
-
-    lastLocation: {
-      type: 'Point' as 'Point',
-      coordinates: undefined
-    }
+    phoneNumber: request.phoneNumber
   }
 
   if (!leanDocument.phoneNumber) delete leanDocument.phoneNumber

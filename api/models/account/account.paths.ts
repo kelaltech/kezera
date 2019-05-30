@@ -2,13 +2,15 @@ import { SchemaDefinition } from 'mongoose'
 
 import { accountRoles, accountStatuses } from './account.model'
 
-export const accountPaths: SchemaDefinition = {
-  _at: { type: Date, required: true, default: Date.now, index: true },
-  _last: { type: Date, required: true, index: true },
+// NOTE: { typeKey: '$type' } must be passed to the Schema options
 
-  role: { type: String, required: true, enum: accountRoles, index: true },
+export const accountPaths: SchemaDefinition = {
+  _at: { $type: Date, required: true, default: Date.now, index: true },
+  _last: { $type: Date, required: true, index: true },
+
+  role: { $type: String, required: true, enum: accountRoles, index: true },
   status: {
-    type: String,
+    $type: String,
     required: true,
     enum: accountStatuses,
     default: 1,
@@ -16,7 +18,7 @@ export const accountPaths: SchemaDefinition = {
   },
 
   email: {
-    type: String,
+    $type: String,
     required: true,
     minlength: 3,
     maxlength: 50,
@@ -24,12 +26,12 @@ export const accountPaths: SchemaDefinition = {
     index: true,
     unique: true
   },
-  password: { type: String, required: true }, // the hash
-  passwordSetOn: { type: Date, required: true },
+  password: { $type: String, required: true }, // the hash
+  passwordSetOn: { $type: Date, required: true },
 
-  displayName: { type: String, required: true, minlength: 1, maxlength: 50 },
+  displayName: { $type: String, required: true, minlength: 1, maxlength: 50 },
   phoneNumber: {
-    type: String,
+    $type: String,
     minlength: 3,
     maxlength: 50,
     validate: /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/,
@@ -39,7 +41,10 @@ export const accountPaths: SchemaDefinition = {
   },
 
   lastLocation: {
-    type: { type: String, enum: ['Point'] },
-    coordinates: [{ type: Number }]
+    $type: {
+      type: { $type: String, required: true, enum: ['Point'], default: 'Point' },
+      coordinates: [{ $type: Number, required: true }]
+    },
+    required: false
   }
 }

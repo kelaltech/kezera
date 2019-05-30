@@ -1,5 +1,6 @@
 import { ClientSession } from 'mongoose'
 import * as sharp from 'sharp'
+import * as fs from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import {
@@ -34,7 +35,7 @@ export class OrganizationController extends KoaController {
 
   async apply(
     session?: ClientSession,
-    data: IOrganizationRequest = JSON.parse(
+    data: IOrganizationRequest & { officialDocumentsLength: number } = JSON.parse(
       super.getRequestBody<{ data: string }>().data
     ),
     ctx = super.getContext()
@@ -86,6 +87,23 @@ export class OrganizationController extends KoaController {
         await grid.set(stream, 'image/jpeg')
         resolve()
       })
+    }
+
+    const officialDocumentGrid = new Grid(
+      serverApp,
+      OrganizationApplicationModel,
+      application._id,
+      'officialDocument'
+    )
+    for (let i = 0; i < data.officialDocumentsLength; i++) {
+      const officialDocument =
+        ctx && ctx.request.files && ctx.request.files[`officialDocument${i}`]
+      if (officialDocument)
+        await officialDocumentGrid.add(
+          fs.createReadStream(officialDocument.path),
+          `${i}`,
+          officialDocument.type
+        )
     }
 
     return await organizationDocumentToResponse(application, application.account)
@@ -155,6 +173,8 @@ export class OrganizationController extends KoaController {
       postQuery: (query, s) => {
         if (
           !account ||
+          !account.lastLocation ||
+          !account.lastLocation.type ||
           !account.lastLocation.coordinates ||
           account.lastLocation.coordinates.length !== 2
         )
@@ -422,6 +442,8 @@ export class OrganizationController extends KoaController {
 
     if (
       account &&
+      account.lastLocation &&
+      account.lastLocation.type &&
       account.lastLocation.coordinates &&
       account.lastLocation.coordinates.length === 2
     ) {
@@ -434,8 +456,8 @@ export class OrganizationController extends KoaController {
               lastLocation: {
                 $nearSphere: {
                   $geometry: {
-                    type: 'Point',
-                    coordinates: account.lastLocation.coordinates
+                    type: account.lastLocation!.type,
+                    coordinates: account.lastLocation!.coordinates
                   }
                 }
               }

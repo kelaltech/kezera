@@ -173,6 +173,8 @@ export async function NearByNews(
     postQuery: (q, s) => {
       if (
         !account ||
+        !account.lastLocation ||
+        !account.lastLocation.type ||
         !account.lastLocation.coordinates ||
         !account.lastLocation.coordinates.length
       ) {
@@ -184,10 +186,9 @@ export async function NearByNews(
           'locations.go': {
             $nearSphere: {
               $geometry: {
-                type: 'Point',
+                type: account.lastLocation.type,
                 coordinates: account.lastLocation.coordinates,
-                $minDistance: 100,
-                $maxDistance: 2000
+                $maxDistance: 20000
               }
             }
           }

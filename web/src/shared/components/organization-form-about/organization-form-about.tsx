@@ -125,7 +125,9 @@ function OrganizationFormAbout({ organization, setOrganization }: Props) {
             <div>
               <div className={'margin-top-normal'}>
                 {!organization.locations.length ? (
-                  <div className={'fg-blackish italic'}>Location not selected.</div>
+                  <div className={'fg-blackish italic'}>
+                    Location not selected. (Optional)
+                  </div>
                 ) : (
                   <div>
                     <Anchor

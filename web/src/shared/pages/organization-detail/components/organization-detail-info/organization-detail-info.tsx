@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Anchor, Block, Content, Flex, Yoga } from 'gerami'
 
 import './organization-detail-info.scss'
@@ -6,6 +6,10 @@ import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
 import { LngLat } from 'mapbox-gl'
 import OrganizationDetailStats from '../organization-detail-stats/organization-detail-stats'
+
+const OrganizationDetailApplicationLegal = lazy(() =>
+  import('../organization-detail-application-legal/organization-detail-application-legal')
+)
 
 interface Props {
   organization: IOrganizationResponse
@@ -25,6 +29,13 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
   return (
     loading || (
       <Content transparent>
+        {isApplication && (
+          <>
+            <OrganizationDetailApplicationLegal application={organization} />
+            <hr />
+          </>
+        )}
+
         {!organization.motto ? null : (
           <Content className={'margin-top-big'}>
             <Block className={'organization-motto'}>
@@ -34,56 +45,6 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
         )}
 
         {!isApplication && <OrganizationDetailStats organization={organization} />}
-
-        {isApplication && (
-          <Yoga maxCol={2} className={'yoga-in-rich-page'}>
-            <Content className={'top'}>
-              <Block first className={'bold'}>
-                Legal Identity (Licenses)
-              </Block>
-
-              <hr />
-
-              <Block>
-                <Flex>
-                  <div
-                    className={'light fg-blackish padding-right-normal'}
-                    style={{ flex: 2 }}
-                  >
-                    Names:
-                  </div>
-                  <div style={{ flex: 5 }}>
-                    {organization.licensedNames.map((licensedName, i) => (
-                      <div key={i} className={'margin-bottom-small'}>
-                        {licensedName}
-                      </div>
-                    ))}
-                  </div>
-                </Flex>
-              </Block>
-
-              <Block last>
-                <Flex>
-                  <div
-                    className={'light fg-blackish padding-right-normal'}
-                    style={{ flex: 2 }}
-                  >
-                    Registrations:
-                  </div>
-                  <div style={{ flex: 5 }}>
-                    {organization.registrations.map((registration, i) => (
-                      <div key={i} className={'margin-bottom-small'}>
-                        {registration.type}: {registration.id} ({registration.issuer})
-                      </div>
-                    ))}
-                  </div>
-                </Flex>
-              </Block>
-            </Content>
-          </Yoga>
-        )}
-
-        <hr />
 
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
           <Content className={'top'}>

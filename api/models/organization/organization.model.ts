@@ -45,7 +45,8 @@ export type IOrganization = {
 
 export const organizationModelFactory = new ModelFactory<IOrganization>({
   name: 'organization',
-  paths: organizationPaths
+  paths: organizationPaths,
+  options: { typeKey: '$type' }
 })
 
 export const organizationSchema = organizationModelFactory.schema

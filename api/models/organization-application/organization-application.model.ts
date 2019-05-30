@@ -17,6 +17,7 @@ export const organizationApplicationModelFactory = new ModelFactory<
 >({
   name: 'organization-application',
   paths: organizationApplicationPaths,
+  options: { typeKey: '$type' },
   methods: organizationApplicationMethods
 })
 

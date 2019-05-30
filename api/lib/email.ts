@@ -14,9 +14,9 @@ export interface IEmailConfig {
 }
 
 export function email(config: IEmailConfig): Promise<SentMessageInfo> {
-  if (process.env.NO_EMAILS === 'true') {
+  if (process.env.NO_EMAIL === 'true') {
     console.warn(
-      'WARNING! Skipping sending an email, because NO_EMAILS environment variable is set to true.'
+      'WARNING! Skipping sending an email, because NO_EMAIL environment variable is set to true.'
     )
     return undefined as any
   }

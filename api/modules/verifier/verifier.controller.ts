@@ -16,6 +16,7 @@ import { serverApp } from '../../index'
 import { IOrganizationResponse } from '../organization/organization.apiv'
 import { organizationDocumentToResponse } from '../organization/organization.filter'
 import { KoaError } from '../../lib/koa-error'
+import { IOrganizationApplicationOfficialDocumentResponse } from './verifier.apiv'
 
 export class VerifierController extends KoaController {
   /* GENERAL: */
@@ -71,7 +72,47 @@ export class VerifierController extends KoaController {
     )
   }
 
-  /* APPLICATION REVIEW: */
+  /* ORGANIZATION APPLICATION OFFICIAL DOCUMENTS */
+
+  async listOrganizationApplicationOfficialDocuments(
+    application_id = super.getParam('application_id')
+  ): Promise<IOrganizationApplicationOfficialDocumentResponse[]> {
+    const applicationGrid = new Grid(
+      serverApp,
+      OrganizationApplicationModel,
+      application_id,
+      'officialDocument'
+    )
+
+    return (await applicationGrid.listFilenames()).map((filename, i) => ({
+      name: `Upload #${i + 1}`,
+      download: `/api/verifier/download-organization-application-official-document/${application_id}/${filename}`
+    }))
+  }
+
+  async downloadOrganizationApplicationOfficialDocument(
+    application_id = super.getParam('application_id'),
+    filename = super.getParam('filename'),
+    ctx = super.getContext()
+  ): Promise<Stream> {
+    const applicationGrid = new Grid(
+      serverApp,
+      OrganizationApplicationModel,
+      application_id,
+      'officialDocument'
+    )
+
+    if (ctx) {
+      const type = await applicationGrid.getType(filename)
+      ctx.type = type
+
+      const extension = (type.split('/').pop() || '').split('+')[0]
+      ctx.attachment(`${filename}${extension ? '.' + extension : ''}`)
+    }
+    return await applicationGrid.get(filename)
+  }
+
+  /* ORGANIZATION APPLICATION REVIEW: */
 
   async approveOrganizationApplication(
     session?: ClientSession,
