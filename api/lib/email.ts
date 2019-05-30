@@ -14,6 +14,13 @@ export interface IEmailConfig {
 }
 
 export function email(config: IEmailConfig): Promise<SentMessageInfo> {
+  if (process.env.NO_EMAILS === 'true') {
+    console.warn(
+      'WARNING! Skipping sending an email, because NO_EMAILS environment variable is set to true.'
+    )
+    return undefined as any
+  }
+
   if (!config)
     throw new KoaError('Email configuration is not found.', 500, 'NO_EMAIL_CONFIG')
   if (!config.from && !process.env.EMAIL_FROM)

@@ -68,7 +68,7 @@ export class OrganizationController extends KoaController {
 
     if (session) await session.commitTransaction()
 
-    const logo = ctx && ctx.request.files && ctx.request.files['photo']
+    const logo = ctx && ctx.request.files && ctx.request.files['logo']
     if (logo) {
       const stream = sharp(logo.path)
         .resize(1080, 1080, { fit: 'cover' })

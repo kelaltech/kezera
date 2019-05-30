@@ -152,7 +152,7 @@ function OrganizationDetail({
       documentTitle={organization && organization.account.displayName}
       title={
         organization && (
-          <Anchor to={`/o/${organization._id}`}>
+          <Anchor to={`/${!isApplication ? 'o' : 'application'}/${organization._id}`}>
             <h1 className={'margin-none'}>{organization.account.displayName}</h1>
           </Anchor>
         )
