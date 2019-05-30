@@ -35,6 +35,56 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
 
         {!isApplication && <OrganizationDetailStats organization={organization} />}
 
+        {isApplication && (
+          <Yoga maxCol={2} className={'yoga-in-rich-page'}>
+            <Content className={'top'}>
+              <Block first className={'bold'}>
+                Legal Identity (Licenses)
+              </Block>
+
+              <hr />
+
+              <Block>
+                <Flex>
+                  <div
+                    className={'light fg-blackish padding-right-normal'}
+                    style={{ flex: 2 }}
+                  >
+                    Names:
+                  </div>
+                  <div style={{ flex: 5 }}>
+                    {organization.licensedNames.map((licensedName, i) => (
+                      <div key={i} className={'margin-bottom-small'}>
+                        {licensedName}
+                      </div>
+                    ))}
+                  </div>
+                </Flex>
+              </Block>
+
+              <Block last>
+                <Flex>
+                  <div
+                    className={'light fg-blackish padding-right-normal'}
+                    style={{ flex: 2 }}
+                  >
+                    Registrations:
+                  </div>
+                  <div style={{ flex: 5 }}>
+                    {organization.registrations.map((registration, i) => (
+                      <div key={i} className={'margin-bottom-small'}>
+                        {registration.type}: {registration.id} ({registration.issuer})
+                      </div>
+                    ))}
+                  </div>
+                </Flex>
+              </Block>
+            </Content>
+          </Yoga>
+        )}
+
+        <hr />
+
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
           <Content className={'top'}>
             <Block first className={'bold'}>
