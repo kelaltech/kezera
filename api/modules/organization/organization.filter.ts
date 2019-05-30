@@ -115,7 +115,7 @@ export async function organizationDocumentToResponse(
     serverApp,
     !isApplication ? AccountModel : OrganizationApplicationModel,
     !isApplication ? populatedAccount._id : document._id,
-    'logo',
+    !isApplication ? 'photo' : 'logo',
     false
   ).has()
 
