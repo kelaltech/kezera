@@ -38,7 +38,7 @@ function AccountChip({
         <Image
           className={'account-chip-photo'}
           src={account.photoUri ? `${account.photoUri}?size=64&quality=50` : logo128}
-          title={`Click to ${selected ? 'unselect' : 'select'}`}
+          title={setSelected && `Click to ${selected ? 'unselect' : 'select'}`}
           onClick={() => setSelected && setSelected(!selected)}
         />
         <Anchor
