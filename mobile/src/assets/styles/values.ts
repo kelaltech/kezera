@@ -15,9 +15,9 @@ export default {
     primary: '#3f51b5',
     secondary: '#ff5722',
 
-    white: 'rgba(255,255,255,1)',
-    whitish: 'rgba(255,255,255,0.7)',
-    black: 'rgba(0,0,0,1)',
-    blackish: 'rgba(0,0,0,0.5)'
+    white: 'rgb(255,255,255)',
+    whitish: 'rgb(240,240,240)',
+    black: 'rgb(0,0,0)',
+    blackish: 'rgb(45,45,45)'
   }
 }

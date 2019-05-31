@@ -32,7 +32,8 @@ export function reloadVolunteer(
       .then(response => reload(response.data))
       .catch(e => {
         volunteerDispatch({ type: 'removeSetting' })
-        if (!silentFail && onError) onError(e)
+        if (!silentFail && onError && (e.response && e.response.status !== 401))
+          onError(e)
       })
   }
 }
@@ -109,7 +110,8 @@ export function reloadSubscriptions(
       .then(res => reload(res.data))
       .catch(e => {
         volunteerDispatch({ type: 'subscriptions', subscriptions: [] })
-        if (!silentFail && onError) onError(e)
+        if (!silentFail && onError && (e.response && e.response.status !== 401))
+          onError(e)
       })
   }
 }
