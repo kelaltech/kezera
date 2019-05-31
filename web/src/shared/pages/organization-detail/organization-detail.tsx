@@ -10,7 +10,10 @@ import Axios from 'axios'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../apiv/organization.apiv'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
+import {
+  useMyOrganizationDispatch,
+  useMyOrganizationState
+} from '../../../layout-organization/stores/my-organization/my-organization-provider'
 import {
   useVolunteerDispatch,
   useVolunteerState
@@ -23,6 +26,7 @@ import OrganizationDetailNews from './components/organization-detail-news/organi
 import OrganizationDetailSubscribers from './components/organization-detail-subscribers/organization-detail-subscribers'
 import { reloadSubscriptions } from '../../../layout-volunteer/stores/volunteer/volunteer-actions'
 import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
+import { reloadMyOrganization } from '../../../layout-organization/stores/my-organization/my-organization-actions'
 
 type ITabName = 'info' | 'requests' | 'events' | 'news' | 'subscribers'
 
@@ -55,10 +59,12 @@ function OrganizationDetail({
 
   const { account } = useAccountState()
   const { myOrganization } = useMyOrganizationState()
+  const myOrganizationDispatch = useMyOrganizationDispatch()
   const { subscriptions } = useVolunteerState()
   const volunteerDispatch = useVolunteerDispatch()
 
   const [waitingForMe, setWaitingForMe] = useState(false)
+  const [reloaded, setReloaded] = useState(false)
   const [requestedId, setRequestedId] = useState<string>()
 
   const loadBy_id = async (_id: string): Promise<void> => {
@@ -89,6 +95,11 @@ function OrganizationDetail({
         setRequestedId(myOrganization._id)
 
         setOrganization(myOrganization)
+
+        if (!reloaded) {
+          setReloaded(true)
+          reloadMyOrganization(myOrganizationDispatch, true)
+        }
       }
     } else if (waitingForMe) {
       return

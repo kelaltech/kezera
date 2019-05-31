@@ -78,8 +78,8 @@ function OrganizationDetailStats({ organization }: Props) {
             <div style={{ maxWidth: '100%', overflowX: 'auto', overflowY: 'hidden' }}>
               <Flex>
                 <div
-                  className={'margin-vertical-auto padding-bottom-big'}
-                  style={{ width: 120 }}
+                  className={'margin-vertical-auto padding-bottom-big margin-right-small'}
+                  style={{ width: 140 }}
                 >
                   <div className={'font-L fg-accent margin-bottom-normal'}>Requests</div>
                   <div className={'font-S fg-blackish'}>
