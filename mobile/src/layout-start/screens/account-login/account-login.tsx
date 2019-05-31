@@ -179,7 +179,7 @@ function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
         <Footer style={classes.marginTopBig} />
       </ScrollView>
     ) : (
-      <View style={{ ...styles.main }}>
+      <View style={{ ...styles.main, ...classes.paddingHorizontal }}>
         <View style={{ ...classes.marginVerticalBig, ...classes.grow }}>
           <Text style={{ fontSize: values.fontSize.big }}>
             {t`account:logged-in-as`}
