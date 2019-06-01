@@ -3,7 +3,6 @@ import { Text } from 'react-native'
 import { createMaterialTopTabNavigator } from 'react-navigation'
 
 import { _ } from '../../lib/language'
-import classes from '../../assets/styles/classes'
 import values from '../../assets/styles/values'
 
 import TaskMobileList from '../screens/task-list/task-list'

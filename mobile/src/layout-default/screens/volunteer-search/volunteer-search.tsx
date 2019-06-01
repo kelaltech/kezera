@@ -14,128 +14,114 @@ import classes from '../../../assets/styles/classes'
 function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['volunteer'])
   const [placeholder, setPlaceholder] = useState<boolean>(true)
-  const [news , setNews] = useState([])
-  const [event , setEvent] = useState([])
-  const [request , setRequest] = useState([])
-  const [organization , setOrganization] = useState([])
+  const [news, setNews] = useState([])
+  const [event, setEvent] = useState([])
+  const [request, setRequest] = useState([])
+  const [organization, setOrganization] = useState([])
   const [term, setTerm] = useState()
   const [error, setError] = useState()
 
-  useEffect(()=>{
-    if(!placeholder){
-      newsSearch();
-      eventSearch();
+  useEffect(() => {
+    if (!placeholder) {
+      newsSearch()
+      eventSearch()
       orgniazationSearch()
     }
   }, [term])
 
-
   const newsSearch = () => {
-    Axios
-      .get(`/api/news/search?term=${term}`)
-      .then(data=>data.data)
-      .then(news=>{
+    Axios.get(`/api/news/search?term=${term}`)
+      .then(data => data.data)
+      .then(news => {
         setNews(richTextToDisplayText(news))
       })
-      .catch(e=>{
+      .catch(e => {
         setError(e)
       })
   }
   const eventSearch = () => {
-    Axios
-      .get(`/api/event/search?term=${term}`)
-      .then(data=>data.data)
-      .then(events=>{
+    Axios.get(`/api/event/search?term=${term}`)
+      .then(data => data.data)
+      .then(events => {
         setEvent(events)
       })
-      .catch(e=>{
+      .catch(e => {
         setError(e)
       })
   }
 
   const orgniazationSearch = () => {
-    Axios
-      .get(`/api/organization/search?term=${term}`)
-      .then(data=>data.data)
-      .then(organization=>{
+    Axios.get(`/api/organization/search?term=${term}`)
+      .then(data => data.data)
+      .then(organization => {
         setOrganization(organization)
       })
-      .catch(e=>{
+      .catch(e => {
         setError(e)
       })
   }
-  const handleChange =(term:string)=>{
+  const handleChange = (term: string) => {
     setTerm(term)
     setPlaceholder(false)
   }
 
-
   // todo: a special type of header with the search bar embedded inside
-  return loading || (
-    <>
-      <Header  title={'Search'}/>
-      <Text>{t`app-name`}: VolunteerSearch Screen (in LayoutDefault)</Text>
-      <View>
-        <View style={searchStyle.searchContainer}>
-          <Input
-            style={searchStyle.searchInput}
-            placeholder={'search'}
-            shake
-            onChangeText={handleChange}
-          />
-        </View>
-        {
-          placeholder ? (
+  return (
+    loading || (
+      <>
+        <Header title={'Search'} />
+        <Text>{t`app-name`}: VolunteerSearch Screen (in LayoutDefault)</Text>
+        <View>
+          <View style={searchStyle.searchContainer}>
+            <Input
+              style={searchStyle.searchInput}
+              placeholder={'search'}
+              shake
+              onChangeText={handleChange}
+            />
+          </View>
+          {placeholder ? (
             <View>
-              <Text>
-                Explorer the world of SPVA!
-              </Text>
+              <Text>Explorer the world of SPVA!</Text>
             </View>
-          ):(
+          ) : (
             <>
-            <View>
-              <View style={searchStyle.displayHeader}>
-                <Text style={classes.head1} >News</Text>
-                <Text style={classes.link} >see more</Text>
-              </View>
-              <ScrollView horizontal>
-                {
-                  news.map((n:INewsResponse,k)=>(
+              <View>
+                <View style={searchStyle.displayHeader}>
+                  <Text style={classes.head1}>News</Text>
+                  <Text style={classes.link}>see more</Text>
+                </View>
+                <ScrollView horizontal>
+                  {news.map((n: INewsResponse, k) => (
                     <NewsToday
                       share={n.share.length}
                       comment={n.comments.length}
                       likes={n.likes.length}
                       description={n.description}
                       title={n.title}
-                      img={{uri:`/api/news/${n._id}/pic?size=500`}}
+                      img={{ uri: `/api/news/${n._id}/pic?size=500` }}
                       key={k}
                       _id={n._id}
                     />
-                  ))
-                }
-              </ScrollView>
-            </View>
+                  ))}
+                </ScrollView>
+              </View>
               <View>
                 <View style={searchStyle.displayHeader}>
-                  <Text style={classes.head1} >Event</Text>
-                  <Text style={classes.link} >see more</Text>
+                  <Text style={classes.head1}>Event</Text>
+                  <Text style={classes.link}>see more</Text>
                 </View>
                 <ScrollView horizontal>
-                  {
-                    event.map((e,k)=>(
-                      <EventCardSecond
-                        event={e}
-                        key={k}
-                      />
-                    ))
-                  }
+                  {event.map((e, k) => (
+                    <EventCardSecond event={e} key={k} />
+                  ))}
                 </ScrollView>
               </View>
             </>
-          )
-        }
-      </View>
-    </>
+          )}
+        </View>
+      </>
+    )
   )
 }
 
