@@ -82,17 +82,17 @@ newsRouter.get('/:_newsId/pic', async ctx => {
   )
 })
 
+//PUT /api/news/:_newsID/like
+newsRouter.put('/:_newsId/like', async ctx => {
+  //return a number
+  ctx.body = await toggleLike(ctx.params._newsId, ctx.state.user)
+})
+
 // GET /api/news/list?since&count
 newsRouter.get('/list', async ctx => {
   ctx.body = await getAllNews(Number(ctx.query.since), Number(ctx.query.conunt))
 })
 
-//PUT /api/news/:_newsID/like
-newsRouter.put('/:_newsId/like', async ctx => {
-  //return a number
-
-  ctx.body = await toggleLike(ctx.params._newsId, ctx.state.user)
-})
 
 newsRouter.get('/:_newsId/likes', async ctx => {
   //return the users profile
