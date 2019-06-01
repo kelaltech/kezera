@@ -103,6 +103,8 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
                   ) : (
                     <Anchor
                       href={`https://wwww.paypal.me/${organization.funding.payPalMeId}`}
+                      target={'_blank'}
+                      rel={'noopener'}
                     >
                       PayPal.me/{organization.funding.payPalMeId}
                     </Anchor>

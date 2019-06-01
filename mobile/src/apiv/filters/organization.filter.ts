@@ -28,7 +28,7 @@ export function organizationRequestToResponse(
   oldResponse: IOrganizationResponse,
   request: IOrganizationRequest
 ): IOrganizationResponse {
-  const { type, motto, bio, locations, website } = request
+  const { type, motto, bio, locations, website, funding } = request
 
   return {
     ...oldResponse,
@@ -40,7 +40,9 @@ export function organizationRequestToResponse(
     motto,
     bio,
     locations,
-    website
+    website,
+
+    funding
 
     // licensedNames: override n/a
     // registrations: override n/a
