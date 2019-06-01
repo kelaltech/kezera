@@ -11,5 +11,11 @@ export default StyleSheet.create({
   searchInput: {
     alignSelf: 'center',
     flex: 2
+  },
+  displayHeader: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    ...classes.paddingHorizontal,
+    ...classes.paddingVertical
   }
 })
