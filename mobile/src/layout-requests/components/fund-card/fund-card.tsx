@@ -14,7 +14,7 @@ export default function FundMobileCard({ request }: IFundProps) {
   return (
     loading || (
       <Card title={request.name} image={request.picture}>
-        <h6>{request.fundraising.amount}</h6>
+        x<h6>{request.fundraising.amount}</h6>
         <Button title={'Attend'} onPress={clock}>{t`donate`}</Button>
       </Card>
     )

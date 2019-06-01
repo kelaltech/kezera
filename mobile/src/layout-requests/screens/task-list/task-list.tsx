@@ -7,8 +7,9 @@ import { useAccountState } from '../../../app/stores/account/account-provider'
 import { View } from 'react-native'
 import RequestMobileCard from '../../components/request-card/request-card'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import TaskMobileCard from '../../components/task-card/task-card'
 
-export default function TaskList() {
+export default function TaskMobileList() {
   const [tasks, setTasks] = useState<any[]>([])
   const { loading, t } = useLocale(['request'])
 
@@ -31,7 +32,7 @@ export default function TaskList() {
     (!tasks ? null : (
       <View>
         {tasks.map((task, i) => (
-          <RequestMobileCard request={task} key={i} />
+          <TaskMobileCard request={task} key={i} />
         ))}
       </View>
     ))
