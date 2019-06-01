@@ -21,7 +21,7 @@ export async function accountRequestToLeanDocument(
   _id?: ObjectId,
   _last: Date | number = Date.now()
 ): Promise<IAccount & { _id?: ObjectId }> {
-  const leanDocument = {
+  const leanDocument: IAccount & { _id?: ObjectId } = {
     _id,
     _last,
 

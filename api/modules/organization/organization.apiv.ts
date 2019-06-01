@@ -17,6 +17,16 @@ export type IOrganizationRequest = {
   }[]
   website?: string
 
+  funding: {
+    bankAccount?: {
+      bankName: string
+      bankCountry: string
+      accountHolder: string
+      accountNumber: string
+    }
+    payPalMeId?: string
+  }
+
   licensedNames: string[]
   registrations: {
     issuer: string
@@ -44,6 +54,16 @@ export type IOrganizationResponse = {
     address?: string
   }[]
   website?: string
+
+  funding: {
+    bankAccount?: {
+      bankName: string
+      bankCountry: string
+      accountHolder: string
+      accountNumber: string
+    }
+    payPalMeId?: string
+  }
 
   subscribersCount: number
 

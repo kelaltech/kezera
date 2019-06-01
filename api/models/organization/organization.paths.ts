@@ -27,6 +27,39 @@ export const organizationPaths: SchemaDefinition = {
   ],
   website: { $type: String, maxlength: 100, validate: /\w+:(\/?\/?)[^\s]+/ },
 
+  funding: {
+    bankAccount: {
+      $type: {
+        bankName: {
+          $type: String,
+          required: true,
+          trim: true,
+          maxlength: 50
+        },
+        bankCountry: {
+          $type: String,
+          required: true,
+          trim: true,
+          maxlength: 50
+        },
+        accountHolder: {
+          $type: String,
+          required: true,
+          trim: true,
+          maxlength: 50
+        },
+        accountNumber: {
+          $type: String,
+          required: true,
+          trim: true,
+          maxlength: 50
+        }
+      },
+      required: false
+    },
+    payPalMeId: { $type: String, required: false, trim: true, maxlength: 50 }
+  },
+
   subscribers: [{ $type: ObjectId, required: true, ref: 'account', index: true }],
 
   licensedNames: [{ $type: String, required: true, maxlength: 50 }],

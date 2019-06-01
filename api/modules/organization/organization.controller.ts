@@ -182,14 +182,19 @@ export class OrganizationController extends KoaController {
 
         return query
           .find({
-            'locations.geo': {
-              $nearSphere: {
-                $geometry: {
-                  type: 'Point',
-                  coordinates: account.lastLocation.coordinates
+            $or: [
+              {}, // important to locate accounts with no locations.geo
+              {
+                'locations.geo': {
+                  $nearSphere: {
+                    $geometry: {
+                      type: 'Point',
+                      coordinates: account.lastLocation.coordinates
+                    }
+                  }
                 }
               }
-            }
+            ]
           })
           .session(s)
       }
@@ -453,14 +458,19 @@ export class OrganizationController extends KoaController {
         postQuery: (query, s) =>
           query
             .find({
-              lastLocation: {
-                $nearSphere: {
-                  $geometry: {
-                    type: account.lastLocation!.type,
-                    coordinates: account.lastLocation!.coordinates
+              $or: [
+                {}, // important to locate accounts with no lastLocation
+                {
+                  lastLocation: {
+                    $nearSphere: {
+                      $geometry: {
+                        type: account.lastLocation!.type,
+                        coordinates: account.lastLocation!.coordinates
+                      }
+                    }
                   }
                 }
-              }
+              ]
             })
             .session(s)
       })
