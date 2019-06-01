@@ -9,6 +9,7 @@ import { Input } from 'react-native-elements'
 import NewsToday from '../../../shared/components/news-today/news-today'
 import { INewsResponse } from '../../../../../api/modules/news/news.apiv'
 import { richTextToDisplayText } from '../../../lib/richTextConverter'
+import { EventCardSecond } from '../../../shared/components/event-card/event-card'
 function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['volunteer'])
   const [placeholder, setPlaceholder] = useState<boolean>(true)
@@ -90,6 +91,7 @@ function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
               </Text>
             </View>
           ):(
+            <>
             <View>
               <ScrollView horizontal>
                 {
@@ -108,6 +110,19 @@ function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
                 }
               </ScrollView>
             </View>
+              <View>
+                <ScrollView horizontal>s
+                  {
+                    event.map((e,k)=>(
+                      <EventCardSecond
+                        event={e}
+                        key={k}
+                      />
+                    ))
+                  }
+                </ScrollView>
+              </View>
+            </>
           )
         }
       </View>
