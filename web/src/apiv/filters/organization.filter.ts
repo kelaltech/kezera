@@ -14,6 +14,11 @@ export async function organizationResponseToRequest(
     locations: response.locations,
     website: response.website,
 
+    funding: {
+      bankAccount: response.funding.bankAccount,
+      payPalMeId: response.funding.payPalMeId
+    },
+
     licensedNames: response.licensedNames,
     registrations: response.registrations
   }

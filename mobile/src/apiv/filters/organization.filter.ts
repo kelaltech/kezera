@@ -14,7 +14,35 @@ export async function organizationResponseToRequest(
     locations: response.locations,
     website: response.website,
 
+    funding: {
+      bankAccount: response.funding.bankAccount,
+      payPalMeId: response.funding.payPalMeId
+    },
+
     licensedNames: response.licensedNames,
     registrations: response.registrations
+  }
+}
+
+export function organizationRequestToResponse(
+  oldResponse: IOrganizationResponse,
+  request: IOrganizationRequest
+): IOrganizationResponse {
+  const { type, motto, bio, locations, website } = request
+
+  return {
+    ...oldResponse,
+
+    // account: override n/a
+
+    type,
+
+    motto,
+    bio,
+    locations,
+    website
+
+    // licensedNames: override n/a
+    // registrations: override n/a
   }
 }

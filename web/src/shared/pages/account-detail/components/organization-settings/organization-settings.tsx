@@ -41,6 +41,17 @@ const defaultOrganizationRequest: IOrganizationRequest = {
   type: 'NGO',
   locations: [],
 
+  // todo: funding
+  funding: {
+    bankAccount: {
+      bankName: '',
+      bankCountry: '',
+      accountHolder: '',
+      accountNumber: ''
+    },
+    payPalMeId: undefined
+  },
+
   // bio
   bio: ''
 }
