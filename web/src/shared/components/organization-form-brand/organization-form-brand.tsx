@@ -82,10 +82,10 @@ function OrganizationFormBrand({ organization, setOrganization, setLogoRef }: Pr
               <Flex className={'full-width'}>
                 <div
                   className={
-                    'padding-right-big margin-top-auto margin-bottom-normal fg-primary'
+                    'padding-right-big margin-top-auto margin-bottom-normal fg-blackish'
                   }
                 >
-                  Logo<span className={'italic fg-blackish'}> (max. 1MB size)</span>:
+                  <span className={'fg-primary'}>Logo</span> (Optional):
                 </div>
                 <ImageInput innerRef={logo.ref} />
               </Flex>

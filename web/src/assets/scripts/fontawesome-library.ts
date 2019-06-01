@@ -50,7 +50,9 @@ import {
   faBellSlash,
   faFileArchive,
   faDoorOpen,
-  faUserSlash
+  faUserSlash,
+  faPrint,
+  faEyeSlash
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import {
@@ -117,7 +119,9 @@ export default function fontawesomeLibrary() {
     faFileArchive,
     faEye,
     faBuilding,
-    faUserSlash
+    faUserSlash,
+    faPrint,
+    faEyeSlash
   )
 
   // brands

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 
 import axios from 'axios'
 
-import './request-card.scss'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import { View } from 'react-native'
 import RequestMobileCard from '../../components/request-card/request-card'

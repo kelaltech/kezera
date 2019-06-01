@@ -5,6 +5,7 @@ import { useAccountState } from '../../app/stores/account/account-provider'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
+const Landing = lazy(() => import('../../shared/pages/landing/landing'))
 
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
@@ -42,9 +43,10 @@ const RequestEdit = lazy(() =>
   import('../../layout-organization/pages/request/request-edit')
 )
 
-const OrganizationCertificateDesign = lazy(() =>
-  import('../pages/certificate-design/certificate-design')
+const VolunteerProfile = lazy(() =>
+  import('../../shared/pages/volunteer-profile/volunteer-profile')
 )
+
 const OrganizationDetail = lazy(() =>
   import('../../shared/pages/organization-detail/organization-detail')
 )
@@ -80,14 +82,12 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/request/:_id/edit`} component={RequestEdit} />
       <Route exact path={`${p}/request/:_id/going`} component={RequestGoing} />
 
-      <Route
-        exact
-        path={`${p}/certificate-design`}
-        component={OrganizationCertificateDesign}
-      />
-      <Route exact path={`${p}/:_id`} component={OrganizationDetail} />
-      {/* exact path={`${p}/me`} is a specially supported Route by OrganizationDetail */}
+      <Route exact path={`${p}/v/:_id`} component={VolunteerProfile} />
+      <Route exact path={`${p}/o/:_id`} component={OrganizationDetail} />
+      {/* exact path={`${p}/o/me`} is a specially supported Route by OrganizationDetail */}
+      <Redirect exact from={`${p}/me`} to={`${p}/o/me`} />
 
+      <Route exact path={`${p}/about`} component={Landing} />
       <Route component={NotFound} />
     </Switch>
   )

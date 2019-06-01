@@ -1,44 +1,74 @@
 import React, { useEffect, useState } from 'react'
 import { Block, Button, Loading, Warning, Yoga } from 'gerami'
-import Axios from 'axios'
+import Axios, { CancelTokenSource } from 'axios'
 import * as qs from 'qs'
 
 import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
 import { IOrganizationEventResponse } from '../../../../../apiv/event.apiv'
 import EventCard from '../../../../components/event-card/event-card'
+import SearchBar from '../../../../components/search-bar/search-bar'
 
 interface Props {
   organization: IOrganizationResponse
 }
 
 const count = 10
+let searchCancellation: CancelTokenSource | null = null
 
 function OrganizationDetailEvent({ organization }: Props) {
   const { loading, t } = useLocale(['organization'])
+
+  const [term, setTerm] = useState('')
 
   const [ready, setReady] = useState(false)
   const [error, setError] = useState<string>()
 
   const [events, setEvents] = useState<IOrganizationEventResponse[]>([])
 
-  const load = (since?: number): void => {
-    Axios.get<IOrganizationEventResponse[]>(
-      `/api/organization/events/${organization._id}?${qs.stringify({ since, count })}`
-    )
-      .then(response => {
-        setEvents(events.concat(response.data))
+  const load = async (since?: number): Promise<void> => {
+    try {
+      if (!events.length) setReady(false)
+
+      if (searchCancellation) searchCancellation.cancel()
+      searchCancellation = Axios.CancelToken.source()
+      const response = await Axios.get<IOrganizationEventResponse[]>(
+        `/api/organization/search-events/${organization._id}?${qs.stringify({
+          term,
+          count,
+          since
+        })}`,
+        { withCredentials: true, cancelToken: searchCancellation.token }
+      )
+
+      if (!Array.isArray(response.data)) {
+        setError('Response is malformed.')
+      } else {
+        setError(undefined)
+        setEvents((since ? events : []).concat(response.data))
         setReady(true)
-      })
-      .catch(setError)
+      }
+    } catch (e) {
+      if (!Axios.isCancel(error)) setError(e)
+    }
   }
 
   useEffect(() => {
-    load()
-  }, [])
+    load().catch(setError)
+  }, [term])
 
   return (
-    <>
+    <div style={{ minHeight: '75vh' }}>
+      <SearchBar
+        className={'margin-top-big'}
+        onTerm={setTerm}
+        onSearch={e => {
+          e.preventDefault()
+          setReady(false)
+          load().catch(setError)
+        }}
+      />
+
       {(error && (
         <Block first last>
           <Warning problem={error} />
@@ -75,7 +105,7 @@ function OrganizationDetailEvent({ organization }: Props) {
             )}
           </>
         ))}
-    </>
+    </div>
   )
 }
 

@@ -8,7 +8,8 @@ import {
   Input,
   TextArea,
   Yoga,
-  Title
+  Title,
+  Anchor
 } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TextField from '@material-ui/core/TextField'
@@ -21,6 +22,8 @@ import { useEventDispatch } from '../../stores/events/events.provider'
 import { EditEvent } from '../../stores/events/events.action'
 import { string } from 'prop-types'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import { LngLat } from 'mapbox-gl'
+import LocationPickerDialog from '../../../shared/components/location-picker-dialog/location-picker-dialog'
 
 interface IEventEditProps {
   event: IOrganizationEventResponse
@@ -30,6 +33,14 @@ interface IEventEditProps {
 
 export default function EventEdit(props: IEventEditProps) {
   const { loading, t } = useLocale(['event'])
+  let [locationPickerOpen, setLocationPickerOpen] = useState(false)
+  const [lngLat, setLngLatOnState] = useState<LngLat>()
+  const parseGeo = (lngLat: LngLat): string => {
+    const factor = 100000
+    return `${Math.round(lngLat.lat * factor) / factor}° ${
+      lngLat.lat > 0 ? 'N' : 'S'
+    }, ${Math.round(lngLat.lng * factor) / factor}°  ${lngLat.lng > 0 ? 'E' : 'W'}`
+  }
 
   let [newEvent, setNewEvent] = useState({
     title: props.event.title,
@@ -37,8 +48,31 @@ export default function EventEdit(props: IEventEditProps) {
     amountOfPeople: props.event.amountOfPeople,
     startDate: props.event.startDate,
     endDate: props.event.endDate,
-    location: props.event.location
+    location: {
+      geo: {
+        type: 'Point',
+        coordinates: []
+      },
+      address: ''
+    }
   })
+  const emitChanges = (eventChanges: any): void => {
+    setNewEvent({ ...event, ...eventChanges })
+  }
+
+  const setLngLat = (lngLat?: LngLat) => {
+    setLngLatOnState(lngLat)
+    emitChanges({
+      location: {
+        geo: {
+          type: 'Point',
+          coordinates: lngLat ? [lngLat.lng, lngLat.lat] : undefined
+        },
+        address: undefined
+      }
+    })
+  }
+
   let eventDispatch = useEventDispatch()
 
   let HandleUpdate = function(e: any, id: string) {
@@ -117,14 +151,55 @@ export default function EventEdit(props: IEventEditProps) {
                   className={'margin-top-big margin-right-normal'}
                   icon={'map-marker'}
                 />
-                <Input
+                {/*<Input
                   name={'location'}
                   className="full-width"
                   placeholder={t`location`}
-                  defaultValue={props.event.location}
+                  defaultValue={props.event.location.address}
                   onChange={e => setNewEvent({ ...newEvent, location: e.target.value })}
                   required
-                />
+                />*/}
+                <div>
+                  <div className={'margin-top-normal'}>
+                    {!newEvent.location.geo.coordinates.length ? (
+                      <div className={'fg-blackish italic'}>Location not selected.</div>
+                    ) : (
+                      <div>
+                        <Anchor
+                          href={`https://www.google.com/maps?q=${
+                            newEvent.location.geo.coordinates[1]
+                          },${newEvent.location.geo.coordinates[0]}`}
+                          target={'_blank'}
+                          rel={'noopener'}
+                        >
+                          {parseGeo(
+                            new LngLat(
+                              newEvent.location.geo.coordinates[0],
+                              newEvent.location.geo.coordinates[1]
+                            )
+                          )}
+                        </Anchor>{' '}
+                        (<Anchor onClick={() => setLngLat(undefined)}>&times;</Anchor>)
+                        {newEvent.location.address && (
+                          <div>{newEvent.location.address}</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={'margin-top-normal'}>
+                    <Anchor onClick={() => setLocationPickerOpen(!locationPickerOpen)}>
+                      Pick a Location on Map
+                    </Anchor>
+                  </div>
+
+                  <LocationPickerDialog
+                    open={locationPickerOpen}
+                    onClose={() => setLocationPickerOpen(!locationPickerOpen)}
+                    lngLat={lngLat}
+                    setLngLat={setLngLat}
+                  />
+                </div>
               </label>
             </Block>
             <Block>

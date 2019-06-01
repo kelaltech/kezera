@@ -6,7 +6,6 @@ import {
 } from 'react-i18next'
 
 import {
-  defaultLanguage,
   defaultNamespaces,
   getLanguage,
   Language,

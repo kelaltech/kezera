@@ -78,10 +78,7 @@ export default function FundCard({ request }: IFundProps) {
               <Button>{t`request:donate`}</Button>
             )}
             <FlexSpacer />
-            <Anchor
-              className={'margin-top-normal'}
-              to={`/organization/request/${request._id}`}
-            >
+            <Anchor className={'margin-top-normal'} to={`/request/${request._id}`}>
               {t`request:details`}
             </Anchor>
           </Flex>

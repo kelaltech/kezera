@@ -17,7 +17,8 @@ import {
   recentNews,
   getComments,
   addShare,
-  getShare
+  getShare,
+  getMyNews
 } from './news.controller'
 
 export const newsRouter = new Router({
@@ -48,6 +49,11 @@ newsRouter.get('/allnews', async ctx => {
 //GET /api/news/search?term=:term
 newsRouter.get('/search', async ctx => {
   ctx.body = await searchNews(ctx.query.term)
+})
+
+//GET /api/news/me
+newsRouter.get('/me', async ctx => {
+  ctx.body = await getMyNews(ctx.state.user)
 })
 
 //GET /api/news/:_newsId
@@ -112,7 +118,5 @@ newsRouter.post('/:_newsId/comment/new', async ctx => {
 })
 
 newsRouter.get('/:_id/comments', async ctx => {
-  console.log('this is the comment !!')
-  console.log(ctx.params._id)
   ctx.body = await getComments(ctx.params._id)
 })

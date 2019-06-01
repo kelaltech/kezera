@@ -1,11 +1,13 @@
 import { ClientSession } from 'mongoose'
 import * as sharp from 'sharp'
+import * as fs from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import {
   IOrganizationRequest,
   IOrganizationResponse,
-  IOrganizationStats
+  IOrganizationStats,
+  IOrganizationSubscriber
 } from './organization.apiv'
 import { add, edit, get, list, search } from '../../lib/crud'
 import { Grid } from '../../lib/grid'
@@ -18,17 +20,22 @@ import { OrganizationApplicationModel } from '../../models/organization-applicat
 import { email } from '../../lib/email'
 import { KoaError } from '../../lib/koa-error'
 import { OrganizationModel } from '../../models/organization/organization.model'
-import { IRequest, RequestModel } from '../../models/request/request.model'
-import { EventModel, IEvent } from '../../models/event/event.model'
+import { RequestModel } from '../../models/request/request.model'
+import { EventModel } from '../../models/event/event.model'
 import { INews, NewsModel } from '../../models/news/news.model'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
+import { populateRequest } from '../request/request.controller'
+import { IRequestResponse } from '../request/request.apiv'
+import { EventResponse } from '../event/event.filter'
+import { AccountModel } from '../../models/account/account.model'
+import { accountDocumentToPublicResponse } from '../account/account.filter'
 
 export class OrganizationController extends KoaController {
   /* GENERAL: */
 
   async apply(
     session?: ClientSession,
-    data: IOrganizationRequest = JSON.parse(
+    data: IOrganizationRequest & { officialDocumentsLength: number } = JSON.parse(
       super.getRequestBody<{ data: string }>().data
     ),
     ctx = super.getContext()
@@ -62,7 +69,7 @@ export class OrganizationController extends KoaController {
 
     if (session) await session.commitTransaction()
 
-    const logo = ctx && ctx.request.files && ctx.request.files['photo']
+    const logo = ctx && ctx.request.files && ctx.request.files['logo']
     if (logo) {
       const stream = sharp(logo.path)
         .resize(1080, 1080, { fit: 'cover' })
@@ -80,6 +87,23 @@ export class OrganizationController extends KoaController {
         await grid.set(stream, 'image/jpeg')
         resolve()
       })
+    }
+
+    const officialDocumentGrid = new Grid(
+      serverApp,
+      OrganizationApplicationModel,
+      application._id,
+      'officialDocument'
+    )
+    for (let i = 0; i < data.officialDocumentsLength; i++) {
+      const officialDocument =
+        ctx && ctx.request.files && ctx.request.files[`officialDocument${i}`]
+      if (officialDocument)
+        await officialDocumentGrid.add(
+          fs.createReadStream(officialDocument.path),
+          `${i}`,
+          officialDocument.type
+        )
     }
 
     return await organizationDocumentToResponse(application, application.account)
@@ -149,8 +173,10 @@ export class OrganizationController extends KoaController {
       postQuery: (query, s) => {
         if (
           !account ||
+          !account.lastLocation ||
+          !account.lastLocation.type ||
           !account.lastLocation.coordinates ||
-          !account.lastLocation.coordinates.length
+          account.lastLocation.coordinates.length !== 2
         )
           return query
 
@@ -181,6 +207,7 @@ export class OrganizationController extends KoaController {
     const account_id = organization.account
 
     const now = Date.now()
+    const nowDate = new Date(now)
 
     return {
       requests: {
@@ -229,22 +256,36 @@ export class OrganizationController extends KoaController {
 
       events: {
         total: await EventModel.find({
-          organizationId: account_id /* todo: Check if this is correct after Anteneh pushes */
+          organizationId: account_id
         }).count(),
         ongoing: await EventModel.find({
-          organizationId: account_id /* todo: Check if this is correct after Anteneh pushes */,
-          startDate: { $gte: now },
-          endDate: { $lte: now }
+          organizationId: account_id,
+          startDate: { $lte: now },
+          endDate: { $gte: now }
         }).count(),
         upcoming: await EventModel.find({
-          organizationId: account_id /* todo: Check if this is correct after Anteneh pushes */,
+          organizationId: account_id,
           startDate: { $gt: now },
           endDate: { $gt: now }
         }).count()
       },
 
       news: {
-        total: await NewsModel.find({ _by: organization._id }).count()
+        total: await NewsModel.find({ _by: organization._id }).count(),
+        today: await NewsModel.find({
+          _by: organization._id,
+          _at: {
+            $gte: new Date(
+              nowDate.getFullYear(),
+              nowDate.getMonth(),
+              nowDate.getDate(),
+              0,
+              0,
+              0,
+              0
+            )
+          }
+        }).count()
       }
     }
   }
@@ -264,12 +305,20 @@ export class OrganizationController extends KoaController {
       organization.verifier,
       organization._id
     )
-    // no updates for:
+    // no updates for (important because overwrite: true option is passed to edit()):
+    request.subscribers = organization.subscribers
     request.account = organization.account as any
     request.licensedNames = organization.licensedNames
     request.registrations = organization.registrations
+    request.verifier = organization.verifier
 
-    await edit(OrganizationModel, organization._id, request, { session })
+    await edit(
+      OrganizationModel,
+      organization._id,
+      request,
+      { session },
+      { overwrite: true }
+    )
 
     organization = await get(OrganizationModel, organization._id, { session })
     return await organizationDocumentToResponse(organization)
@@ -320,53 +369,111 @@ export class OrganizationController extends KoaController {
 
   /* LINKS TO OTHER MODULES: */
 
-  async requests(
+  async searchRequests(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
+    term = super.getQuery('term'),
     since = Number(super.getQuery('since')) || Date.now(),
     count = Number(super.getQuery('count')) || 10
-  ): Promise<IRequest[]> {
+  ): Promise<IRequestResponse[]> {
     // todo: remove the next line when Event.organizationId gets fixed
-    const organization = await get(OrganizationModel, organization_id)
-    // todo: filter?
-    // todo: attach type-specific fields using a refactored method from Request Module
-    return await list(RequestModel, {
-      session,
-      since,
-      count,
-      conditions: { _by: organization.account }
-    })
+    const organization = await get(OrganizationModel, organization_id, { session })
+    return Promise.all(
+      (await search(RequestModel, term, {
+        session,
+        since,
+        count,
+        conditions: { _by: organization.account }
+      })).map(request => populateRequest(request))
+    )
   }
 
-  async events(
+  async searchEvents(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
+    term = super.getQuery('term'),
     since = Number(super.getQuery('since')) || Date.now(),
     count = Number(super.getQuery('count')) || 10
-  ): Promise<IEvent[]> {
+  ): Promise<any[]> {
     // todo: remove the next line when Event.organizationId gets fixed
-    const organization = await get(OrganizationModel, organization_id)
-    // todo: filter?
-    return await list(EventModel, {
-      session,
-      since,
-      count,
-      conditions: { organizationId: organization.account }
-    })
+    const organization = await get(OrganizationModel, organization_id, { session })
+    return Promise.all(
+      (await search(EventModel, term, {
+        session,
+        since,
+        count,
+        conditions: { organizationId: organization.account }
+      })).map(EventResponse)
+    )
   }
 
-  async news(
+  async searchNews(
     session?: ClientSession,
     organization_id = super.getParam('organization_id'),
+    term = super.getQuery('term'),
     since = Number(super.getQuery('since')) || Date.now(),
     count = Number(super.getQuery('count')) || 14
   ): Promise<INews[]> {
     // todo: filter?
-    return await list(NewsModel, {
+    return await search(NewsModel, term, {
       session,
       since,
       count,
       conditions: { _by: organization_id }
     })
+  }
+
+  async searchSubscribers(
+    session?: ClientSession,
+    organization_id = super.getParam('organization_id'),
+    term = super.getQuery('term'),
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 14,
+    account = super.getUser()
+  ): Promise<IOrganizationSubscriber[]> {
+    const organization = await get(OrganizationModel, organization_id, { session })
+
+    let subscribers = await search(AccountModel, term, {
+      session,
+      since,
+      count,
+      conditions: { _id: { $in: organization.subscribers } }
+    })
+
+    if (
+      account &&
+      account.lastLocation &&
+      account.lastLocation.type &&
+      account.lastLocation.coordinates &&
+      account.lastLocation.coordinates.length === 2
+    ) {
+      subscribers = await list(AccountModel, {
+        session,
+        conditions: { _id: { $in: subscribers.map(s => s._id) } },
+        postQuery: (query, s) =>
+          query
+            .find({
+              lastLocation: {
+                $nearSphere: {
+                  $geometry: {
+                    type: account.lastLocation!.type,
+                    coordinates: account.lastLocation!.coordinates
+                  }
+                }
+              }
+            })
+            .session(s)
+      })
+    }
+
+    return Promise.all(
+      subscribers.map(async account => ({
+        ...(await accountDocumentToPublicResponse(account)),
+        volunteerId: (await get(VolunteerModel, null, {
+          session,
+          conditions: { account: account._id }
+        }))._id.toString()
+      }))
+    )
   }
 }

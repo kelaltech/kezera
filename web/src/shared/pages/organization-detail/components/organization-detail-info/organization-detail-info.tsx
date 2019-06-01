@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Anchor, Block, Content, Flex, Yoga } from 'gerami'
 
 import './organization-detail-info.scss'
@@ -6,6 +6,10 @@ import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
 import { LngLat } from 'mapbox-gl'
 import OrganizationDetailStats from '../organization-detail-stats/organization-detail-stats'
+
+const OrganizationDetailApplicationLegal = lazy(() =>
+  import('../organization-detail-application-legal/organization-detail-application-legal')
+)
 
 interface Props {
   organization: IOrganizationResponse
@@ -25,6 +29,13 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
   return (
     loading || (
       <Content transparent>
+        {isApplication && (
+          <>
+            <OrganizationDetailApplicationLegal application={organization} />
+            <hr />
+          </>
+        )}
+
         {!organization.motto ? null : (
           <Content className={'margin-top-big'}>
             <Block className={'organization-motto'}>

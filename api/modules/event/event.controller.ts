@@ -10,6 +10,8 @@ import { AccountModel, IAccount } from '../../models/account/account.model'
 import { getComment } from '../comment/comment.methods'
 import * as sharp from 'sharp'
 import { IAccountRequest } from '../account/account.apiv'
+import { EventResponse } from './event.filter'
+import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 export async function removeEvent(
   id: Schema.Types.ObjectId | string,
   orgId: Schema.Types.ObjectId | string
@@ -20,32 +22,50 @@ export async function removeEvent(
 }
 
 export async function getEvent(id: Schema.Types.ObjectId): Promise<any> {
-  return await get(EventModel, id)
+  return await EventResponse(await get(EventModel, id))
 }
 
 export async function searchEvent(term: string): Promise<any> {
   let events = await search(EventModel, term)
-  console.log(events)
-  return events
+  let response: any = []
+  for (let i = 0; i < events.length; i++) {
+    response[i] = await EventResponse(events[i])
+  }
+  return response
 }
 
 export async function getRecentEvents(count: number): Promise<IEvent[]> {
-  return await list(EventModel, {
+  let events = await list(EventModel, {
     since: Date.now(),
     count
   })
+  let response: any = []
+  for (let i = 0; i < events.length; i++) {
+    response[i] = await EventResponse(events[i])
+  }
+  return response
 }
 
 export async function getOrganizationEvents(
   id: Schema.Types.ObjectId
 ): Promise<IEvent[]> {
-  return await list(EventModel, {
+  let events = await list(EventModel, {
     preQuery: model => model.find({ organizationId: id })
   })
+  let response: any = []
+  for (let i = 0; i < events.length; i++) {
+    response[i] = await EventResponse(events[i])
+  }
+  return response
 }
 
 export async function listAllEvents(): Promise<any> {
-  return await list(EventModel)
+  let events: IEvent[] = await list(EventModel)
+  let response: any = []
+  for (let i = 0; i < events.length; i++) {
+    response[i] = await EventResponse(events[i])
+  }
+  return response
 }
 
 export async function attendedUsers(
@@ -106,15 +126,16 @@ export async function getComments(eventId: Schema.Types.ObjectId): Promise<IComm
   return comments
 }
 
-export async function addEvent(body: any, orgId: any, ctx: any): Promise<IEvent> {
+export async function addEvent(body: any, orgId: any, ctx: any): Promise<any> {
   const event = await add(EventModel, { ...body, organizationId: orgId })
   console.log(event)
+  // @ts-ignore
   const stream = sharp(ctx!.request.files!.image.path)
     .resize(1080, 1080, { fit: 'cover' })
     .jpeg({ quality: 100 })
   const grid = new Grid(serverApp, EventModel, event._id)
   await Promise.all([grid.set(stream)])
-  return event
+  return await EventResponse(event)
 }
 
 export async function editEvent(
@@ -122,17 +143,18 @@ export async function editEvent(
   body: any,
   orgId: Schema.Types.ObjectId,
   ctx: any
-): Promise<IEvent> {
+): Promise<any> {
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) {
     let updated = await edit(EventModel, id, body)
+    // @ts-ignore
     const stream = sharp(ctx!.request.files!.image.path)
       .resize(1080, 1080, { fit: 'cover' })
       .jpeg({ quality: 100 })
     await new Grid(serverApp, EventModel, id).remove()
     await new Grid(serverApp, EventModel, id).set(stream)
     console.log(updated)
-    return await get(EventModel, id)
+    return await EventResponse(await get(EventModel, id))
   } else throw new KoaError('Not authorized', 401)
 }
 
@@ -271,7 +293,11 @@ export async function getInterested(id: Schema.Types.ObjectId): Promise<any> {
 
 export async function listLatestEvents(): Promise<IEvent[] | Document> {
   let events = await EventModel.find({}).sort({ _at: 'desc' })
-  return events
+  let response: any = []
+  for (let i = 0; events.length; i++) {
+    response[i] = await EventResponse(events[i])
+  }
+  return response
 }
 
 export async function upcomingEvents(): Promise<IEvent[] | Document> {
@@ -288,10 +314,54 @@ export async function upcomingEvents(): Promise<IEvent[] | Document> {
   for (let j = 0; j < difference.length; j++) {
     upcoming.push(await get(EventModel, difference[j]._id))
   }
-  return upcoming
+  let response: any = []
+  for (let i = 0; i < upcoming.length; i++) {
+    response[i] = await EventResponse(upcoming[i])
+  }
+  return response
 }
 
 interface IEventDiff {
   _id: any
   difference: number
+}
+
+export async function NearByEvents(account: any, since: any, count: any): Promise<any> {
+  const conditions: any = {}
+  if (account) {
+    const volunteer = await VolunteerModel.findOne({ account: account._id })
+    if (volunteer) {
+      conditions.subscribers = { $ne: account._id }
+    }
+  }
+
+  const events: any = await list(EventModel, {
+    conditions,
+    since,
+    count,
+    postQuery: (query, s) => {
+      if (
+        !account ||
+        !account.lastLocation.coordinates ||
+        !account.lastLocation.coordinates.length
+      )
+        return query
+
+      return query
+        .find({
+          'locations.geo': {
+            $nearSphere: {
+              $geometry: {
+                type: 'Point',
+                coordinates: account.lastLocation.coordinates,
+                $minDistance: 100,
+                $maxDistance: 2000
+              }
+            }
+          }
+        })
+        .session(s)
+    }
+  })
+  return await Promise.all(events.map((event: any) => EventResponse(event)))
 }

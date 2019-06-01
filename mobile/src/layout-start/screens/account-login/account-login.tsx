@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import {
   NavigationActions,
   NavigationInjectedProps,
@@ -105,79 +105,81 @@ function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
     (account === undefined ? (
       <Loading />
     ) : account === null ? (
-      <View style={styles.main}>
+      <ScrollView style={styles.main}>
         <View style={classes.grow} />
 
         <Image
           style={styles.logo}
-          source={require('../../../assets/images/common/logo-128.png')}
+          source={require('../../../assets/images/common/wordmark-512.png')}
         />
 
-        <View style={styles.inputContainers}>
-          <Input
-            style={styles.inputs}
-            keyboardType={'email-address'}
-            placeholder={t`account:email`}
-            value={data.email}
-            onChangeText={email => setData({ ...data, email })}
-            editable={!sending}
-            autoFocus
-          />
-        </View>
+        <View style={styles.form}>
+          <Text style={styles.title}>{t`account:login`}</Text>
 
-        <View style={styles.inputContainers}>
-          <Input
-            style={styles.inputs}
-            secureTextEntry={true}
-            placeholder={t`account:password`}
-            value={data.password}
-            onChangeText={password => setData({ ...data, password })}
-            editable={!sending}
-          />
+          <View style={styles.inputContainers}>
+            <Input
+              style={styles.inputs}
+              keyboardType={'email-address'}
+              placeholder={t`account:email`}
+              value={data.email}
+              onChangeText={email => setData({ ...data, email })}
+              editable={!sending}
+              autoFocus
+            />
+          </View>
+
+          <View style={styles.inputContainers}>
+            <Input
+              style={styles.inputs}
+              secureTextEntry={true}
+              placeholder={t`account:password`}
+              value={data.password}
+              onChangeText={password => setData({ ...data, password })}
+              editable={!sending}
+            />
+            <TouchableOpacity
+              style={styles.forgotPassword}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'AccountResetStart',
+                    params: { email: data.email }
+                  })
+                )
+              }
+            >
+              <Text>{t`account:forgot-password`}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Button
+              style={styles.button}
+              title={t`account:login`}
+              onPress={handleLogin}
+              disabled={sending || !data.email || !data.password}
+            />
+          </View>
+
           <TouchableOpacity
-            style={styles.forgotPassword}
+            style={styles.createNewAccount}
             onPress={() =>
               navigation.dispatch(
                 NavigationActions.navigate({
-                  routeName: 'AccountResetStart',
+                  routeName: 'AccountRegister',
                   params: { email: data.email }
                 })
               )
             }
           >
-            <Text>{t`account:forgot-password`}</Text>
+            <Text>{t`account:create-new-account`}</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <Button
-            style={styles.button}
-            title={t`account:login`}
-            onPress={handleLogin}
-            disabled={sending || !data.email || !data.password}
-          />
-        </View>
-
-        <TouchableOpacity
-          style={styles.createNewAccount}
-          onPress={() =>
-            navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'AccountRegister',
-                params: { email: data.email }
-              })
-            )
-          }
-        >
-          <Text>{t`account:create-new-account`}</Text>
-        </TouchableOpacity>
-
-        <View style={classes.grow} />
-
         <Footer style={classes.marginTopBig} />
-      </View>
+      </ScrollView>
     ) : (
-      <View style={{ ...styles.main }}>
+      <View style={{ ...styles.main, ...classes.paddingHorizontal }}>
         <View style={{ ...classes.marginVerticalBig, ...classes.grow }}>
           <Text style={{ fontSize: values.fontSize.big }}>
             {t`account:logged-in-as`}

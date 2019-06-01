@@ -29,8 +29,8 @@ export async function AddVerifier(
   image: Stream
 ): Promise<IAccountResponse> {
   let acc = await new AccountController().add(session, body, 'ACTIVE', 'VERIFIER')
-  const grid = new Grid(serverApp, AccountModel, acc._id)
-  grid.set(image)
+  const grid = new Grid(serverApp, AccountModel, acc._id, 'photo')
+  await grid.set(image)
   return acc
 }
 

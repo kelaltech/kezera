@@ -23,7 +23,8 @@ import {
   getOrganizationEvents,
   getRecentEvents,
   listLatestEvents,
-  upcomingEvents
+  upcomingEvents,
+  NearByEvents
 } from './event.controller'
 
 export const eventRouter = new Router({ prefix: '/api/event' })
@@ -56,6 +57,10 @@ eventRouter.get('/recent', async ctx => {
 // /api/event/search/term
 eventRouter.get('/search', async ctx => {
   ctx.body = await searchEvent(ctx.query.term)
+})
+
+eventRouter.get('/nearby', async ctx => {
+  ctx.body = await NearByEvents(ctx.state.user, Date.now(), 5)
 })
 
 // /api/event/create

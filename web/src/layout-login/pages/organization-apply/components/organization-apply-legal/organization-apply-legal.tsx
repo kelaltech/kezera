@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MutableRefObject, RefObject, useEffect, useState } from 'react'
 import { Anchor, Block, Button, Content, Flex, Input } from 'gerami'
 
 import './organization-apply-legal.scss'
@@ -10,9 +10,18 @@ import useField from '../../../../../shared/hooks/use-field/use-field'
 interface Props {
   organization: IOrganizationRequest
   setOrganization: (organization: IOrganizationRequest) => void
+  setOfficialDocumentsRef: (
+    officialDocumentsInputs:
+      | MutableRefObject<HTMLInputElement>
+      | RefObject<HTMLInputElement>
+  ) => void
 }
 
-function OrganizationApplyLegal({ organization, setOrganization }: Props) {
+function OrganizationApplyLegal({
+  organization,
+  setOrganization,
+  setOfficialDocumentsRef
+}: Props) {
   const { loading, t } = useLocale(['organization'])
 
   const emitChanges = (organizationChanges: any): void => {
@@ -70,6 +79,11 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
     if (registrationTypeInput.ref.current) registrationTypeInput.ref.current.focus()
   }
 
+  const officialDocumentsInput = useField<HTMLInputElement>()
+  useEffect(() => {
+    if (setOfficialDocumentsRef) setOfficialDocumentsRef(officialDocumentsInput.ref)
+  }, [setOfficialDocumentsRef])
+
   return (
     loading || (
       <Content className={'top margin-bottom-big'}>
@@ -80,14 +94,14 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
         <hr />
 
         <Block>
-          <Flex>
+          <Flex className={'margin-top-normal'}>
             <div style={{ margin: 'auto auto auto 0', width: 40 }}>
               <FontAwesomeIcon icon={'balance-scale'} />
             </div>
             <div className={'full-width'}>
               <div className={'font-S'}>
                 <div className={'fg-primary'}>
-                  Licensed Names
+                  <span className={'bold'}>Licensed Names</span>
                   {!organization.licensedNames.length ? null : (
                     <span className={'italic fg-blackish'}>
                       {' '}
@@ -141,15 +155,15 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
           </Flex>
         </Block>
 
-        <Block last>
-          <Flex>
+        <Block>
+          <Flex className={'margin-top-normal'}>
             <div style={{ margin: 'auto auto auto 0', width: 40 }}>
               <FontAwesomeIcon icon={'file-contract'} />
             </div>
             <div className={'full-width'}>
               <div className={'font-S'}>
                 <div className={'fg-primary'}>
-                  Registrations
+                  <span className={'bold'}>Registrations</span>
                   {!organization.registrations.length ? null : (
                     <span className={'italic fg-blackish'}>
                       {' '}
@@ -214,6 +228,33 @@ function OrganizationApplyLegal({ organization, setOrganization }: Props) {
                   </div>
                 </Content>
               </form>
+            </div>
+          </Flex>
+        </Block>
+
+        <Block last>
+          <Flex className={'margin-top-normal'}>
+            <div style={{ margin: 'auto auto auto 0', width: 40 }}>
+              <FontAwesomeIcon icon={'file-archive'} />
+            </div>
+            <div className={'full-width'}>
+              <div className={'font-S'}>
+                <div className={'fg-primary'}>
+                  <span className={'bold'}>Official Documents</span>:
+                </div>
+              </div>
+
+              <Content className={'organization-apply-legal-add-content'}>
+                <div className={'font-S fg-blackish'}>Select Official Documents:</div>
+                <Input
+                  className={'block margin-vertical-normal margin-auto full-width'}
+                  {...officialDocumentsInput.inputProps}
+                  type={'file'}
+                  multiple={true}
+                  placeholder={''}
+                  inputRef={officialDocumentsInput.ref}
+                />
+              </Content>
             </div>
           </Flex>
         </Block>

@@ -51,6 +51,9 @@ function OrganizationApply() {
   const [organization, setOrganizationOnState] = useState<IOrganizationRequest>(
     defaultOrganizationRequest
   )
+  const [officialDocumentsRef, setOfficialDocumentsRef] = useState<
+    MutableRefObject<HTMLInputElement> | RefObject<HTMLInputElement>
+  >()
   const [logoRef, setLogoRef] = useState<
     MutableRefObject<HTMLInputElement> | RefObject<HTMLInputElement>
   >()
@@ -67,7 +70,18 @@ function OrganizationApply() {
     setState('SENDING')
 
     const data = new FormData()
-    data.append('data', JSON.stringify(organization))
+    data.append(
+      'data',
+      JSON.stringify({
+        ...organization,
+        officialDocumentsLength:
+          (officialDocumentsRef &&
+            officialDocumentsRef.current &&
+            officialDocumentsRef.current.files &&
+            officialDocumentsRef.current.files.length) ||
+          0
+      })
+    )
     if (
       logoRef &&
       logoRef.current &&
@@ -75,6 +89,15 @@ function OrganizationApply() {
       logoRef.current.files.length
     ) {
       data.append('logo', logoRef.current.files[0])
+    }
+    if (
+      officialDocumentsRef &&
+      officialDocumentsRef.current &&
+      officialDocumentsRef.current.files
+    ) {
+      for (let i = 0; i < officialDocumentsRef.current.files.length; i++) {
+        data.append(`officialDocument${i}`, officialDocumentsRef.current.files[i])
+      }
     }
 
     Axios.post('/api/organization/apply', data, {
@@ -126,6 +149,7 @@ function OrganizationApply() {
               <OrganizationApplyLegal
                 organization={organization}
                 setOrganization={setOrganization}
+                setOfficialDocumentsRef={setOfficialDocumentsRef}
               />
             </div>
 
@@ -175,7 +199,18 @@ function OrganizationApply() {
                 {state === 'SENDING' ? (
                   <Loading className={'padding-none'} />
                 ) : (
-                  <Button primary onClick={() => apply()} disabled={!acceptTerms}>
+                  <Button
+                    primary
+                    onClick={() => apply()}
+                    disabled={
+                      !organization.account.displayName ||
+                      !organization.account.email ||
+                      !organization.account.password ||
+                      !organization.type ||
+                      !organization.bio ||
+                      !acceptTerms
+                    }
+                  >
                     Apply Now
                   </Button>
                 )}
