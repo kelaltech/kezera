@@ -6,17 +6,16 @@ import { useAccountState } from '../../app/stores/account/account-provider'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
+const Landing = lazy(() => import('../../shared/pages/landing/landing'))
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
 )
 const Discovery = lazy(() => import('../pages/volunteer-discover/volunteer-discovery'))
 const Event = lazy(() => import('../pages/volunteer-event/volunteer-event'))
-const Landing = lazy(() => import('../pages/volunteer-landing/volunteer-landing'))
 const MyOrganization = lazy(() =>
   import('../pages/volunteer-my-organization/volunteer-my-organization')
 )
 const News = lazy(() => import('../pages/volunteer-news/volunteer-news'))
-const Profile = lazy(() => import('../pages/volunteer-profile/volunteer-profile'))
 const Request = lazy(() => import('../pages/volunteer-request/volunteer-request'))
 const Task = lazy(() => import('../pages/volunteer-task/volunteer-task'))
 const SearchResult = lazy(() =>
@@ -35,45 +34,42 @@ const OrganizationDetail = lazy(() =>
 
 const NewsDetail = lazy(() => import('../../shared/pages/news-detail/news-detail'))
 
+const VolunteerProfile = lazy(() =>
+  import('../../shared/pages/volunteer-profile/volunteer-profile')
+)
+
 export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
 
   return (
     <Switch>
-      {account && <Redirect from={`${p}/register`} to={`/login/redirect/account`} />}
+      <Redirect from={`${p}/register`} to={`/login/redirect/account`} />
 
-      {/* todo: change the path to / and move to the bottom of LayoutDefaultRoutes */}
-      <Route exact path={`${p}/landing`} component={Landing} />
+      <Route exact path={`${p}/account`} component={AccountDetail} />
+      <Route exact path={`${p}/events`} component={Event} />
+      <Route exact path={`${p}/my-organization`} component={MyOrganization} />
+      <Route exact path={`${p}/news`} component={News} />
+      <Route exact path={`${p}/tasks`} component={Task} />
+      <Route exact path={`${p}/requests`} component={Request} />
+      <Route exact path={`${p}/search-result`} component={SearchResult} />
 
-      {account ? (
-        <>
-          <Route exact path={`${p}/account`} component={AccountDetail} />
-          <Route exact path={`${p}/events`} component={Event} />
-          <Route exact path={`${p}/my-organization`} component={MyOrganization} />
-          <Route exact path={`${p}/news`} component={News} />
-          <Route exact path={`${p}/tasks`} component={Task} />
-          <Route exact path={`${p}/me`} component={Profile} />
-          <Route exact path={`${p}/requests`} component={Request} />
-          <Route exact path={`${p}/search-result`} component={SearchResult} />
+      <Route exact path={`${p}/request/:_id/going`} component={RequestGoing} />
+      <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
+      <Route exact path={`${p}/event/:_id`} component={EventDetail} />
+      <Route exact path={`${p}/news/:_id`} component={NewsDetail} />
+      <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
 
-          <Route exact path={`${p}/request/:_id/going`} component={RequestGoing} />
-          <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
-          <Route exact path={`${p}/event/:_id`} component={EventDetail} />
-          <Route exact path={`${p}/news/:_id`} component={NewsDetail} />
-          <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
+      <Route exact path={`${p}/v/:_id`} component={VolunteerProfile} />
+      {/* exact path={`${p}/v/me`} is a specially supported Route by VolunteerProfile */}
+      <Redirect exact from={`${p}/me`} to={`${p}/v/me`} />
+      <Route exact path={`${p}/o/:_id`} component={OrganizationDetail} />
 
-          <Route exact path={`${p}/`} component={Discovery} />
-        </>
-      ) : (
-        <Redirect
-          exact
-          from={`${p}/account`}
-          to={`/login?${qs.stringify({ continue: `${p}/account` })}`}
-        />
-      )}
+      <Route exact path={`${p}/discover`} component={Discovery} />
+      <Route exact path={`${p}/`} component={Discovery} />
 
       <Redirect exact from={`${p}/register`} to={'/login/register'} />
 
+      <Route exact path={`${p}/about`} component={Landing} />
       <Route component={NotFound} />
     </Switch>
   )

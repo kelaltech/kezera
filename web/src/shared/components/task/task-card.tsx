@@ -75,10 +75,7 @@ export default function TaskCard({ request }: ITaskProps) {
               <Button>{t`request:participate`}</Button>
             )}
             <FlexSpacer />
-            <Anchor
-              className={'margin-top-normal'}
-              to={`/organization/request/${request._id}`}
-            >
+            <Anchor className={'margin-top-normal'} to={`/request/${request._id}`}>
               {t`request:details`}
             </Anchor>
           </Flex>

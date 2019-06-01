@@ -5,6 +5,7 @@ import { Loading } from 'gerami'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
+const LayoutDefault = lazy(() => import('../../layout-default/layout-default'))
 const LayoutAdmin = lazy(() => import('../../layout-admin/layout-admin'))
 const LayoutLogin = lazy(() => import('../../layout-login/layout-login'))
 const LayoutOrganization = lazy(() =>
@@ -20,8 +21,7 @@ export default function AppRoutes() {
     <Switch>
       <Redirect exact path={`/index.html`} to={`/`} />
 
-      {/* todo: change LayoutVolunteer below to LayoutDefault */}
-      <Route path={'/default'} component={LayoutVolunteer} />
+      <Route path={'/default'} component={LayoutDefault} />
       <Route path={'/login'} component={LayoutLogin} />
 
       {account && account.role === 'VOLUNTEER' ? (
@@ -43,7 +43,7 @@ export default function AppRoutes() {
           account === undefined
             ? () => <Loading delay />
             : account === null
-            ? LayoutVolunteer /* todo: ...change to LayoutDefault */
+            ? LayoutDefault
             : account.role === 'VOLUNTEER'
             ? LayoutVolunteer
             : account.role === 'ORGANIZATION'

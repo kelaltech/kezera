@@ -88,3 +88,9 @@ organizationRouter.get(
   '/search-news/:organization_id',
   handle(OrganizationController, (c, s) => c.searchNews(s))
 )
+
+// GET /api/organization/search-subscribers/:organization_id?term={''}&since={Date.now()}&count={10}
+organizationRouter.get(
+  '/search-subscribers/:organization_id',
+  handle(OrganizationController, (c, s) => c.searchSubscribers(s))
+)

@@ -84,94 +84,98 @@ function AccountRegister({ navigation }: NavigationInjectedProps<Params>) {
       <ScrollView style={styles.main}>
         <Image
           style={styles.logo}
-          source={require('../../../assets/images/common/logo-128.png')}
+          source={require('../../../assets/images/common/wordmark-512.png')}
         />
 
-        <View style={styles.inputContainers}>
-          <Input
-            style={styles.inputs}
-            placeholder={t`account:display-name`}
-            value={data.displayName}
-            onChangeText={displayName => setData({ ...data, displayName })}
-            editable={!sending}
-            autoFocus
-          />
-        </View>
+        <View style={styles.form}>
+          <Text style={styles.title}>{t`account:register`}</Text>
 
-        <View style={styles.inputContainers}>
-          <Input
-            style={styles.inputs}
-            keyboardType={'email-address'}
-            placeholder={t`account:email`}
-            value={data.email}
-            onChangeText={email => setData({ ...data, email })}
-            editable={!sending}
-          />
-        </View>
+          <View style={styles.inputContainers}>
+            <Input
+              style={styles.inputs}
+              placeholder={t`account:display-name`}
+              value={data.displayName}
+              onChangeText={displayName => setData({ ...data, displayName })}
+              editable={!sending}
+              autoFocus
+            />
+          </View>
 
-        <View style={styles.inputContainers}>
-          <Input
-            style={styles.inputs}
-            secureTextEntry={true}
-            placeholder={t`account:password`}
-            value={data.password}
-            onChangeText={password => setData({ ...data, password })}
-            editable={!sending}
-          />
-        </View>
+          <View style={styles.inputContainers}>
+            <Input
+              style={styles.inputs}
+              keyboardType={'email-address'}
+              placeholder={t`account:email`}
+              value={data.email}
+              onChangeText={email => setData({ ...data, email })}
+              editable={!sending}
+            />
+          </View>
 
-        <View style={styles.inputContainers}>
-          <Input
-            style={styles.inputs}
-            secureTextEntry={true}
-            placeholder={t`account:repeat-password`}
-            value={data.repeatPassword}
-            onChangeText={repeatPassword => setData({ ...data, repeatPassword })}
-            editable={!sending}
-          />
-        </View>
+          <View style={styles.inputContainers}>
+            <Input
+              style={styles.inputs}
+              secureTextEntry={true}
+              placeholder={t`account:password`}
+              value={data.password}
+              onChangeText={password => setData({ ...data, password })}
+              editable={!sending}
+            />
+          </View>
 
-        <View style={styles.inputContainers}>
-          <Input
-            style={styles.inputs}
-            keyboardType={'phone-pad'}
-            placeholder={t`account:phone-number` + ' (' + t`optional` + ')'}
-            value={data.phoneNumber || ''}
-            onChangeText={phoneNumber =>
-              setData({ ...data, phoneNumber: phoneNumber || undefined })
+          <View style={styles.inputContainers}>
+            <Input
+              style={styles.inputs}
+              secureTextEntry={true}
+              placeholder={t`account:repeat-password`}
+              value={data.repeatPassword}
+              onChangeText={repeatPassword => setData({ ...data, repeatPassword })}
+              editable={!sending}
+            />
+          </View>
+
+          <View style={styles.inputContainers}>
+            <Input
+              style={styles.inputs}
+              keyboardType={'phone-pad'}
+              placeholder={t`account:phone-number` + ' (' + t`optional` + ')'}
+              value={data.phoneNumber || ''}
+              onChangeText={phoneNumber =>
+                setData({ ...data, phoneNumber: phoneNumber || undefined })
+              }
+              editable={!sending}
+            />
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Button
+              style={styles.button}
+              title={t`account:register`}
+              onPress={handleRegister}
+              disabled={
+                sending ||
+                !data.displayName ||
+                !data.email ||
+                !data.password ||
+                !data.repeatPassword
+              }
+            />
+          </View>
+
+          <TouchableOpacity
+            style={styles.loginLink}
+            onPress={() =>
+              navigation.dispatch(
+                NavigationActions.navigate({
+                  routeName: 'AccountLogin',
+                  params: { email: data.email }
+                })
+              )
             }
-            editable={!sending}
-          />
+          >
+            <Text>{t`account:already-have-an-account-login`}</Text>
+          </TouchableOpacity>
         </View>
-
-        <View style={styles.buttonContainer}>
-          <Button
-            style={styles.button}
-            title={t`account:register`}
-            onPress={handleRegister}
-            disabled={
-              sending ||
-              !data.displayName ||
-              !data.email ||
-              !data.password ||
-              !data.repeatPassword
-            }
-          />
-        </View>
-
-        <TouchableOpacity
-          style={styles.loginLink}
-          onPress={() =>
-            navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'AccountLogin',
-                params: { email: data.email }
-              })
-            )
-          }
-        >
-          <Text>{t`account:already-have-an-account-login`}</Text>
-        </TouchableOpacity>
 
         <Footer style={classes.marginTopBig} />
       </ScrollView>

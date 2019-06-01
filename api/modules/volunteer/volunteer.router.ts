@@ -4,9 +4,11 @@ import {
   subscribedOrganization,
   searchVolunteer,
   volunteerInfo,
-  editVolunteerInfo
+  editVolunteerInfo,
+  getVolunteer
 } from './volunteer.controller'
 import { authorize } from '../../lib/middlewares/authorize'
+import { transact } from '../../lib/transact'
 
 export const volunteerRouter = new Router({
   prefix: '/api/volunteer'
@@ -20,6 +22,11 @@ volunteerRouter.post('/register', async (ctx: any) => {
 // GET /api/volunteer/me *
 volunteerRouter.get('/me', authorize(['VOLUNTEER']), async ctx => {
   ctx.body = await volunteerInfo(ctx.state.user)
+})
+
+// GET /api/volunteer/get/:volunteer_id *
+volunteerRouter.get('/get/:volunteer_id', async ctx => {
+  ctx.body = await transact(s => getVolunteer(ctx.params.volunteer_id, s))
 })
 
 volunteerRouter.put('/edit', async ctx => {

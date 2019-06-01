@@ -21,7 +21,7 @@ function OrganizationCard({ organization, className, isApplication = false }: Pr
   const { loading, t } = useLocale(['organization'])
 
   const detailUrl = !isApplication
-    ? `/organization/${organization._id}`
+    ? `/o/${organization._id}`
     : `/application/${organization._id}`
 
   return (

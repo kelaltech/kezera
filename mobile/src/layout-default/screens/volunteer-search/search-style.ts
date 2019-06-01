@@ -4,7 +4,7 @@ import classes from '../../../assets/styles/classes'
 import values from '../../../assets/styles/values'
 
 export default StyleSheet.create({
-  searchContainer : {
+  searchContainer: {
     justifyContent: 'center',
     alignContent: 'center'
   },

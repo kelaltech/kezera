@@ -36,11 +36,15 @@ function SpamReports() {
         { withCredentials: true, cancelToken: searchCancellation.token }
       )
 
-      setError(undefined)
-      setSpamReports((since ? spamReports : []).concat(response.data))
-      setReady(true)
+      if (!Array.isArray(response.data)) {
+        setError('Response is malformed.')
+      } else {
+        setError(undefined)
+        setSpamReports((since ? spamReports : []).concat(response.data))
+        setReady(true)
+      }
     } catch (e) {
-      if (!Axios.isCancel(error)) setError(error)
+      if (!Axios.isCancel(error)) setError(e)
     }
   }
 

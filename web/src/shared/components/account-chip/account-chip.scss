@@ -1,0 +1,68 @@
+@import '../../../assets/styles/theme';
+
+.account-chip {
+  overflow: visible;
+
+  transition: all 0.25s;
+}
+
+.account-chip-selectable {
+  .account-chip-photo:hover {
+    transform: scale3d(1.1, 1.1, 1.1) translateX(-($space / 8));
+    box-shadow: 0 0 ($space / 2) (-$space / 16) $accent;
+  }
+}
+
+.account-chip-selected {
+  background-color: $accent;
+  box-shadow: 0 ($space / 8) ($space / 2) (-$space / 8) $accent;
+
+  transform: translateY(-($space / 16));
+
+  *,
+  *:active,
+  *:focus,
+  *:hover {
+    color: white;
+  }
+
+  .account-chip-photo {
+    margin: 0 (-$space / 8) 0 0;
+
+    width: $space * 2;
+    height: $space * 2;
+
+    border-radius: 50%;
+
+    box-shadow: 0 0 ($border * 2) ($border) white;
+
+    transform: scale3d(1.2, 1.2, 1.2) translateX(-($space / 4));
+  }
+}
+
+.account-chip-flex {
+}
+
+.account-chip-photo {
+  border-radius: 50%;
+
+  margin: $space / 8;
+  margin-right: 0;
+
+  width: $space * 2 - $space / 4;
+  height: $space * 2 - $space / 4;
+
+  background-color: $primary;
+
+  transition: all 0.25s;
+}
+
+.account-chip-anchor {
+  flex: 1;
+  overflow: hidden;
+
+  padding: 0 $space / 2;
+
+  height: $space * 2;
+  line-height: $space * 2;
+}

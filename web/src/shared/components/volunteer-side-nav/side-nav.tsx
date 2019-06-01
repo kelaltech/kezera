@@ -159,7 +159,7 @@ function Sidenav(props: any) {
                     <Warning problem={errorForO} shy />
                   ) : (
                     organization.map((o: any, k) => (
-                      <Link key={k} to={`/organization/${o._id}`}>
+                      <Link key={k} to={`/o/${o._id}`}>
                         {o.account.displayName}
                       </Link>
                     ))

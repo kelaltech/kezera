@@ -9,12 +9,14 @@ setTimeout(async () => {
   // db should be connected by now
 
   const dbConn = serverApp.dbConn
-  const creations: Promise<any>[] = []
 
   for (const model of serverApp.config.models || []) {
     const name = pluralize()(model.modelName)
-    creations.push(dbConn!.createCollection(name))
-  }
 
-  await Promise.all(creations)
+    const collection = await dbConn!.db.listCollections({ name }).next()
+    if (!collection) {
+      await dbConn!.createCollection(name)
+      console.info(`Created '${name}' collection.`)
+    }
+  }
 }, 5000) // 5 seconds

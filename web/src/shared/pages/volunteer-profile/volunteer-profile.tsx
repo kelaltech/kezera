@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Card, Content, Yoga } from 'gerami'
+import { Anchor, Block, Card, Content, Loading, Warning, Yoga } from 'gerami'
+import { RouteComponentProps } from 'react-router'
+
 import './volunteer-profile.scss'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import { useVolunteerState } from '../../stores/volunteer/volunteer-provider'
+import { useVolunteerState } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
 import {
   List,
   ListItem,
@@ -35,9 +37,55 @@ import {
 } from '../../../../../api/models/certificate/certificate.model'
 import { ICertificateResponse } from '../../../apiv/certificate.apiv'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import { IVolunteerResponse } from '../../../../../api/modules/volunteer/volunteer.apiv'
 
-function Profile() {
+function VolunteerProfile({ match }: RouteComponentProps<{ _id: string }>) {
   const { loading, t } = useLocale(['portfolio'])
+
+  const [error, setError] = useState()
+  const [volunteer, setVolunteer] = useState<IVolunteerResponse | undefined>()
+  const { volunteer: myVolunteer } = useVolunteerState()
+
+  const [waitingForMe, setWaitingForMe] = useState(false)
+  const [requestedId, setRequestedId] = useState<string>()
+
+  const loadBy_id = async (_id: string): Promise<void> => {
+    try {
+      const response = await axios.get<IVolunteerResponse>(`/api/volunteer/get/${_id}`)
+      if (!response.data || !response.data._id)
+        return setError(`Volunteer response is malformed.`)
+
+      setVolunteer(response.data)
+    } catch (e) {
+      setError(e)
+    }
+  }
+
+  useEffect(() => {
+    if (requestedId === match.params._id) {
+      return
+    } else if (match.params._id.toLowerCase() === 'me') {
+      setWaitingForMe(true)
+
+      if (myVolunteer) {
+        setError(undefined)
+        setWaitingForMe(false)
+        setRequestedId(myVolunteer._id)
+
+        setVolunteer(myVolunteer)
+      }
+    } else if (waitingForMe) {
+      return
+    } else {
+      setError(undefined)
+      setRequestedId(match.params._id)
+
+      setVolunteer(undefined)
+
+      loadBy_id(match.params._id).catch(setError)
+    }
+  }, [match.params._id, myVolunteer])
+
   const Settings = {
     dots: false,
     infinite: true,
@@ -74,11 +122,11 @@ function Profile() {
       }
     ]
   }
-  const { account } = useAccountState()
-  const { volunteer } = useVolunteerState()
   const [events, setEvents] = useState([])
   const [certificate, setCertificate] = useState<ICertificateResponse[]>([])
   useEffect(() => {
+    if (!volunteer) return
+
     axios
       .get('/api/event/all')
       .then(events => {
@@ -94,23 +142,30 @@ function Profile() {
       .catch(e => {
         console.log(e)
       })
-  }, [])
+  }, [volunteer])
 
   return (
-    loading || (
+    loading ||
+    (error ? (
+      <Block first last>
+        <Warning shy={() => setError(undefined)} problem={error} />
+      </Block>
+    ) : !volunteer ? (
+      <Loading delay />
+    ) : (
       <div className={'profile-container'}>
         <Block first />
         <Content className={'general-profile'}>
           <div>
             <div
               style={{
-                backgroundImage: `url(${account!.photoUri})`
+                backgroundImage: `url(${volunteer.account.photoUri})`
               }}
               className={'pro-acc-pic-back'}
             />
             <div
               style={{
-                backgroundImage: `url(${account!.photoUri})`
+                backgroundImage: `url(${volunteer.account.photoUri})`
               }}
               className={'pro-acc-pic'}
             />
@@ -119,7 +174,9 @@ function Profile() {
           <div>
             <div className={'account-head-display-name'}>
               <span className={'account-head-display-name-text'}>
-                {account!.displayName}
+                <Anchor to={`/v/${volunteer._id}`}>
+                  {volunteer.account.displayName}
+                </Anchor>
               </span>
             </div>
           </div>
@@ -129,8 +186,8 @@ function Profile() {
               <span>{'22 years old'}</span>
             </div>
             <div>
-              <span>{account!.email}</span>
-              <span>{account!.phoneNumber}</span>
+              <span>{volunteer.account.email}</span>
+              <span>{volunteer.account.phoneNumber}</span>
             </div>
           </div>
         </Content>
@@ -154,9 +211,9 @@ function Profile() {
                     </ListItemIcon>
                     <ListItemText primary="Certificate Achieved" />
                     <ListItemSecondaryAction>
-                      {volunteer!.portfolio.certificate.length === 0
+                      {volunteer.portfolio.certificate.length === 0
                         ? '-'
-                        : volunteer!.portfolio.certificate.length}
+                        : volunteer.portfolio.certificate.length}
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
@@ -165,9 +222,9 @@ function Profile() {
                     </ListItemIcon>
                     <ListItemText primary="Event Attended" />
                     <ListItemSecondaryAction>
-                      {volunteer!.portfolio.events.length === 0
+                      {volunteer.portfolio.events.length === 0
                         ? '-'
-                        : volunteer!.portfolio.events.length}
+                        : volunteer.portfolio.events.length}
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
@@ -176,9 +233,9 @@ function Profile() {
                     </ListItemIcon>
                     <ListItemText primary="Task Accomplished" />
                     <ListItemSecondaryAction>
-                      {volunteer!.portfolio.tasks.length === 0
+                      {volunteer.portfolio.tasks.length === 0
                         ? '-'
-                        : volunteer!.portfolio.tasks.length}
+                        : volunteer.portfolio.tasks.length}
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
@@ -187,9 +244,9 @@ function Profile() {
                     </ListItemIcon>
                     <ListItemText primary="Material Donated" />
                     <ListItemSecondaryAction>
-                      {volunteer!.portfolio.material.length === 0
+                      {volunteer.portfolio.material.length === 0
                         ? '-'
-                        : volunteer!.portfolio.material.length}
+                        : volunteer.portfolio.material.length}
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
@@ -198,9 +255,9 @@ function Profile() {
                     </ListItemIcon>
                     <ListItemText primary="Money Donated" />
                     <ListItemSecondaryAction>
-                      {volunteer!.portfolio.money.length === 0
+                      {volunteer.portfolio.money.length === 0
                         ? '-'
-                        : volunteer!.portfolio.money.length}
+                        : volunteer.portfolio.money.length}
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
@@ -209,9 +266,9 @@ function Profile() {
                     </ListItemIcon>
                     <ListItemText primary="Organ Pledged" />
                     <ListItemSecondaryAction>
-                      {volunteer!.portfolio.organ.length === 0
+                      {volunteer.portfolio.organ.length === 0
                         ? '-'
-                        : volunteer!.portfolio.organ.length}
+                        : volunteer.portfolio.organ.length}
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
@@ -252,13 +309,20 @@ function Profile() {
           </div>
           <Yoga maxCol={2}>
             {certificate.map((c, i) => (
-              <CertificateCard certificate={c} key={i} />
+              <CertificateCard
+                key={i}
+                certificate={c}
+                onPrivacyUpdate={nc => {
+                  certificate[i] = nc
+                  setCertificate(([] as ICertificateResponse[]).concat(certificate))
+                }}
+              />
             ))}
           </Yoga>
         </Content>
       </div>
-    )
+    ))
   )
 }
 
-export default Profile
+export default VolunteerProfile

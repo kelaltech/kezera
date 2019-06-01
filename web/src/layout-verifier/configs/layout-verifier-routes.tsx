@@ -5,6 +5,7 @@ import { useAccountState } from '../../app/stores/account/account-provider'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
+const Landing = lazy(() => import('../../shared/pages/landing/landing'))
 
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
@@ -25,15 +26,19 @@ const SpamReportDetail = lazy(() =>
 const VerifierOrganizations = lazy(() =>
   import('../pages/verifier-organizations/verifier-organizations')
 )
-const OrganizationDetail = lazy(() =>
-  import('../../shared/pages/organization-detail/organization-detail')
-)
 
 const RequestDetail = lazy(() =>
   import('../../shared/pages/request-detail/request-information')
 )
 const EventDetail = lazy(() => import('../../shared/pages/event-detail/event-detail'))
 const NewsDetail = lazy(() => import('../../shared/pages/news-detail/news-detail'))
+
+const VolunteerProfile = lazy(() =>
+  import('../../shared/pages/volunteer-profile/volunteer-profile')
+)
+const OrganizationDetail = lazy(() =>
+  import('../../shared/pages/organization-detail/organization-detail')
+)
 
 export default function LayoutVerifierRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
@@ -51,12 +56,15 @@ export default function LayoutVerifierRoutes({ prefix: p }: { prefix: string }) 
       <Route exact path={`${p}/spam-report/:_id`} component={SpamReportDetail} />
 
       <Route exact path={`${p}/organizations`} component={VerifierOrganizations} />
-      <Route exact path={`${p}/organization/:_id`} component={OrganizationDetail} />
 
       <Route exact path={`${p}/request/:_id`} component={RequestDetail} />
       <Route exact path={`${p}/event/:_id`} component={EventDetail} />
       <Route exact path={`${p}/news/:_id`} component={NewsDetail} />
 
+      <Route exact path={`${p}/v/:_id`} component={VolunteerProfile} />
+      <Route exact path={`${p}/o/:_id`} component={OrganizationDetail} />
+
+      <Route exact path={`${p}/about`} component={Landing} />
       <Route component={NotFound} />
     </Switch>
   )

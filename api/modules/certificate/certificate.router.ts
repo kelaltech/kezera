@@ -31,14 +31,14 @@ certificateRouter.get('/print/:_id', handle(CertificateController, (c, s) => c.p
 /* PRIVACY */
 
 // PUT /api/certificate/set-privacy/:_id/public *
-certificateRouter.get(
+certificateRouter.put(
   '/set-privacy/:_id/public',
   authorize(['VOLUNTEER']),
   handle(CertificateController, (c, s) => c.setPrivacy('PUBLIC', s))
 )
 
 // PUT /api/certificate/set-privacy/:_id/private *
-certificateRouter.get(
+certificateRouter.put(
   '/set-privacy/:_id/private',
   authorize(['VOLUNTEER']),
   handle(CertificateController, (c, s) => c.setPrivacy('PRIVATE', s))
