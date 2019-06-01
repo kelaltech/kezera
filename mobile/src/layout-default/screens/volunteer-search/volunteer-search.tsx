@@ -10,6 +10,7 @@ import NewsToday from '../../../shared/components/news-today/news-today'
 import { INewsResponse } from '../../../../../api/modules/news/news.apiv'
 import { richTextToDisplayText } from '../../../lib/richTextConverter'
 import { EventCardSecond } from '../../../shared/components/event-card/event-card'
+import classes from '../../../assets/styles/classes'
 function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['volunteer'])
   const [placeholder, setPlaceholder] = useState<boolean>(true)
@@ -93,6 +94,10 @@ function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
           ):(
             <>
             <View>
+              <View style={searchStyle.displayHeader}>
+                <Text style={classes.head1} >News</Text>
+                <Text style={classes.link} >see more</Text>
+              </View>
               <ScrollView horizontal>
                 {
                   news.map((n:INewsResponse,k)=>(
@@ -102,7 +107,7 @@ function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
                       likes={n.likes.length}
                       description={n.description}
                       title={n.title}
-                      img={{uri:`/api/news/${n._id}/pic`}}
+                      img={{uri:`/api/news/${n._id}/pic?size=500`}}
                       key={k}
                       _id={n._id}
                     />
@@ -111,7 +116,11 @@ function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
               </ScrollView>
             </View>
               <View>
-                <ScrollView horizontal>s
+                <View style={searchStyle.displayHeader}>
+                  <Text style={classes.head1} >Event</Text>
+                  <Text style={classes.link} >see more</Text>
+                </View>
+                <ScrollView horizontal>
                   {
                     event.map((e,k)=>(
                       <EventCardSecond
