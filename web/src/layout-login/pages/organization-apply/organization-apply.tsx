@@ -11,6 +11,7 @@ import AccountRegister from '../../../shared/components/account-register/account
 import OrganizationApplyLegal from './components/organization-apply-legal/organization-apply-legal'
 import OrganizationFormBrand from '../../../shared/components/organization-form-brand/organization-form-brand'
 import OrganizationFormAbout from '../../../shared/components/organization-form-about/organization-form-about'
+import OrganizationFormFunding from '../../../shared/components/organization-form-funding/organization-form-funding'
 import OrganizationFormBio from '../../../shared/components/organization-form-bio/organization-form-bio'
 
 const defaultOrganizationRequest: IOrganizationRequest = {
@@ -37,6 +38,17 @@ const defaultOrganizationRequest: IOrganizationRequest = {
   // about
   type: 'NGO',
   locations: [],
+
+  // funding
+  funding: {
+    bankAccount: {
+      bankName: '',
+      bankCountry: '',
+      accountHolder: '',
+      accountNumber: ''
+    },
+    payPalMeId: undefined
+  },
 
   // bio
   bio: ''
@@ -161,6 +173,11 @@ function OrganizationApply() {
               />
 
               <OrganizationFormAbout
+                organization={organization}
+                setOrganization={setOrganization}
+              />
+
+              <OrganizationFormFunding
                 organization={organization}
                 setOrganization={setOrganization}
               />

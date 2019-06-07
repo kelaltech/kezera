@@ -1,0 +1,10 @@
+@import '../../../assets/styles/theme';
+
+.organization-form-funding-bank-account-content {
+  margin-top: $space / 2;
+  padding: $space;
+
+  border-left: $space / 4 solid $accent;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

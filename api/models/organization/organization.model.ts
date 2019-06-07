@@ -32,6 +32,16 @@ export type IOrganization = {
   }[]
   website?: string
 
+  funding: {
+    bankAccount?: {
+      bankName: string
+      bankCountry: string
+      accountHolder: string
+      accountNumber: string
+    }
+    payPalMeId?: string
+  }
+
   subscribers?: ObjectId[] // account
 
   licensedNames?: string[]
@@ -63,6 +73,11 @@ OrganizationModel.collection.ensureIndex(
     bio: 'text',
     'locations.address': 'text',
     website: 'text',
+    'funding.bankAccount.bankName': 'text',
+    'funding.bankAccount.bankCountry': 'text',
+    'funding.bankAccount.accountHolder': 'text',
+    'funding.bankAccount.accountNumber': 'text',
+    'funding.payPalMeId': 'text',
     licensedNames: 'text',
     'registrations.id': 'text'
   },
