@@ -69,6 +69,14 @@ organizationRouter.put(
   handle(OrganizationController, (c, s) => c.unsubscribe(s))
 )
 
+/* HELP SEEKING */
+
+// POST /api/organization/seek-help/:organization_id
+organizationRouter.post(
+  '/seek-help/:organization_id',
+  handle(OrganizationController, (c, s) => c.seekHelp(s))
+)
+
 /* LINKS TO OTHER MODULES: */
 
 // GET /api/organization/search-requests/:organization_id?term={''}&since={Date.now()}&count={10}

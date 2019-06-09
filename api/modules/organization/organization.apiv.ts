@@ -113,3 +113,8 @@ export type IOrganizationStats = {
 export type IOrganizationSubscriber = IAccountPublicResponse & {
   volunteerId: string
 }
+
+export type IOrganizationHelpSeekRequest = {
+  contact: string
+  message: string
+}
