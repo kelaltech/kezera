@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, Text } from 'react-native'
+import { RefreshControl, ScrollView, Text } from 'react-native'
 import { NavigationInjectedProps, withNavigation } from 'react-navigation'
 import Axios from 'axios'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
@@ -13,23 +13,37 @@ const kelal = require('../../../assets/images/common/logo-128.png')
 function NewsList({  }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['news'])
   const [news, setNews] = useState([])
+  const [refresh, setRefreshing] = useState<boolean>(false)
   const [error, setError] = useState<any>(null)
   useEffect(() => {
+    getNews()
+  }, [])
+
+  const getNews=()=>{
+    setRefreshing(true)
     Axios.get('/api/news/allnews')
       .then(news => news.data)
       .then(data => {
         setNews(richTextToDisplayText(data))
+        setRefreshing(false)
       })
       .catch(e => {
         setError('check your connection and try again')
       })
-  }, [])
+  }
   return (
     loading || (
       <>
         <Header title={t`news:today`} />
-        <Text>{t`app-name`}: NewsList Screen (in LayoutDefault)</Text>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={{
+            flex: 1
+          }}
+          refreshControl={<RefreshControl
+            refreshing={refresh}
+             onRefresh={getNews}
+          /> }
+          showsVerticalScrollIndicator={false}>
           {news.map((n: any, k) => (
             <NewsToday
               key={k}

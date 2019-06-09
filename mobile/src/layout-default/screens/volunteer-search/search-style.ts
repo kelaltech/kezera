@@ -9,8 +9,8 @@ export default StyleSheet.create({
     alignContent: 'center'
   },
   searchInput: {
-    alignSelf: 'center',
-    flex: 2
+   /* alignSelf: 'center',
+    flex: 2*/
   },
   displayHeader: {
     justifyContent: 'space-between',

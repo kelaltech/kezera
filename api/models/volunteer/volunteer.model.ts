@@ -37,7 +37,9 @@ export const VolunteerModel = volunteerModelFactory.model
 
 VolunteerModel.collection.ensureIndex(
   {
-    username: 'text'
+    'account.displayName': 'text',
+    'account.email' : 'text',
+    'account.phoneNumber': 'text'
   },
   {
     name: 'volunteer_search'
