@@ -6,6 +6,7 @@ import { Flex } from 'gerami'
 
 // routes
 const NotFound = lazy(() => import('../../shared/pages/not-found/not-found'))
+const Landing = lazy(() => import('../../shared/pages/landing/landing'))
 const AccountDetail = lazy(() =>
   import('../../shared/pages/account-detail/account-detail')
 )
@@ -14,6 +15,14 @@ const VerifierList = lazy(() => import('../pages/verifier-list/verifier-list'))
 const VerifierSearchResult = lazy(() => import('../pages/verifier-search-result/verifier-search-result'))
 const VerifierDescription = lazy(() =>
   import('../pages/verifier-description/verifier-description')
+)
+
+const OrganizationDetail = lazy(() =>
+  import('../../shared/pages/organization-detail/organization-detail')
+)
+const SeekHelp = lazy(() => import('../../shared/pages/seek-help/seek-help'))
+const VolunteerProfile = lazy(() =>
+  import('../../shared/pages/volunteer-profile/volunteer-profile')
 )
 
 export default function LayoutAdminRoutes({ prefix: p }: { prefix: string }) {
@@ -31,6 +40,12 @@ export default function LayoutAdminRoutes({ prefix: p }: { prefix: string }) {
           <Route exact path={`${p}/verifier/:_id`} component={VerifierDescription} />
         </Flex>
       )}
+
+      <Route exact path={`${p}/v/:_id`} component={VolunteerProfile} />
+      <Route exact path={`${p}/o/:_id`} component={OrganizationDetail} />
+      <Route exact path={`${p}/seek-help/:organization_id`} component={SeekHelp} />
+
+      <Route exact path={`${p}/about`} component={Landing} />
       <Route component={NotFound} />
     </Switch>
   )

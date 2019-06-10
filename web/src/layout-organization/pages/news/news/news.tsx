@@ -7,6 +7,7 @@ import { Block, Yoga } from 'gerami'
 import RichPage from '../../../../shared/components/rich-page/rich-page'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAccountState } from '../../../../app/stores/account/account-provider'
+import { richTextToDisplayText } from '../../../../lib/richTextConverter'
 export default function News() {
   const [news, setNews] = useState([])
   const [error, setError] = useState()
@@ -14,36 +15,14 @@ export default function News() {
   const { account } = useAccountState()
   useEffect(() => {
     axios
-      .get('/api/news/allnews')
+      .get('/api/news/me')
       .then(data => {
-        // console.log(data.data)
-
-        let article = ''
-        let description = ''
-        let title = ''
-        //for mapping the stored Editor state in to plain text/string
-        for (let d of data.data) {
-          JSON.parse(d.article).blocks.map((block: any) => (article += block.text))
-          JSON.parse(d.title).blocks.map((block: any) => (title += block.text))
-          JSON.parse(d.description).blocks.map(
-            (block: any) => (description += block.text)
-          )
-          d.article = article
-          d.title = title
-          d.description = description
-
-          article = ''
-          description = ''
-          title = ''
-        }
-
-        setNews(data.data)
+        setNews(richTextToDisplayText(data.data))
       })
       .catch(e => {
         setError(e)
       })
   }, [])
-  // todo change the route to organization specific
   return (
     <RichPage
       error={error}

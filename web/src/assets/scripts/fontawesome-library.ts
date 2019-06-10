@@ -50,9 +50,12 @@ import {
   faBellSlash,
   faFileArchive,
   faDoorOpen,
-  faUserSlash
+  faUserSlash,
+  faPrint,
+  faEyeSlash,
+  faPiggyBank
 } from '@fortawesome/free-solid-svg-icons'
-import { faFacebook } from '@fortawesome/free-brands-svg-icons'
+import { faFacebook, faPaypal } from '@fortawesome/free-brands-svg-icons'
 import {
   faUserCircle as farUserCircle,
   faCommentAlt as farCommentAlt,
@@ -117,11 +120,14 @@ export default function fontawesomeLibrary() {
     faFileArchive,
     faEye,
     faBuilding,
-    faUserSlash
+    faUserSlash,
+    faPrint,
+    faEyeSlash,
+    faPiggyBank
   )
 
   // brands
-  library.add(faFacebook)
+  library.add(faFacebook, faPaypal)
 
   // regular (free)
   library.add(farUserCircle, farCommentAlt, farHeart, farNewspaper, farCalendarAlt)

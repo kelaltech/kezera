@@ -22,6 +22,17 @@ serverApp.app.use(sslRedirect())
 serverApp.app.use(async (ctx, next) =>
   ctx.path.toLowerCase() === '/api/test' ? (ctx.body = 'Hello, world!') : await next()
 )
+
+// todo: add a feature in meseret to whitelist no-cache files (also, generally make koa-static-cache's options accessible), then remove this
+// no-cache for /service-worker.js
+serverApp.app.use(async (ctx, next) => {
+  await next()
+
+  if (ctx.path.toLowerCase() === '/service-worker.js')
+    ctx.set('Cache-Control', 'no-cache, max-age=0')
+})
+
+// todo: attach to running http port (use the serverApp instead)
 export let io: Socket
 serverApp
   .start()

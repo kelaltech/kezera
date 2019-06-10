@@ -11,6 +11,7 @@ import AccountRegister from '../../../shared/components/account-register/account
 import OrganizationApplyLegal from './components/organization-apply-legal/organization-apply-legal'
 import OrganizationFormBrand from '../../../shared/components/organization-form-brand/organization-form-brand'
 import OrganizationFormAbout from '../../../shared/components/organization-form-about/organization-form-about'
+import OrganizationFormFunding from '../../../shared/components/organization-form-funding/organization-form-funding'
 import OrganizationFormBio from '../../../shared/components/organization-form-bio/organization-form-bio'
 
 const defaultOrganizationRequest: IOrganizationRequest = {
@@ -38,6 +39,17 @@ const defaultOrganizationRequest: IOrganizationRequest = {
   type: 'NGO',
   locations: [],
 
+  // funding
+  funding: {
+    bankAccount: {
+      bankName: '',
+      bankCountry: '',
+      accountHolder: '',
+      accountNumber: ''
+    },
+    payPalMeId: undefined
+  },
+
   // bio
   bio: ''
 }
@@ -51,6 +63,9 @@ function OrganizationApply() {
   const [organization, setOrganizationOnState] = useState<IOrganizationRequest>(
     defaultOrganizationRequest
   )
+  const [officialDocumentsRef, setOfficialDocumentsRef] = useState<
+    MutableRefObject<HTMLInputElement> | RefObject<HTMLInputElement>
+  >()
   const [logoRef, setLogoRef] = useState<
     MutableRefObject<HTMLInputElement> | RefObject<HTMLInputElement>
   >()
@@ -67,7 +82,18 @@ function OrganizationApply() {
     setState('SENDING')
 
     const data = new FormData()
-    data.append('data', JSON.stringify(organization))
+    data.append(
+      'data',
+      JSON.stringify({
+        ...organization,
+        officialDocumentsLength:
+          (officialDocumentsRef &&
+            officialDocumentsRef.current &&
+            officialDocumentsRef.current.files &&
+            officialDocumentsRef.current.files.length) ||
+          0
+      })
+    )
     if (
       logoRef &&
       logoRef.current &&
@@ -75,6 +101,15 @@ function OrganizationApply() {
       logoRef.current.files.length
     ) {
       data.append('logo', logoRef.current.files[0])
+    }
+    if (
+      officialDocumentsRef &&
+      officialDocumentsRef.current &&
+      officialDocumentsRef.current.files
+    ) {
+      for (let i = 0; i < officialDocumentsRef.current.files.length; i++) {
+        data.append(`officialDocument${i}`, officialDocumentsRef.current.files[i])
+      }
     }
 
     Axios.post('/api/organization/apply', data, {
@@ -126,6 +161,7 @@ function OrganizationApply() {
               <OrganizationApplyLegal
                 organization={organization}
                 setOrganization={setOrganization}
+                setOfficialDocumentsRef={setOfficialDocumentsRef}
               />
             </div>
 
@@ -137,6 +173,11 @@ function OrganizationApply() {
               />
 
               <OrganizationFormAbout
+                organization={organization}
+                setOrganization={setOrganization}
+              />
+
+              <OrganizationFormFunding
                 organization={organization}
                 setOrganization={setOrganization}
               />
@@ -175,7 +216,18 @@ function OrganizationApply() {
                 {state === 'SENDING' ? (
                   <Loading className={'padding-none'} />
                 ) : (
-                  <Button primary onClick={() => apply()} disabled={!acceptTerms}>
+                  <Button
+                    primary
+                    onClick={() => apply()}
+                    disabled={
+                      !organization.account.displayName ||
+                      !organization.account.email ||
+                      !organization.account.password ||
+                      !organization.type ||
+                      !organization.bio ||
+                      !acceptTerms
+                    }
+                  >
                     Apply Now
                   </Button>
                 )}

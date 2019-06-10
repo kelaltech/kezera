@@ -84,6 +84,7 @@ export class Grid {
 
   async getType(filename = 'default'): Promise<string> {
     await this._checkDocument()
+    await this._checkFilename(filename)
 
     return new Promise<string>((resolve, reject) => {
       this._gfs

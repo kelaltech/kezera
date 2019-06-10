@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { Anchor, Content, Flex, FlexSpacer, Warning } from 'gerami'
+import { Anchor, Button, Content, Flex, FlexSpacer, Warning, Yoga } from 'gerami'
 import { IButtonProps } from 'gerami/src/components/Button/Button'
 import { Tab, Tabs } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,7 +10,10 @@ import Axios from 'axios'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../apiv/organization.apiv'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
+import {
+  useMyOrganizationDispatch,
+  useMyOrganizationState
+} from '../../../layout-organization/stores/my-organization/my-organization-provider'
 import {
   useVolunteerDispatch,
   useVolunteerState
@@ -20,10 +23,12 @@ import OrganizationDetailInfo from './components/organization-detail-info/organi
 import OrganizationDetailRequests from './components/organization-detail-requests/organization-detail-requests'
 import OrganizationDetailEvents from './components/organization-detail-events/organization-detail-events'
 import OrganizationDetailNews from './components/organization-detail-news/organization-detail-news'
+import OrganizationDetailSubscribers from './components/organization-detail-subscribers/organization-detail-subscribers'
 import { reloadSubscriptions } from '../../../layout-volunteer/stores/volunteer/volunteer-actions'
 import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
+import { reloadMyOrganization } from '../../../layout-organization/stores/my-organization/my-organization-actions'
 
-type ITabName = 'info' | 'requests' | 'events' | 'news'
+type ITabName = 'info' | 'requests' | 'events' | 'news' | 'subscribers'
 
 type Props = RouteComponentProps<{ _id: string }> & {
   /**
@@ -54,10 +59,12 @@ function OrganizationDetail({
 
   const { account } = useAccountState()
   const { myOrganization } = useMyOrganizationState()
+  const myOrganizationDispatch = useMyOrganizationDispatch()
   const { subscriptions } = useVolunteerState()
   const volunteerDispatch = useVolunteerDispatch()
 
   const [waitingForMe, setWaitingForMe] = useState(false)
+  const [reloaded, setReloaded] = useState(false)
   const [requestedId, setRequestedId] = useState<string>()
 
   const loadBy_id = async (_id: string): Promise<void> => {
@@ -88,6 +95,11 @@ function OrganizationDetail({
         setRequestedId(myOrganization._id)
 
         setOrganization(myOrganization)
+
+        if (!reloaded) {
+          setReloaded(true)
+          reloadMyOrganization(myOrganizationDispatch, true)
+        }
       }
     } else if (waitingForMe) {
       return
@@ -117,6 +129,8 @@ function OrganizationDetail({
         return setTab('events')
       case 'news':
         return setTab('news')
+      case 'subscribers':
+        return setTab('subscribers')
     }
   }, [query.tab])
 
@@ -149,7 +163,7 @@ function OrganizationDetail({
       documentTitle={organization && organization.account.displayName}
       title={
         organization && (
-          <Anchor to={`/organization/${organization._id}`}>
+          <Anchor to={`/${!isApplication ? 'o' : 'application'}/${organization._id}`}>
             <h1 className={'margin-none'}>{organization.account.displayName}</h1>
           </Anchor>
         )
@@ -159,107 +173,108 @@ function OrganizationDetail({
         (!organization.motto && !organization.website ? (
           undefined
         ) : (
-          <Flex>
-            {!organization.motto ? null : (
+          <Yoga maxCol={2}>
+            <Flex>
+              {!organization ? null : (
+                <>
+                  <span>{organization.type}</span>
+                  <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
+                    |
+                  </span>
+                  <span>
+                    {!isApplication
+                      ? `${organization.subscribersCount || 'NO'} SUBSCRIBER${
+                          organization.subscribersCount === 1 ? '' : 'S'
+                        }`
+                      : `Sent on ${new Date(organization._at).toDateString().substr(3)}`}
+                  </span>
+                </>
+              )}
+            </Flex>
+
+            <Flex className={'right'}>
+              {organization.account.status !== 'ACTIVE' ||
+              !organization.website ? null : (
+                <>
+                  <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
+                    {organization.website}
+                  </Anchor>
+                  <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
+                    |
+                  </span>
+                </>
+              )}
               <>
-                <span>{organization.type}</span>
-                <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
-                  |
-                </span>
-                <span>
-                  {!isApplication
-                    ? `${organization.subscribersCount || 'NO'} SUBSCRIBER${
-                        organization.subscribersCount === 1 ? '' : 'S'
-                      }`
-                    : `Sent on ${new Date(organization._at).toDateString().substr(3)}`}
-                </span>
-              </>
-            )}
-            <FlexSpacer />
-            {organization.account.status !== 'ACTIVE' || !organization.website ? null : (
-              <>
-                <Anchor href={organization.website} target={'_blank'} rel={'noopenner'}>
-                  {organization.website}
+                <Anchor
+                  onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                  title={`Report Organization as Spam`}
+                >
+                  <FontAwesomeIcon icon={'user-slash'} />
                 </Anchor>
-                <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
-                  |
+                <span className={'absolute inline-block padding-top-big'}>
+                  <SpamReportDrop
+                    type={'ORGANIZATION'}
+                    ids={[organization._id]}
+                    open={isSpamReportDropOpen}
+                    onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
+                    align={'right'}
+                  />
                 </span>
               </>
-            )}
-            <span>
-              <Anchor
-                onClick={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
-                title={`Report Organization as Spam`}
-              >
-                <FontAwesomeIcon icon={'user-slash'} />
-              </Anchor>
-              <SpamReportDrop
-                type={'ORGANIZATION'}
-                ids={[organization._id]}
-                open={isSpamReportDropOpen}
-                onClose={() => setIsSpamReportDropOpen(!isSpamReportDropOpen)}
-                align={'right'}
-                anchorOffset={18}
-              />
-            </span>
-          </Flex>
+            </Flex>
+          </Yoga>
         ))
       }
-      actions={
-        actionsOverride ||
-        (account &&
-          organization &&
-          ((account.role === 'ORGANIZATION' &&
-            account._id === organization.account._id && [
-              {
-                to: '/account',
-                primary: true,
-                children: (
-                  <>
+      actionsOverride={
+        (actionsOverride && (
+          <>
+            {actionsOverride.map(actionProps => (
+              <Button {...actionProps} />
+            ))}
+          </>
+        )) ||
+        (account && organization && (
+          <>
+            <Anchor
+              to={`/seek-help/${organization._id}`}
+              className={'margin-vertical-auto margin-right-big'}
+            >
+              Seek Help
+            </Anchor>
+
+            {(account.role === 'ORGANIZATION' &&
+              account._id === organization.account._id && (
+                <Button to={'/account'} primary>
+                  <FontAwesomeIcon
+                    icon={'pencil-alt'}
+                    className={'margin-right-normal font-S'}
+                  />
+                  Edit Account
+                </Button>
+              )) ||
+              (account.role === 'VOLUNTEER' &&
+                (subscriptions
+                  .map(subscription => subscription._id)
+                  .includes(organization._id) ? (
+                  <Button onClick={handleUnsubscribe}>
                     <FontAwesomeIcon
-                      icon={'pencil-alt'}
+                      icon={'bell-slash'}
                       className={'margin-right-normal font-S'}
                     />
-                    Edit Account
-                  </>
-                )
-              }
-            ]) ||
-            (account.role === 'VOLUNTEER' &&
-              (subscriptions
-                .map(subscription => subscription._id)
-                .includes(organization._id)
-                ? [
-                    {
-                      onClick: handleUnsubscribe,
-                      primary: false,
-                      children: (
-                        <>
-                          <FontAwesomeIcon
-                            icon={'bell-slash'}
-                            className={'margin-right-normal font-S'}
-                          />
-                          Unsubscribe
-                        </>
-                      )
-                    }
-                  ]
-                : [
-                    {
-                      onClick: handleSubscribe,
-                      primary: true,
-                      children: (
-                        <>
-                          <FontAwesomeIcon
-                            icon={'bell'}
-                            className={'margin-right-normal font-S'}
-                          />
-                          Subscribe
-                        </>
-                      )
-                    }
-                  ])))) ||
-        []
+                    Unsubscribe
+                  </Button>
+                ) : (
+                  <Button onClick={handleSubscribe} primary>
+                    <FontAwesomeIcon
+                      icon={'bell'}
+                      className={'margin-right-normal font-S'}
+                    />
+                    Subscribe
+                  </Button>
+                )))}
+          </>
+        )) ||
+        undefined
       }
     >
       {organization &&
@@ -270,11 +285,14 @@ function OrganizationDetail({
             <Tabs
               value={tab}
               onChange={(e, v) => history.push(`?${qs.stringify({ tab: v })}`)}
+              scrollable={true}
+              scrollButtons={'off'}
             >
               <Tab label={`Info.`} value={'info'} />
               {!isApplication && <Tab label={`Requests`} value={'requests'} />}
               {!isApplication && <Tab label={`Events`} value={'events'} />}
               {!isApplication && <Tab label={`News`} value={'news'} />}
+              {!isApplication && <Tab label={`Subscribers`} value={'subscribers'} />}
             </Tabs>
 
             {tab === 'info' && (
@@ -292,6 +310,9 @@ function OrganizationDetail({
                   <OrganizationDetailEvents organization={organization} />
                 )}
                 {tab === 'news' && <OrganizationDetailNews organization={organization} />}
+                {tab === 'subscribers' && (
+                  <OrganizationDetailSubscribers organization={organization} />
+                )}
               </>
             )}
           </Content>

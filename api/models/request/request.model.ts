@@ -27,3 +27,21 @@ export const requestModelFactory = new ModelFactory<IRequest>({
 })
 
 export const RequestModel = requestModelFactory.model
+
+RequestModel.collection.ensureIndex(
+  {
+    name: 'text',
+    description: 'text',
+    type: 'text',
+    'volunteers.displayName': 'text'
+  },
+  {
+    name: 'request_search',
+    weights: {
+      // default is 1
+      type: 15,
+      name: 10,
+      description: 5
+    }
+  }
+)

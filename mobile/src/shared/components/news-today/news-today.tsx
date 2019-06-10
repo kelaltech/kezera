@@ -96,15 +96,37 @@ function NewsToday({
             image={img}
             imageStyle={newsStyle.imageStyle}
             imageProps={{ resizeMode: 'cover' }}
-          />
+          >
+            <View >
+              <Text
+                style={{
+                  ...classes.head1,
+                  color: values.color.black
+                }}
+              >
+                {title.slice(0, 100)}
+              </Text>
+              <Text
+                style={{
+                  ...classes.sub1,
+                  color: values.color.blackish
+                }}
+              >
+                {description.slice(0, 200)}
+              </Text>
+            </View>
+          </Card>
         </TouchableOpacity>
         <View style={newsStyle.actionStyle}>
           <View style={newsStyle.actionChild}>
-            <Icon
+            <TouchableOpacity
               onPress={handleLike}
+            >
+            <Icon
               name={'heart-outline'}
               type={'material-community'}
             />
+            </TouchableOpacity>
             <Text style={classes.paddingHorizontalSmall}>{like}</Text>
           </View>
           <View style={newsStyle.actionChild}>
@@ -117,37 +139,6 @@ function NewsToday({
             </TouchableOpacity>
             <Text style={classes.paddingHorizontalSmall}>{shares}</Text>
           </View>
-        </View>
-        <View style={classes.paddingHorizontal}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.dispatch(
-                NavigationActions.navigate({
-                  routeName: 'NewsDetail',
-                  params: {
-                    _id: _id
-                  }
-                })
-              )
-            }
-          >
-            <Text
-              style={{
-                ...classes.head1,
-                color: values.color.black
-              }}
-            >
-              {title.slice(0, 100)}
-            </Text>
-            <Text
-              style={{
-                ...classes.sub1,
-                color: values.color.blackish
-              }}
-            >
-              {description.slice(0, 200)}
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
     </>

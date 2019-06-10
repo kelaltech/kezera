@@ -28,7 +28,10 @@ export async function organizationRequestToLeanDocument(
     account: Document & IAccount
   }
 > {
-  const leanDocument = {
+  const leanDocument: IOrganization & {
+    _id?: ObjectId
+    account: Document & IAccount
+  } = {
     _id,
     _last,
 
@@ -80,12 +83,26 @@ export async function organizationRequestToLeanDocument(
     ),
     website: request.website,
 
+    funding: {
+      bankAccount:
+        request.funding.bankAccount &&
+        (request.funding.bankAccount.bankName ||
+          request.funding.bankAccount.bankCountry ||
+          request.funding.bankAccount.accountHolder ||
+          request.funding.bankAccount.accountNumber)
+          ? request.funding.bankAccount
+          : undefined,
+      payPalMeId: request.funding.payPalMeId
+    },
+
     licensedNames: request.licensedNames,
     registrations: request.registrations,
     verifier
   }
 
   if (!leanDocument.motto) delete leanDocument.motto
+  if (!leanDocument.funding.bankAccount) delete leanDocument.funding.bankAccount
+  if (!leanDocument.funding.payPalMeId) delete leanDocument.funding.payPalMeId
   if (!leanDocument.website) delete leanDocument.website
 
   return leanDocument
@@ -136,6 +153,8 @@ export async function organizationDocumentToResponse(
     bio: document.bio,
     locations: document.locations,
     website: document.website,
+
+    funding: document.funding,
 
     subscribersCount: (document.subscribers || []).length,
 

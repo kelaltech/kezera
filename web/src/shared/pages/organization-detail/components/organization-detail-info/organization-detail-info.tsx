@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Anchor, Block, Content, Flex, Yoga } from 'gerami'
 
 import './organization-detail-info.scss'
@@ -6,6 +6,10 @@ import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IOrganizationResponse } from '../../../../../apiv/organization.apiv'
 import { LngLat } from 'mapbox-gl'
 import OrganizationDetailStats from '../organization-detail-stats/organization-detail-stats'
+
+const OrganizationDetailApplicationLegal = lazy(() =>
+  import('../organization-detail-application-legal/organization-detail-application-legal')
+)
 
 interface Props {
   organization: IOrganizationResponse
@@ -25,6 +29,13 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
   return (
     loading || (
       <Content transparent>
+        {isApplication && (
+          <>
+            <OrganizationDetailApplicationLegal application={organization} />
+            <hr />
+          </>
+        )}
+
         {!organization.motto ? null : (
           <Content className={'margin-top-big'}>
             <Block className={'organization-motto'}>
@@ -38,13 +49,68 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
           <Content className={'top'}>
             <Block first className={'bold'}>
-              Bio
+              Funding
             </Block>
 
             <hr />
 
+            <Block>
+              <Flex>
+                <div
+                  className={'light fg-blackish padding-right-normal'}
+                  style={{ flex: 2 }}
+                >
+                  Bank Account:
+                </div>
+                <div style={{ flex: 5 }}>
+                  {!organization.funding.bankAccount ? (
+                    t`n-a`
+                  ) : (
+                    <div className={'font-S'}>
+                      <div>
+                        <span className={'light fg-blackish'}>Bank Name:</span>{' '}
+                        {organization.funding.bankAccount.bankName}
+                      </div>
+                      <div>
+                        <span className={'light fg-blackish'}>Bank Country:</span>{' '}
+                        {organization.funding.bankAccount.bankCountry}
+                      </div>
+                      <div>
+                        <span className={'light fg-blackish'}>Account Holder:</span>{' '}
+                        {organization.funding.bankAccount.accountHolder}
+                      </div>
+                      <div>
+                        <span className={'light fg-blackish'}>Account Number:</span>{' '}
+                        {organization.funding.bankAccount.accountNumber}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Flex>
+            </Block>
+
             <Block last>
-              <pre>{organization.bio}</pre>
+              <Flex>
+                <div
+                  className={'light fg-blackish padding-right-normal'}
+                  style={{ flex: 2 }}
+                >
+                  PayPal.me:
+                </div>
+                <div style={{ flex: 5 }}>
+                  {!organization.funding.payPalMeId ? (
+                    t`n-a`
+                  ) : (
+                    <Anchor
+                      href={`https://wwww.paypal.me/${organization.funding.payPalMeId}`}
+                      target={'_blank'}
+                      rel={'noopener'}
+                    >
+                      PayPal.me/{organization.funding.payPalMeId}
+                    </Anchor>
+                  )}
+                </div>
+              </Flex>
             </Block>
           </Content>
 
@@ -130,6 +196,18 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
             </Block>
           </Content>
         </Yoga>
+
+        <Content className={'top'}>
+          <Block first className={'bold'}>
+            Bio
+          </Block>
+
+          <hr />
+
+          <Block last>
+            <pre>{organization.bio}</pre>
+          </Block>
+        </Content>
       </Content>
     )
   )

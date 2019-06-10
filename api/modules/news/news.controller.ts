@@ -7,6 +7,7 @@ import { Document, Schema } from 'mongoose'
 import { serverApp } from '../../index'
 import { getComment } from '../comment/comment.methods'
 import sharp = require('sharp')
+import { OrganizationModel } from '../../models/organization/organization.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -148,6 +149,55 @@ export async function recentNews(count: number): Promise<any> {
     since: Date.now(),
     count
   })
+}
+
+export async function getMyNews(account: Document & IAccount): Promise<any> {
+  const organization = await get(OrganizationModel, null, {
+    conditions: { account: account._id }
+  })
+  return await list(NewsModel, {
+    conditions: {
+      _by: organization._id
+    }
+  })
+}
+
+export async function NearByNews(
+  account: Document & IAccount,
+  since: any,
+  count: any
+): Promise<any> {
+  const news = await list(NewsModel, {
+    since,
+    count,
+    postQuery: (q, s) => {
+      if (
+        !account ||
+        !account.lastLocation ||
+        !account.lastLocation.type ||
+        !account.lastLocation.coordinates ||
+        !account.lastLocation.coordinates.length
+      ) {
+        return q
+      }
+
+      return q
+        .find({
+          'locations.go': {
+            $nearSphere: {
+              $geometry: {
+                type: account.lastLocation.type,
+                coordinates: account.lastLocation.coordinates,
+                $maxDistance: 20000
+              }
+            }
+          }
+        })
+        .session(s)
+    }
+  })
+
+  return news
 }
 /*export async function addNewsWithPicture(
   data: any,

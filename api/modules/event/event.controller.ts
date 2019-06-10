@@ -147,7 +147,7 @@ export async function editEvent(
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) {
     let updated = await edit(EventModel, id, body)
-    if(ctx!.request.files!.image != undefined){
+    if (ctx!.request.files!.image != undefined) {
       // @ts-ignore
       const stream = sharp(ctx!.request.files!.image.path)
         .resize(1080, 1080, { fit: 'cover' })

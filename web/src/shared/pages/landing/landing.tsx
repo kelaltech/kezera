@@ -1,6 +1,4 @@
 import React from 'react'
-
-import './volunteer-landing.scss'
 import {
   faHandHoldingUsd,
   faArrowAltCircleDown,
@@ -9,12 +7,14 @@ import {
   faHandHoldingHeart
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Card, Content, Yoga, Button, Block } from 'gerami'
+import { Content, Button, Block } from 'gerami'
+
+import './landing.scss'
 import LandingCard from './components/landing-card/landing-card'
 import LandingCard2 from './components/landing-card-2/landing-card-2'
 import CircularStat from './components/statistics/circular-stat'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
-// import { Button } from '@material-ui/core'
+
 function Landing() {
   const { loading, t } = useLocale(['landing'])
   return (
@@ -60,6 +60,9 @@ function Landing() {
             </span>
             <span>
               <h2>L</h2>
+            </span>
+            <span>
+              <h2>U</h2>
             </span>
             <span>
               <h2>N</h2>

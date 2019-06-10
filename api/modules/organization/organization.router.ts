@@ -69,6 +69,14 @@ organizationRouter.put(
   handle(OrganizationController, (c, s) => c.unsubscribe(s))
 )
 
+/* HELP SEEKING */
+
+// POST /api/organization/seek-help/:organization_id
+organizationRouter.post(
+  '/seek-help/:organization_id',
+  handle(OrganizationController, (c, s) => c.seekHelp(s))
+)
+
 /* LINKS TO OTHER MODULES: */
 
 // GET /api/organization/search-requests/:organization_id?term={''}&since={Date.now()}&count={10}
@@ -87,4 +95,10 @@ organizationRouter.get(
 organizationRouter.get(
   '/search-news/:organization_id',
   handle(OrganizationController, (c, s) => c.searchNews(s))
+)
+
+// GET /api/organization/search-subscribers/:organization_id?term={''}&since={Date.now()}&count={10}
+organizationRouter.get(
+  '/search-subscribers/:organization_id',
+  handle(OrganizationController, (c, s) => c.searchSubscribers(s))
 )

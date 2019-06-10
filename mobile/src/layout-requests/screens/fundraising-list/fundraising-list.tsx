@@ -1,13 +1,37 @@
-import React from 'react'
-import { Text } from 'react-native'
-import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import React, { useEffect, useState } from 'react'
 
+import axios from 'axios'
+
+import { useAccountState } from '../../../app/stores/account/account-provider'
+import { View } from 'react-native'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import FundMobileCard from '../../components/fund-card/fund-card'
 
-function FundraisingList({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale(['fundraising'])
+export default function FundMobileList() {
+  const [funds, setFunds] = useState<any[]>([])
+  const { loading, t } = useLocale(['request'])
 
-  return loading || <Text>{t`app-name`}: FundraisingList Screen (in LayoutRequests)</Text>
+  let { account } = useAccountState()
+  useEffect(() => {
+    axios
+      .get('/api/request/list')
+      .then(res => {
+        setFunds(res.data)
+        console.log('successfully retrieved')
+        console.log(res.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }, [])
+
+  return (
+    loading || (
+      <View>
+        {funds.map((fund, i) => (
+          <FundMobileCard request={fund} key={i} />
+        ))}
+      </View>
+    )
+  )
 }
-
-export default withNavigation(FundraisingList)

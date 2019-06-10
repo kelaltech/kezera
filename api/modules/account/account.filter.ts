@@ -21,7 +21,7 @@ export async function accountRequestToLeanDocument(
   _id?: ObjectId,
   _last: Date | number = Date.now()
 ): Promise<IAccount & { _id?: ObjectId }> {
-  const leanDocument = {
+  const leanDocument: IAccount & { _id?: ObjectId } = {
     _id,
     _last,
 
@@ -33,12 +33,7 @@ export async function accountRequestToLeanDocument(
     passwordSetOn,
 
     displayName: request.displayName,
-    phoneNumber: request.phoneNumber,
-
-    lastLocation: {
-      type: 'Point' as 'Point',
-      coordinates: undefined
-    }
+    phoneNumber: request.phoneNumber
   }
 
   if (!leanDocument.phoneNumber) delete leanDocument.phoneNumber

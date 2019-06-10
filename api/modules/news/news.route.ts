@@ -17,7 +17,8 @@ import {
   recentNews,
   getComments,
   addShare,
-  getShare
+  getShare,
+  getMyNews
 } from './news.controller'
 
 export const newsRouter = new Router({
@@ -50,6 +51,11 @@ newsRouter.get('/search', async ctx => {
   ctx.body = await searchNews(ctx.query.term)
 })
 
+//GET /api/news/me
+newsRouter.get('/me', async ctx => {
+  ctx.body = await getMyNews(ctx.state.user)
+})
+
 //GET /api/news/:_newsId
 newsRouter.get('/:_newsId', async ctx => {
   console.log(ctx.params._newsId, 'from news')
@@ -76,16 +82,15 @@ newsRouter.get('/:_newsId/pic', async ctx => {
   )
 })
 
-// GET /api/news/list?since&count
-newsRouter.get('/list', async ctx => {
-  ctx.body = await getAllNews(Number(ctx.query.since), Number(ctx.query.conunt))
-})
-
 //PUT /api/news/:_newsID/like
 newsRouter.put('/:_newsId/like', async ctx => {
   //return a number
-
   ctx.body = await toggleLike(ctx.params._newsId, ctx.state.user)
+})
+
+// GET /api/news/list?since&count
+newsRouter.get('/list', async ctx => {
+  ctx.body = await getAllNews(Number(ctx.query.since), Number(ctx.query.conunt))
 })
 
 newsRouter.get('/:_newsId/likes', async ctx => {
@@ -112,7 +117,5 @@ newsRouter.post('/:_newsId/comment/new', async ctx => {
 })
 
 newsRouter.get('/:_id/comments', async ctx => {
-  console.log('this is the comment !!')
-  console.log(ctx.params._id)
   ctx.body = await getComments(ctx.params._id)
 })

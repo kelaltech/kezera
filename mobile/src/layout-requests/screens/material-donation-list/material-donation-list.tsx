@@ -1,15 +1,40 @@
-import React from 'react'
-import { Text } from 'react-native'
-import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import React, { useEffect, useState } from 'react'
 
+import axios from 'axios'
+
+import { useAccountState } from '../../../app/stores/account/account-provider'
+import { View } from 'react-native'
+import RequestMobileCard from '../../components/request-card/request-card'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import TaskMobileCard from '../../components/task-card/task-card'
+import MaterialMobileCard from '../../components/material-card/material-card'
 
-function MaterialDonationList({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale(['material-donation'])
+export default function MaterialMobileList() {
+  const [materials, setMaterials] = useState<any[]>([])
+  const { loading, t } = useLocale(['request'])
+
+  let { account } = useAccountState()
+  useEffect(() => {
+    axios
+      .get('/api/request/list')
+      .then(res => {
+        setMaterials(res.data)
+        console.log('successfully retrieved')
+        console.log(res.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }, [])
 
   return (
-    loading || <Text>{t`app-name`}: MaterialDonationList Screen (in LayoutRequests)</Text>
+    loading ||
+    (!materials ? null : (
+      <View>
+        {materials.map((material, i) => (
+          <MaterialMobileCard request={material} key={i} />
+        ))}
+      </View>
+    ))
   )
 }
-
-export default withNavigation(MaterialDonationList)

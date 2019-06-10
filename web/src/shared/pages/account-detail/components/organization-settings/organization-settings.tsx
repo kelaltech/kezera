@@ -4,6 +4,7 @@ import { Yoga } from 'gerami'
 import './organization-settings.scss'
 import OrganizationFormBrand from '../../../../components/organization-form-brand/organization-form-brand'
 import OrganizationFormAbout from '../../../../components/organization-form-about/organization-form-about'
+import OrganizationFormFunding from '../../../../components/organization-form-funding/organization-form-funding'
 import OrganizationFormBio from '../../../../components/organization-form-bio/organization-form-bio'
 import {
   useMyOrganizationDispatch,
@@ -40,6 +41,17 @@ const defaultOrganizationRequest: IOrganizationRequest = {
   // about
   type: 'NGO',
   locations: [],
+
+  // funding
+  funding: {
+    bankAccount: {
+      bankName: '',
+      bankCountry: '',
+      accountHolder: '',
+      accountNumber: ''
+    },
+    payPalMeId: undefined
+  },
 
   // bio
   bio: ''
@@ -84,6 +96,11 @@ function OrganizationSettings() {
           setOrganization={saveChanges}
         />
       </Yoga>
+
+      <OrganizationFormFunding
+        organization={myOrganizationRequest}
+        setOrganization={saveChanges}
+      />
 
       <OrganizationFormBio
         organization={myOrganizationRequest}

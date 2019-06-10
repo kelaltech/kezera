@@ -29,7 +29,23 @@ verifierRouter.get(
   handle(VerifierController, (c, s) => c.searchOrganizationApplications(s))
 )
 
-/* APPLICATION REVIEW: */
+/* ORGANIZATION APPLICATION OFFICIAL DOCUMENTS */
+
+// GET /api/organization/list-organization-application-official-documents/:application_id *
+verifierRouter.get(
+  '/list-organization-application-official-documents/:application_id',
+  authorize(['VERIFIER', 'ADMIN']),
+  handle(VerifierController, c => c.listOrganizationApplicationOfficialDocuments())
+)
+
+// GET /api/organization/download-organization-application-official-document/:application_id/:filename *
+verifierRouter.get(
+  '/download-organization-application-official-document/:application_id/:filename',
+  authorize(['VERIFIER', 'ADMIN']),
+  handle(VerifierController, c => c.downloadOrganizationApplicationOfficialDocument())
+)
+
+/* ORGANIZATION APPLICATION REVIEW: */
 
 // POST /api/verifier/approve-organization-application/:_id *
 verifierRouter.post(

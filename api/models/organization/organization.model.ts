@@ -32,6 +32,16 @@ export type IOrganization = {
   }[]
   website?: string
 
+  funding: {
+    bankAccount?: {
+      bankName: string
+      bankCountry: string
+      accountHolder: string
+      accountNumber: string
+    }
+    payPalMeId?: string
+  }
+
   subscribers?: ObjectId[] // account
 
   licensedNames?: string[]
@@ -45,7 +55,8 @@ export type IOrganization = {
 
 export const organizationModelFactory = new ModelFactory<IOrganization>({
   name: 'organization',
-  paths: organizationPaths
+  paths: organizationPaths,
+  options: { typeKey: '$type' }
 })
 
 export const organizationSchema = organizationModelFactory.schema
@@ -62,6 +73,11 @@ OrganizationModel.collection.ensureIndex(
     bio: 'text',
     'locations.address': 'text',
     website: 'text',
+    'funding.bankAccount.bankName': 'text',
+    'funding.bankAccount.bankCountry': 'text',
+    'funding.bankAccount.accountHolder': 'text',
+    'funding.bankAccount.accountNumber': 'text',
+    'funding.payPalMeId': 'text',
     licensedNames: 'text',
     'registrations.id': 'text'
   },
@@ -76,4 +92,7 @@ OrganizationModel.collection.ensureIndex(
   }
 )
 
-OrganizationModel.collection.createIndex({ 'locations.geo': '2dsphere' })
+OrganizationModel.collection.createIndex(
+  { 'locations.geo': '2dsphere' },
+  { sparse: true }
+)

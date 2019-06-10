@@ -13,5 +13,6 @@
   "register-as-volunteer": "Register as Volunteer",
   "login": "Login",
   "Homepage": "Homepage",
-  "validation-failed": "Validation Failed!"
+  "validation-failed": "Validation Failed!",
+  "n-a": "n/a"
 }

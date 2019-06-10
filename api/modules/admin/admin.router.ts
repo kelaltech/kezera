@@ -27,7 +27,8 @@ import {
   SearchVerifier,
   GetJoinedDates,
   GetVerifierPicture,
-  GetVerifiedOrganization, GetOrganizationLocationStatistics
+  GetVerifiedOrganization,
+  GetOrganizationLocationStatistics
 } from './admin.controller'
 import { transact } from '../../lib/transact'
 import { authorize } from '../../lib/middlewares/authorize'
@@ -49,11 +50,7 @@ adminRouter.get('/verifier/list', authorize(['ADMIN']), async ctx => {
 adminRouter.post('/verifier/add', authorize(['ADMIN']), async ctx => {
   console.log(ctx.request.body.data)
   ctx.body = await transact(s => {
-    return AddVerifier(
-      s,
-      JSON.parse(ctx.request.body.data),
-      ctx
-    )
+    return AddVerifier(s, JSON.parse(ctx.request.body.data), ctx)
   })
 })
 

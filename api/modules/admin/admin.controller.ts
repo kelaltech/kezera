@@ -16,23 +16,26 @@ import { FundModel } from '../../models/fundraising/fundraising.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../..'
-import { organizationDocumentToResponse } from '../organization/organization.filter'
 import { ParameterizedContext } from 'koa'
 import { accountDocumentToPublicResponse } from '../account/account.filter'
 
 export async function GetAllVerifiers(): Promise<any[]> {
-  let veriifiers=await list(AccountModel, {preQuery: model => model.find({ role: 'VERIFIER' })})
-  return Promise.all(veriifiers.map(verifier=>accountDocumentToPublicResponse(verifier)))  
+  let veriifiers = await list(AccountModel, {
+    preQuery: model => model.find({ role: 'VERIFIER' })
+  })
+  return Promise.all(
+    veriifiers.map(verifier => accountDocumentToPublicResponse(verifier))
+  )
 }
 export async function AddVerifier(
   session: ClientSession,
   body: IAccountRequest,
-  ctx: ParameterizedContext<any,any>
+  ctx: ParameterizedContext<any, any>
 ): Promise<IAccountResponse> {
-  let controller=new AccountController();
+  let controller = new AccountController()
   let acc = await controller.add(session, body, 'ACTIVE', 'VERIFIER')
-  session && await session.commitTransaction()
-  acc = await controller.addPhoto(undefined,ctx,await get(AccountModel, acc._id))
+  session && (await session.commitTransaction())
+  acc = await controller.addPhoto(undefined, ctx, await get(AccountModel, acc._id))
   return acc
 }
 
@@ -65,7 +68,7 @@ export async function GetAllOrganizations(): Promise<Number> {
 export async function SearchVerifier(term: string): Promise<any> {
   console.log(term)
   let result = await search(AccountModel, term)
-  return Promise.all(result.map(result=>accountDocumentToPublicResponse(result)))
+  return Promise.all(result.map(result => accountDocumentToPublicResponse(result)))
   // return await Promise.all(((await search(AccountModel, term))).map(accountDocumentToPublicResponse)
 }
 
@@ -221,33 +224,32 @@ export async function GetVerifiedOrganization(
   return acc
 }
 
-export async function GetOrganizationLocationStatistics():Promise<any>{
-  console.log("This fetches all the organization location and displays it.")
-  let organizations=await list(OrganizationModel);
-  let counter:number[]=[]
-  let location:any=[]
-  for(let i=0;i<organizations.length;i++){
+export async function GetOrganizationLocationStatistics(): Promise<any> {
+  console.log('This fetches all the organization location and displays it.')
+  let organizations = await list(OrganizationModel)
+  let counter: number[] = []
+  let location: any = []
+  for (let i = 0; i < organizations.length; i++) {
     let org = await organizationDocumentToResponse(organizations[i])
-    if(!location.includes(org.locations[0].address)){
+    if (!location.includes(org.locations[0].address)) {
       location.push(org.locations[0].address)
       counter.push(1)
-    }else {
+    } else {
       counter[location.indexOf(org.locations[0].address)]++
     }
   }
-  return locationStatistics(location,counter,organizations.length);
+  return locationStatistics(location, counter, organizations.length)
 }
 
-
-function locationStatistics(location:string[],counter:number[],total:number){
-  let organizations:ILocation[]=[]
-  for(let i=0;i<location.length;i++){
-    organizations.push({address:location[i],percent:((counter[i]/total)*100)})
+function locationStatistics(location: string[], counter: number[], total: number) {
+  let organizations: ILocation[] = []
+  for (let i = 0; i < location.length; i++) {
+    organizations.push({ address: location[i], percent: (counter[i] / total) * 100 })
   }
-  return organizations;
+  return organizations
 }
 
 interface ILocation {
-  address:string | undefined,
-  percent:number
+  address: string | undefined
+  percent: number
 }

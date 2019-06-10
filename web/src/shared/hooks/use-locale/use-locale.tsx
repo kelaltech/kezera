@@ -37,6 +37,7 @@ function useLocale(
   }, [ut.i18n.language])
 
   useEffect(() => {
+    if (!lng) return
     setLanguage(lng, defaultNamespaces.concat(namespaces), ut.i18n)
       .then(() => setLoaded(true))
       .catch(console.error)
@@ -44,7 +45,11 @@ function useLocale(
 
   return {
     loaded,
-    loading: loaded ? null : loading === null ? null : loading || <Loading delay />,
+    loading: loaded
+      ? null
+      : loading === null
+      ? null
+      : loading || <Loading delay={1000} />,
     ...ut
   }
 }
