@@ -293,13 +293,11 @@ export async function getInterested(id: Schema.Types.ObjectId): Promise<any> {
   return users
 }
 
-export async function listLatestEvents(): Promise<IEvent[] | Document> {
-  let events = await EventModel.find({}).sort({ _at: 'desc' })
-  let response: any = []
-  for (let i = 0; events.length; i++) {
-    response[i] = await EventResponse(events[i])
-  }
-  return response
+export async function listLatestEvents(): Promise<any> {
+  const events = await list(EventModel, {
+    postQuery: query => query.sort({ _at: 'desc' })
+  })
+  return Promise.all(events.map(event => EventResponse(event)))
 }
 
 export async function upcomingEvents(): Promise<IEvent[] | Document> {
