@@ -141,7 +141,7 @@ export default function EventAdd(props: IEventAddProps) {
       <Block className={'center'}>
         <Title size="XXL"> {t`create event`} </Title>
       </Block>
-      <Content size={'L'} style={{overflow:'visible'}}>
+      <Content size={'L'} style={{ overflow: 'visible' }}>
         <form onSubmit={e => HandleAdd(e)} encType={'multipart/form-data'}>
           <Block first>
             <Flex>

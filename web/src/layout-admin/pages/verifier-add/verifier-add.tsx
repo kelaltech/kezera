@@ -137,7 +137,14 @@ export default function VerifierAdd(props: IVerifierAddProps) {
               onClick={() => props.onClose()}
               primary={true}
               className={''}
-              disabled={!!(password.error || displayName.error || phoneNumber.error || email.error) }
+              disabled={
+                !!(
+                  password.error ||
+                  displayName.error ||
+                  phoneNumber.error ||
+                  email.error
+                )
+              }
             >
               {t`create`}
             </Button>

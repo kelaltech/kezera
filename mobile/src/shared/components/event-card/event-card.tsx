@@ -73,10 +73,11 @@ function EventCard(props: NavigationInjectedProps<Params> & IEventCardProps) {
               {new Date(props.event.startDate).toLocaleDateString()}
             </Text>
             <Text style={eventCardStyle.fontSmall}>
-               at {props.event.location!.address
-                        ? props.event.location!.address
-                        : props.event.location!.geo.coordinates}
-                         </Text>
+              at{' '}
+              {props.event.location!.address
+                ? props.event.location!.address
+                : props.event.location!.geo.coordinates}
+            </Text>
           </View>
 
           <View style={eventCardStyle.eventActionButtons}>

@@ -79,7 +79,7 @@ export default function EventEdit(props: IEventEditProps) {
     e.preventDefault()
     let body = new FormData()
     body.append('event', JSON.stringify(newEvent))
-    if(e.target.image.files[0]){
+    if (e.target.image.files[0]) {
       body.append('image', e.target.image.files[0])
     }
     console.log(body)
@@ -94,17 +94,14 @@ export default function EventEdit(props: IEventEditProps) {
           {t`edit`} {t`event`}{' '}
         </Title>
       </Block>
-      <Content size={'L'} style={{overflow:'visible'}}>
+      <Content size={'L'} style={{ overflow: 'visible' }}>
         <form
           onSubmit={e => HandleUpdate(e, props.event._id.toString())}
           encType={'multipart/form-data'}
         >
           <Block first>
             <Flex>
-              <ImageInput
-                name={'image'}
-                src={`/api/event/${props.event._id}/picture`}
-              />
+              <ImageInput name={'image'} src={`/api/event/${props.event._id}/picture`} />
               <Input
                 name="title"
                 className={'margin-big full-width'}

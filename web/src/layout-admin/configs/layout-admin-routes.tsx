@@ -12,7 +12,9 @@ const AccountDetail = lazy(() =>
 )
 const Statistics = lazy(() => import('../pages/statistics/statistics'))
 const VerifierList = lazy(() => import('../pages/verifier-list/verifier-list'))
-const VerifierSearchResult = lazy(() => import('../pages/verifier-search-result/verifier-search-result'))
+const VerifierSearchResult = lazy(() =>
+  import('../pages/verifier-search-result/verifier-search-result')
+)
 const VerifierDescription = lazy(() =>
   import('../pages/verifier-description/verifier-description')
 )

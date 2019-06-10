@@ -18,6 +18,7 @@ import { Grid } from '../../lib/grid'
 import { serverApp } from '../..'
 import { ParameterizedContext } from 'koa'
 import { accountDocumentToPublicResponse } from '../account/account.filter'
+import { organizationDocumentToResponse } from '../organization/organization.filter'
 
 export async function GetAllVerifiers(): Promise<any[]> {
   let veriifiers = await list(AccountModel, {

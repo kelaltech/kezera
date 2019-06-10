@@ -19,7 +19,7 @@ function NewsList({  }: NavigationInjectedProps<{}>) {
     getNews()
   }, [])
 
-  const getNews=()=>{
+  const getNews = () => {
     setRefreshing(true)
     Axios.get('/api/news/allnews')
       .then(news => news.data)
@@ -39,11 +39,9 @@ function NewsList({  }: NavigationInjectedProps<{}>) {
           style={{
             flex: 1
           }}
-          refreshControl={<RefreshControl
-            refreshing={refresh}
-             onRefresh={getNews}
-          /> }
-          showsVerticalScrollIndicator={false}>
+          refreshControl={<RefreshControl refreshing={refresh} onRefresh={getNews} />}
+          showsVerticalScrollIndicator={false}
+        >
           {news.map((n: any, k) => (
             <NewsToday
               key={k}
