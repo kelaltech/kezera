@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, Text, View } from 'react-native'
-import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
 import Axios from 'axios'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import Header from '../../../shared/components/header/header'
@@ -12,13 +12,19 @@ import { EventCardSecond } from '../../../shared/components/event-card/event-car
 import { SearchBar} from 'react-native-elements'
 import classes from '../../../assets/styles/classes'
 import { baseUrl } from '../../../app/configs/setup-axios'
-function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
+import VolunteerCard from '../../../shared/components/volunteer-card/volunteer-card'
+import OrganizationCard from '../../../shared/components/organization-card/organization-card'
+import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
+
+
+function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['volunteer'])
   const [placeholder, setPlaceholder] = useState<boolean>(true)
   const [news, setNews] = useState([])
   const [event, setEvent] = useState([])
   const [request, setRequest] = useState([])
   const [organization, setOrganization] = useState([])
+  const [voluteer, setVolunteer] = useState([])
   const [term, setTerm] = useState()
   const [error, setError] = useState()
 
@@ -27,6 +33,7 @@ function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
       newsSearch()
       eventSearch()
       orgniazationSearch()
+      volunteerSearch()
     }
   }, [term])
 
@@ -61,6 +68,18 @@ function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
         setError(e)
       })
   }
+
+  const volunteerSearch = () => {
+    Axios
+      .get(`/api/volunteer/search?term=${term}`)
+      .then(data=>data.data)
+      .then(voluteers =>{
+        setVolunteer(voluteers)
+      })
+      .catch(e => {
+        setError(e)
+      })
+  }
   const handleChange = (term: string) => {
     setTerm(term)
     setPlaceholder(false)
@@ -89,7 +108,17 @@ function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
               <View>
                 <View style={searchStyle.displayHeader}>
                   <Text style={classes.head1}>News</Text>
-                  <Text style={classes.link}>see more</Text>
+                  <TouchableOpacity
+                    onPress={()=>
+                      navigation.dispatch(
+                        NavigationActions.navigate({
+                          routeName: 'NewsSearchList'
+                        })
+                      )
+                    }
+                  >
+                  <Text style={classes.link}>see mmore</Text>
+                  </TouchableOpacity>
                 </View>
                 <ScrollView horizontal>
                   {news.map((n: INewsResponse, k) => (
@@ -114,6 +143,33 @@ function VolunteerSearch({  }: NavigationInjectedProps<{}>) {
                 <ScrollView horizontal>
                   {event.map((e, k) => (
                     <EventCardSecond event={e} key={k} />
+                  ))}
+                </ScrollView>
+              </View>
+              <View>
+                <View style={searchStyle.displayHeader}>
+                  <Text style={classes.head1}>Volunteer</Text>
+                  <Text style={classes.link}>see more</Text>
+                </View>
+                <ScrollView horizontal>
+                  {voluteer.map((v, k) => (
+                    <VolunteerCard
+                      key={k}
+                      description={'sample description'}
+                      img={{ uri: `http://lorempixel.com/400/200` }}
+                      name={'Biruk Tesfaye'}
+                    />
+                  ))}
+                </ScrollView>
+              </View>
+              <View>
+                <View style={searchStyle.displayHeader}>
+                  <Text style={classes.head1}>Organization</Text>
+                  <Text style={classes.link}>see more</Text>
+                </View>
+                <ScrollView horizontal>
+                  {organization.map((o:IOrganizationResponse, k) => (
+                    <OrganizationCard {...o}/>
                   ))}
                 </ScrollView>
               </View>

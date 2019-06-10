@@ -13,7 +13,7 @@ import TaskDetail from '../../shared/screens/task-detail/task-detail'
 import NewsDetail from '../../shared/screens/news-detail/news-detail'
 import EventDetail from '../../shared/screens/event-detail/event-detail'
 import EventList from '../../shared/screens/event-list/event-list'
-
+import NewsSearchList from '../../shared/screens/news-search-list/news-search-list'
 const AppNavigator = createStackNavigator(
   {
     Init,
@@ -30,7 +30,8 @@ const AppNavigator = createStackNavigator(
     TaskDetail,
     NewsDetail,
     EventDetail,
-    EventList
+    EventList,
+    NewsSearchList
   },
   {
     initialRouteName: 'Init',
