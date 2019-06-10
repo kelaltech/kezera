@@ -30,18 +30,15 @@ export default function Organization(props: IOrganizationProps) {
   )
 }
 
+
+interface ILocation {
+  address:string | undefined,
+  percent:number
+}
+
 let Location = function() {
   let { t } = useLocale(['admin'])
-  let locations = [
-    { percent: '38%', location: 'Addis Ababa' },
-    { percent: '22%', location: 'Gondar' },
-    { percent: '13%', location: 'Bahir dar' },
-    { percent: '8%', location: 'Welega' },
-    { percent: '6%', location: 'Mekele' },
-    { percent: '5%', location: 'Harar' },
-    { percent: '5%', location: 'Wollo' },
-    { percent: '3%', location: 'Gambella' }
-  ]
+  let locations:ILocation[]=useFetch('api/admin/organization/location')
   return (
     <Content transparent className={'LocationListContainer'}>
       <Title>
@@ -50,9 +47,9 @@ let Location = function() {
       </Title>
       {locations.map(location => (
         <Block>
-          <Title>{location.location} </Title>
+          <Title>{location.address} </Title>
           <ProgressBar
-            width={location.percent}
+            width={location.percent+"%"}
             color={'#1075ff'}
             fontSize={'10px'}
             height={'15px'}

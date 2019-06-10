@@ -7,38 +7,31 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Link } from 'react-router-dom'
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import VerifierAdd from '../verifier-add/verifier-add'
 import { useAdminDispatch, useAdminState } from '../../stores/admin-provider'
 import { DeleteVerifiers } from '../../stores/admin-action'
 import { IAccountResponse } from '../../../../../api/modules/account/account.apiv'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import SearchBar from '../../../shared/components/search-bar/search-bar'
+import Axios from 'axios'
+import userIcon from "../../../assets/userIcon/userIcon.png"
 
-export default function VerifierList() {
+import *as  qs from 'qs'
+type props=RouteComponentProps & {
+
+}
+
+function VerifierList(props:props) {
   let [open, setOpen] = useState(false)
-  let { t } = useLocale(['admin'])
+  let [term, setTerm] = useState('')
+  let { t ,loading} = useLocale(['admin'])
   let { verifiers } = useAdminState()
   const AdminDispatch = useAdminDispatch()
   let searchData: IAccountResponse[] = []
 
-  let SearchEvent = function(e: any) {
-    try {
-      let term = e.target.value
-      if (searchData.length == 0) {
-        searchData = verifiers
-      }
-      if (term === null || term.match(/^ *$/) !== null) {
-        searchData = verifiers
-      } else {
-        verifiers = searchData.filter((d: IAccountResponse) => {
-          const regex = new RegExp(e.target.value, 'gi')
-          let name = d.displayName
-          return name.match(regex)
-        })
-        // verifiers=result;
-        console.log(verifiers)
-      }
-    } catch (e) {}
+  let SearchEvent = function(term: string) {
+
   }
 
   let handleDelete = function(id: string) {
@@ -46,7 +39,7 @@ export default function VerifierList() {
       DeleteVerifiers(id, AdminDispatch)
     }
   }
-  return (
+  return loading || (
     <Block className={'flex full-width inline-block'}>
       <Block className={''}>
         <Title size={'3XL'}>
@@ -54,16 +47,16 @@ export default function VerifierList() {
         </Title>
       </Block>
       <Block className={'right'}>
-        <Input
-          type={'search'}
-          name={'Search'}
-          onKeyUp={e => SearchEvent(e)}
-          placeholder={t`search verifiers`}
-        />
         <Button onClick={() => setOpen(true)}>
           {' '}
           <FontAwesomeIcon icon={'user-shield'} /> &emsp; {t`create verifier`}{' '}
         </Button>
+        <SearchBar
+          onSearch={()=>props.history.push({pathname:'/verifier-search',search:qs.stringify({term:term})})}
+          className={"margin-vertical-normal"}
+          onTerm={term=>setTerm(term)}
+          placeholder={'Search for verifiers'}
+        />
       </Block>
       <VerifierAdd open={open} onClose={() => setOpen(false)} />
       <Content>
@@ -83,7 +76,8 @@ export default function VerifierList() {
                   <TableCell>
                     <label>
                       <Image
-                        src={`/api/admin/verifier/pic/${field._id}`}
+                        // src={`/api/admin/verifier/pic/${field._id}`}
+                        src={field.photoUri?`${field.photoUri}?size=64`:userIcon}
                         className="Verifier-Image middle"
                       />
                       &emsp;
@@ -126,3 +120,4 @@ export default function VerifierList() {
     </Block>
   )
 }
+export default withRouter(VerifierList)
