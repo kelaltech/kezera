@@ -133,7 +133,15 @@ export async function removeNews(_newsId: ObjectId, pictureID = 'default'): Prom
 }
 
 export async function getNews(_newsId: ObjectId): Promise<any> {
-  const docs = await get(NewsModel, _newsId)
+  const docs = await get(NewsModel, _newsId, {
+    postQuery: p =>
+      p.populate({
+        path: '_by',
+        populate: {
+          path: 'account'
+        }
+      })
+  })
   return docs
 }
 

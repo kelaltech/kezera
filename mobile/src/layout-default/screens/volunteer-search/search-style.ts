@@ -1,13 +1,12 @@
-import { StyleSheet, Dimensions} from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 
 import classes from '../../../assets/styles/classes'
 import values from '../../../assets/styles/values'
- const height = Dimensions.get('window').height
+const height = Dimensions.get('window').height
 export default StyleSheet.create({
-
   searchContainer: {
-    backgroundColor: values.color.white ,
-    borderBottomWidth:0
+    backgroundColor: values.color.white,
+    borderBottomWidth: 0
   },
   displayHeader: {
     justifyContent: 'space-between',
@@ -15,14 +14,12 @@ export default StyleSheet.create({
     ...classes.paddingHorizontal,
     ...classes.paddingVertical
   },
-  placeholderParent : {
+  placeholderParent: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     ...classes.marginTopBig
   },
-  columnContainer: {
-
-  },
+  columnContainer: {},
   iconContainer: {
     borderLeftWidth: 0.5,
     borderRightWidth: 0.5,
@@ -33,13 +30,13 @@ export default StyleSheet.create({
     ...classes.paddingBig,
     shadowColor: values.color.black,
     shadowRadius: values.space.normal
-   },
+  },
   iconStyle: {
     fontSize: values.space.big + 10,
     color: values.color.primary,
     ...classes.marginVerticalSmall
   },
-  iconLabel : {
+  iconLabel: {
     textAlign: 'center'
   }
 })

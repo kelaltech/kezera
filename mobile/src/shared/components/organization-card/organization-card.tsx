@@ -23,27 +23,19 @@ function OrganizationCard({
   const [subscribers, setSubscribers] = useState(subscribersCount)
   const { subscriptions, volunteer } = useVolunteerState()
   const handleSubscribe = () => {
-    Axios.put(
-      `/api/organization/subscribe/${_id}`,
-      undefined,
-      {
-        withCredentials: true
-      }
-    )
+    Axios.put(`/api/organization/subscribe/${_id}`, undefined, {
+      withCredentials: true
+    })
       .then(data => data.data)
       .then((o: IOrganizationResponse) => {
         setSubscribers(o.subscribersCount)
       })
   }
 
-  const handleUnsubscribe = ()=> {
-    Axios.put(
-      `/api/organization/unsubscribe/${_id}`,
-      undefined,
-      {
-        withCredentials: true
-      }
-    )
+  const handleUnsubscribe = () => {
+    Axios.put(`/api/organization/unsubscribe/${_id}`, undefined, {
+      withCredentials: true
+    })
       .then(data => data.data)
       .then((o: IOrganizationResponse) => {
         setSubscribers(o.subscribersCount)
@@ -52,21 +44,23 @@ function OrganizationCard({
 
   return (
     <View style={{ width: Dimensions.get('window').width }}>
-      <Card title={account.displayName} featuredTitle={motto} featuredSubtitle={type} image={{ uri: `${baseUrl}${logoUri}` }}>
-        {
-          subscriptions!.map(s => s._id).includes(volunteer!._id) ?
-            (
-              <Button
-                onPress={handleUnsubscribe}
-                title={`Unsubscribe ${subscribers ? subscribers : ''}`}
-              />
-            ): (
-              <Button
-                onPress={handleSubscribe}
-                title={`Subscribe ${subscribers ? subscribers : ''}`}
-              />
-            )
-        }
+      <Card
+        title={account.displayName}
+        featuredTitle={motto}
+        featuredSubtitle={type}
+        image={{ uri: `${baseUrl}${logoUri}` }}
+      >
+        {subscriptions!.map(s => s._id).includes(volunteer!._id) ? (
+          <Button
+            onPress={handleUnsubscribe}
+            title={`Unsubscribe ${subscribers ? subscribers : ''}`}
+          />
+        ) : (
+          <Button
+            onPress={handleSubscribe}
+            title={`Subscribe ${subscribers ? subscribers : ''}`}
+          />
+        )}
       </Card>
     </View>
   )

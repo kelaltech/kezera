@@ -104,64 +104,70 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
           </View>
           {placeholder ? (
             <>
-                <Text
-                  style={
-                    {
-                      ...classes.head1,
-                      ...classes.marginHorizontalBig,
-                      ...classes.marginVerticalBig,
-                      textAlign: 'center',
-                    }
-                  }
-                >
-                  Explore Kezera!! search ...
-                </Text>
-            <View style={
-              searchStyle.placeholderParent
-            }>
-              <View>
-                <View  style={
-                  searchStyle.iconContainer
-                }>
-                  <Icon iconStyle={searchStyle.iconStyle} name={'newspaper'}  type={'material-community'} />
-                  <Text style={searchStyle.iconLabel}> News </Text>
+              <Text
+                style={{
+                  ...classes.head1,
+                  ...classes.marginHorizontalBig,
+                  ...classes.marginVerticalBig,
+                  textAlign: 'center'
+                }}
+              >
+                Explore Kezera!! search ...
+              </Text>
+              <View style={searchStyle.placeholderParent}>
+                <View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'newspaper'}
+                      type={'material-community'}
+                    />
+                    <Text style={searchStyle.iconLabel}> News </Text>
+                  </View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'calendar'}
+                      type={'material-community'}
+                    />
+                    <Text style={searchStyle.iconLabel}> Events </Text>
+                  </View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'monetization-on'}
+                      type={'material'}
+                    />
+                    <Text style={searchStyle.iconLabel}> Donation Request </Text>
+                  </View>
                 </View>
-                <View style={
-                  searchStyle.iconContainer
-                }>
-                  <Icon iconStyle={searchStyle.iconStyle} name={'calendar'}   type={'material-community'} />
-                  <Text style={searchStyle.iconLabel}> Events </Text>
-                </View>
-                <View style={
-                  searchStyle.iconContainer
-                }>
-                  <Icon iconStyle={searchStyle.iconStyle} name={'monetization-on'}   type={'material'} />
-                  <Text style={searchStyle.iconLabel}> Donation Request </Text>
+                <View style={searchStyle.columnContainer}>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'work'}
+                      type={'material'}
+                    />
+                    <Text style={searchStyle.iconLabel}> Organizations </Text>
+                  </View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'users'}
+                      type={'font-awesome'}
+                    />
+                    <Text style={searchStyle.iconLabel}> Volunteers </Text>
+                  </View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'search'}
+                      type={'font-awesome'}
+                    />
+                    <Text style={searchStyle.iconLabel}> and More </Text>
+                  </View>
                 </View>
               </View>
-              <View style={
-                searchStyle.columnContainer
-              }>
-                <View style={
-                  searchStyle.iconContainer
-                }>
-                  <Icon iconStyle={searchStyle.iconStyle} name={'work'}  type={'material'} />
-                  <Text style={searchStyle.iconLabel}> Organizations </Text>
-                </View>
-                <View style={
-                  searchStyle.iconContainer
-                }>
-                  <Icon iconStyle={searchStyle.iconStyle} name={'users'} type={'font-awesome'} />
-                  <Text style={searchStyle.iconLabel}> Volunteers </Text>
-                </View>
-                <View style={
-                  searchStyle.iconContainer
-                }>
-                  <Icon iconStyle={searchStyle.iconStyle} name={'search'} type={'font-awesome'} />
-                  <Text style={searchStyle.iconLabel}> and More </Text>
-                </View>
-              </View>
-            </View>
             </>
           ) : (
             <ScrollView

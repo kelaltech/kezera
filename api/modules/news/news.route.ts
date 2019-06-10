@@ -58,7 +58,6 @@ newsRouter.get('/me', async ctx => {
 
 //GET /api/news/:_newsId
 newsRouter.get('/:_newsId', async ctx => {
-  console.log(ctx.params._newsId, 'from news')
   ctx.body = await getNews(ctx.params._newsId)
 })
 //DELETE /api/news/:_newsId
