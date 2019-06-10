@@ -96,6 +96,7 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
             <SearchBar
               round
               lightTheme
+              containerStyle={searchStyle.searchContainer}
               placeholder={'search'}
               onChangeText={handleChange}
               value={term}

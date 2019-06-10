@@ -5,6 +5,10 @@ import values from '../../../assets/styles/values'
  const height = Dimensions.get('window').height
 export default StyleSheet.create({
 
+  searchContainer: {
+    backgroundColor: values.color.white ,
+    borderBottomWidth:0
+  },
   displayHeader: {
     justifyContent: 'space-between',
     flexDirection: 'row',
