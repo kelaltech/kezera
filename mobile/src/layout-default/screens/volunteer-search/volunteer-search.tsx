@@ -87,16 +87,15 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
     setTerm(term)
     setPlaceholder(false)
   }
-
-  // todo: a special type of header with the search bar embedded inside
   return (
     loading || (
       <>
         <Header title={'Search'} />
         <View>
-          <View style={searchStyle.searchContainer}>
+          <View>
             <SearchBar
-              inputStyle={searchStyle.searchInput}
+              round
+              lightTheme
               placeholder={'search'}
               onChangeText={handleChange}
               value={term}
