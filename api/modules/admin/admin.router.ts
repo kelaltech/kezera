@@ -23,15 +23,14 @@ import {
   GetEventsInterestedUsers,
   GetNewsLikes,
   GetNewsComments,
-  GetOrganizationLocation,
   GetEventsComments,
   SearchVerifier,
   GetJoinedDates,
   GetVerifierPicture,
-  GetVerifiedOrganization
+  GetVerifiedOrganization,
+  GetOrganizationLocationStatistics
 } from './admin.controller'
 import { transact } from '../../lib/transact'
-import * as fs from 'fs'
 import { authorize } from '../../lib/middlewares/authorize'
 
 export const adminRouter = new Router({ prefix: '/api/admin' })
@@ -51,11 +50,7 @@ adminRouter.get('/verifier/list', authorize(['ADMIN']), async ctx => {
 adminRouter.post('/verifier/add', authorize(['ADMIN']), async ctx => {
   console.log(ctx.request.body.data)
   ctx.body = await transact(s => {
-    return AddVerifier(
-      s,
-      JSON.parse(ctx.request.body.data),
-      fs.createReadStream(ctx.request.files!.image.path)
-    )
+    return AddVerifier(s, JSON.parse(ctx.request.body.data), ctx)
   })
 })
 
@@ -189,6 +184,6 @@ adminRouter.get('/volunteer/joined', authorize(['ADMIN']), async ctx => {
 
 // /api/admin/organization/location
 adminRouter.get('/organization/location', authorize(['ADMIN']), async ctx => {
-  console.log('Getting location')
-  ctx.body = await GetOrganizationLocation(ctx.query.location)
+  console.log('Getting location statistics')
+  ctx.body = await GetOrganizationLocationStatistics()
 })

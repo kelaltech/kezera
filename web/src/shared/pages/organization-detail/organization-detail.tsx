@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { Anchor, Content, Flex, FlexSpacer, Warning, Yoga } from 'gerami'
+import { Anchor, Button, Content, Flex, FlexSpacer, Warning, Yoga } from 'gerami'
 import { IButtonProps } from 'gerami/src/components/Button/Button'
 import { Tab, Tabs } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -225,61 +225,56 @@ function OrganizationDetail({
           </Yoga>
         ))
       }
-      actions={
-        actionsOverride ||
-        (account &&
-          organization &&
-          ((account.role === 'ORGANIZATION' &&
-            account._id === organization.account._id && [
-              {
-                to: '/account',
-                primary: true,
-                children: (
-                  <>
+      actionsOverride={
+        (actionsOverride && (
+          <>
+            {actionsOverride.map(actionProps => (
+              <Button {...actionProps} />
+            ))}
+          </>
+        )) ||
+        (account && organization && (
+          <>
+            <Anchor
+              to={`/seek-help/${organization._id}`}
+              className={'margin-vertical-auto margin-right-big'}
+            >
+              Seek Help
+            </Anchor>
+
+            {(account.role === 'ORGANIZATION' &&
+              account._id === organization.account._id && (
+                <Button to={'/account'} primary>
+                  <FontAwesomeIcon
+                    icon={'pencil-alt'}
+                    className={'margin-right-normal font-S'}
+                  />
+                  Edit Account
+                </Button>
+              )) ||
+              (account.role === 'VOLUNTEER' &&
+                (subscriptions
+                  .map(subscription => subscription._id)
+                  .includes(organization._id) ? (
+                  <Button onClick={handleUnsubscribe}>
                     <FontAwesomeIcon
-                      icon={'pencil-alt'}
+                      icon={'bell-slash'}
                       className={'margin-right-normal font-S'}
                     />
-                    Edit Account
-                  </>
-                )
-              }
-            ]) ||
-            (account.role === 'VOLUNTEER' &&
-              (subscriptions
-                .map(subscription => subscription._id)
-                .includes(organization._id)
-                ? [
-                    {
-                      onClick: handleUnsubscribe,
-                      primary: false,
-                      children: (
-                        <>
-                          <FontAwesomeIcon
-                            icon={'bell-slash'}
-                            className={'margin-right-normal font-S'}
-                          />
-                          Unsubscribe
-                        </>
-                      )
-                    }
-                  ]
-                : [
-                    {
-                      onClick: handleSubscribe,
-                      primary: true,
-                      children: (
-                        <>
-                          <FontAwesomeIcon
-                            icon={'bell'}
-                            className={'margin-right-normal font-S'}
-                          />
-                          Subscribe
-                        </>
-                      )
-                    }
-                  ])))) ||
-        []
+                    Unsubscribe
+                  </Button>
+                ) : (
+                  <Button onClick={handleSubscribe} primary>
+                    <FontAwesomeIcon
+                      icon={'bell'}
+                      className={'margin-right-normal font-S'}
+                    />
+                    Subscribe
+                  </Button>
+                )))}
+          </>
+        )) ||
+        undefined
       }
     >
       {organization &&

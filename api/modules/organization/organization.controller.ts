@@ -4,6 +4,7 @@ import * as fs from 'fs'
 
 import { KoaController } from '../../lib/koa-controller'
 import {
+  IOrganizationHelpSeekRequest,
   IOrganizationRequest,
   IOrganizationResponse,
   IOrganizationStats,
@@ -370,6 +371,50 @@ export class OrganizationController extends KoaController {
       subscriber => subscriber.toString() !== account_id.toString()
     )
     await edit(OrganizationModel, _id, organization, { session })
+  }
+
+  /* HELP SEEKING */
+
+  async seekHelp(
+    session?: ClientSession,
+    organization_id = super.getParam('organization_id'),
+    data = super.getRequestBody<IOrganizationHelpSeekRequest>()
+  ): Promise<void> {
+    if (!data || typeof data.contact !== 'string' || typeof data.message !== 'string')
+      throw new KoaError('Malformed request.', 400, 'MALFORMED_REQUEST')
+    if (data.contact.length > 500 || data.message.length > 1000)
+      throw new KoaError('Field too long.', 400, 'TOO_LONG')
+
+    const organization = await get(OrganizationModel, organization_id, { session })
+
+    await email({
+      to: organization._id,
+
+      subject: 'Help Seeking Request (from kezera)',
+      html: `
+        <!doctype html>
+        <html>
+          <head>
+            <meta charset="utf8">
+            <title>Help Seeking Request (from kezera)</title>
+            <style>
+              html, body { font-family: sans-serif; font-size: 14px }
+            </style>
+          </head>
+          
+          <body>
+            <p>Hello,</p>
+            <p></p>
+            <p>A person with the following contact information seeks for your organization's help for him/herself or someone else.</p>
+            <p style="padding-left: 2em"><span style="font-family: Consolas, monospace; opacity: 0.8">${'TODO'}</span></p>
+            <p>Below is a description message they have attached with their request.</p>
+            <p style="padding-left: 2em; font-family: Consolas, monospace; opacity: 0.8">${'TODO'}</p>
+            <p></p>
+            <p style="padding-top: 1em; font-size: 0.9em; opacity: 0.6">Sincerely,<br>kezera</p>
+          </body>
+        </html>
+      `
+    })
   }
 
   /* LINKS TO OTHER MODULES: */

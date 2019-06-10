@@ -147,12 +147,14 @@ export async function editEvent(
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) {
     let updated = await edit(EventModel, id, body)
-    // @ts-ignore
-    const stream = sharp(ctx!.request.files!.image.path)
-      .resize(1080, 1080, { fit: 'cover' })
-      .jpeg({ quality: 100 })
-    await new Grid(serverApp, EventModel, id).remove()
-    await new Grid(serverApp, EventModel, id).set(stream)
+    if (ctx!.request.files!.image != undefined) {
+      // @ts-ignore
+      const stream = sharp(ctx!.request.files!.image.path)
+        .resize(1080, 1080, { fit: 'cover' })
+        .jpeg({ quality: 100 })
+      await new Grid(serverApp, EventModel, id).remove()
+      await new Grid(serverApp, EventModel, id).set(stream)
+    }
     console.log(updated)
     return await EventResponse(await get(EventModel, id))
   } else throw new KoaError('Not authorized', 401)
@@ -291,13 +293,11 @@ export async function getInterested(id: Schema.Types.ObjectId): Promise<any> {
   return users
 }
 
-export async function listLatestEvents(): Promise<IEvent[] | Document> {
-  let events = await EventModel.find({}).sort({ _at: 'desc' })
-  let response: any = []
-  for (let i = 0; events.length; i++) {
-    response[i] = await EventResponse(events[i])
-  }
-  return response
+export async function listLatestEvents(): Promise<any> {
+  const events = await list(EventModel, {
+    postQuery: query => query.sort({ _at: 'desc' })
+  })
+  return Promise.all(events.map(event => EventResponse(event)))
 }
 
 export async function upcomingEvents(): Promise<IEvent[] | Document> {
@@ -354,7 +354,7 @@ export async function NearByEvents(account: any, since: any, count: any): Promis
               $geometry: {
                 type: 'Point',
                 coordinates: account.lastLocation.coordinates,
-                $minDistance: 100,
+                $minDistance: 0,
                 $maxDistance: 2000
               }
             }

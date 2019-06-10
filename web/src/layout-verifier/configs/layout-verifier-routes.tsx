@@ -39,6 +39,7 @@ const VolunteerProfile = lazy(() =>
 const OrganizationDetail = lazy(() =>
   import('../../shared/pages/organization-detail/organization-detail')
 )
+const SeekHelp = lazy(() => import('../../shared/pages/seek-help/seek-help'))
 
 export default function LayoutVerifierRoutes({ prefix: p }: { prefix: string }) {
   const { account } = useAccountState()
@@ -63,6 +64,7 @@ export default function LayoutVerifierRoutes({ prefix: p }: { prefix: string }) 
 
       <Route exact path={`${p}/v/:_id`} component={VolunteerProfile} />
       <Route exact path={`${p}/o/:_id`} component={OrganizationDetail} />
+      <Route exact path={`${p}/seek-help/:organization_id`} component={SeekHelp} />
 
       <Route exact path={`${p}/about`} component={Landing} />
       <Route component={NotFound} />

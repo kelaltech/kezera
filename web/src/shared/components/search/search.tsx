@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-// import { Input } from 'gerami'
 import { Input } from '@material-ui/core'
-import './search.scss'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { RouteComponentProps, withRouter } from 'react-router'
+
+import './search.scss'
 
 interface ISearchProps {
   to?: string
@@ -35,8 +35,8 @@ function Search({ history, to }: RouteComponentProps & ISearchProps) {
           <form onSubmit={handleSearch}>
             <Input
               onChange={handleSearchChange}
-              // className={'input-search'}
-              placeholder={'search'}
+              className={'input-search'}
+              placeholder={'Search'}
               disableUnderline={true}
             />
           </form>

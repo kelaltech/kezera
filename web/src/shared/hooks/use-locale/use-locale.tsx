@@ -45,7 +45,11 @@ function useLocale(
 
   return {
     loaded,
-    loading: loaded ? null : loading === null ? null : loading || <Loading delay />,
+    loading: loaded
+      ? null
+      : loading === null
+      ? null
+      : loading || <Loading delay={1000} />,
     ...ut
   }
 }

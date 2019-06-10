@@ -31,6 +31,7 @@ const EventDetail = lazy(() => import('../../shared/pages/event-detail/event-det
 const OrganizationDetail = lazy(() =>
   import('../../shared/pages/organization-detail/organization-detail')
 )
+const SeekHelp = lazy(() => import('../../shared/pages/seek-help/seek-help'))
 
 const NewsDetail = lazy(() => import('../../shared/pages/news-detail/news-detail'))
 
@@ -63,6 +64,7 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       {/* exact path={`${p}/v/me`} is a specially supported Route by VolunteerProfile */}
       <Redirect exact from={`${p}/me`} to={`${p}/v/me`} />
       <Route exact path={`${p}/o/:_id`} component={OrganizationDetail} />
+      <Route exact path={`${p}/seek-help/:organization_id`} component={SeekHelp} />
 
       <Route exact path={`${p}/discover`} component={Discovery} />
       <Route exact path={`${p}/`} component={Discovery} />

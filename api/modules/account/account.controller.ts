@@ -78,6 +78,23 @@ export class AccountController extends KoaController {
     )
   }
 
+  async searchVerifiers(
+    session?: ClientSession,
+    term = super.getQuery('term'),
+    since = Number(super.getQuery('since')) || Date.now(),
+    count = Number(super.getQuery('count')) || 10
+  ): Promise<IAccountResponse[]> {
+    const organizations = await search(AccountModel, term, {
+      conditions: { role: 'VERIFIER' },
+      session,
+      since,
+      count
+    })
+    return await Promise.all(
+      organizations.map(organization => accountDocumentToResponse(organization))
+    )
+  }
+
   async editMe(
     session?: ClientSession,
     data = super.getRequestBody<IAccountRequest>(),

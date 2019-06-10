@@ -1,8 +1,12 @@
 @import '../../../../../assets/styles/theme';
 
+.account-head-photo {
+  width: initial;
+}
+
 .account-head-display-name {
   margin: auto 0 auto $space;
-  flex-grow: 1;
+  flex: 1;
   font-size: $space * 2.4;
   font-weight: bold;
   line-height: 1;
