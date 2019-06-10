@@ -38,7 +38,7 @@ export const VolunteerModel = volunteerModelFactory.model
 VolunteerModel.collection.ensureIndex(
   {
     'account.displayName': 'text',
-    'account.email' : 'text',
+    'account.email': 'text',
     'account.phoneNumber': 'text'
   },
   {

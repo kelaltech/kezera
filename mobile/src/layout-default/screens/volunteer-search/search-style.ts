@@ -9,7 +9,7 @@ export default StyleSheet.create({
     alignContent: 'center'
   },
   searchInput: {
-   /* alignSelf: 'center',
+    /* alignSelf: 'center',
     flex: 2*/
   },
   displayHeader: {

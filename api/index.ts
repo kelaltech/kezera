@@ -3,7 +3,6 @@ dotenv.config()
 
 import './configs/passport.config'
 
-
 import { ServerApp } from 'meseret'
 import { serverAppConfig } from './configs/server-app.config'
 import { sslRedirect } from './lib/middlewares/ssl-redirect'
@@ -18,7 +17,7 @@ import { SocketManager } from './configs/SocketManager'
 import * as mongoose from 'mongoose'
 
 //todo: temp
-mongoose.set('useCreateIndex', true);
+mongoose.set('useCreateIndex', true)
 // here, to make sure it is the the first middleware that runs
 serverApp.app.use(sslRedirect())
 

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
+import {
+  NavigationActions,
+  NavigationInjectedProps,
+  withNavigation
+} from 'react-navigation'
 import Axios from 'axios'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import Header from '../../../shared/components/header/header'
@@ -9,13 +13,12 @@ import NewsToday from '../../../shared/components/news-today/news-today'
 import { INewsResponse } from '../../../../../api/modules/news/news.apiv'
 import { richTextToDisplayText } from '../../../lib/richTextConverter'
 import { EventCardSecond } from '../../../shared/components/event-card/event-card'
-import { SearchBar} from 'react-native-elements'
+import { SearchBar } from 'react-native-elements'
 import classes from '../../../assets/styles/classes'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import VolunteerCard from '../../../shared/components/volunteer-card/volunteer-card'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
-
 
 function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['volunteer'])
@@ -70,10 +73,9 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
   }
 
   const volunteerSearch = () => {
-    Axios
-      .get(`/api/volunteer/search?term=${term}`)
-      .then(data=>data.data)
-      .then(voluteers =>{
+    Axios.get(`/api/volunteer/search?term=${term}`)
+      .then(data => data.data)
+      .then(voluteers => {
         setVolunteer(voluteers)
       })
       .catch(e => {
@@ -108,17 +110,21 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
               <View>
                 <View style={searchStyle.displayHeader}>
                   <Text style={classes.head1}>News</Text>
-                  <TouchableOpacity
-                    onPress={()=>
+                  <Text
+                    style={classes.link}
+                    onPress={() =>
                       navigation.dispatch(
                         NavigationActions.navigate({
-                          routeName: 'NewsSearchList'
+                          routeName: 'NewsSearchList',
+                          params: {
+                            term: term
+                          }
                         })
                       )
                     }
                   >
-                  <Text style={classes.link}>see mmore</Text>
-                  </TouchableOpacity>
+                    see mmore
+                  </Text>
                 </View>
                 <ScrollView horizontal>
                   {news.map((n: INewsResponse, k) => (
@@ -128,7 +134,9 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
                       likes={n.likes.length}
                       description={n.description}
                       title={n.title}
-                      img={{ uri: `${baseUrl}/api/news/${n._id}/pic?size=250&quality=80` }}
+                      img={{
+                        uri: `${baseUrl}/api/news/${n._id}/pic?size=250&quality=80`
+                      }}
                       key={k}
                       _id={n._id}
                     />
@@ -138,7 +146,21 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
               <View>
                 <View style={searchStyle.displayHeader}>
                   <Text style={classes.head1}>Event</Text>
-                  <Text style={classes.link}>see more</Text>
+                  <Text
+                    style={classes.link}
+                    onPress={() =>
+                      navigation.dispatch(
+                        NavigationActions.navigate({
+                          routeName: 'EventSearchList',
+                          params: {
+                            term: term
+                          }
+                        })
+                      )
+                    }
+                  >
+                    see more
+                  </Text>
                 </View>
                 <ScrollView horizontal>
                   {event.map((e, k) => (
@@ -149,7 +171,21 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
               <View>
                 <View style={searchStyle.displayHeader}>
                   <Text style={classes.head1}>Volunteer</Text>
-                  <Text style={classes.link}>see more</Text>
+                  <Text
+                    style={classes.link}
+                    onPress={() =>
+                      navigation.dispatch(
+                        NavigationActions.navigate({
+                          routeName: 'VolunteerSearchList',
+                          params: {
+                            term: term
+                          }
+                        })
+                      )
+                    }
+                  >
+                    see more
+                  </Text>
                 </View>
                 <ScrollView horizontal>
                   {voluteer.map((v, k) => (
@@ -165,11 +201,25 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
               <View>
                 <View style={searchStyle.displayHeader}>
                   <Text style={classes.head1}>Organization</Text>
-                  <Text style={classes.link}>see more</Text>
+                  <Text
+                    style={classes.link}
+                    onPress={() =>
+                      navigation.dispatch(
+                        NavigationActions.navigate({
+                          routeName: 'OrganizationSearchList',
+                          params: {
+                            term: term
+                          }
+                        })
+                      )
+                    }
+                  >
+                    see more
+                  </Text>
                 </View>
                 <ScrollView horizontal>
-                  {organization.map((o:IOrganizationResponse, k) => (
-                    <OrganizationCard {...o}/>
+                  {organization.map((o: IOrganizationResponse, k) => (
+                    <OrganizationCard {...o} />
                   ))}
                 </ScrollView>
               </View>
