@@ -51,6 +51,10 @@
 }
 .header-nav-min-view {
   display: none;
+
+  .header-logo {
+    width: $font-L * 1.4;
+  }
 }
 @media (max-width: $mobile * 2) {
   .header-nav-max-view {
@@ -89,6 +93,31 @@
   background-color: transparent !important;
   box-shadow: none !important;
   color: $primary !important;
+}
+
+.header-account-photo {
+  @extend .header-nav-links;
+
+  display: inline-block;
+
+  margin: (-$space / 4) 0 (-$space / 4) ($space);
+
+  $size: $space * 2;
+  width: $size;
+  max-width: $size;
+  min-width: $size;
+  height: $size;
+  max-height: $size;
+  min-height: $size;
+
+  .account-photo {
+    width: $size;
+    max-width: $size;
+    min-width: $size;
+    height: $size;
+    max-height: $size;
+    min-height: $size;
+  }
 }
 
 .header-nav-drop-vault {

@@ -29,12 +29,6 @@ function layoutVerifierNavigation(
         icon: 'file-archive',
         name: `Approved Organizations`,
         shortName: `Organizations`
-      },
-      {
-        to: '/account',
-        icon: ['far', 'user-circle'],
-        name: account.displayName,
-        shortName: account.displayName
       }
     ])
   } else {
