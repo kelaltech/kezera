@@ -4,10 +4,6 @@
   max-height: 450px;
 }
 .EventImage {
-  &:hover {
-    filter: blur(2px);
-    transition: all 0.8s;
-  }
   background-size: cover;
   transform: scale3d(1.02, 1.02, 1);
   width: 100%;
@@ -15,10 +11,6 @@
 }
 
 .EventDateContainer {
-  &:hover {
-    opacity: 1;
-    transition: all 0.2s;
-  }
   margin: auto;
   margin-top: -135px;
   margin-bottom: 35px;
@@ -36,8 +28,24 @@
   z-index: 5;
   box-shadow: $shade-S;
 }
-.BlurryImage {
+.EventCardImage {
   overflow: hidden;
+
+  &:hover {
+    .EventImage {
+      filter: blur(2px);
+      transition: all 0.8s;
+    }
+
+    .EventDateContainer {
+      opacity: 1;
+      cursor: default;
+      transition: all 0.2s;
+    }
+  }
+}
+
+.BlurryImage {
 }
 .EventDescription {
   font-size: $font-S;

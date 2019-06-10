@@ -1,11 +1,12 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { NavigationInjectedProps, withNavigation } from 'react-navigation'
-import { Button } from 'react-native-elements'
+import { Button, Image } from 'react-native-elements'
 
 import styles from './volunteer-welcome-styles'
 import classes from '../../../assets/styles/classes'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import values from '../../../assets/styles/values'
 
 function VolunteerWelcome({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['volunteer'])
@@ -13,9 +14,18 @@ function VolunteerWelcome({ navigation }: NavigationInjectedProps<{}>) {
   return (
     loading || (
       <View style={styles.main}>
-        <Text style={classes.grow}>
-          {t`app-name`}: VolunteerWelcome Screen (in LayoutStart)
-        </Text>
+        <View style={classes.grow} />
+
+        <Image
+          style={styles.wordmark}
+          source={require('../../../assets/images/common/wordmark-512.png')}
+        />
+        <Text style={styles.motto}>{t`app-motto`}</Text>
+        <Text style={styles.welcome}>{t`volunteer:welcome`}</Text>
+        <Text style={styles.emoji}>🙌</Text>
+
+        <View style={classes.grow} />
+
         <Button
           title={t`volunteer:get-started`}
           onPress={() => navigation.push('AccountRegister', {})}
