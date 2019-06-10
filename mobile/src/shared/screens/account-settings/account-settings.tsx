@@ -142,7 +142,7 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
               onPress={() =>
                 navigation.dispatch(
                   NavigationActions.navigate({
-                    routeName: 'VolunteerPortfolio',
+                    routeName: 'VolunteerProfile',
                     params: { volunteer_id: volunteer!._id }
                   })
                 )

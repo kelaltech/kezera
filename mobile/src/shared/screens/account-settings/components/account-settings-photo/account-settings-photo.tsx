@@ -16,8 +16,8 @@ import {
   useAccountState
 } from '../../../../../app/stores/account/account-provider'
 import { IAccountResponse } from '../../../../../apiv/account.apiv'
-import { logout, reloadAccount } from '../../../../../app/stores/account/account-actions'
-import { NavigationActions } from 'react-navigation'
+import { reloadAccount } from '../../../../../app/stores/account/account-actions'
+import values from '../../../../../assets/styles/values'
 
 const imagePickerOptions: ImagePickerOptions = {
   cameraType: 'front',
@@ -139,20 +139,20 @@ function AccountSettingsPhoto() {
       {account.photoUri && (
         <View>
           <TouchableOpacity onPress={handleRemovePhoto}>
-            <Icon name={'delete'} raised />
+            <Icon name={'delete'} raised iconStyle={{ color: values.color.primary }} />
           </TouchableOpacity>
         </View>
       )}
 
       <View>
         <TouchableOpacity onPress={launchImageLibrary}>
-          <Icon name={'photo'} raised />
+          <Icon name={'photo'} raised iconStyle={{ color: values.color.primary }} />
         </TouchableOpacity>
       </View>
 
       <View>
         <TouchableOpacity onPress={launchCamera}>
-          <Icon name={'camera'} raised />
+          <Icon name={'camera'} raised iconStyle={{ color: values.color.primary }} />
         </TouchableOpacity>
       </View>
     </View>

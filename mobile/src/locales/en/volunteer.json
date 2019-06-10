@@ -7,5 +7,12 @@
 
   "search": "Search",
 
-  "volunteer-portfolio": "Volunteer Portfolio"
+  "volunteer-portfolio": "Volunteer Portfolio",
+  "activities": "Activities",
+  "certificates-achieved": "Certificates Achieved",
+  "events-attended": "Events Attended",
+  "tasks-accomplished": "Tasks Accomplished",
+  "materials-donated": "Materials Donated",
+  "money-raised-etb": "Money Raised (ETB)",
+  "organs-pledged": "Organs Pledged"
 }

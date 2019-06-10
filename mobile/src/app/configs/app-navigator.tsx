@@ -4,7 +4,7 @@ import Init from '../screens/init/init'
 import LayoutStart from '../../layout-start/layout-start'
 import LayoutDefault from '../../layout-default/layout-default'
 import AccountSettings from '../../shared/screens/account-settings/account-settings'
-import VolunteerPortfolio from '../../shared/screens/volunteer-portfolio/volunteer-portfolio'
+import VolunteerProfile from '../../shared/screens/volunteer-profile/volunteer-profile'
 import OrganizationDetail from '../../shared/screens/organization-detail/organization-detail'
 import FundraisingDetail from '../../shared/screens/fundraising-detail/fundraising-detail'
 import MaterialDonationDetail from '../../shared/screens/material-donation-detail/material-donation-detail'
@@ -27,7 +27,7 @@ const AppNavigator = createStackNavigator(
     LayoutDefault,
 
     AccountSettings,
-    VolunteerPortfolio,
+    VolunteerProfile,
     OrganizationDetail,
     FundraisingDetail,
     MaterialDonationDetail,

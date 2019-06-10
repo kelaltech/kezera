@@ -3,6 +3,7 @@ import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Icon } from 'react-native-elements'
 
 import classes from '../../../assets/styles/classes'
+import values from '../../../assets/styles/values'
 
 type Props = {
   viewNode: React.ReactNode
@@ -50,9 +51,9 @@ function EditableItem({
         style={{ ...classes.marginLeftSmall, alignSelf: 'center' }}
       >
         {mode === 'VIEW' ? (
-          <Icon name={'edit'} raised />
+          <Icon name={'edit'} raised iconStyle={{ color: values.color.primary }} />
         ) : mode === 'EDIT' ? (
-          <Icon name={'check'} raised />
+          <Icon name={'check'} raised iconStyle={{ color: values.color.secondary }} />
         ) : (
           undefined
         )}
