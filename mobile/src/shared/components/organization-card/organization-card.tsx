@@ -4,7 +4,7 @@ import {
   NavigationInjectedProps,
   withNavigation
 } from 'react-navigation'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
 import { Card, Button } from 'react-native-elements'
 import Axios from 'axios'
 import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
@@ -39,7 +39,7 @@ function OrganizationCard({
   }
 
   return (
-    <View>
+    <View style={{ width: Dimensions.get('window').width }}>
       <Card title={account.displayName} image={{ uri: `${baseUrl}${logoUri}` }}>
         <TouchableOpacity
           onPress={() =>

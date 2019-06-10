@@ -80,6 +80,7 @@ function NewsToday({
     <>
       <View style={newsStyle.newsTodayParent}>
         <TouchableOpacity
+          activeOpacity={1}
           onPress={() =>
             navigation.dispatch(
               NavigationActions.navigate({

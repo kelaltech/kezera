@@ -19,6 +19,7 @@ import { baseUrl } from '../../../app/configs/setup-axios'
 import VolunteerCard from '../../../shared/components/volunteer-card/volunteer-card'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
+import values from '../../../assets/styles/values'
 
 function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['volunteer'])
@@ -106,7 +107,11 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
               <Text>Explorer the world of SPVA!</Text>
             </View>
           ) : (
-            <ScrollView>
+            <ScrollView
+              style={{
+                marginBottom: values.space.big * 5.5
+              }}
+            >
               <View>
                 <View style={searchStyle.displayHeader}>
                   <Text style={classes.head1}>News</Text>
@@ -123,7 +128,7 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
                       )
                     }
                   >
-                    see mmore
+                    see more
                   </Text>
                 </View>
                 <ScrollView horizontal>
@@ -219,7 +224,7 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
                 </View>
                 <ScrollView horizontal>
                   {organization.map((o: IOrganizationResponse, k) => (
-                    <OrganizationCard {...o} />
+                    <OrganizationCard key={k} {...o} />
                   ))}
                 </ScrollView>
               </View>

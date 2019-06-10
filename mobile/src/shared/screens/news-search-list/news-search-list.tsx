@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationInjectedProps, withNavigation } from 'react-navigation'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, RefreshControl } from 'react-native'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import Header from '../../../shared/components/header/header'
 import useLocale from '../../hooks/use-locale/use-locale'
@@ -14,18 +14,24 @@ function NewsSearchList({ navigation }: NavigationInjectedProps) {
   const [news, setNews] = useState([])
   const [error, setError] = useState<any>()
   const term = navigation.getParam('term')
+  const [refresh, setRefresh] = useState<boolean>(false)
 
   useEffect(() => {
+    searchNews()
+  }, [])
+
+  function searchNews() {
+    setRefresh(true)
     Axios.get(`/api/news/search?term=${term}`)
       .then(data => data.data)
       .then(news => {
         setNews(richTextToDisplayText(news))
+        setRefresh(false)
       })
       .catch(e => {
         setError(e)
       })
-  }, [])
-
+  }
   return (
     loading || (
       <>
@@ -34,6 +40,7 @@ function NewsSearchList({ navigation }: NavigationInjectedProps) {
           style={{
             marginBottom: 10
           }}
+          refreshControl={<RefreshControl refreshing={refresh} onRefresh={searchNews} />}
         >
           {news.map((n: INewsResponse, k) => (
             <NewsToday
