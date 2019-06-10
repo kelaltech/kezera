@@ -27,7 +27,7 @@ export default function VerifierAdd(props: IVerifierAddProps) {
     setVerifier({ ...verifier, ...verifierChanges })
   }
   const displayName = useField<HTMLInputElement>({
-    minLength: 2,
+    minLength: [2, 'too short'],
     maxLength: 50,
     setValueHook: async value => {
       emitChanges({ displayName: value })
@@ -54,6 +54,7 @@ export default function VerifierAdd(props: IVerifierAddProps) {
       emitChanges({ password: value })
     }
   })
+
   const validationError = (error: string | null) =>
     error === null ? null : (
       <div
@@ -69,7 +70,7 @@ export default function VerifierAdd(props: IVerifierAddProps) {
     e.preventDefault()
     let data = new FormData()
     data.append('data', JSON.stringify(verifier))
-    data.append('image', e.target.image.files[0])
+    data.append('photo', e.target.image.files[0])
     AddVerifier(AdminDispatch, data)
   }
 
@@ -136,6 +137,7 @@ export default function VerifierAdd(props: IVerifierAddProps) {
               onClick={() => props.onClose()}
               primary={true}
               className={''}
+              disabled={!!(password.error || displayName.error || phoneNumber.error || email.error) }
             >
               {t`create`}
             </Button>

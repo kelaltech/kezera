@@ -141,7 +141,8 @@ function EventDetail({ navigation }: NavigationInjectedProps<Params>) {
                   color={primary}
                   size={18}
                 />
-                <Text>&emsp; {event.location} </Text>
+                <Text>&emsp; 
+                  {event.location!.address? event.location!.address:event.location!.geo.coordinates} </Text>
               </View>
             </View>
           </View>

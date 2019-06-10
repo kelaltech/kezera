@@ -11,7 +11,7 @@ const AccountDetail = lazy(() =>
 )
 const Statistics = lazy(() => import('../pages/statistics/statistics'))
 const VerifierList = lazy(() => import('../pages/verifier-list/verifier-list'))
-const VerifierAdd = lazy(() => import('../pages/verifier-add/verifier-add'))
+const VerifierSearchResult = lazy(() => import('../pages/verifier-search-result/verifier-search-result'))
 const VerifierDescription = lazy(() =>
   import('../pages/verifier-description/verifier-description')
 )
@@ -27,7 +27,7 @@ export default function LayoutAdminRoutes({ prefix: p }: { prefix: string }) {
           <Route exact path={`${p}/account`} component={AccountDetail} />
           <Route exact path={`${p}/`} component={Statistics} />
           <Route exact path={`${p}/verifiers`} component={VerifierList} />
-          <Route exact path={`${p}/verifier/add`} component={VerifierAdd} />
+          <Route exact path={`${p}/verifier-search`} component={VerifierSearchResult} />
           <Route exact path={`${p}/verifier/:_id`} component={VerifierDescription} />
         </Flex>
       )}

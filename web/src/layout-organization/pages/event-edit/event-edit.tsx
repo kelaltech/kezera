@@ -51,7 +51,7 @@ export default function EventEdit(props: IEventEditProps) {
     location: {
       geo: {
         type: 'Point',
-        coordinates: []
+        coordinates: props.event.location.geo.coordinates
       },
       address: ''
     }
@@ -79,7 +79,10 @@ export default function EventEdit(props: IEventEditProps) {
     e.preventDefault()
     let body = new FormData()
     body.append('event', JSON.stringify(newEvent))
-    body.append('image', e.target.image.files[0])
+    if(e.target.image.files[0]){
+      body.append('image', e.target.image.files[0])
+    }
+    console.log(body)
     EditEvent(id, body, eventDispatch)
   }
 
@@ -91,7 +94,7 @@ export default function EventEdit(props: IEventEditProps) {
           {t`edit`} {t`event`}{' '}
         </Title>
       </Block>
-      <Content size={'L'}>
+      <Content size={'L'} style={{overflow:'visible'}}>
         <form
           onSubmit={e => HandleUpdate(e, props.event._id.toString())}
           encType={'multipart/form-data'}
@@ -101,7 +104,6 @@ export default function EventEdit(props: IEventEditProps) {
               <ImageInput
                 name={'image'}
                 src={`/api/event/${props.event._id}/picture`}
-                required
               />
               <Input
                 name="title"
