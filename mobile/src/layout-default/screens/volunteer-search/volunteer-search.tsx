@@ -13,7 +13,7 @@ import NewsToday from '../../../shared/components/news-today/news-today'
 import { INewsResponse } from '../../../../../api/modules/news/news.apiv'
 import { richTextToDisplayText } from '../../../lib/richTextConverter'
 import { EventCardSecond } from '../../../shared/components/event-card/event-card'
-import { SearchBar } from 'react-native-elements'
+import { Icon, SearchBar } from 'react-native-elements'
 import classes from '../../../assets/styles/classes'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import VolunteerCard from '../../../shared/components/volunteer-card/volunteer-card'
@@ -103,9 +103,66 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
             />
           </View>
           {placeholder ? (
-            <View>
-              <Text>Explorer the world of SPVA!</Text>
+            <>
+                <Text
+                  style={
+                    {
+                      ...classes.head1,
+                      ...classes.marginHorizontalBig,
+                      ...classes.marginVerticalBig,
+                      textAlign: 'center',
+                    }
+                  }
+                >
+                  Explore Kezera!! search ...
+                </Text>
+            <View style={
+              searchStyle.placeholderParent
+            }>
+              <View>
+                <View  style={
+                  searchStyle.iconContainer
+                }>
+                  <Icon iconStyle={searchStyle.iconStyle} name={'newspaper'}  type={'material-community'} />
+                  <Text style={searchStyle.iconLabel}> News </Text>
+                </View>
+                <View style={
+                  searchStyle.iconContainer
+                }>
+                  <Icon iconStyle={searchStyle.iconStyle} name={'calendar'}   type={'material-community'} />
+                  <Text style={searchStyle.iconLabel}> Events </Text>
+                </View>
+                <View style={
+                  searchStyle.iconContainer
+                }>
+                  <Icon iconStyle={searchStyle.iconStyle} name={'monetization-on'}   type={'material'} />
+                  <Text style={searchStyle.iconLabel}> Donation Request </Text>
+                </View>
+              </View>
+              <View style={
+                searchStyle.columnContainer
+              }>
+                <View style={
+                  searchStyle.iconContainer
+                }>
+                  <Icon iconStyle={searchStyle.iconStyle} name={'work'}  type={'material'} />
+                  <Text style={searchStyle.iconLabel}> Organizations </Text>
+                </View>
+                <View style={
+                  searchStyle.iconContainer
+                }>
+                  <Icon iconStyle={searchStyle.iconStyle} name={'users'} type={'font-awesome'} />
+                  <Text style={searchStyle.iconLabel}> Volunteers </Text>
+                </View>
+                <View style={
+                  searchStyle.iconContainer
+                }>
+                  <Icon iconStyle={searchStyle.iconStyle} name={'search'} type={'font-awesome'} />
+                  <Text style={searchStyle.iconLabel}> and More </Text>
+                </View>
+              </View>
             </View>
+            </>
           ) : (
             <ScrollView
               style={{
