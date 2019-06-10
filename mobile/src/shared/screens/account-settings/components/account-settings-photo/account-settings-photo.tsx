@@ -16,7 +16,8 @@ import {
   useAccountState
 } from '../../../../../app/stores/account/account-provider'
 import { IAccountResponse } from '../../../../../apiv/account.apiv'
-import { reloadAccount } from '../../../../../app/stores/account/account-actions'
+import { logout, reloadAccount } from '../../../../../app/stores/account/account-actions'
+import { NavigationActions } from 'react-navigation'
 
 const imagePickerOptions: ImagePickerOptions = {
   cameraType: 'front',
@@ -37,17 +38,38 @@ function AccountSettingsPhoto() {
   const accountDispatch = useAccountDispatch()
 
   const handleRemovePhoto = (): void => {
-    Axios.put<IAccountResponse>('/api/account/remove-photo', { withCredentials: true })
-      .then(r => r.data)
-      .then(accountResponse => reloadAccount(accountDispatch, undefined, accountResponse))
-      .catch(e =>
-        Alert.alert(
-          t`error`,
-          e.response && e.response.data
-            ? e.response.data.prettyMessage || e.response.data.message
-            : e.message
-        )
-      )
+    Alert.alert(
+      t`are-you-sure`,
+      undefined,
+      [
+        {
+          style: 'cancel',
+          text: t`no`
+        },
+        {
+          style: 'default',
+          text: t`yes`,
+          onPress: () => {
+            Axios.put<IAccountResponse>('/api/account/remove-photo', {
+              withCredentials: true
+            })
+              .then(r => r.data)
+              .then(accountResponse =>
+                reloadAccount(accountDispatch, undefined, accountResponse)
+              )
+              .catch(e =>
+                Alert.alert(
+                  t`error`,
+                  e.response && e.response.data
+                    ? e.response.data.prettyMessage || e.response.data.message
+                    : e.message
+                )
+              )
+          }
+        }
+      ],
+      { cancelable: true }
+    )
   }
 
   const handleImage = async (response: ImagePickerResponse): Promise<void> => {

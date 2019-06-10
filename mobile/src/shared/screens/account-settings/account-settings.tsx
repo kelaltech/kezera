@@ -5,7 +5,7 @@ import {
   NavigationInjectedProps,
   withNavigation
 } from 'react-navigation'
-import { Divider, Input } from 'react-native-elements'
+import { Button, Divider, Input } from 'react-native-elements'
 
 import useLocale from '../../hooks/use-locale/use-locale'
 import Header from '../../components/header/header'
@@ -26,6 +26,7 @@ import values from '../../../assets/styles/values'
 import AccountSettingsPhoto from './components/account-settings-photo/account-settings-photo'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import Footer from '../../components/footer/footer'
+import { useVolunteerState } from '../../../app/stores/volunteer/volunteer-provider'
 
 function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['account'])
@@ -34,6 +35,8 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
 
   const { account } = useAccountState()
   const accountDispatch = useAccountDispatch()
+
+  const { volunteer } = useVolunteerState()
 
   const [data, setData] = useState<
     IAccountResponse & {
@@ -84,7 +87,7 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
   const handleLogout = (): void => {
     setSending(true)
     Alert.alert(
-      t`are-you-sure-you-want-to-logout`,
+      t`account:are-you-sure-you-want-to-logout`,
       undefined,
       [
         {
@@ -133,6 +136,20 @@ function AccountSettings({ navigation }: NavigationInjectedProps<{}>) {
 
         <ScrollView style={classes.padding}>
           <AccountSettingsPhoto />
+
+          <View style={classes.paddingBottomBig}>
+            <Button
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'VolunteerPortfolio',
+                    params: { volunteer_id: volunteer!._id }
+                  })
+                )
+              }
+              title={t`account:go-to-my-profile`}
+            />
+          </View>
 
           <Divider />
 
