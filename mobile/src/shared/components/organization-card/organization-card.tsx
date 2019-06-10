@@ -24,9 +24,21 @@ function OrganizationCard({
   const { subscriptions, volunteer } = useVolunteerState()
   const handleSubscribe = () => {
     Axios.put(
-      `/api/organization/${
-        subscriptions!.map(s => s._id).includes(volunteer!._id) ? 'un' : ''
-      }subscribe/${_id}`,
+      `/api/organization/subscribe/${_id}`,
+      undefined,
+      {
+        withCredentials: true
+      }
+    )
+      .then(data => data.data)
+      .then((o: IOrganizationResponse) => {
+        setSubscribers(o.subscribersCount)
+      })
+  }
+
+  const handleUnsubscribe = ()=> {
+    Axios.put(
+      `/api/organization/unsubscribe/${_id}`,
       undefined,
       {
         withCredentials: true
@@ -40,32 +52,21 @@ function OrganizationCard({
 
   return (
     <View style={{ width: Dimensions.get('window').width }}>
-      <Card title={account.displayName} image={{ uri: `${baseUrl}${logoUri}` }}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: _id
-                }
-              })
+      <Card title={account.displayName} featuredTitle={motto} featuredSubtitle={type} image={{ uri: `${baseUrl}${logoUri}` }}>
+        {
+          subscriptions!.map(s => s._id).includes(volunteer!._id) ?
+            (
+              <Button
+                onPress={handleUnsubscribe}
+                title={`Unsubscribe ${subscribers ? subscribers : ''}`}
+              />
+            ): (
+              <Button
+                onPress={handleSubscribe}
+                title={`Subscribe ${subscribers ? subscribers : ''}`}
+              />
             )
-          }
-        >
-          <View style={{ marginBottom: 10 }}>
-            <Text> {motto} </Text>
-            <Text>{type} </Text>
-          </View>
-        </TouchableOpacity>
-        <Button
-          onPress={handleSubscribe}
-          title={`${
-            subscriptions!.map(s => s._id).includes(volunteer!._id)
-              ? 'Unsubscribe'
-              : 'Subscribe'
-          } ${subscribers ? subscribers : ''}`}
-        />
+        }
       </Card>
     </View>
   )
