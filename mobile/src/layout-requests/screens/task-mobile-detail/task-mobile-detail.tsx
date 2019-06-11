@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
-import { View, Picker, Image, Text, ScrollView, Switch, Button, PickerItem } from 'react-native'
+import {
+  NavigationActions,
+  NavigationInjectedProps,
+  withNavigation
+} from 'react-navigation'
+import {
+  View,
+  Picker,
+  Image,
+  Text,
+  ScrollView,
+  Switch,
+  Button,
+  PickerItem
+} from 'react-native'
 import { Divider, Icon } from 'react-native-elements'
 import Axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
@@ -64,9 +77,7 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             style={taskStyle.requestImage}
           />
           <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.requestTitle}>
-              request.name
-            </Text>
+            <Text style={taskStyle.requestTitle}>request.name</Text>
             <View>
               <Button title={'participate'} onPress={() => {}}>
                 Participate
@@ -89,29 +100,37 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
 
           <View style={taskStyle.inlineBlock}>
             <Text style={taskStyle.fundAmountTitle}>{request.task.numberNeeded}</Text>
-            <Text style={taskStyle.fundAmount}>{' '} Participants needed.</Text>
+            <Text style={taskStyle.fundAmount}> Participants needed.</Text>
           </View>
 
           <View>
             <Picker
               selectedValue={false}
-              style={{height: 50, width: 100}}
-              onValueChange={() => {}}>
-              <PickerItem label={'Participate'}/>
+              style={{ height: 50, width: 100 }}
+              onValueChange={() => {}}
+            >
+              <PickerItem label={'Participate'} />
             </Picker>
           </View>
           <Divider />
 
           <View style={taskStyle.inlineBlock}>
             <Text style={taskStyle.byTitle}>Requested By: </Text>
-            <Text style={classes.link} onPress={() => navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: request._by._id
-                }
-              })
-            )}>{request._by.name}</Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.name}
+            </Text>
           </View>
         </ScrollView>
       </>

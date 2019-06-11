@@ -31,7 +31,9 @@ function FundraisingCard({
 
   function evaluateDonation() {
     let donation_raised: number = 0
-    request.donations.map((d, k) => (donation_raised += Number(d.data)))
+    request.donations.map(
+      d => d.approved && d.data && (donation_raised += Number.parseFloat(d.data))
+    )
     setRaisedMoney(donation_raised)
   }
 

@@ -41,22 +41,6 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
 
   const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
 
-  /*
-  // todo ?
-  let [volunteers, setVolunteers] = useState<any[]>([])
-  let toggleRequestVolunteer = function() {
-    Axios
-      .put(`/api/request/toggle-request-volunteer/${match.params._id}`)
-      .then(resp => setRequest(resp.data))
-      .catch()
-  }
-  useEffect(() => {
-    Axios.get(`/api/request/list-request-volunteers/${match.params._id}`)
-      .then((resp: any) => setVolunteers(resp.data))
-      .catch(console.error)
-  }, [])
-  */
-
   return (
     loading ||
     (!request ? null : (
@@ -69,44 +53,22 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
         covers={request.coverUri ? [request.coverUri] : undefined}
         actions={
           (account &&
-            ((account.role === 'VOLUNTEER' && [
-              {
-                children: (
-                  <>
-                    {/*
-                  // todo: ?
-                  <Switch
-                    checked={
-                      volunteer &&
-                      request.volunteers.map((v: any) => v._id).includes(volunteer._id)
-                    }
-                    onChange={() => {
-                      toggleRequestVolunteer()
-                    }}
-                  >
-                    Attend
-                  </Switch>
-                  */}
-                  </>
-                )
-              }
-            ]) ||
-              (account.role === 'ORGANIZATION' &&
-                myOrganization &&
-                myOrganization._id === request._by._id && [
-                  {
-                    to: `/request/${request._id}/edit`,
-                    children: (
-                      <>
-                        <FontAwesomeIcon
-                          icon={'pencil-alt'}
-                          className={'margin-right-normal font-S'}
-                        />
-                        {t`edit`}
-                      </>
-                    )
-                  }
-                ]))) ||
+            (account.role === 'ORGANIZATION' &&
+              myOrganization &&
+              myOrganization._id === request._by._id && [
+                {
+                  to: `/request/${request._id}/edit`,
+                  children: (
+                    <>
+                      <FontAwesomeIcon
+                        icon={'pencil-alt'}
+                        className={'margin-right-normal font-S'}
+                      />
+                      {t`edit`}
+                    </>
+                  )
+                }
+              ])) ||
           []
         }
         description={
@@ -156,17 +118,25 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           </Content>
         )}
 
+        <>
+          {request.type === 'Fundraising' && (
+            <RequestDetailFundraising request={request} />
+          )}
+          {request.type === 'Material' && <RequestDetailMaterial request={request} />}
+          {request.type === 'Organ' && <RequestDetailOrgan request={request} />}
+          {request.type === 'Task' && <RequestDetailTask request={request} />}
+        </>
+
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
           <>
             <Content className={'margin-bottom-big top'}>
               <Block first className={'bold'}>
-                {t`request:description`}
+                <pre>{t`request:description`}</pre>
               </Block>
               <hr />
               <Block last>{request.description}</Block>
             </Content>
 
-            {/* todo: continue here... with files... */}
             <Content className={'margin-bottom-big top'}>
               <Block first className={'bold'}>
                 Files
@@ -221,17 +191,6 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
             </Content>
           </>
         </Yoga>
-
-        <hr className={'margin-bottom-big'} />
-
-        <>
-          {request.type === 'Fundraising' && (
-            <RequestDetailFundraising request={request} />
-          )}
-          {request.type === 'Material' && <RequestDetailMaterial request={request} />}
-          {request.type === 'Organ' && <RequestDetailOrgan request={request} />}
-          {request.type === 'Task' && <RequestDetailTask request={request} />}
-        </>
       </RichPage>
     ))
   )
