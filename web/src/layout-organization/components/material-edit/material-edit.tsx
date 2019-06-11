@@ -12,7 +12,7 @@ interface IMaterialEditProps {
   Material: any
 }
 export default function MaterialEdit(props: IMaterialEditProps) {
-  let [material, setMaterial] = useState({ status: '', quantity: '', materialType: '' })
+  let [material, setMaterial] = useState({ _id:props.Material._id,status: props.Material.status, quantity: props.Material.quantity, materialType: props.Material.materialType })
   let { t } = useLocale(['material-donation'])
   let emitChange = function(changes: any): void {
     props.onChange({ ...material, ...changes })
@@ -67,7 +67,7 @@ export default function MaterialEdit(props: IMaterialEditProps) {
           className={'full-width'}
           placeholder={'Quantity'}
           name={'quantity'}
-          value={props.Material.quantity}
+          defaultValue={props.Material.quantity}
           onChange={e => emitChange({ quantity: e.target.value })}
         />
       </Block>

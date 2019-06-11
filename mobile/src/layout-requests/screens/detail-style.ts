@@ -7,11 +7,19 @@ export const Style = StyleSheet.create({
     width: dimension.width,
     height: 250
   },
+  requestTitle: {
+    paddingTop: 15,
+    padding: 5,
+    fontSize: 25,
+    color: '#3f51b5'
+  },
   byTitle: {
     color: '#3f51b5',
-    fontSize: 18
+    fontSize: 18,
+    paddingLeft: 10
   },
   requestedTitle: {
+    paddingLeft: 10,
     padding: 5,
     fontSize: 18,
     color: '#3f51b5'
@@ -24,11 +32,6 @@ export const Style = StyleSheet.create({
   button: {
     alignContent: 'center',
     width: dimension.width / 2
-  },
-  requestTitle: {
-    padding: 5,
-    fontSize: 25,
-    color: '#3f51b5'
   },
   iconFields: {
     flex: 1,

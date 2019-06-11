@@ -23,6 +23,7 @@ import { Dimensions, StyleSheet } from 'react-native'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import classes from '../../../assets/styles/classes'
+import { string } from 'prop-types'
 
 const dimension = Dimensions.get('screen')
 

@@ -5,10 +5,10 @@ import { IAccount } from '../../models/account/account.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
-import { AddTask } from '../task/task.controller'
+import { AddTask, updateTask } from '../task/task.controller'
 import { AddFund, editFund } from '../fundraising/fundraising.controller'
 import { AddMaterial, UpdateMaterial } from '../material/material.controller'
-import { AddOrgan } from '../organ/organ.controller'
+import { AddOrgan, editOrgan } from '../organ/organ.controller'
 import { IRequestResponse } from './request.apiv'
 import { IVolunteerResponse } from '../volunteer/volunteer.apiv'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
@@ -123,21 +123,40 @@ export async function editRequest(
   _id: Schema.Types.ObjectId,
   data: any,
   account: Document & IAccount,
-  pic: Stream
+  pic?: any
 ): Promise<any> {
   data._by = await account._id
-  const request = await get(RequestModel, data)
+  //const request = await get(RequestModel, data._id)
 
   switch (data.type) {
     case 'Fundraising':
-      await editFund(JSON.parse(data.Fundraising), request._id, pic)
+      await editFund(JSON.parse(data.Fundraising))
       break
     case 'Material':
-      await UpdateMaterial(request._id, JSON.parse(data.Task))
+      await UpdateMaterial(JSON.parse(data.Material))
+      break
+    case 'Organ':
+      await editOrgan(JSON.parse(data.Organ))
+      break
+    case 'Task':
+      await updateTask(JSON.parse(data.Task))
       break
   }
-  const grid = new Grid(serverApp, RequestModel, request._id)
-  await grid.set(pic)
+  let requestData = {
+    name: data.name,
+    description: data.description,
+    expires: data.expires
+  }
+  await edit(RequestModel, data._id, requestData)
+  if (pic) {
+    console.log('picture is added')
+    const grid = new Grid(serverApp, RequestModel, data._id)
+    const compressedPic = sharp(pic.path)
+      .resize(1080, 1080, { fit: 'cover' })
+      .jpeg({ quality: 100 })
+    // await grid.remove()
+    await grid.set(compressedPic, 'image/jpeg')
+  }
 }
 
 export async function listRequestVolunteers(
