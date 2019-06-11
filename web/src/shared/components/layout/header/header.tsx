@@ -95,19 +95,6 @@ export default function Header({
                   </div>
                 )}
 
-            {overrideRightNode !== undefined || !navigation || !navigation.length ? (
-              undefined
-            ) : (
-              <div className="header-nav-min-view middle">
-                <Button
-                  className="header-nav-btn middle"
-                  onClick={() => setIsNavOpen(!isNavOpen)}
-                >
-                  <FontAwesomeIcon icon="bars" />
-                </Button>
-              </div>
-            )}
-
             {account && (
               <AccountPhoto
                 className={'header-account-photo middle'}
@@ -115,6 +102,19 @@ export default function Header({
                 readonly
                 buttonPropsOverride={{ to: '/account' }}
               />
+            )}
+
+            {overrideRightNode !== undefined || !navigation || !navigation.length ? (
+              undefined
+            ) : (
+              <div className="header-nav-min-view middle">
+                <Button
+                  className="header-nav-btn middle margin-left-normal"
+                  onClick={() => setIsNavOpen(!isNavOpen)}
+                >
+                  <FontAwesomeIcon icon="bars" />
+                </Button>
+              </div>
             )}
           </Block>
         </div>

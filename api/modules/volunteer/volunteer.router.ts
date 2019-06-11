@@ -24,7 +24,7 @@ volunteerRouter.get('/me', authorize(['VOLUNTEER']), async ctx => {
   ctx.body = await volunteerInfo(ctx.state.user)
 })
 
-// GET /api/volunteer/get/:volunteer_id *
+// GET /api/volunteer/get/:volunteer_id
 volunteerRouter.get('/get/:volunteer_id', async ctx => {
   ctx.body = await transact(s => getVolunteer(ctx.params.volunteer_id, s))
 })

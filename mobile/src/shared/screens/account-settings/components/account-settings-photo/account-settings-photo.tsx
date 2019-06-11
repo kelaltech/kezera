@@ -17,6 +17,7 @@ import {
 } from '../../../../../app/stores/account/account-provider'
 import { IAccountResponse } from '../../../../../apiv/account.apiv'
 import { reloadAccount } from '../../../../../app/stores/account/account-actions'
+import values from '../../../../../assets/styles/values'
 
 const imagePickerOptions: ImagePickerOptions = {
   cameraType: 'front',
@@ -37,17 +38,38 @@ function AccountSettingsPhoto() {
   const accountDispatch = useAccountDispatch()
 
   const handleRemovePhoto = (): void => {
-    Axios.put<IAccountResponse>('/api/account/remove-photo', { withCredentials: true })
-      .then(r => r.data)
-      .then(accountResponse => reloadAccount(accountDispatch, undefined, accountResponse))
-      .catch(e =>
-        Alert.alert(
-          t`error`,
-          e.response && e.response.data
-            ? e.response.data.prettyMessage || e.response.data.message
-            : e.message
-        )
-      )
+    Alert.alert(
+      t`are-you-sure`,
+      undefined,
+      [
+        {
+          style: 'cancel',
+          text: t`no`
+        },
+        {
+          style: 'default',
+          text: t`yes`,
+          onPress: () => {
+            Axios.put<IAccountResponse>('/api/account/remove-photo', {
+              withCredentials: true
+            })
+              .then(r => r.data)
+              .then(accountResponse =>
+                reloadAccount(accountDispatch, undefined, accountResponse)
+              )
+              .catch(e =>
+                Alert.alert(
+                  t`error`,
+                  e.response && e.response.data
+                    ? e.response.data.prettyMessage || e.response.data.message
+                    : e.message
+                )
+              )
+          }
+        }
+      ],
+      { cancelable: true }
+    )
   }
 
   const handleImage = async (response: ImagePickerResponse): Promise<void> => {
@@ -117,20 +139,20 @@ function AccountSettingsPhoto() {
       {account.photoUri && (
         <View>
           <TouchableOpacity onPress={handleRemovePhoto}>
-            <Icon name={'delete'} raised />
+            <Icon name={'delete'} raised iconStyle={{ color: values.color.primary }} />
           </TouchableOpacity>
         </View>
       )}
 
       <View>
         <TouchableOpacity onPress={launchImageLibrary}>
-          <Icon name={'photo'} raised />
+          <Icon name={'photo'} raised iconStyle={{ color: values.color.primary }} />
         </TouchableOpacity>
       </View>
 
       <View>
         <TouchableOpacity onPress={launchCamera}>
-          <Icon name={'camera'} raised />
+          <Icon name={'camera'} raised iconStyle={{ color: values.color.primary }} />
         </TouchableOpacity>
       </View>
     </View>
