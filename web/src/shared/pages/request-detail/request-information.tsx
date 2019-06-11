@@ -79,7 +79,7 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
         ready={true}
         documentTitle={request.name}
         title={request.name}
-        covers={[request.picture]}
+        covers={[request.coverUri]}
         actions={
           (account &&
             ((account.role === 'VOLUNTEER' && [

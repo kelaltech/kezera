@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationInjectedProps, withNavigation } from 'react-navigation'
-import { View, Image, Text, ScrollView, Switch } from 'react-native'
-import { Button, Divider, Icon } from 'react-native-elements'
+import { View, Image, Text, ScrollView, Switch, Button } from 'react-native'
+import { Divider, Icon } from 'react-native-elements'
 import Axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+
+import { Dimensions, StyleSheet } from 'react-native'
+import OrganizationCard from '../../../shared/components/organization-card/organization-card'
+const dimension = Dimensions.get('screen')
 
 const primary = '#3f51b5'
 
@@ -48,46 +52,72 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
   }, [])
 
   return (
-    <>
-      <ScrollView>
-        <Image
-          /*source={{ uri: `${baseUrl}/api/request/${id}/picture` }}*/
-          source={require('../../../assets/images/event.jpg')}
-          style={fundStyle.requestImage}
-        />
-        <View>
-          <View style={fundStyle.fundDescription}>
-            <Text>{/*{request.description}*/}rtsfdgfhjkjhlioyufhdchkjhgyugfdhcjh</Text>
+    loading ||
+    (request ? (
+      <>
+        <ScrollView>
+          <Image
+            /*source={{ uri: `${baseUrl}${request.coverUri}` }}*/
+            source={require('../../../assets/images/event.jpg')}
+            style={fundStyle.requestImage}
+          />
+          <View style={fundStyle.requestTitle}>
+            <Text style={fundStyle.requestTitle}>
+              {/*request.name*/} Fundraising for Orphans
+            </Text>
           </View>
+          <Divider />
           <View>
-            <View style={fundStyle.iconFields}>
-              <Icon name={'calendar'} type={'font-awesome'} color={primary} size={18} />
-              <Text>
-                {/* &emsp;{new Date(request.startDate).toLocaleDateString()}*/} monday to
-                fridat
-              </Text>
+            <View style={fundStyle.fundDescription}>
+              <Text style={fundStyle.fundDescription}>{request.description}</Text>
             </View>
           </View>
-          {/*
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              {request.type == 'fundraising' && <FundraisingDetail request={request}/>}
-              {request.type == 'material' && <MaterialMobileDetail request={request}/>}
-              {request.type == 'task' && <TaskMobileDetail request={request}/>}
-              {request.type == 'organ' && <OrganDonationDetail request={request}/>}
-            </View>*/}
-        </View>
-        <Divider />
-      </ScrollView>
-    </>
+          <View style={fundStyle.inlineBlock}>
+            <Text style={fundStyle.fundAmountTitle}>Requested Amount: </Text>
+            <Text style={fundStyle.fundAmount}>request.fundraising.amount ETB</Text>
+          </View>
+
+          <View>
+            <Button title={'donate'} onPress={() => {}}>
+              Donate
+            </Button>
+          </View>
+          <Divider />
+
+          <View>
+            <Text style={fundStyle.byTitle}>Requested By</Text>
+          </View>
+          <View>
+            <OrganizationCard {...request._by} />
+          </View>
+        </ScrollView>
+      </>
+    ) : (
+      <View>
+        <Text>No Detail Available</Text>
+      </View>
+    ))
   )
 }
-import { Dimensions, StyleSheet } from 'react-native'
-const dimension = Dimensions.get('screen')
 
 const fundStyle = StyleSheet.create({
   requestImage: {
     width: dimension.width,
-    height: 150
+    height: 250
+  },
+  byTitle: {
+    color: '#3f51b5',
+    fontSize: 18
+  },
+  fundAmountTitle: {
+    padding: 5,
+    fontSize: 18,
+    color: '#3f51b5'
+  },
+  fundAmount: {
+    padding: 5,
+    fontWeight: 'bold',
+    fontSize: 18
   },
   requestTitle: {
     padding: 5,
@@ -101,8 +131,8 @@ const fundStyle = StyleSheet.create({
   },
   fundDescription: {
     fontWeight: '100',
-    fontSize: 11,
-    padding: 5
+    fontSize: 14,
+    padding: 10
   },
   inlineBlock: {
     flex: 1,
