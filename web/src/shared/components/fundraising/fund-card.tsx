@@ -16,7 +16,7 @@ import {
   Yoga
 } from 'gerami'
 import axios from 'axios'
-import "./fund-card.scss"
+import './fund-card.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import useLocale from '../../hooks/use-locale/use-locale'
@@ -92,86 +92,76 @@ interface IFundProps {
 
 export default function FundCard({ request }: IFundProps) {
   const { account } = useAccountState()
-  return(
+  return (
     <Card
       imgSrc={request.picture}
       className={'requestCard'}
       children={
-         <>
-           <Title size={'M'}>
-             <Anchor to={`/request/${request._id}`}>
-               {request.name}
-             </Anchor>
-           </Title>
-           <span>
-             <FontAwesomeIcon
-               color={'blue'}
-               icon={'donate'}
-               className={'TrashIcon'}
-             />&emsp; {request.type}
-           </span>
-           <br/>
-           <span>
-            <FontAwesomeIcon
-              color={'blue'}
-              icon={'calendar'}
-            />&emsp;
-             {new Date(request.expires).toDateString()}
-           </span>
-           <br/>
-           {request.type=='Fundraising'?
-             <>
-               <FontAwesomeIcon
-                 icon={'money-bill'}
-                 color={'green'}
-               />&emsp;
-               10,000 etb
-             </>
-            :''}
-           {request.type=='Material'?
-             <>
-               <FontAwesomeIcon
-                 color={'grey'}
-                 icon={'tshirt'}
-                />&esmp;
-               10
-             </>:''}
-           {request.type=='Task'?
-             <>
-               <FontAwesomeIcon
-                 color={'blue'}
-                 icon={'tasks'}
-               />&emsp;
-               Cleaning
-             </>:''}
-           {request.type=='Organ'?
-             <>
-               <FontAwesomeIcon
-                 color={'rgb(223,72,61)'}
-                 icon={'hand-holding-heart'}
-               />&emsp;
-                2
-             </>:''}
-           {account && account.role === 'ORGANIZATION' ?
-             <Block className={'right'}>
-               <span className={'requestDeleteButton'} onClick={()=>alert('Abebe')}>
-                 <FontAwesomeIcon
-                   color={'blue'}
-                   icon={'pencil-alt'}
-                   className={'TrashIcon'}
-                 />
-               </span>
-               &emsp;&emsp;
-               <span className={'requestDeleteButton'} onClick={()=>alert('Abebe')}>
-                 <FontAwesomeIcon
-                   color={'red'}
-                   icon={'trash'}
-                   className={'TrashIcon'}
-                 />
-               </span>
-             </Block>
-             :''}
-         </>
+        <>
+          <Title size={'M'}>
+            <Anchor to={`/request/${request._id}`}>{request.name}</Anchor>
+          </Title>
+          <span>
+            <FontAwesomeIcon color={'blue'} icon={'donate'} className={'TrashIcon'} />
+            &emsp; {request.type}
+          </span>
+          <br />
+          <span>
+            <FontAwesomeIcon color={'blue'} icon={'calendar'} />
+            &emsp;
+            {new Date(request.expires).toDateString()}
+          </span>
+          <br />
+          {request.type == 'Fundraising' ? (
+            <>
+              <FontAwesomeIcon icon={'money-bill'} color={'green'} />
+              &emsp; 10,000 etb
+            </>
+          ) : (
+            ''
+          )}
+          {request.type == 'Material' ? (
+            <>
+              <FontAwesomeIcon color={'grey'} icon={'tshirt'} />
+              &esmp; 10
+            </>
+          ) : (
+            ''
+          )}
+          {request.type == 'Task' ? (
+            <>
+              <FontAwesomeIcon color={'blue'} icon={'tasks'} />
+              &emsp; Cleaning
+            </>
+          ) : (
+            ''
+          )}
+          {request.type == 'Organ' ? (
+            <>
+              <FontAwesomeIcon color={'rgb(223,72,61)'} icon={'hand-holding-heart'} />
+              &emsp; 2
+            </>
+          ) : (
+            ''
+          )}
+          {account && account.role === 'ORGANIZATION' ? (
+            <Block className={'right'}>
+              <span className={'requestDeleteButton'} onClick={() => alert('Abebe')}>
+                <FontAwesomeIcon
+                  color={'blue'}
+                  icon={'pencil-alt'}
+                  className={'TrashIcon'}
+                />
+              </span>
+              &emsp;&emsp;
+              <span className={'requestDeleteButton'} onClick={() => alert('Abebe')}>
+                <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
+              </span>
+            </Block>
+          ) : (
+            ''
+          )}
+        </>
       }
     />
   )

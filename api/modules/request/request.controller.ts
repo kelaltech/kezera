@@ -26,9 +26,17 @@ export async function getRequest(request_id: ObjectId): Promise<IRequestResponse
   return requestDocumentToResponse(await get(RequestModel, request_id))
 }
 
-export async function getRequestCover(_id: ObjectId): Promise<Stream> {
-  const grid = new Grid(serverApp, RequestModel, _id)
+export async function getRequestCover(request_id: ObjectId): Promise<Stream> {
+  const grid = new Grid(serverApp, RequestModel, request_id)
   return grid.get()
+}
+
+export async function getRequestFile(
+  request_id: ObjectId,
+  filename: string
+): Promise<Stream> {
+  const grid = new Grid(serverApp, RequestModel, request_id, 'file')
+  return grid.get(filename)
 }
 
 export async function searchRequest(term: any): Promise<any> {

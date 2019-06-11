@@ -10,7 +10,8 @@ import {
   listRequestsMe,
   listMyRequests,
   listRequestByType,
-  getRequestCover
+  getRequestCover,
+  getRequestFile
 } from './request.controller'
 
 import * as fs from 'fs'
@@ -35,9 +36,14 @@ requestRouter.get('/list/bytype', async ctx => {
   ctx.body = await listRequestByType(ctx.query.type)
 })
 
-//GET /api/request/get-cover/:_id
-requestRouter.get('/get-cover/:_id', async ctx => {
-  ctx.body = await getRequestCover(ctx.params._id)
+// GET /api/request/get-cover/:request_id
+requestRouter.get('/get-cover/:request_id', async ctx => {
+  ctx.body = await getRequestCover(ctx.params.request_id)
+})
+
+// GET /api/request/get-file/:request_id/:filename
+requestRouter.get('/get-file/:request_id/:filename', async ctx => {
+  ctx.body = await getRequestFile(ctx.params.request_id, ctx.params.filename)
 })
 
 requestRouter.delete('/:_id', async ctx => {

@@ -24,7 +24,7 @@ export interface IMaterial extends Document {
   _at?: Date | number
   status: IMaterialStatus
   materialType: IMaterialType
-  quantity:number
+  quantity: number
   requestId: Schema.Types.ObjectId
 }
 
