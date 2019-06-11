@@ -1,7 +1,8 @@
-import { IOrganRequest } from './organ.apiv'
-import { add, edit, list, remove } from '../../lib/crud'
-import { OrganModel } from '../../models/organ/organ.model'
 import { Schema } from 'mongoose'
+
+import { IOrganRequest, IOrganResponse } from './organ.apiv'
+import { add, edit, get, list, remove } from '../../lib/crud'
+import { OrganModel } from '../../models/organ/organ.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -17,9 +18,8 @@ export async function listOrganRequest(count = 5, since = Date.now()): Promise<a
   })
 }
 
-export async function getOrgan(requestId: ObjectId): Promise<any> {
-  const organ = await OrganModel.findOne({ requestId })
-  return organ
+export async function getOrgan(request_id: ObjectId): Promise<IOrganResponse> {
+  return get(OrganModel, request_id, {}) as any // todo: filter?
 }
 
 export async function editOrgan(id: ObjectId, data: IOrganRequest): Promise<any> {

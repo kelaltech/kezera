@@ -11,12 +11,14 @@ type ObjectId = Schema.Types.ObjectId | string
 export async function fundraisingRequestToLeanDocument(
   request: IFundraisingRequest,
   request_id: ObjectId, // request
-  _id?: ObjectId
+  _id?: ObjectId,
+  _at: Date | number = Date.now()
 ): Promise<IFundraising & { _id?: ObjectId }> {
   const { target } = request
 
   const leanDocument: IFundraising & { _id?: ObjectId } = {
     _id,
+    _at,
 
     request: request_id,
 
@@ -29,10 +31,11 @@ export async function fundraisingRequestToLeanDocument(
 export async function fundraisingRequestToDocument(
   request: IFundraisingRequest,
   request_id: ObjectId, // request
-  _id?: ObjectId
+  _id?: ObjectId,
+  _at: Date | number = Date.now()
 ): Promise<Document & IFundraising> {
   return new FundraisingModel(
-    await fundraisingRequestToLeanDocument(request, request_id, _id)
+    await fundraisingRequestToLeanDocument(request, request_id, _id, _at)
   )
 }
 
