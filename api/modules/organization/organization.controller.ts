@@ -218,14 +218,14 @@ export class OrganizationController extends KoaController {
     return {
       requests: {
         total: await RequestModel.find({ _by: account_id }).count(),
-        active: await RequestModel.find({ _by: account_id, status: true }).count(),
+        active: await RequestModel.find({ _by: account_id, status: 'OPEN' }).count(),
 
         tasks: {
           total: await RequestModel.find({ _by: account_id, type: 'Task' }).count(),
           active: await RequestModel.find({
             _by: account_id,
             type: 'Task',
-            status: true
+            status: 'OPEN'
           }).count()
         },
 
@@ -234,7 +234,7 @@ export class OrganizationController extends KoaController {
           active: await RequestModel.find({
             _by: account_id,
             type: 'Material',
-            status: true
+            status: 'OPEN'
           }).count()
         },
 
@@ -246,7 +246,7 @@ export class OrganizationController extends KoaController {
           active: await RequestModel.find({
             _by: account_id,
             type: 'Fundraising',
-            status: true
+            status: 'OPEN'
           }).count()
         },
 
@@ -255,7 +255,7 @@ export class OrganizationController extends KoaController {
           active: await RequestModel.find({
             _by: account_id,
             type: 'Organ',
-            status: true
+            status: 'OPEN'
           }).count()
         }
       },
