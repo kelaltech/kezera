@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationInjectedProps, withNavigation } from 'react-navigation'
-import { ScrollView } from 'react-native'
+import { RefreshControl, ScrollView } from 'react-native'
 import Header from '../../../shared/components/header/header'
 import useLocale from '../../hooks/use-locale/use-locale'
 import Axios from 'axios'
@@ -10,18 +10,24 @@ function EventSearchList({ navigation }: NavigationInjectedProps) {
   const [event, setEvent] = useState([])
   const [error, setError] = useState<any>()
   const term = navigation.getParam('term')
+  const [refresh, setRefresh] = useState<boolean>(false)
 
   useEffect(() => {
+    searchEvent()
+  }, [])
+
+  function searchEvent() {
+    setRefresh(true)
     Axios.get(`/api/event/search?term=${term}`)
       .then(data => data.data)
       .then(e => {
         setEvent(e)
+        setRefresh(false)
       })
       .catch(e => {
         setError(e)
       })
-  }, [])
-
+  }
   return (
     loading || (
       <>
@@ -30,6 +36,7 @@ function EventSearchList({ navigation }: NavigationInjectedProps) {
           style={{
             marginBottom: 10
           }}
+          refreshControl={<RefreshControl refreshing={refresh} onRefresh={searchEvent} />}
         >
           {event.map((e, k) => (
             <EventCardSecond event={e} key={k} />

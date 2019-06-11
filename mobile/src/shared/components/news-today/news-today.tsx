@@ -80,6 +80,7 @@ function NewsToday({
     <>
       <View style={newsStyle.newsTodayParent}>
         <TouchableOpacity
+          activeOpacity={1}
           onPress={() =>
             navigation.dispatch(
               NavigationActions.navigate({
@@ -124,10 +125,23 @@ function NewsToday({
             </TouchableOpacity>
             <Text style={classes.paddingHorizontalSmall}>{like}</Text>
           </View>
-          <View style={newsStyle.actionChild}>
-            <Icon name={'comment-outline'} type={'material-community'} />
-            <Text style={classes.paddingHorizontalSmall}>{comment}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.dispatch(
+                NavigationActions.navigate({
+                  routeName: 'CommentList',
+                  params: {
+                    id: _id
+                  }
+                })
+              )
+            }
+          >
+            <View style={newsStyle.actionChild}>
+              <Icon name={'comment-outline'} type={'material-community'} />
+              <Text style={classes.paddingHorizontalSmall}>{comment}</Text>
+            </View>
+          </TouchableOpacity>
           <View style={newsStyle.actionChild}>
             <TouchableOpacity onPress={handleShare}>
               <Icon name={'share-variant'} type={'material-community'} />

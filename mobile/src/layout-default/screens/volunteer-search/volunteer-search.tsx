@@ -13,12 +13,13 @@ import NewsToday from '../../../shared/components/news-today/news-today'
 import { INewsResponse } from '../../../../../api/modules/news/news.apiv'
 import { richTextToDisplayText } from '../../../lib/richTextConverter'
 import { EventCardSecond } from '../../../shared/components/event-card/event-card'
-import { SearchBar } from 'react-native-elements'
+import { Icon, SearchBar } from 'react-native-elements'
 import classes from '../../../assets/styles/classes'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import VolunteerCard from '../../../shared/components/volunteer-card/volunteer-card'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
+import values from '../../../assets/styles/values'
 
 function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['volunteer'])
@@ -86,27 +87,94 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
     setTerm(term)
     setPlaceholder(false)
   }
-
-  // todo: a special type of header with the search bar embedded inside
   return (
     loading || (
       <>
         <Header title={'Search'} />
         <View>
-          <View style={searchStyle.searchContainer}>
+          <View>
             <SearchBar
-              inputStyle={searchStyle.searchInput}
+              round
+              lightTheme
+              containerStyle={searchStyle.searchContainer}
               placeholder={'search'}
               onChangeText={handleChange}
               value={term}
             />
           </View>
           {placeholder ? (
-            <View>
-              <Text>Explorer the world of SPVA!</Text>
-            </View>
+            <>
+              <Text
+                style={{
+                  ...classes.head1,
+                  ...classes.marginHorizontalBig,
+                  ...classes.marginVerticalBig,
+                  textAlign: 'center'
+                }}
+              >
+                Explore Kezera!! search ...
+              </Text>
+              <View style={searchStyle.placeholderParent}>
+                <View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'newspaper'}
+                      type={'material-community'}
+                    />
+                    <Text style={searchStyle.iconLabel}> News </Text>
+                  </View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'calendar'}
+                      type={'material-community'}
+                    />
+                    <Text style={searchStyle.iconLabel}> Events </Text>
+                  </View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'monetization-on'}
+                      type={'material'}
+                    />
+                    <Text style={searchStyle.iconLabel}> Donation Request </Text>
+                  </View>
+                </View>
+                <View style={searchStyle.columnContainer}>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'work'}
+                      type={'material'}
+                    />
+                    <Text style={searchStyle.iconLabel}> Organizations </Text>
+                  </View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'users'}
+                      type={'font-awesome'}
+                    />
+                    <Text style={searchStyle.iconLabel}> Volunteers </Text>
+                  </View>
+                  <View style={searchStyle.iconContainer}>
+                    <Icon
+                      iconStyle={searchStyle.iconStyle}
+                      name={'search'}
+                      type={'font-awesome'}
+                    />
+                    <Text style={searchStyle.iconLabel}> and More </Text>
+                  </View>
+                </View>
+              </View>
+            </>
           ) : (
-            <ScrollView>
+            <ScrollView
+              style={{
+                marginBottom: values.space.big * 5.5
+              }}
+            >
               <View>
                 <View style={searchStyle.displayHeader}>
                   <Text style={classes.head1}>News</Text>
@@ -123,7 +191,7 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
                       )
                     }
                   >
-                    see mmore
+                    see more
                   </Text>
                 </View>
                 <ScrollView horizontal>
@@ -219,7 +287,7 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
                 </View>
                 <ScrollView horizontal>
                   {organization.map((o: IOrganizationResponse, k) => (
-                    <OrganizationCard {...o} />
+                    <OrganizationCard key={k} {...o} />
                   ))}
                 </ScrollView>
               </View>

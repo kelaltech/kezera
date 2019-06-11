@@ -18,6 +18,7 @@ import EventSearchList from '../../shared/screens/event-search-list/event-search
 import RequestSearchList from '../../shared/screens/request-search-list/request-search-list'
 import OrganizationSearchList from '../../shared/screens/organization-search-list/organization-search-list'
 import VolunteerSearchList from '../../shared/screens/volunteer-search-list/volunteer-search-list'
+import CommentList from '../../shared/screens/comment-list/comment-list'
 
 const AppNavigator = createStackNavigator(
   {
@@ -40,7 +41,8 @@ const AppNavigator = createStackNavigator(
     NewsSearchList,
     RequestSearchList,
     OrganizationSearchList,
-    VolunteerSearchList
+    VolunteerSearchList,
+    CommentList
   },
   {
     initialRouteName: 'Init',
