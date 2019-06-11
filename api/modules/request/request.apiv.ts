@@ -1,4 +1,5 @@
 import { IRequestStatus, IRequestType } from '../../models/request/request.model'
+import { ITaskRequest, ITaskResponse } from '../task/task.apiv'
 
 export type IRequestRequestCommons = {
   name: string
@@ -21,12 +22,11 @@ export type IRequestRequest =
     }
   | IRequestRequestCommons & {
       type: 'Organ'
-
       organ: any
     }
   | IRequestRequestCommons & {
       type: 'Task'
-      task: any
+      task: ITaskResponse
     }
 
 export type IRequestResponseCommons = {
@@ -69,5 +69,5 @@ export type IRequestResponse =
     }
   | IRequestResponseCommons & {
       type: 'Task'
-      task: any
+      task: ITaskRequest
     }

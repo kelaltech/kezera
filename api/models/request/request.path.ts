@@ -21,7 +21,7 @@ export const requestPaths: SchemaDefinition = {
   donations: [
     {
       _at: { $type: Date, required: true, default: Date.now },
-      volunteer_id: { $type: ObjectId, ref: 'volunteer' },
+      volunteer: { $type: ObjectId, ref: 'volunteer' },
       approved: { $type: Boolean, required: true, default: true },
       data: { $type: String }
     }
