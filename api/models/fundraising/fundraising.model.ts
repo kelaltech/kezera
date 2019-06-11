@@ -3,7 +3,7 @@ import { Schema } from 'mongoose'
 
 import { fundraisingPaths } from './fundraising.path'
 
-type ObjectId = Schema.Types.ObjectId
+type ObjectId = Schema.Types.ObjectId | string
 
 export interface IFundraising {
   _at?: Date | number
