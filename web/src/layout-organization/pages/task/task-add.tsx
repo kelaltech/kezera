@@ -18,8 +18,8 @@ interface ITaskProps {
 export default function TaskAdd(props: ITaskProps) {
   const [task, setTask] = useState<any>({
     numberNeeded: '',
-    startTime: '',
-    endTime: ''
+    startDate: '',
+    endDate: ''
   })
 
   let emitChange = function(changes: any): void {
@@ -35,13 +35,35 @@ export default function TaskAdd(props: ITaskProps) {
       <hr />
       <Block>
         <Input
-          required={true}
           onChange={e => emitChange({ numberNeeded: e.target.value })}
           className={'full-width'}
           value={task.numberNeeded}
-          type={'text'}
+          type={'number'}
+          required={true}
           label={'Number of Participants'}
         />
+      </Block>
+      <Block>
+        <Yoga maxCol={2}>
+          <span>
+            <sup> Start date </sup><br/>
+            <Input
+              onChange={e=>emitChange({startDate:e.target.value})}
+              className={'full-width'}
+              name={'startDate'}
+              type={'date'}
+              required/>
+          </span>
+          <span>
+            <sup> End date </sup><br/>
+            <Input
+              onChange={e=>emitChange({endDate:e.target.value})}
+              className={'full-width'}
+              name={"endDate"}
+              type={'date'}
+              required/>
+          </span>
+        </Yoga>
       </Block>
     </Content>
   )

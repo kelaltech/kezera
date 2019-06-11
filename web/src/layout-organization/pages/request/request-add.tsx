@@ -47,8 +47,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
     const data = new FormData()
     data.append('name', form.target.name.value)
     data.append('description', form.target.description.value)
-    data.append('startDate', form.target.startDate.value)
-    data.append('endDate', form.target.endDate.value)
+    data.append('expires', form.target.endDate.value)
     data.append('status', 'OPEN')
     data.append('type', type)
 
@@ -67,7 +66,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
         console.log(data)
         break
     }
-
+    console.log(specific)
     if (uploadRef.current && uploadRef.current.files && uploadRef.current.files.length)
       data.append('picture', uploadRef.current.files[0])
 
@@ -114,28 +113,13 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
             />
           </Block>
 
-          <Yoga maxCol={2}>
-            <Block>
-              <Title>Start Date</Title>
-            </Block>
-            <Block>
+          <Block>
+            <sup>
               <Title>End Date</Title>
-            </Block>
-          </Yoga>
+            </sup>
 
-          <Yoga maxCol={2}>
-            <Block>
-              <Input
-                required={true}
-                className={'full-width'}
-                name={'startDate'}
-                type={'date'}
-              />
-            </Block>
-            <Block>
-              <Input className={'full-width'} name={'endDate'} type={'date'} />
-            </Block>
-          </Yoga>
+            <Input className={'full-width'} name={'endDate'} type={'date'} />
+          </Block>
           <hr />
           <Block>
             <FormControl className={'full-width'}>
@@ -168,7 +152,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
           <Block last className={'right'}>
             <Button
               type={'submit'}
-              to={`/organization/request/list`}
+              // to={`/organization/request/list`}
             >{t`request:make-the-request`}</Button>
           </Block>
           {/*<Button type={'submit'} to={`/organization/request/list`}>
