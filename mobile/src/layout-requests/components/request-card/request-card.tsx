@@ -6,6 +6,7 @@ import FundraisingCard from '../fund-card/fundraising-card'
 import MaterialCard from '../material-card/material-card'
 import { Text } from 'react-native'
 import classes from '../../../assets/styles/classes'
+import { NavigationInjectedProps } from 'react-navigation'
 
 function RequestMobileCard(request: IRequestResponse) {
   switch (request.type) {
