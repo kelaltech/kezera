@@ -4,26 +4,37 @@ import { requestPaths } from './request.path'
 
 type ObjectId = Schema.Types.ObjectId
 
-export type IRequestType = 'Fundraising' | 'Material' | 'Organ' | 'Task'
+export type IRequestStatus = 'OPEN' | 'CLOSED'
+export const requestStatuses: IRequestStatus[] = ['OPEN', 'CLOSED']
 
+export type IRequestType = 'Fundraising' | 'Material' | 'Organ' | 'Task'
 export const requestTypes: IRequestType[] = ['Fundraising', 'Material', 'Organ', 'Task']
 
 export interface IRequest extends Document {
-  _at: Date | number
+  _at?: Date | number
+
   _by: ObjectId
-  name: String
-  description: String
-  startDate: Date | number
-  endDate?: Date | number
-  type?: IRequestType
-  volunteers: ObjectId[]
-  approved: ObjectId[]
-  status: boolean
+
+  name: string
+  description: string
+
+  status: IRequestStatus
+  type: IRequestType
+
+  expires?: Date | number
+
+  donations: {
+    _at?: Date | number
+    volunteer_id: ObjectId
+    approved?: boolean // true by default (todo: until verification feature is added)
+    data?: string // a number string for .type === 'Fundraising'
+  }[]
 }
 
 export const requestModelFactory = new ModelFactory<IRequest>({
   name: 'request',
-  paths: requestPaths
+  paths: requestPaths,
+  options: { typeKey: '$type' }
 })
 
 export const RequestModel = requestModelFactory.model
