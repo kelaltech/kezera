@@ -27,7 +27,6 @@ import { adminRouter } from '../modules/admin/admin.router'
 import { certificateRouter } from '../modules/certificate/certificate.router'
 import { commentRouter } from '../modules/comment/comment.route'
 import { eventRouter } from '../modules/event/event.router'
-import { materialRouter } from '../modules/material/material.router'
 import { newsRouter } from '../modules/news/news.route'
 import { organizationRouter } from '../modules/organization/organization.router'
 import { requestRouter } from '../modules/request/request.router'
@@ -73,7 +72,6 @@ export const serverAppConfig: IServerAppConfig = {
     certificateRouter,
     eventRouter,
     newsRouter,
-    materialRouter,
     organizationRouter,
     requestRouter,
     spamRouter,

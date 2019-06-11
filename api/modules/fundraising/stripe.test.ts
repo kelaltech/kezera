@@ -20,7 +20,7 @@ router.get('/test-transfer/:source_token/:stripe_account_id', async ctx => {
 
   const payout = await stripe.payouts.create({
     method: 'instant',
-    amount: 5000,
+    amount: 10 * 100,
     currency: 'usd',
     statement_descriptor: 'Rocketship, Inc.',
     destination: ctx.params.stripe_account_id
