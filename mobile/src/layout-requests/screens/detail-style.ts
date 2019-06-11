@@ -23,7 +23,7 @@ export const Style = StyleSheet.create({
   },
   button: {
     alignContent: 'center',
-    width: dimension.width/2
+    width: dimension.width / 2
   },
   requestTitle: {
     padding: 5,

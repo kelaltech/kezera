@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { View, Text, ScrollView, RefreshControl } from 'react-native'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
@@ -13,6 +13,9 @@ function FundraisingList({  }: NavigationInjectedProps) {
   const [funds, setFunds] = useState([])
   const [error, setError] = useState<any>(null)
 
+  useEffect(() => {
+    listFunds()
+  }, [])
   const listFunds = () => {
     setRefresh(true)
     Axios.get(`/api/request/list/bytype?type=Fundraising`)

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
+import {
+  NavigationActions,
+  NavigationInjectedProps,
+  withNavigation
+} from 'react-navigation'
 import { View, Image, Text, ScrollView, Switch, Button } from 'react-native'
 import { Divider, Icon } from 'react-native-elements'
 import { Style } from '../detail-style'
@@ -64,9 +68,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             style={Style.requestImage}
           />
           <View style={Style.requestTitle}>
-            <Text style={Style.requestTitle}>
-              {request.name}
-            </Text>
+            <Text style={Style.requestTitle}>{request.name}</Text>
           </View>
           <Divider />
           <View>
@@ -76,7 +78,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
           <View style={Style.inlineBlock}>
             <Text style={Style.requestedTitle}>Requested Amount: </Text>
-            <Text style={Style.requestedAmount}>{request.fundraising.amount}{' '}ETB</Text>
+            <Text style={Style.requestedAmount}>{request.fundraising.amount} ETB</Text>
           </View>
 
           <View style={Style.button}>
@@ -87,15 +89,22 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           <Divider />
 
           <View style={Style.inlineBlock}>
-            <Text style={Style.byTitle}>Requested By {' '}</Text>
-            <Text style={classes.link} onPress={() => navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: request._by._id
-                }
-              })
-            )}>{request._by.acount.displayName}</Text>
+            <Text style={Style.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.acount.displayName}
+            </Text>
           </View>
         </ScrollView>
       </>
