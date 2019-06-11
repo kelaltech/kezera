@@ -97,7 +97,7 @@ function NewsToday({
             imageStyle={newsStyle.imageStyle}
             imageProps={{ resizeMode: 'cover' }}
           >
-            <View >
+            <View>
               <Text
                 style={{
                   ...classes.head1,
@@ -119,13 +119,8 @@ function NewsToday({
         </TouchableOpacity>
         <View style={newsStyle.actionStyle}>
           <View style={newsStyle.actionChild}>
-            <TouchableOpacity
-              onPress={handleLike}
-            >
-            <Icon
-              name={'heart-outline'}
-              type={'material-community'}
-            />
+            <TouchableOpacity onPress={handleLike}>
+              <Icon name={'heart-outline'} type={'material-community'} />
             </TouchableOpacity>
             <Text style={classes.paddingHorizontalSmall}>{like}</Text>
           </View>

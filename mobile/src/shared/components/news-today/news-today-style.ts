@@ -5,7 +5,7 @@ import values from '../../../assets/styles/values'
 const dimension = Dimensions.get('window')
 export default StyleSheet.create({
   newsTodayParent: {
-    width: dimension.width,
+    width: dimension.width
   },
   cardStyle: {
     borderBottomLeftRadius: 15,
@@ -13,7 +13,7 @@ export default StyleSheet.create({
   },
 
   imageStyle: {
-    height: 250,
+    height: 250
   },
 
   actionStyle: {
