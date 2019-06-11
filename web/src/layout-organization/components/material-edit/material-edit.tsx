@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Content, Block, Title, Button, Input } from 'gerami'
 import { FormControl } from '@material-ui/core/es'
 import { InputLabel } from '@material-ui/core'
@@ -7,11 +7,12 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Axios from 'axios'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
-interface IMaterialAddProps {
+interface IMaterialEditProps {
   onChange: (material: any) => void
+  Material: any
 }
-export default function MaterialAdd(props: IMaterialAddProps) {
-  let [material, setMaterial] = useState({ status: '', materialType: '', quantity: '' })
+export default function MaterialEdit(props: IMaterialEditProps) {
+  let [material, setMaterial] = useState({ status: '', quantity: '', materialType: '' })
   let { t } = useLocale(['material-donation'])
   let emitChange = function(changes: any): void {
     props.onChange({ ...material, ...changes })
@@ -23,7 +24,7 @@ export default function MaterialAdd(props: IMaterialAddProps) {
         <FormControl className={'full-width'}>
           <InputLabel>{t`status`}</InputLabel>
           <Select
-            value={material.status}
+            value={props.Material.status}
             onChange={e => emitChange({ status: e.target.value })}
             inputProps={{
               name: 'status'
@@ -43,7 +44,7 @@ export default function MaterialAdd(props: IMaterialAddProps) {
         <FormControl className={'full-width'}>
           <InputLabel>{t`type`}</InputLabel>
           <Select
-            value={material.materialType}
+            value={props.Material.materialType}
             onChange={e => emitChange({ materialType: e.target.value })}
             inputProps={{
               name: 'materialType'
@@ -63,10 +64,10 @@ export default function MaterialAdd(props: IMaterialAddProps) {
       </Block>
       <Block>
         <Input
-          placeholder={'Quantity'}
           className={'full-width'}
+          placeholder={'Quantity'}
           name={'quantity'}
-          value={material.quantity}
+          value={props.Material.quantity}
           onChange={e => emitChange({ quantity: e.target.value })}
         />
       </Block>

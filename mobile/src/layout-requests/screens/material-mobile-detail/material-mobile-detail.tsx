@@ -73,9 +73,10 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
         <ScrollView>
           <View style={taskStyle.inlineBlock}>
             <Text style={taskStyle.requestTitle}>request.name</Text>
+            <Text style={taskStyle.requestTitle}>{request.name}</Text>
             <View>
-              <Button title={'participate'} onPress={() => {}}>
-                Participate
+              <Button title={'donate'} onPress={() => {}}>
+                Donate
               </Button>
             </View>
           </View>
@@ -90,8 +91,8 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             <Text style={taskStyle.fundAmount}>{request.material.materialType}</Text>
           </View>
 
-          <View>
-            <Button title={'participate'} onPress={() => {}}>
+          <View style={taskStyle.button}>
+            <Button title={'donate'} onPress={() => {}}>
               Donate
             </Button>
           </View>
@@ -113,6 +114,22 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
               }
             >
               {request._by.name}
+            </Text>
+            <Text style={taskStyle.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.account.displayName}
             </Text>
           </View>
         </ScrollView>
@@ -143,6 +160,10 @@ const taskStyle = StyleSheet.create({
     padding: 5,
     fontWeight: 'bold',
     fontSize: 18
+  },
+  button: {
+    alignContent: 'center',
+    width: dimension.width / 2
   },
   requestTitle: {
     padding: 5,

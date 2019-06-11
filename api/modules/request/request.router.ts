@@ -83,7 +83,9 @@ requestRouter.put(
     ctx.body = await toggleRequestVolunteer(ctx.params.request_id, ctx.state.user._id)
   }
 )
-
+requestRouter.get('/list-mine', async ctx => {
+  ctx.body = await listMyRequests(ctx.state.user._id)
+})
 //GET /api/request/:_id
 requestRouter.get('/:_id', async ctx => {
   console.log(ctx.params._id, '')

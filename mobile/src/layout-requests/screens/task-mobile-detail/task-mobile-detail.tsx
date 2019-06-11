@@ -23,6 +23,7 @@ import { Dimensions, StyleSheet } from 'react-native'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import classes from '../../../assets/styles/classes'
+
 const dimension = Dimensions.get('screen')
 
 const primary = '#3f51b5'
@@ -78,6 +79,10 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           />
           <View style={taskStyle.inlineBlock}>
             <Text style={taskStyle.requestTitle}>request.name</Text>
+            <Text style={taskStyle.requestTitle}>
+              {request.name}
+              {'   '}
+            </Text>
             <View>
               <Button title={'participate'} onPress={() => {}}>
                 Participate
@@ -131,12 +136,35 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             >
               {request._by.name}
             </Text>
+            <Text style={taskStyle.fundAmountTitle}>Participants needed </Text>
+            <Text style={taskStyle.fundAmount}>{request.task.numberNeeded}</Text>
+          </View>
+
+          <Divider />
+
+          <View style={taskStyle.inlineBlock}>
+            <Text style={taskStyle.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.account.displayName}
+            </Text>
           </View>
         </ScrollView>
       </>
     ) : (
       <View>
-        <Text>No Detail Available</Text>
+        <Text>No Detail Available!</Text>
       </View>
     ))
   )
@@ -152,6 +180,7 @@ const taskStyle = StyleSheet.create({
     fontSize: 18
   },
   fundAmountTitle: {
+    paddingLeft: 10,
     padding: 5,
     fontSize: 18,
     color: '#3f51b5'
@@ -176,7 +205,12 @@ const taskStyle = StyleSheet.create({
     fontSize: 14,
     padding: 10
   },
+  button: {
+    alignContent: 'center',
+    width: dimension.width / 2
+  },
   inlineBlock: {
+    justifyContent: 'space-between',
     flex: 1,
     flexDirection: 'row'
   }

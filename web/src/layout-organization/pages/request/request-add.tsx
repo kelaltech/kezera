@@ -87,7 +87,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
       .post('/api/request/add', data, { withCredentials: true })
       .then(res => {
         id = res.data
-        //history.push('/organization/request/' + res.data._id)
+        history.push('/organization/request/' + res.data._id)
       })
       .catch(e => {
         console.log(e)

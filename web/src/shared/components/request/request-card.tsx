@@ -15,18 +15,13 @@ interface IRequestCard {
   type?: string
 }
 function RequestCard({ request }: IRequestCard) {
-  /* switch (request.type) {
-    case 'Fundraising':
-      return <FundCard request={request} />
-    case 'Task':
-      return <TaskCard request={request} />
-    case 'Material':
-      return <TaskCard request={request} />
-    case 'Organ':
-      return <TaskCard request={request} />
-    default:
-      return null
-  }*/
+  let deleteRequest = function(id: string) {
+    axios
+      .delete(`/api/request/${id}`)
+      .then()
+      .catch(console.error)
+  }
+
   const { account } = useAccountState()
   return (
     <Card
@@ -85,15 +80,23 @@ function RequestCard({ request }: IRequestCard) {
           )}
           {account && account.role === 'ORGANIZATION' ? (
             <Block className={'right'}>
-              <span className={'requestDeleteButton'} onClick={() => alert('Abebe')}>
-                <FontAwesomeIcon
-                  color={'blue'}
-                  icon={'pencil-alt'}
-                  className={'TrashIcon'}
-                />
+              <span className={'requestDeleteButton'}>
+                <Anchor to={`/request/${request._id}/edit`}>
+                  <FontAwesomeIcon
+                    color={'blue'}
+                    icon={'pencil-alt'}
+                    className={'TrashIcon'}
+                  />
+                </Anchor>
               </span>
               &emsp;&emsp;
-              <span className={'requestDeleteButton'} onClick={() => alert('Abebe')}>
+              <span
+                className={'requestDeleteButton'}
+                onClick={() => {
+                  deleteRequest(request._id),
+                    (window.location.href = '/organization/request/list')
+                }}
+              >
                 <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
               </span>
             </Block>

@@ -80,7 +80,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             <Text style={fundStyle.fundAmount}>{request.fundraising.amount} ETB</Text>
           </View>
 
-          <View>
+          <View style={fundStyle.button}>
             <Button title={'donate'} onPress={() => {}}>
               Donate
             </Button>
@@ -104,6 +104,22 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             >
               {request._by.name}
             </Text>
+            <Text style={fundStyle.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.acount.displayName}
+            </Text>
           </View>
         </ScrollView>
       </>
@@ -121,7 +137,8 @@ const fundStyle = StyleSheet.create({
     height: 250
   },
   button: {
-    alignContent: 'center'
+    alignContent: 'center',
+    width: dimension.width / 2
   },
   byTitle: {
     color: '#3f51b5',

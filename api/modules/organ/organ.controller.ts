@@ -19,7 +19,7 @@ export async function listOrganRequest(count = 5, since = Date.now()): Promise<a
 }
 
 export async function getOrganFromRequest(request_id: ObjectId): Promise<IOrganResponse> {
-  return get(OrganModel, null, { conditions: { request: request_id } }) as any // todo: filter?
+  return get(OrganModel, null, { conditions: { requestId: request_id } }) as any // todo: filter?
 }
 
 export async function editOrgan(id: ObjectId, data: IOrganRequest): Promise<any> {
