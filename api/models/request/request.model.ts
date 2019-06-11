@@ -1,5 +1,6 @@
 import { ModelFactory } from 'meseret'
 import { Document, Schema } from 'mongoose'
+
 import { requestPaths } from './request.path'
 
 type ObjectId = Schema.Types.ObjectId
@@ -25,7 +26,7 @@ export interface IRequest extends Document {
 
   donations: {
     _at?: Date | number
-    volunteer_id: ObjectId
+    volunteer: ObjectId
     approved?: boolean // true by default (todo: until verification feature is added)
     data?: string // a number string for .type === 'Fundraising'
   }[]
@@ -43,16 +44,25 @@ RequestModel.collection.ensureIndex(
   {
     name: 'text',
     description: 'text',
+
+    status: 'text',
     type: 'text',
-    'volunteers.displayName': 'text'
+
+    'donations.volunteer.username': 'text',
+    'donations.volunteer.account.displayName': 'text',
+    'donations.volunteer.account.email': 'text',
+    'donations.volunteer.account.phoneNumber': 'text',
+
+    'donations.data': 'text'
   },
   {
     name: 'request_search',
     weights: {
       // default is 1
-      type: 15,
       name: 10,
-      description: 5
+      description: 5,
+      status: 15,
+      type: 15
     }
   }
 )
