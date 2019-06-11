@@ -8,7 +8,7 @@ import { ActivityModel } from '../models/activity/activity.model'
 import { CertificateModel } from '../models/certificate/certificate.model'
 import { commentModel } from '../models/comment/comment.model'
 import { EventModel } from '../models/event/event.model'
-import { FundModel } from '../models/fundraising/fundraising.model'
+import { FundraisingModel } from '../models/fundraising/fundraising.model'
 import { KeyModel } from '../models/key/key.model'
 import { MaterialModel } from '../models/material/material.model'
 import { NewsModel } from '../models/news/news.model'
@@ -52,7 +52,7 @@ export const serverAppConfig: IServerAppConfig = {
     CertificateModel,
     commentModel,
     EventModel,
-    FundModel,
+    FundraisingModel,
     KeyModel,
     MaterialModel,
     NewsModel,

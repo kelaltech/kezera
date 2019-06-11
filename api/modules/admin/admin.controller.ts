@@ -12,7 +12,7 @@ import {
 } from '../../models/organization/organization.model'
 import { AccountController } from '../account/account.controller'
 import { ClientSession } from 'mongodb'
-import { FundModel } from '../../models/fundraising/fundraising.model'
+import { FundraisingModel } from '../../models/fundraising/fundraising.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../..'
@@ -128,7 +128,7 @@ export async function GetTask(): Promise<Number> {
 }
 
 export async function GetFundraising(): Promise<Number> {
-  let fund = await list(FundModel)
+  let fund = await list(FundraisingModel)
   return fund.length
 }
 
