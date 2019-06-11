@@ -5,21 +5,21 @@ import { createMaterialTopTabNavigator } from 'react-navigation'
 import { _ } from '../../lib/language'
 import values from '../../assets/styles/values'
 
-import TaskMobileList from '../screens/task-list/task-list'
-import MaterialMobileList from '../screens/material-donation-list/material-donation-list'
-import FundMobileList from '../screens/fundraising-list/fundraising-list'
-import OrganMobileList from '../screens/organ-donation-list/organ-donation-list'
+import TaskList from '../screens/task-list/task-list'
+import MaterialList from '../screens/material-list/material-list'
+import FundraisingList from '../screens/fundraising-list/fundraising-list'
+import OrganList from '../screens/organ-list/organ-list'
 
 const LayoutRequestsNavigator = createMaterialTopTabNavigator(
   {
     TaskList: {
-      screen: TaskMobileList,
+      screen: TaskList,
       navigationOptions: {
         tabBarLabel: () => <TabBarLabel>{_`task:tasks`}</TabBarLabel>
       }
     },
-    MaterialDonationList: {
-      screen: MaterialMobileList,
+    MaterialList: {
+      screen: MaterialList,
       navigationOptions: {
         tabBarLabel: () => (
           <TabBarLabel>{_`material-donation:material-donations`}</TabBarLabel>
@@ -27,13 +27,13 @@ const LayoutRequestsNavigator = createMaterialTopTabNavigator(
       }
     },
     FundraisingList: {
-      screen: FundMobileList,
+      screen: FundraisingList,
       navigationOptions: {
         tabBarLabel: () => <TabBarLabel>{_`fundraising:fundraising`}</TabBarLabel>
       }
     },
-    OrganDonationList: {
-      screen: OrganMobileList,
+    OrganList: {
+      screen: OrganList,
       navigationOptions: {
         tabBarLabel: () => <TabBarLabel>{_`organ-donation:organ-donations`}</TabBarLabel>
       }
