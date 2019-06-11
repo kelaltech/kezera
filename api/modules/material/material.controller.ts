@@ -1,5 +1,5 @@
 import { IMaterial, MaterialModel } from '../../models/material/material.model'
-import { add, edit, remove, get } from '../../lib/crud'
+import { add, edit, remove, list } from '../../lib/crud'
 import { Schema } from 'mongoose'
 import { RequestModel } from '../../models/request/request.model'
 import { KoaError } from '../../lib/koa-error'
@@ -8,8 +8,12 @@ export async function AddMaterial(body: any, id: Schema.Types.ObjectId): Promise
   await add(MaterialModel, { ...body, requestId: id })
 }
 
-export async function GetMaterial(id: Schema.Types.ObjectId): Promise<IMaterial> {
-  return await get(MaterialModel, id)
+export async function GetMaterial(
+  id: Schema.Types.ObjectId
+): Promise<IMaterial | IMaterial[]> {
+  return await list(MaterialModel, {
+    preQuery: model => model.find({ requestId: id })
+  })
 }
 export async function DeleteMaterial(
   id: Schema.Types.ObjectId,

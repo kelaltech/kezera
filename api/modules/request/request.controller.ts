@@ -93,12 +93,10 @@ export async function searchRequest(term: any): Promise<any> {
 
 export async function listRequests(): Promise<any> {
   const requests = await list(RequestModel)
-
   return Promise.all(
     requests.map(async request => {
       const ret = request.toJSON()
       ret.picture = '/api/request/picture/' + request._id
-
       switch (ret.type) {
         case 'Task':
           ret.task = await getTask(request._id)
@@ -107,14 +105,12 @@ export async function listRequests(): Promise<any> {
           ret.fundraising = await getFund(request._id)
           break
         case 'Material':
-          ret.task = await GetMaterial(request._id)
+          ret.material = await GetMaterial(request._id)
           break
         case 'Organ':
           ret.fundraising = await getOrgan(request._id)
           break
       }
-      console.log(ret)
-
       return ret
     })
   )

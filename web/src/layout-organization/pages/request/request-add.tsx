@@ -49,6 +49,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
     data.append('description', form.target.description.value)
     data.append('startDate', form.target.startDate.value)
     data.append('endDate', form.target.endDate.value)
+    data.append('status', 'OPEN')
     data.append('type', type)
 
     switch (type) {
@@ -165,11 +166,14 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
           {type == 'Material' && <MaterialAdd onChange={setSpecific} />}
           {type == 'Organ' && <OrganAdd onChange={setSpecific} />}
           <Block last className={'right'}>
-            <Button type={'submit'}>{t`request:make-the-request`}</Button>
+            <Button
+              type={'submit'}
+              to={`/organization/request/list`}
+            >{t`request:make-the-request`}</Button>
           </Block>
-          <Button type={'submit'} to={`/organization/request/list`}>
+          {/*<Button type={'submit'} to={`/organization/request/list`}>
             {t`request:finish`}
-          </Button>
+          </Button>*/}
         </form>
       </Content>
     </Page>
