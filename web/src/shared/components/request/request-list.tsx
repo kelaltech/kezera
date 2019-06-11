@@ -30,7 +30,7 @@ export default function RequestList() {
   let { account } = useAccountState()
   useEffect(() => {
     axios
-      .get('/api/request/list')
+      .get('/api/request/list-mine')
       .then(res => {
         setRequests(res.data)
         console.log('successfully retrieved')

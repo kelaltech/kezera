@@ -15,7 +15,7 @@ interface IOrganProps {
 
 function OrganAdd(props: IOrganProps) {
   const [organ, setOrgan] = useState<any>({
-    type: '',
+    organType: '',
     quantity: 0
   })
 
@@ -37,8 +37,8 @@ function OrganAdd(props: IOrganProps) {
           </InputLabel>
           <Select
             required={true}
-            onChange={e => emitChange({ type: e.target.value })}
-            value={organ.type}
+            onChange={e => emitChange({ organType: e.target.value })}
+            value={organ.organType}
             input={
               <MatInput
                 placeholder={'Select the Type of Organ'}
