@@ -21,9 +21,10 @@ import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 interface ITaskProps {
   onChange: (task: any) => void
+  Task: any
 }
 
-export default function TaskAdd(props: ITaskProps) {
+export default function TaskEdit(props: ITaskProps) {
   const [task, setTask] = useState<any>({
     numberNeeded: '',
     startDate: '',
@@ -46,7 +47,7 @@ export default function TaskAdd(props: ITaskProps) {
         <Input
           onChange={e => emitChange({ numberNeeded: e.target.value })}
           className={'full-width'}
-          value={task.numberNeeded}
+          value={props.Task.numberNeeded}
           type={'number'}
           required={true}
           label={'Number of Participants'}
@@ -56,7 +57,7 @@ export default function TaskAdd(props: ITaskProps) {
         <FormControl className={'full-width'}>
           <InputLabel>{t`type`}</InputLabel>
           <Select
-            value={task.type}
+            value={props.Task.type}
             onChange={e => emitChange({ type: e.target.value })}
             inputProps={{
               name: 'Type'
@@ -90,6 +91,7 @@ export default function TaskAdd(props: ITaskProps) {
               className={'full-width'}
               name={'startDate'}
               type={'date'}
+              value={new Date(props.Task.startDate).toISOString().substr(0, 10)}
               required
             />
           </span>
@@ -101,6 +103,7 @@ export default function TaskAdd(props: ITaskProps) {
               className={'full-width'}
               name={'endDate'}
               type={'date'}
+              value={new Date(props.Task.endDate).toISOString().substr(0, 10)}
               required
             />
           </span>
