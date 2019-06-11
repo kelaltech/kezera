@@ -95,7 +95,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
                   id: request._by._id
                 }
               })
-            )}>{request._by.acount.displayName}</Text>
+            )}>{request._by.account.displayName}</Text>
           </View>
         </ScrollView>
       </>
