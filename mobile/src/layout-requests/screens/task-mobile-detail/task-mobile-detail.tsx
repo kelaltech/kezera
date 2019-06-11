@@ -78,13 +78,11 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             style={taskStyle.requestImage}
           />
           <View style={taskStyle.inlineBlock}>
-<<<<<<< HEAD
             <Text style={taskStyle.requestTitle}>request.name</Text>
-=======
             <Text style={taskStyle.requestTitle}>
-              {request.name}{'   '}
+              {request.name}
+              {'   '}
             </Text>
->>>>>>> 1d75848ec3efc81bff20caf33bd0e58c9bce3df8
             <View>
               <Button title={'participate'} onPress={() => {}}>
                 Participate
@@ -106,7 +104,6 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
 
           <View style={taskStyle.inlineBlock}>
-<<<<<<< HEAD
             <Text style={taskStyle.fundAmountTitle}>{request.task.numberNeeded}</Text>
             <Text style={taskStyle.fundAmount}> Participants needed.</Text>
           </View>
@@ -139,24 +136,29 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             >
               {request._by.name}
             </Text>
-=======
-            <Text style={taskStyle.fundAmountTitle}>Participants needed{' '} </Text>
+            <Text style={taskStyle.fundAmountTitle}>Participants needed </Text>
             <Text style={taskStyle.fundAmount}>{request.task.numberNeeded}</Text>
           </View>
 
           <Divider />
 
           <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.byTitle}>Requested By {' '}</Text>
-            <Text style={classes.link} onPress={() => navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: request._by._id
-                }
-              })
-            )}>{request._by.account.displayName}</Text>
->>>>>>> 1d75848ec3efc81bff20caf33bd0e58c9bce3df8
+            <Text style={taskStyle.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.account.displayName}
+            </Text>
           </View>
         </ScrollView>
       </>
@@ -205,7 +207,7 @@ const taskStyle = StyleSheet.create({
   },
   button: {
     alignContent: 'center',
-    width: dimension.width/2
+    width: dimension.width / 2
   },
   inlineBlock: {
     justifyContent: 'space-between',

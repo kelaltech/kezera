@@ -72,13 +72,8 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
       <>
         <ScrollView>
           <View style={taskStyle.inlineBlock}>
-<<<<<<< HEAD
             <Text style={taskStyle.requestTitle}>request.name</Text>
-=======
-            <Text style={taskStyle.requestTitle}>
-              {request.name}
-            </Text>
->>>>>>> 1d75848ec3efc81bff20caf33bd0e58c9bce3df8
+            <Text style={taskStyle.requestTitle}>{request.name}</Text>
             <View>
               <Button title={'donate'} onPress={() => {}}>
                 Donate
@@ -104,7 +99,6 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           <Divider />
 
           <View style={taskStyle.inlineBlock}>
-<<<<<<< HEAD
             <Text style={taskStyle.byTitle}>Requested By</Text>
             <Text
               style={classes.link}
@@ -121,17 +115,22 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             >
               {request._by.name}
             </Text>
-=======
-            <Text style={taskStyle.byTitle}>Requested By {' '}</Text>
-            <Text style={classes.link} onPress={() => navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: request._by._id
-                }
-              })
-            )}>{request._by.account.displayName}</Text>
->>>>>>> 1d75848ec3efc81bff20caf33bd0e58c9bce3df8
+            <Text style={taskStyle.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.account.displayName}
+            </Text>
           </View>
         </ScrollView>
       </>
@@ -164,7 +163,7 @@ const taskStyle = StyleSheet.create({
   },
   button: {
     alignContent: 'center',
-    width: dimension.width/2
+    width: dimension.width / 2
   },
   requestTitle: {
     padding: 5,

@@ -77,7 +77,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
           <View style={fundStyle.inlineBlock}>
             <Text style={fundStyle.fundAmountTitle}>Requested Amount: </Text>
-            <Text style={fundStyle.fundAmount}>{request.fundraising.amount}{' '}ETB</Text>
+            <Text style={fundStyle.fundAmount}>{request.fundraising.amount} ETB</Text>
           </View>
 
           <View style={fundStyle.button}>
@@ -88,7 +88,6 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           <Divider />
 
           <View style={fundStyle.inlineBlock}>
-<<<<<<< HEAD
             <Text style={fundStyle.byTitle}>Requested By</Text>
             <Text
               style={classes.link}
@@ -105,17 +104,22 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             >
               {request._by.name}
             </Text>
-=======
-            <Text style={fundStyle.byTitle}>Requested By {' '}</Text>
-            <Text style={classes.link} onPress={() => navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: request._by._id
-                }
-              })
-            )}>{request._by.acount.displayName}</Text>
->>>>>>> 1d75848ec3efc81bff20caf33bd0e58c9bce3df8
+            <Text style={fundStyle.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.acount.displayName}
+            </Text>
           </View>
         </ScrollView>
       </>
@@ -134,7 +138,7 @@ const fundStyle = StyleSheet.create({
   },
   button: {
     alignContent: 'center',
-    width: dimension.width/2
+    width: dimension.width / 2
   },
   byTitle: {
     color: '#3f51b5',
