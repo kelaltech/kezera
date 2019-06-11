@@ -62,63 +62,67 @@ function VerifierList(props: props) {
         </Block>
         <VerifierAdd open={open} onClose={() => setOpen(false)} />
         <Content>
-          <Table>
-            <TableHead className={'Verifier-Table-Header'}>
-              <TableRow>
-                <TableCell className="Verifier-Table-Header-Cells">{t`name`}</TableCell>
-                <TableCell className="Verifier-Table-Header-Cells">{t`email address`}</TableCell>
-                <TableCell className="Verifier-Table-Header-Cells">{t`phone no.`}</TableCell>
-                <TableCell className="Verifier-Table-Header-Cells">{t`action`}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {verifiers &&
-                verifiers.map((field: any) => (
-                  <TableRow>
-                    <TableCell>
-                      <label>
-                        <Image
-                          // src={`/api/admin/verifier/pic/${field._id}`}
-                          src={field.photoUri ? `${field.photoUri}?size=64` : userIcon}
-                          className="Verifier-Image middle"
-                        />
-                        &emsp;
-                        <span className="middle"> {field.displayName} </span>
-                      </label>
-                    </TableCell>
-                    <TableCell>
-                      <label>{field.email} </label>
-                    </TableCell>
-                    <TableCell>
-                      <label> {field.phoneNumber}</label>
-                    </TableCell>
-                    <TableCell>
-                      <Link to={`/admin/verifier/${field._id}`}>
+          {verifiers.length >= 0 ? (
+            <Table>
+              <TableHead className={'Verifier-Table-Header'}>
+                <TableRow>
+                  <TableCell className="Verifier-Table-Header-Cells">{t`name`}</TableCell>
+                  <TableCell className="Verifier-Table-Header-Cells">{t`email address`}</TableCell>
+                  <TableCell className="Verifier-Table-Header-Cells">{t`phone no.`}</TableCell>
+                  <TableCell className="Verifier-Table-Header-Cells">{t`action`}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {verifiers &&
+                  verifiers.map((field: any) => (
+                    <TableRow>
+                      <TableCell>
                         <label>
+                          <Image
+                            // src={`/api/admin/verifier/pic/${field._id}`}
+                            src={field.photoUri ? `${field.photoUri}?size=64` : userIcon}
+                            className="Verifier-Image middle"
+                          />
+                          &emsp;
+                          <span className="middle"> {field.displayName} </span>
+                        </label>
+                      </TableCell>
+                      <TableCell>
+                        <label>{field.email} </label>
+                      </TableCell>
+                      <TableCell>
+                        <label> {field.phoneNumber}</label>
+                      </TableCell>
+                      <TableCell>
+                        <Link to={`/admin/verifier/${field._id}`}>
+                          <label>
+                            <FontAwesomeIcon
+                              className={'ViewButton'}
+                              icon={'eye'}
+                              title={'View verifier'}
+                            />
+                          </label>
+                        </Link>
+                        &emsp;
+                        <label onClick={() => handleDelete(field._id)}>
                           <FontAwesomeIcon
-                            className={'ViewButton'}
-                            icon={'eye'}
-                            title={'View verifier'}
+                            className={'RemoveButton'}
+                            icon={'trash'}
+                            title={'delete verifier'}
                           />
                         </label>
-                      </Link>
-                      &emsp;
-                      <label onClick={() => handleDelete(field._id)}>
-                        <FontAwesomeIcon
-                          className={'RemoveButton'}
-                          icon={'trash'}
-                          title={'delete verifier'}
-                        />
-                      </label>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <Title size={'L'}> {t`no verifiers found`} </Title>
+          )}
         </Content>
-        <Block className="center">
+        {/*<Block className="center">
           <Button onClick={() => alert('ayseram')}> {t`view more`} </Button> &nbsp;
-        </Block>
+        </Block>*/}
       </Block>
     )
   )

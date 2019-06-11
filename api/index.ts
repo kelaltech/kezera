@@ -9,11 +9,17 @@ import { sslRedirect } from './lib/middlewares/ssl-redirect'
 const socket = require('socket.io')
 
 export const serverApp = new ServerApp(serverAppConfig)
-
 // todo: temp
 import './configs/collections-patch.temp'
 import { Socket } from 'socket.io'
 import { SocketManager } from './configs/SocketManager'
+
+/*
+let CronJob = require('cron').CronJob;
+//let Cron = require('./configs/Backup/backup.js');
+import * as Cron from './configs/Backup/backup'
+
+*/
 
 // here, to make sure it is the the first middleware that runs
 serverApp.app.use(sslRedirect())
@@ -37,6 +43,9 @@ export let io: Socket
 serverApp
   .start()
   .then(() => {
+    /*new CronJob('0 0 0 * * *', function() {
+      Cron.dbAutoBackUp();
+    }, null, true, 'Ethiopia/Addis_Ababa');*/
     io = socket(serverApp.servers[0])
     io.on('connection', SocketManager)
   })

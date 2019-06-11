@@ -74,11 +74,13 @@ export async function attendedUsers(
 ): Promise<any> {
   const event = await get(EventModel, eventId)
   for (let i = 0; i < body.length; i++) {
-    //@ts-ignore
-    if (body[i].toString() == event.goingVolunteers[i]._id.toString())
-      event.goingVolunteers.splice(i, 1)
+    event.goingVolunteers.map((id, index) =>
+      //@ts-ignore
+      id._id.toString() === body[i] ? event.goingVolunteers.splice(index, 1) : ''
+    )
   }
-  event.attendedVolunteers.push(body)
+  body.map((id: any) => event.attendedVolunteers.push(id))
+  // event.attendedVolunteers.push(body)
   await event.save()
 }
 
@@ -239,13 +241,16 @@ export async function going(
       goingVolunteers: doc.goingVolunteers.length
     }
   }
-
   for (let i = 0; i < doc.goingVolunteers.length; i++) {
+    console.log(doc.goingVolunteers[i])
     //@ts-ignore
-    if (account._id.toString() === doc.goingVolunteers[i]._id.toString()) {
+    if (account._id === doc.goingVolunteers[i]._id) {
       await doc.goingVolunteers.splice(i, 1)
+      console.log(doc.goingVolunteers)
     } else {
+      console.log('else statement')
       doc.goingVolunteers.push(account._id)
+      break
     }
   }
   await doc.save()
