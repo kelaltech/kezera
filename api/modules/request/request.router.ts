@@ -43,7 +43,7 @@ requestRouter.post('/add', async ctx => {
   ctx.body = await addRequestWithPicture(
     ctx.request.body,
     ctx.state.user,
-    fs.createReadStream(ctx.request.files!.picture.path)
+    ctx.request.files!.picture
   )
 })
 
