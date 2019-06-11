@@ -17,10 +17,10 @@ function TaskList({  }: NavigationInjectedProps) {
 
   const listTask = () => {
     setRefresh(true)
-    Axios.get(`/api/request/list/bytype?type=Fundraising`)
+    Axios.get(`/api/request/list/bytype?type=Task`)
       .then(tasks => {
         setTasks(tasks.data)
-        setRefresh(true)
+        setRefresh(false)
       })
       .catch(e => {
         setError(e)
