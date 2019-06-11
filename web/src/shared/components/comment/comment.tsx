@@ -19,12 +19,14 @@ import { ICommentRequest } from '../../../apiv/comment.apiv'
 import useLocale from '../../hooks/use-locale/use-locale'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import SpamReportDrop from '../spam-report-drop/spam-report-drop'
+import userIcon from '../../../assets/userIcon/userIcon.png'
 
 interface ICommentProps {
   ParentId: Schema.Types.ObjectId
   Type: String
   TypeId: String | Schema.Types.ObjectId
   comment: ICommentRequest // Change these any
+  fetch: () => void
 }
 
 function getDate(d: any) {
@@ -38,7 +40,9 @@ function getDate(d: any) {
       if (date.getDay() === now.getDay()) {
         if (date.getHours() === now.getHours()) {
           if (date.getMinutes() === now.getMinutes()) {
-            output = now.getSeconds() + ' ' + t`seconds ago`
+            difference = date.getSeconds() - now.getSeconds()
+            output =
+              (difference < 1 ? -1 * difference : difference) + ' ' + t`seconds ago`
           } else {
             difference = date.getMinutes() - now.getMinutes()
             output =
@@ -75,6 +79,7 @@ export default function CommentComponent(props: any) {
     formData.append('TypeId', props._id)
     Axios.post('/api/comment/add', formData)
       .then(() => {
+        FetchComments()
         socket.emit('CommentAdded')
       })
       .catch(console.error)
@@ -121,6 +126,7 @@ export default function CommentComponent(props: any) {
                 TypeId={props._id}
                 comment={comment}
                 ParentId={comment._id}
+                fetch={() => FetchComments()}
               />
             ))}
           </>
@@ -174,6 +180,7 @@ function Comment(props: ICommentProps) {
     )
       .then(() => {
         FetchReplies(props.ParentId)
+        props.fetch()
         socket.emit('CommentDeleted')
       })
       .catch()
@@ -186,6 +193,7 @@ function Comment(props: ICommentProps) {
     formData.append('body', e.target.body.value)
     Axios.put(`/api/comment/${id}`, formData)
       .then(() => {
+        props.fetch()
         socket.emit('CommentAltered')
         FetchReplies(props.ParentId)
       })
@@ -208,9 +216,8 @@ function Comment(props: ICommentProps) {
       <Block className="flex CommentHead inline-block">
         <div className={'middle inline-block'}>
           <Image
-            src={
-              'https://helpx.adobe.com/in/stock/how-to/visual-reverse-image-search/_jcr_content/main-pars/image.img.jpg/visual-reverse-image-search-v2_1000x560.jpg'
-            }
+            // src={v.photoUri ? `${v.photoUri}?size=64` : userIcon}
+            src={'/api/account/get-photo/' + props.comment._by}
             className={'inline-block  CommentImage'}
           />
           &emsp;
@@ -345,6 +352,7 @@ function Comment(props: ICommentProps) {
               TypeId={'REPLY'}
               comment={rep}
               ParentId={props.comment._id}
+              fetch={() => props.fetch}
             />
           ))}
         </>
