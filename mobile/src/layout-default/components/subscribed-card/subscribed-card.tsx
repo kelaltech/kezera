@@ -18,7 +18,7 @@ export default function SubscribedCard(
   return (
     <View>
       <ListItem
-        leftAvatar={{ source: { uri: `${baseUrl}/${props.organization.logoUri}` } }}
+        leftAvatar={{ source: { uri: `${baseUrl}${props.organization.logoUri}` } }}
         title={props.organization.account.displayName}
         subtitle={'Add location here'}
         rightIcon={{
