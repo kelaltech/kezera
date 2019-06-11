@@ -11,7 +11,8 @@ import {
   listMyRequests,
   listRequestByType,
   getRequestCover,
-  getRequestFile
+  getRequestFile,
+  addDonnerForMaterial
 } from './request.controller'
 
 // import * as fs from 'fs'
@@ -36,6 +37,12 @@ requestRouter.get('/list/bytype', async ctx => {
   ctx.body = await listRequestByType(ctx.query.type)
 })
 
+requestRouter.put('/material/donation/add', async ctx => {
+  ctx.body = await addDonnerForMaterial(
+    ctx.request.body.request_id,
+    ctx.request.body.volunteer_id
+  )
+})
 // GET /api/request/get-cover/:request_id
 requestRouter.get('/get-cover/:request_id', async ctx => {
   ctx.body = await getRequestCover(ctx.params.request_id)
