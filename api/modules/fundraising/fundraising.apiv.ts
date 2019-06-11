@@ -1,15 +1,12 @@
 import { ITaskType } from '../../models/task/task.model'
 
-export type ITaskRequest = {
+export type IFundraisingRequest = {
   type: ITaskType
 
-  startDate: Date | number
-  endDate: Date | number
-
-  numberNeeded: number
+  target: number
 }
 
-export type ITaskResponse = {
+export type IFundraisingResponse = {
   _id: string
   _at: Date | number
 

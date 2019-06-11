@@ -1,5 +1,5 @@
 import { ModelFactory } from 'meseret'
-import { Document, Schema } from 'mongoose'
+import { Schema } from 'mongoose'
 
 import { requestPaths } from './request.path'
 
@@ -11,7 +11,7 @@ export const requestStatuses: IRequestStatus[] = ['OPEN', 'CLOSED']
 export type IRequestType = 'Fundraising' | 'Material' | 'Organ' | 'Task'
 export const requestTypes: IRequestType[] = ['Fundraising', 'Material', 'Organ', 'Task']
 
-export interface IRequest extends Document {
+export interface IRequest {
   _at?: Date | number
 
   _by: ObjectId

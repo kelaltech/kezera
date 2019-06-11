@@ -2,11 +2,10 @@ import { Schema, SchemaDefinition } from 'mongoose'
 
 const ObjectId = Schema.Types.ObjectId
 
-export const fundPaths: SchemaDefinition = {
-  amount: { type: Number, ref: 'organization' },
-  type: { type: ObjectId },
-  startTime: { type: Date, required: true },
-  endTime: { type: Date, required: true },
-  requestId: { type: ObjectId, refs: 'request', required: true },
-  currency: { type: String, required: true }
+export const fundraisingPaths: SchemaDefinition = {
+  _at: { $type: Date, required: true, default: Date.now },
+
+  request: { $type: ObjectId, required: true, ref: 'request' },
+
+  target: { $type: Number }
 }

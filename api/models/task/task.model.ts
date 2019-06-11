@@ -1,14 +1,14 @@
 import { ModelFactory } from 'meseret'
-import { Document, Schema } from 'mongoose'
+import { Schema } from 'mongoose'
 
 import { taskPaths } from './task.path'
 
 type ObjectId = Schema.Types.ObjectId
 
-export type ITaskType = never
+export type ITaskType = never // todo
 export const taskTypes: ITaskType[] = []
 
-export interface ITask extends Document {
+export interface ITask {
   _at?: Date | number
 
   request: ObjectId // request
@@ -31,17 +31,17 @@ export const TaskModel = taskModelFactory.model
 
 TaskModel.collection.ensureIndex(
   {
+    type: 'text',
+    numberNeeded: 'text',
+
     'request.name': 'text',
     'request.description': 'text',
-
     'request.status': 'text',
     'request.type': 'text',
-
     'request.donations.volunteer.username': 'text',
     'request.donations.volunteer.account.displayName': 'text',
     'request.donations.volunteer.account.email': 'text',
     'request.donations.volunteer.account.phoneNumber': 'text',
-
     'request.donations.data': 'text'
   },
   {
