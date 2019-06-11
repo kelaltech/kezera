@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
+import {
+  NavigationActions,
+  NavigationInjectedProps,
+  withNavigation
+} from 'react-navigation'
 import { View, Image, Text, ScrollView, Switch, Button } from 'react-native'
 import { Divider, Icon } from 'react-native-elements'
 import Axios from 'axios'
@@ -63,9 +67,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             style={fundStyle.requestImage}
           />
           <View style={fundStyle.requestTitle}>
-            <Text style={fundStyle.requestTitle}>
-              {request.name}
-            </Text>
+            <Text style={fundStyle.requestTitle}>{request.name}</Text>
           </View>
           <Divider />
           <View>
@@ -87,14 +89,21 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
 
           <View style={fundStyle.inlineBlock}>
             <Text style={fundStyle.byTitle}>Requested By</Text>
-            <Text style={classes.link} onPress={() => navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: request._by._id
-                }
-              })
-            )}>{request._by.name}</Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.name}
+            </Text>
           </View>
         </ScrollView>
       </>

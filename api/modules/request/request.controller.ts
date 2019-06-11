@@ -85,13 +85,6 @@ export async function listRequestByType(type: IRequestType) {
   )
 }
 
-export async function listMyRequests(id: any): Promise<any> {
-  return Promise.all(
-    (await list(RequestModel, {
-      preQuery: model => model.find({ _by: id })
-    })).map(request => requestDocumentToResponse(request))
-  )
-}
 
 export async function addRequestWithPicture(
   data: any,

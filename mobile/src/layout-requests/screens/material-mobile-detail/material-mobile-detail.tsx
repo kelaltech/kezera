@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
-import { View, SwitchComponent, Image, Text, ScrollView, Switch, Button } from 'react-native'
+import {
+  NavigationActions,
+  NavigationInjectedProps,
+  withNavigation
+} from 'react-navigation'
+import {
+  View,
+  SwitchComponent,
+  Image,
+  Text,
+  ScrollView,
+  Switch,
+  Button
+} from 'react-native'
 import { Divider, Icon } from 'react-native-elements'
 import Axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
@@ -60,9 +72,7 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
       <>
         <ScrollView>
           <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.requestTitle}>
-              request.name
-            </Text>
+            <Text style={taskStyle.requestTitle}>request.name</Text>
             <View>
               <Button title={'participate'} onPress={() => {}}>
                 Participate
@@ -89,14 +99,21 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
 
           <View style={taskStyle.inlineBlock}>
             <Text style={taskStyle.byTitle}>Requested By</Text>
-            <Text style={classes.link} onPress={() => navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: request._by._id
-                }
-              })
-            )}>{request._by.name}</Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.name}
+            </Text>
           </View>
         </ScrollView>
       </>
