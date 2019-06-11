@@ -26,7 +26,7 @@ export type IRequestRequest =
     }
   | IRequestRequestCommons & {
       type: 'Task'
-      task: ITaskResponse
+      task: ITaskRequest
     }
 
 export type IRequestResponseCommons = {
@@ -69,5 +69,5 @@ export type IRequestResponse =
     }
   | IRequestResponseCommons & {
       type: 'Task'
-      task: ITaskRequest
+      task: ITaskResponse
     }
