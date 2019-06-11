@@ -24,6 +24,7 @@ import OrganizationCard from '../../../shared/components/organization-card/organ
 import { baseUrl } from '../../../app/configs/setup-axios'
 import classes from '../../../assets/styles/classes'
 import { string } from 'prop-types'
+import { taskCardStyle } from '../../components/task-card/task-card-style'
 
 const dimension = Dimensions.get('screen')
 
@@ -106,6 +107,15 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           <View style={Style.inlineBlock}>
             <Text style={Style.requestedTitle}>Participants needed </Text>
             <Text style={Style.requestedAmount}>{request.task.numberNeeded}</Text>
+          </View>
+
+          <View style={taskCardStyle.dateContainer}>
+            <Text style={classes.label}>{`Start: ${new Date(
+              request.task.startDate
+            ).toLocaleDateString()}`}</Text>
+            <Text style={classes.label}>{`End: ${new Date(
+              request.task.endDate
+            ).toLocaleDateString()}`}</Text>
           </View>
 
           <Divider />

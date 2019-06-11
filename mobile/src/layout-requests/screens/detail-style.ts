@@ -45,6 +45,7 @@ export const Style = StyleSheet.create({
   },
   inlineBlock: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center'
   }
 })

@@ -103,7 +103,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
                 )
               }
             >
-              {request._by.acount.displayName}
+              {request._by.account.displayName}
             </Text>
             <Text style={Style.byTitle}>Requested By {' '}</Text>
             <Text style={classes.link} onPress={() => navigation.dispatch(
