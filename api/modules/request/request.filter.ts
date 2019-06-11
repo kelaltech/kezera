@@ -11,7 +11,6 @@ import { getOrganFromRequest } from '../organ/organ.controller'
 import { GetMaterialFromRequest } from '../material/material.controller'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
-import { AccountModel } from '../../models/account/account.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -120,9 +119,9 @@ export async function requestDocumentToResponse(
     } else if (response._id) {
       const has = await new Grid(
         serverApp,
-        AccountModel,
+        RequestModel,
         response._id,
-        'cover',
+        undefined,
         false
       ).has()
 
@@ -134,7 +133,7 @@ export async function requestDocumentToResponse(
     if (fileUris !== undefined) {
       response.fileUris = fileUris
     } else if (response._id) {
-      const grid = new Grid(serverApp, AccountModel, response._id, 'file', false)
+      const grid = new Grid(serverApp, RequestModel, response._id, 'file', false)
 
       if (await grid.has()) {
         response.fileUris = (await grid.listFilenames()).map(
