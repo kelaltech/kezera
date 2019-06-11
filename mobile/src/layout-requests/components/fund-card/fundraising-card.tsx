@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import {
+  NavigationActions,
+  NavigationInjectedProps,
+  withNavigation
+} from 'react-navigation'
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
 import { Text, View } from 'react-native'
 import { Card, PricingCard } from 'react-native-elements'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import values from '../../../assets/styles/values'
 import { IFundraisingResponse } from '../../../../../api/modules/fundraising/fundraising.apiv'
+import classes from '../../../assets/styles/classes'
 
 function FundraisingCard({
-  request
+  request,
+  navigation
 }: NavigationInjectedProps & {
   request: IRequestResponse & { type: 'Fundraising'; fundraising: IFundraisingResponse }
 }) {
@@ -36,7 +42,23 @@ function FundraisingCard({
             `ETB ${raisedMoney} raised`,
             `${request.description.slice(0, 200)}`
           ]}
-          button={{ title: 'Donate', icon: 'donate' }}
+          onButtonPress={() =>
+            navigation.dispatch(
+              NavigationActions.navigate({
+                routeName: 'FundrasingDetail',
+                params: {
+                  id: request._id
+                }
+              })
+            )
+          }
+          button={{
+            title: 'Donate',
+            icon: 'donate',
+            buttonStyle: {
+              paddingVertical: values.space.normal
+            }
+          }}
         />
       </View>
     </>
