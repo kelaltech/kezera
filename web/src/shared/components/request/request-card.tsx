@@ -55,8 +55,8 @@ function RequestCard({ request }: IRequestCard) {
           {request.type == 'Material' ? (
             <>
               <FontAwesomeIcon color={'grey'} icon={'tshirt'} />
-              &emsp; 10
-              {/*{request.material.quantity}*/}
+              &emsp;
+              {request.material[0].quantity}
             </>
           ) : (
             ''
@@ -73,7 +73,7 @@ function RequestCard({ request }: IRequestCard) {
           {request.type == 'Organ' ? (
             <>
               <FontAwesomeIcon color={'rgb(223,72,61)'} icon={'hand-holding-heart'} />
-              &emsp; 2{/*{request.organ.quantity}*/}
+              &emsp; {request.organ.quantity}
             </>
           ) : (
             ''

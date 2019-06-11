@@ -1,5 +1,5 @@
 import { IMaterial, MaterialModel } from '../../models/material/material.model'
-import { add, edit, remove, list } from '../../lib/crud'
+import { add, edit, remove, list, get } from '../../lib/crud'
 import { Schema } from 'mongoose'
 import { RequestModel } from '../../models/request/request.model'
 import { KoaError } from '../../lib/koa-error'
@@ -24,16 +24,15 @@ export async function DeleteMaterial(
   else throw new KoaError('Not Authorized for this action', 401)
 }
 
-export async function UpdateMaterial(
-  id: Schema.Types.ObjectId,
-  body: any
-): Promise<void> {
+export async function UpdateMaterial(body: any): Promise<void> {
   let material = {
+    _id: body._id,
     status: body.status,
-    materialType: body.materialType,
-    organizationId: body.organizationId
+    quantity: body.quantity,
+    materialType: body.materialType
   }
-  await edit(MaterialModel, id, material)
+  let mat = await get(MaterialModel, material._id)
+  await edit(MaterialModel, mat._id, material)
 }
 
 export async function ListMaterials(orgId: Schema.Types.ObjectId): Promise<any> {

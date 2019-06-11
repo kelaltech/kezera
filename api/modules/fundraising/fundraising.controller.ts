@@ -1,9 +1,6 @@
 import { add, edit, get, list } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
 import { FundraisingModel } from '../../models/fundraising/fundraising.model'
-import { Stream } from 'stream'
-import { Grid } from '../../lib/grid'
-import { serverApp } from '../../index'
 import { IFundraisingResponse } from './fundraising.apiv'
 import { fundraisingDocumentToResponse } from './fundraising.filter'
 
@@ -25,13 +22,12 @@ export async function getFundraisingFromRequest(
   )
 }
 
-export async function editFund(
-  id: Schema.Types.ObjectId,
-  body: any,
-  pic: Stream
-): Promise<any> {
-  await get(FundraisingModel, id)
-  await edit(FundraisingModel, id, body)
-  await new Grid(serverApp, FundraisingModel, id).remove()
-  await new Grid(serverApp, FundraisingModel, id).set(pic)
+export async function editFund(body: any): Promise<any> {
+  let funds = {
+    _id: body._id,
+    target: body.target
+  }
+  let fundraising = await get(FundraisingModel, funds._id)
+  console.log(fundraising._id)
+  await edit(FundraisingModel, fundraising._id, funds)
 }

@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose'
 
-import { IOrganRequest, IOrganResponse } from './organ.apiv'
+import { IOrganResponse } from './organ.apiv'
 import { add, edit, get, list, remove } from '../../lib/crud'
 import { OrganModel } from '../../models/organ/organ.model'
 
@@ -22,8 +22,14 @@ export async function getOrganFromRequest(request_id: ObjectId): Promise<IOrganR
   return get(OrganModel, null, { conditions: { requestId: request_id } }) as any // todo: filter?
 }
 
-export async function editOrgan(id: ObjectId, data: IOrganRequest): Promise<any> {
-  return await edit(OrganModel, id, data)
+export async function editOrgan(data: any): Promise<any> {
+  let org = {
+    _id: data._id,
+    organType: data.organType,
+    quantity: data.quantity
+  }
+  let organ = await get(OrganModel, org._id)
+  return await edit(OrganModel, organ._id, org)
 }
 
 export async function deleteOrgan(id: ObjectId): Promise<any> {

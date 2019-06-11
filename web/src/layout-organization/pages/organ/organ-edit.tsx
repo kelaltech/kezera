@@ -16,8 +16,9 @@ interface IOrganProps {
 
 function OrganEdit(props: IOrganProps) {
   const [organ, setOrgan] = useState<any>({
-    organType: '',
-    quantity: 0
+    _id:props.Organ._id,
+    organType: props.Organ.organType,
+    quantity: props.Organ.quantity
   })
 
   let emitChange = function(changes: any): void {
@@ -38,8 +39,8 @@ function OrganEdit(props: IOrganProps) {
           </InputLabel>
           <Select
             required={true}
+            value={organ.organType}
             onChange={e => emitChange({ organType: e.target.value })}
-            value={props.Organ.organType}
             input={
               <MatInput
                 placeholder={'Select the Type of Organ'}
@@ -59,7 +60,7 @@ function OrganEdit(props: IOrganProps) {
           <Block />
           <Input
             className={'full-width'}
-            value={props.Organ.quantity}
+            defaultValue={props.Organ.quantity}
             onChange={e => emitChange({ quantity: e.target.value })}
             placeholder={'Amount needed'}
             type={'number'}

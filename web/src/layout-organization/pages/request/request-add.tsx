@@ -62,7 +62,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
     const data = new FormData()
     data.append('name', form.target.name.value)
     data.append('description', form.target.description.value)
-    data.append('expires', form.target.endDate.value)
+    data.append('expires', form.target.expires.value)
     data.append('status', 'OPEN')
     data.append('type', type)
     data.append('picture', picture)
@@ -87,7 +87,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
       .post('/api/request/add', data, { withCredentials: true })
       .then(res => {
         id = res.data
-        history.push('/organization/request/' + res.data._id)
+        history.push('/organization/request/list')
       })
       .catch(e => {
         console.log(e)
@@ -143,7 +143,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
               <Title>End Date</Title>
             </sup>
 
-            <Input className={'full-width'} name={'endDate'} type={'date'} />
+            <Input className={'full-width'} name={'expires'} type={'date'} />
           </Block>
           <hr />
           <Block>
