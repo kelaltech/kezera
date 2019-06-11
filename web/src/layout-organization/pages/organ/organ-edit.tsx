@@ -39,7 +39,7 @@ function OrganEdit(props: IOrganProps) {
           </InputLabel>
           <Select
             required={true}
-            defaultValue={props.Organ.organType}
+            value={organ.organType}
             onChange={e => emitChange({ organType: e.target.value })}
             input={
               <MatInput
