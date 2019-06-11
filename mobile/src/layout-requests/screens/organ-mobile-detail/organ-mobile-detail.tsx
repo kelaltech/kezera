@@ -32,7 +32,7 @@ type Params = {
   id?: string
 }
 
-function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
+function OrganMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
   let id = navigation.getParam('id')
   const { loading, t } = useLocale(['request'])
   let [request, setRequest] = useState()
@@ -82,8 +82,8 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
               {request.name}{'   '}
             </Text>
             <View>
-              <Button title={'donate'} onPress={() => {}}>
-                Donate
+              <Button title={'pledge'} onPress={() => {}}>
+                Pledge
               </Button>
             </View>
           </View>
@@ -97,13 +97,13 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
 
           <View style={Style.inlineBlock}>
-            <Text style={Style.requestedTitle}>Requested Material: </Text>
-            <Text style={Style.requestedAmount}>{request.material.materialType}</Text>
+            <Text style={Style.requestedTitle}>Requested Organ: </Text>
+            <Text style={Style.requestedAmount}>{request.organ.organType}</Text>
           </View>
 
           <View style={Style.inlineBlock}>
-            <Text style={Style.requestedTitle}>Participants needed{' '} </Text>
-            <Text style={Style.requestedAmount}>{request.material.quantity}</Text>
+            <Text style={Style.requestedTitle}>Quantity Required{' '} </Text>
+            <Text style={Style.requestedAmount}>{request.organ.quantity}</Text>
           </View>
 
           <Divider />
@@ -130,4 +130,4 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
 }
 
 
-export default withNavigation(MaterialMobileDetail)
+export default withNavigation(OrganMobileDetail)

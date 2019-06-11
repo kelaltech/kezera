@@ -2,22 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { Anchor, Block, Content, Flex, FlexSpacer, Title, Yoga } from 'gerami'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Switch } from '@material-ui/core'
 import Axios from 'axios'
 
 import './request-detail.scss'
+import useLocale from '../../hooks/use-locale/use-locale'
 import RichPage from '../../components/rich-page/rich-page'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import OrganizationCard from '../../components/organization-card/organization-card'
-import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
-import RequestFundDetail from './request-fund/request-fund-detail'
-import RequestTaskDetail from './request-task/request-task-detail'
-import RequestMaterialDetail from './request-material/request-material'
-import RequestOrganDetail from './request-organ/request-organ-detail'
-import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
 import { useVolunteerState } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
-import useLocale from '../../hooks/use-locale/use-locale'
+import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
+import OrganizationCard from '../../components/organization-card/organization-card'
+import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
+import RequestDetailFundraising from './components/request-detail-fundraising/request-detail-fundraising'
+import RequestDetailMaterial from './components/request-detail-material/request-detail-material'
+import RequestDetailOrgan from './components/request-detail-organ/request-detail-organ'
+import RequestDetailTask from './components/request-detail-task/request-detail-task'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const { loading, t } = useLocale(['request'])
@@ -42,22 +41,6 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
 
   const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
 
-  /*
-  // todo ?
-  let [volunteers, setVolunteers] = useState<any[]>([])
-  let toggleRequestVolunteer = function() {
-    Axios
-      .put(`/api/request/toggle-request-volunteer/${match.params._id}`)
-      .then(resp => setRequest(resp.data))
-      .catch()
-  }
-  useEffect(() => {
-    Axios.get(`/api/request/list-request-volunteers/${match.params._id}`)
-      .then((resp: any) => setVolunteers(resp.data))
-      .catch(console.error)
-  }, [])
-  */
-
   return (
     loading ||
     (!request ? null : (
@@ -70,44 +53,22 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
         covers={request.coverUri ? [request.coverUri] : undefined}
         actions={
           (account &&
-            ((account.role === 'VOLUNTEER' && [
-              {
-                children: (
-                  <>
-                    {/*
-                  // todo: ?
-                  <Switch
-                    checked={
-                      volunteer &&
-                      request.volunteers.map((v: any) => v._id).includes(volunteer._id)
-                    }
-                    onChange={() => {
-                      toggleRequestVolunteer()
-                    }}
-                  >
-                    Attend
-                  </Switch>
-                  */}
-                  </>
-                )
-              }
-            ]) ||
-              (account.role === 'ORGANIZATION' &&
-                myOrganization &&
-                myOrganization._id === request._by._id && [
-                  {
-                    to: `/request/${request._id}/edit`,
-                    children: (
-                      <>
-                        <FontAwesomeIcon
-                          icon={'pencil-alt'}
-                          className={'margin-right-normal font-S'}
-                        />
-                        {t`edit`}
-                      </>
-                    )
-                  }
-                ]))) ||
+            (account.role === 'ORGANIZATION' &&
+              myOrganization &&
+              myOrganization._id === request._by._id && [
+                {
+                  to: `/request/${request._id}/edit`,
+                  children: (
+                    <>
+                      <FontAwesomeIcon
+                        icon={'pencil-alt'}
+                        className={'margin-right-normal font-S'}
+                      />
+                      {t`edit`}
+                    </>
+                  )
+                }
+              ])) ||
           []
         }
         description={
@@ -157,17 +118,25 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           </Content>
         )}
 
+        <>
+          {request.type === 'Fundraising' && (
+            <RequestDetailFundraising request={request} />
+          )}
+          {request.type === 'Material' && <RequestDetailMaterial request={request} />}
+          {request.type === 'Organ' && <RequestDetailOrgan request={request} />}
+          {request.type === 'Task' && <RequestDetailTask request={request} />}
+        </>
+
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
           <>
             <Content className={'margin-bottom-big top'}>
               <Block first className={'bold'}>
-                {t`request:description`}
+                <pre>{t`request:description`}</pre>
               </Block>
               <hr />
               <Block last>{request.description}</Block>
             </Content>
 
-            {/* todo: continue here... with files... */}
             <Content className={'margin-bottom-big top'}>
               <Block first className={'bold'}>
                 Files
@@ -222,17 +191,9 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
             </Content>
           </>
         </Yoga>
-
-        <hr className={'margin-bottom-big'} />
-
-        <>
-          {request.type === 'Fundraising' && <RequestFundDetail request={request} />}
-          {request.type === 'Task' && <RequestTaskDetail request={request} />}
-          {request.type === 'Material' && <RequestMaterialDetail request={request} />}
-          {request.type === 'Organ' && <RequestOrganDetail request={request} />}
-        </>
       </RichPage>
     ))
   )
 }
+
 export default withRouter(RequestDetail)

@@ -20,16 +20,14 @@ export async function getTaskFromRequest(request_id: ObjectId): Promise<ITaskRes
   )
 }
 
-export async function updateTask(
-  body: any
-): Promise<void> {
+export async function updateTask(body: any): Promise<void> {
   let task = {
-    _id:body._id,
+    _id: body._id,
     type: body.type,
-    startDate:body.startDate,
+    startDate: body.startDate,
     endDate: body.endDate,
     numberNeeded: body.numberNeeded
   }
-  let t=await get(TaskModel,task._id)
-  await edit(TaskModel, t._id, task )
+  let t = await get(TaskModel, task._id)
+  await edit(TaskModel, t._id, task)
 }

@@ -1,27 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Block,
-  Button,
-  Content,
-  Flex,
-  FlexSpacer,
-  Input,
-  Page,
-  Title,
-  Yoga
-} from 'gerami'
+import { Content, Title, Yoga } from 'gerami'
 import axios from 'axios'
 
 import './request-card.scss'
-import RequestCard from '../../../shared/components/request/request-card'
-import promo from '../../../assets/images/login/promo-1.jpg'
-import FundCard from '../fundraising/fund-card'
-import TaskCard from '../task/task-card'
-import RichPage from '../rich-page/rich-page'
-import Search from '../search/search'
-import { useAccountState } from '../../../app/stores/account/account-provider'
-import RequestSearch from '../../pages/request-search/request-search'
 import useLocale from '../../hooks/use-locale/use-locale'
+import RequestCard from '../../../shared/components/request/request-card'
+import RichPage from '../rich-page/rich-page'
+import { useAccountState } from '../../../app/stores/account/account-provider'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function RequestList() {
   const [requests, setRequests] = useState<any[]>([])
@@ -45,14 +31,23 @@ export default function RequestList() {
     loading ||
     (!requests ? null : (
       <RichPage
-        title={<Title size={'XL'}>{t`request:request`}</Title>}
+        title={t`request:donation-requests`}
         actions={
           (account &&
             ((account.role === 'VOLUNTEER' && [{}]) ||
               (account.role === 'ORGANIZATION' && [
                 {
                   to: '/organization/request/add',
-                  children: <>{t`request:make-a-request`}</>
+                  primary: true,
+                  children: (
+                    <>
+                      <FontAwesomeIcon
+                        icon={'plus'}
+                        className={'margin-right-normal font-S'}
+                      />
+                      {t`request:make-a-request`}
+                    </>
+                  )
                 }
               ]))) ||
           []

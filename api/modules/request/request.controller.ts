@@ -85,7 +85,6 @@ export async function listRequestByType(type: IRequestType) {
   )
 }
 
-
 export async function addRequestWithPicture(
   data: any,
   account: Document & IAccount,
@@ -143,21 +142,20 @@ export async function editRequest(
       await updateTask(JSON.parse(data.Task))
       break
   }
-  let requestData={
-    name:data.name,
-    description:data.description,
-    expires:data.expires
+  let requestData = {
+    name: data.name,
+    description: data.description,
+    expires: data.expires
   }
-  await edit(RequestModel,data._id,requestData)
-  if(pic){
-    console.log("picture is added")
+  await edit(RequestModel, data._id, requestData)
+  if (pic) {
+    console.log('picture is added')
     const grid = new Grid(serverApp, RequestModel, data._id)
     const compressedPic = sharp(pic.path)
       .resize(1080, 1080, { fit: 'cover' })
       .jpeg({ quality: 100 })
     // await grid.remove()
     await grid.set(compressedPic, 'image/jpeg')
-
   }
 }
 

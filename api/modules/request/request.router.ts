@@ -61,19 +61,17 @@ requestRouter.post('/add', async ctx => {
 
 // /api/request/:_id"
 requestRouter.put('/:_id', async ctx => {
-  console.log("Put request reached")
+  console.log('Put request reached')
   console.log(ctx.request.body)
-  if(ctx.request.files!.picture !== undefined ){
+  if (ctx.request.files!.picture !== undefined) {
     ctx.body = await editRequest(
       ctx.params._id,
       ctx.request.body,
       ctx.state.user,
-      ctx.request.files!.picture)
-  }else{
-    ctx.body = await editRequest(
-      ctx.params._id,
-      ctx.request.body,
-      ctx.state.user)
+      ctx.request.files!.picture
+    )
+  } else {
+    ctx.body = await editRequest(ctx.params._id, ctx.request.body, ctx.state.user)
   }
 })
 

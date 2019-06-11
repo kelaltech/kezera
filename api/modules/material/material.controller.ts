@@ -24,16 +24,14 @@ export async function DeleteMaterial(
   else throw new KoaError('Not Authorized for this action', 401)
 }
 
-export async function UpdateMaterial(
-  body: any
-): Promise<void> {
+export async function UpdateMaterial(body: any): Promise<void> {
   let material = {
-    _id:body._id,
+    _id: body._id,
     status: body.status,
-    quantity:body.quantity,
-    materialType: body.materialType,
+    quantity: body.quantity,
+    materialType: body.materialType
   }
-  let mat=await get(MaterialModel,material._id);
+  let mat = await get(MaterialModel, material._id)
   await edit(MaterialModel, mat._id, material)
 }
 

@@ -5,7 +5,7 @@ import {
   withNavigation
 } from 'react-navigation'
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
-import { Text, View } from 'react-native'
+import { Dimensions, Text, View } from 'react-native'
 import { Card, PricingCard } from 'react-native-elements'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import values from '../../../assets/styles/values'
@@ -31,7 +31,9 @@ function FundraisingCard({
 
   function evaluateDonation() {
     let donation_raised: number = 0
-    request.donations.map((d, k) => (donation_raised += Number(d.data)))
+    request.donations.map(
+      d => d.approved && d.data && (donation_raised += Number.parseFloat(d.data))
+    )
     setRaisedMoney(donation_raised)
   }
 

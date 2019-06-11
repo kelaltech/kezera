@@ -18,6 +18,7 @@ export const taskCardStyle = StyleSheet.create({
     backgroundColor: 'rgba(92, 99,216, 1)',
     borderColor: 'transparent',
     borderWidth: 0,
-    borderRadius: 5
+    borderRadius: 5,
+    ...classes.marginVerticalSmall
   }
 })

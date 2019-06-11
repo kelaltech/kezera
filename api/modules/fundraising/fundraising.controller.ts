@@ -22,15 +22,12 @@ export async function getFundraisingFromRequest(
   )
 }
 
-export async function editFund(
-  body: any,
-): Promise<any> {
-  let funds= {
+export async function editFund(body: any): Promise<any> {
+  let funds = {
     _id: body._id,
-    target: body.target,
+    target: body.target
   }
-  let fundraising=await get(FundraisingModel,funds._id);
+  let fundraising = await get(FundraisingModel, funds._id)
   console.log(fundraising._id)
   await edit(FundraisingModel, fundraising._id, funds)
-
 }
