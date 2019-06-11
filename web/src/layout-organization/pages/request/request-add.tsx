@@ -1,4 +1,4 @@
-import React, { Component, useRef, useState } from 'react'
+import React, { Component, useEffect, useRef, useState } from 'react'
 import {
   Block,
   Button,
@@ -33,9 +33,12 @@ import MaterialAdd from '../../components/material-add/material-add'
 import OrganAdd from '../organ/organ-add'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Axios from 'axios'
+import { useMyOrganizationState } from '../../stores/my-organization/my-organization-provider'
 
 function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
+  const { myOrganization} = useMyOrganizationState()
   let { loading, t } = useLocale(['material-donation', 'request'])
   let [type, setType] = useState<any>(0)
   let [id, setId] = useState()
@@ -165,8 +168,10 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
               >
                 <MenuItem value={'Fundraising'}>{t`request:fundraising`}</MenuItem>
                 <MenuItem value={'Material'}>{t`request:material`}</MenuItem>
-                <MenuItem value={'Organ'}>{t`request:organ`}</MenuItem>
                 <MenuItem value={'Task'}>{t`request:task`}</MenuItem>
+                {myOrganization && myOrganization.type=='HOSPITAL'?
+                  <MenuItem value={'Organ'}>{t`request:organ`}</MenuItem>
+                 :''}
               </Select>
             </FormControl>
           </Block>

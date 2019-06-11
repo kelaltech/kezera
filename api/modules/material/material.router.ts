@@ -25,7 +25,7 @@ materialRouter.post('/create', async ctx => {
 })
 
 materialRouter.put('/_id', async ctx => {
-  ctx.body = await UpdateMaterial(ctx.params._id, ctx.request.body)
+  ctx.body = await UpdateMaterial(ctx.request.body)
 })
 
 materialRouter.delete('/:_id', async ctx => {

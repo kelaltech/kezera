@@ -196,3 +196,9 @@ export async function toggleRequestVolunteer(
 
   return getRequest(request._id)
 }
+
+export async function applyForTask(userId:Schema.Types.ObjectId,requestId:Schema.Types.ObjectId):Promise<any>{
+  let request=await get(RequestModel,requestId);
+  request.donations.push({volunteer:userId,approved:true})
+  request.save()
+}

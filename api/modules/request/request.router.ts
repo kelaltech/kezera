@@ -11,7 +11,8 @@ import {
   listMyRequests,
   listRequestByType,
   getRequestCover,
-  getRequestFile
+  getRequestFile,
+  applyForTask
 } from './request.controller'
 
 // import * as fs from 'fs'
@@ -100,4 +101,8 @@ requestRouter.get('/:_id', async ctx => {
 
 requestRouter.get('/requests/me', authorize(['VOLUNTEER']), async ctx => {
   ctx.body = await listRequestsMe(ctx.state.user._id)
+})
+
+requestRouter.put('/task/:_id/apply',async ctx=>{
+  ctx.body=await applyForTask(ctx.state.user._id,ctx.params._id);
 })
