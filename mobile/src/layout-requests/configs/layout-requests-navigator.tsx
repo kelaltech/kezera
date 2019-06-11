@@ -9,9 +9,16 @@ import TaskList from '../screens/task-list/task-list'
 import MaterialList from '../screens/material-list/material-list'
 import FundraisingList from '../screens/fundraising-list/fundraising-list'
 import OrganList from '../screens/organ-list/organ-list'
+import FundMobileDetail from '../screens/fund-mobile-detail/fund-mobile-detail'
 
 const LayoutRequestsNavigator = createMaterialTopTabNavigator(
   {
+    Sample: {
+      screen: FundMobileDetail,
+      navigationOptions: {
+        tabBarLabel: () => <TabBarLabel>{_`task:tasks`}</TabBarLabel>
+      }
+    },
     TaskList: {
       screen: TaskList,
       navigationOptions: {
