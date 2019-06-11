@@ -1,5 +1,7 @@
 {
   "title": "Tasks",
   "description": "",
+  "type": "Type",
+
   "upcoming-tasks": "Upcoming tasks"
 }

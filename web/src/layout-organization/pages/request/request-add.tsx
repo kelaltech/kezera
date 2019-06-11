@@ -152,7 +152,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
           <Block last className={'right'}>
             <Button
               type={'submit'}
-              // to={`/organization/request/list`}
+              to={`/organization/request/list`}
             >{t`request:make-the-request`}</Button>
           </Block>
           {/*<Button type={'submit'} to={`/organization/request/list`}>
