@@ -14,7 +14,7 @@ interface IFundProps {
 
 function FundAdd(props: IFundProps) {
   const [fund, setFund] = useState<any>({
-    target: '',
+    target: ''
   })
 
   let emitChange = function(changes: any): void {

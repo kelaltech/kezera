@@ -13,7 +13,7 @@ import {
   Yoga
 } from 'gerami'
 
-import "./request.scss"
+import './request.scss'
 import axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import { match, RouteComponentProps, withRouter } from 'react-router'
@@ -65,7 +65,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
     data.append('expires', form.target.endDate.value)
     data.append('status', 'OPEN')
     data.append('type', type)
-    data.append('picture',picture)
+    data.append('picture', picture)
 
     switch (type) {
       case 'Fundraising':
@@ -112,7 +112,9 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
                 <input type={'file'} ref={inputRef} onChange={handleInputChange} />
               </div>
               <div className={'img-add-placeholder fg-blackish'}>
-                <span><FontAwesomeIcon icon={'image'}/> Insert an image</span>
+                <span>
+                  <FontAwesomeIcon icon={'image'} /> Insert an image
+                </span>
               </div>
             </div>
             {/*<ImageInput name={'picture'} innerRef={uploadRef} />*/}
