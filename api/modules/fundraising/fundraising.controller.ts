@@ -1,6 +1,6 @@
 import { add, edit, get, list } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
-import { FundModel } from '../../models/fundraising/fundraising.model'
+import { FundraisingModel } from '../../models/fundraising/fundraising.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
@@ -8,15 +8,15 @@ import { serverApp } from '../../index'
 type ObjectId = Schema.Types.ObjectId | string
 
 export async function AddFund(body: any, id: Schema.Types.ObjectId): Promise<void> {
-  await add(FundModel, { ...body, requestId: id })
+  await add(FundraisingModel, { ...body, requestId: id })
 }
 
 export async function ListFunds(): Promise<Document[]> {
-  return await list(FundModel)
+  return await list(FundraisingModel)
 }
 
 export async function getFund(requestId: ObjectId): Promise<any> {
-  const fundraising = await FundModel.findOne({ requestId })
+  const fundraising = await FundraisingModel.findOne({ requestId })
   return fundraising
 }
 
@@ -25,8 +25,8 @@ export async function editFund(
   body: any,
   pic: Stream
 ): Promise<any> {
-  await get(FundModel, id)
-  await edit(FundModel, id, body)
-  await new Grid(serverApp, FundModel, id).remove()
-  await new Grid(serverApp, FundModel, id).set(pic)
+  await get(FundraisingModel, id)
+  await edit(FundraisingModel, id, body)
+  await new Grid(serverApp, FundraisingModel, id).remove()
+  await new Grid(serverApp, FundraisingModel, id).set(pic)
 }

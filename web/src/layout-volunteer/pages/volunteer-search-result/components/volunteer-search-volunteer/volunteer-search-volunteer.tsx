@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Yoga } from 'gerami'
 import VolunteerCard from '../../../../components/volunteer-card/volunteer-card'
+import EventAttendedCard from '../../../../../shared/components/event-attended-card/event-attended-card'
 interface IVolunteerResult {
   term?: string
 }
@@ -21,7 +22,16 @@ function VolSearchResult(props: IVolunteerResult) {
   ) : (
     <Yoga maxCol={2}>
       {volunteer.map((v: any) => (
-        <VolunteerCard
+        <EventAttendedCard user={v.account} />
+      ))}
+    </Yoga>
+  )
+}
+
+export default VolSearchResult
+
+{
+  /*   <VolunteerCard
           country={v.country}
           email={v.email}
           name={v.name}
@@ -29,10 +39,5 @@ function VolSearchResult(props: IVolunteerResult) {
           gender={v.Gender}
           _id={v.account._id}
           img={`/api/account/get-photo/${v.account._id}`}
-        />
-      ))}
-    </Yoga>
-  )
+        />*/
 }
-
-export default VolSearchResult

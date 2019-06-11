@@ -18,6 +18,7 @@ import { authorize } from '../../lib/middlewares/authorize'
 export const requestRouter = new Router({ prefix: '/api/request' })
 
 requestRouter.get('/list', async ctx => {
+  console.log('was here')
   ctx.body = await listRequests()
 })
 requestRouter.get('/search?term=:term', async ctx => {

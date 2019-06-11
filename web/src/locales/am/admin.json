@@ -44,5 +44,7 @@
   "search verifiers": "አረጋጋጭ ፈልግ",
   "create verifier": "አረጋጋጭ ፍጠር",
   "Are you sure you want to remove this user": "እርግጠኛ ነዎት ይህን አረጋጋጭ ማጥፋት ይፈልጋሉ",
-  "verified organizations": "የአረጋገጡት ድርጅቶች"
+  "verified organizations": "የአረጋገጡት ድርጅቶች",
+  "no verifiers found": "አረጋጋጭ የለም",
+  "remove": "አስወግድ"
 }

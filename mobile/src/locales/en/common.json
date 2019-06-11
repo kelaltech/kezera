@@ -1,10 +1,12 @@
 {
   "app-name": "kezera",
+  "app-motto": "Your Stage for Volunteering!",
 
   "n-a": "n/a",
   "error": "Error",
   "optional": "Optional",
 
+  "are-you-sure": "Are you sure?",
   "yes": "Yes",
   "no": "No",
 

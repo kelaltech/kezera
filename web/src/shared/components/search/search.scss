@@ -14,9 +14,7 @@
   padding: 0 5px;
   display: flex;
   .input-search {
-    flex: 80%;
-    line-height: 0.5px;
-    height: 20px !important;
+    padding-left: $space / 4;
   }
   .input-search-icon {
     text-align: center;

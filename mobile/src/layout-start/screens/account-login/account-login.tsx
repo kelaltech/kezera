@@ -63,7 +63,7 @@ function AccountLogin({ navigation }: NavigationInjectedProps<Params>) {
   const handleLogout = (): void => {
     setSending(true)
     Alert.alert(
-      t`are-you-sure-you-want-to-logout`,
+      t`account:are-you-sure-you-want-to-logout`,
       undefined,
       [
         {

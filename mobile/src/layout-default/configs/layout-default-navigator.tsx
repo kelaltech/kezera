@@ -11,7 +11,6 @@ import VolunteerSearch from '../screens/volunteer-search/volunteer-search'
 import LayoutRequests from '../../layout-requests/layout-requests'
 import Events from '../screens/events/events'
 import OrganizationSubscriptions from '../screens/organization-subscriptions/organization-subscriptions'
-
 const iconHeight = 28
 const iconMargin = iconHeight / 2
 

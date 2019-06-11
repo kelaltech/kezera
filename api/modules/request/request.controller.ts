@@ -52,7 +52,7 @@ export async function getRequest(_id: ObjectId): Promise<any> {
     postQuery: query =>
       query.populate({ path: 'volunteers', populate: { path: 'account' } })
   })
-  console.log(JSON.stringify(request.volunteers))
+  console.log(JSON.stringify(request.donations))
 
   const ret = request.toJSON()
   ret.picture = '/api/request/picture/' + request._id
@@ -73,9 +73,9 @@ export async function getRequest(_id: ObjectId): Promise<any> {
     await get(OrganizationModel, null, { conditions: { account: request._by } })
   )
 
-  for (let i = 0; i < request.volunteers.length; i++) {
-    ;(request.volunteers[i] as any).account = (await accountDocumentToPublicResponse(
-      (request.volunteers[i] as any).account
+  for (let i = 0; i < request.donations.length; i++) {
+    ;(request.donations[i] as any).account = (await accountDocumentToPublicResponse(
+      (request.donations[i] as any).account
     )) as any
   }
 
@@ -93,12 +93,10 @@ export async function searchRequest(term: any): Promise<any> {
 
 export async function listRequests(): Promise<any> {
   const requests = await list(RequestModel)
-
   return Promise.all(
     requests.map(async request => {
       const ret = request.toJSON()
       ret.picture = '/api/request/picture/' + request._id
-
       switch (ret.type) {
         case 'Task':
           ret.task = await getTask(request._id)
@@ -107,14 +105,12 @@ export async function listRequests(): Promise<any> {
           ret.fundraising = await getFund(request._id)
           break
         case 'Material':
-          ret.task = await GetMaterial(request._id)
+          ret.material = await GetMaterial(request._id)
           break
         case 'Organ':
           ret.fundraising = await getOrgan(request._id)
           break
       }
-      console.log(ret)
-
       return ret
     })
   )
@@ -178,12 +174,12 @@ export async function listRequestVolunteers(
     postQuery: query =>
       query.populate({ path: 'volunteers', populate: { path: 'account' } })
   })
-  for (let i = 0; i < request.volunteers.length; i++) {
-    ;(request.volunteers[i] as any).account = (await accountDocumentToPublicResponse(
-      (request.volunteers[i] as any).account
+  for (let i = 0; i < request.donations.length; i++) {
+    ;(request.donations[i] as any).account = (await accountDocumentToPublicResponse(
+      (request.donations[i] as any).account
     )) as any
   }
-  return request.volunteers as any
+  return request.donations as any
 }
 
 export async function listRequestsMe(account_id: ObjectId): Promise<IRequestResponse[]> {
@@ -198,10 +194,10 @@ export async function toggleRequestVolunteer(
   let request = await get(RequestModel, request_id)
   let volunteer = await get(VolunteerModel, null, { conditions: { account: account_id } })
 
-  if (request.volunteers.map(v => v.toString()).includes(volunteer._id.toString())) {
-    request.volunteers.splice(request.volunteers.indexOf(volunteer._id), 1)
+  if (request.donations.map(v => v.toString()).includes(volunteer._id.toString())) {
+    request.donations.splice(request.donations.indexOf(volunteer._id), 1)
   } else {
-    request.volunteers.push(volunteer._id)
+    request.donations.push(volunteer._id)
   }
 
   await edit(RequestModel, request._id, request.toJSON())

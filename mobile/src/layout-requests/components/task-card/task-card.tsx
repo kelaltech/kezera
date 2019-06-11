@@ -1,25 +1,14 @@
 import React from 'react'
+import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
+import { Text } from 'react-native'
 
-import useLocale from '../../../shared/hooks/use-locale/use-locale'
-import { Button, View } from 'react-native'
-import { Card } from 'react-native-elements'
-
-export interface ITaskProps {
-  request: any
-}
-export default function TaskMobileCard({ request }: ITaskProps) {
-  const { loading, t } = useLocale(['request'])
+function TaskCard({  }: NavigationInjectedProps & { request: IRequestResponse }) {
   return (
-    loading || (
-      <Card title={request.name} image={request.picture}>
-        <h6>{request.task.numberNeeded}</h6>
-        <Button
-          title={'Attend'}
-          onPress={() => {
-            /* todo */
-          }}
-        >{t`attend`}</Button>
-      </Card>
-    )
+    <>
+      <Text>Task card</Text>
+    </>
   )
 }
+
+export default withNavigation(TaskCard)

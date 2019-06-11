@@ -20,7 +20,8 @@ export default StyleSheet.create({
   },
   by: {
     ...classes.paddingHorizontalBig,
-    ...classes.paddingVerticalBig
+    ...classes.paddingVerticalBig,
+    color: values.color.secondary
   },
   actionStyle: {
     backgroundColor: values.color.whitish,

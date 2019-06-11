@@ -25,12 +25,6 @@ function layoutAdminNavigation(
         shortName: 'Verifiers'
       },
 */
-      {
-        to: '/account',
-        icon: 'user-circle',
-        name: account.displayName,
-        shortName: account.displayName
-      }
     ])
   } else {
     items = items.concat([

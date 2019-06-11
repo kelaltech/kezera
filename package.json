@@ -48,6 +48,7 @@
     "@types/stripe": "^6.26.5",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.6",
+    "cron": "^1.7.1",
     "cross-env": "^5.2.0",
     "deep-extend": "^0.6.0",
     "dotenv": "^8.0.0",

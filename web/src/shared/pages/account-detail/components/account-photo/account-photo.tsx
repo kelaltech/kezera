@@ -1,8 +1,11 @@
 import React, { useRef, useState } from 'react'
-import { Button, Loading } from 'gerami'
+import { Button, Content, Loading } from 'gerami'
+import { IContentProps } from 'gerami/src/components/Content/Content'
+import { IButtonProps } from 'gerami/src/components/Button/Button'
 import Axios from 'axios'
 
 import './account-photo.scss'
+import { IAccountResponse } from '../../../../../apiv/account.apiv'
 import useLocale from '../../../../hooks/use-locale/use-locale'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -11,20 +14,30 @@ import {
 } from '../../../../../app/stores/account/account-provider'
 import { reloadAccount } from '../../../../../app/stores/account/account-actions'
 
-interface Props {
+type Props = IContentProps & {
+  accountOverride?: IAccountResponse
+  buttonPropsOverride?: IButtonProps
+
   /**
    * @default false
    */
   readonly?: boolean
 }
 
-function AccountPhoto({ readonly }: Props) {
+function AccountPhoto({
+  accountOverride,
+  readonly,
+  buttonPropsOverride,
+  ...contentProps
+}: Props) {
   const { loading, t } = useLocale(['account'])
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  const { account } = useAccountState()
+  const { account: accountFromState } = useAccountState()
+  const account = accountOverride || accountFromState
+
   if (!account) return <>{t`account:you-are-logged-out`}</>
   const accountDispatch = useAccountDispatch()
 
@@ -59,7 +72,12 @@ function AccountPhoto({ readonly }: Props) {
 
   return (
     loading || (
-      <>
+      <Content
+        transparent
+        {...contentProps}
+        className={`${contentProps.className || ''} account-photo-container`}
+        style={{ overflow: 'visible', ...contentProps.style }}
+      >
         <input
           style={{ display: 'none' }}
           type={'file'}
@@ -69,25 +87,29 @@ function AccountPhoto({ readonly }: Props) {
 
         <Button
           className={'account-photo'}
-          onClick={() => inputRef.current && inputRef.current.click()}
+          onClick={() => !readonly && inputRef.current && inputRef.current.click()}
           style={{
-            backgroundImage: submitting
-              ? 'linear-gradient(rgba(245,245,245,1), rgba(245,245,245,1))'
-              : account.photoUri
-              ? `url(${
-                  account.photoUri
-                }), linear-gradient(rgba(255,255,255,1), rgba(255,255,255,1))`
-              : 'linear-gradient(to top right, transparent, rgba(255,255,255,0.42))',
+            backgroundImage:
+              !readonly && submitting
+                ? 'linear-gradient(rgba(245,245,245,1), rgba(245,245,245,1))'
+                : account.photoUri
+                ? `url(${
+                    account.photoUri
+                  }), linear-gradient(rgba(255,255,255,1), rgba(255,255,255,1))`
+                : 'linear-gradient(to top right, transparent, rgba(255,255,255,0.42))',
             color: account.photoUri ? undefined : 'rgba(255,255,255,0.95)'
           }}
+          {...buttonPropsOverride}
         >
-          {submitting ? (
+          {readonly ? (
+            <></>
+          ) : submitting ? (
             <Loading className={'padding-none'} />
           ) : (
             <FontAwesomeIcon icon={'camera-retro'} />
           )}
         </Button>
-      </>
+      </Content>
     )
   )
 }

@@ -74,11 +74,13 @@ export async function attendedUsers(
 ): Promise<any> {
   const event = await get(EventModel, eventId)
   for (let i = 0; i < body.length; i++) {
-    //@ts-ignore
-    if (body[i].toString() == event.goingVolunteers[i]._id.toString())
-      event.goingVolunteers.splice(i, 1)
+    event.goingVolunteers.map((id, index) =>
+      //@ts-ignore
+      id._id.toString() === body[i] ? event.goingVolunteers.splice(index, 1) : ''
+    )
   }
-  event.attendedVolunteers.push(body)
+  body.map((id: any) => event.attendedVolunteers.push(id))
+  // event.attendedVolunteers.push(body)
   await event.save()
 }
 
@@ -147,12 +149,14 @@ export async function editEvent(
   let event = await get(EventModel, id)
   if (event.organizationId.toString() === orgId.toString()) {
     let updated = await edit(EventModel, id, body)
-    // @ts-ignore
-    const stream = sharp(ctx!.request.files!.image.path)
-      .resize(1080, 1080, { fit: 'cover' })
-      .jpeg({ quality: 100 })
-    await new Grid(serverApp, EventModel, id).remove()
-    await new Grid(serverApp, EventModel, id).set(stream)
+    if (ctx!.request.files!.image != undefined) {
+      // @ts-ignore
+      const stream = sharp(ctx!.request.files!.image.path)
+        .resize(1080, 1080, { fit: 'cover' })
+        .jpeg({ quality: 100 })
+      await new Grid(serverApp, EventModel, id).remove()
+      await new Grid(serverApp, EventModel, id).set(stream)
+    }
     console.log(updated)
     return await EventResponse(await get(EventModel, id))
   } else throw new KoaError('Not authorized', 401)
@@ -237,13 +241,16 @@ export async function going(
       goingVolunteers: doc.goingVolunteers.length
     }
   }
-
   for (let i = 0; i < doc.goingVolunteers.length; i++) {
+    console.log(doc.goingVolunteers[i])
     //@ts-ignore
-    if (account._id.toString() === doc.goingVolunteers[i]._id.toString()) {
+    if (account._id === doc.goingVolunteers[i]._id) {
       await doc.goingVolunteers.splice(i, 1)
+      console.log(doc.goingVolunteers)
     } else {
+      console.log('else statement')
       doc.goingVolunteers.push(account._id)
+      break
     }
   }
   await doc.save()
@@ -291,13 +298,11 @@ export async function getInterested(id: Schema.Types.ObjectId): Promise<any> {
   return users
 }
 
-export async function listLatestEvents(): Promise<IEvent[] | Document> {
-  let events = await EventModel.find({}).sort({ _at: 'desc' })
-  let response: any = []
-  for (let i = 0; events.length; i++) {
-    response[i] = await EventResponse(events[i])
-  }
-  return response
+export async function listLatestEvents(): Promise<any> {
+  const events = await list(EventModel, {
+    postQuery: query => query.sort({ _at: 'desc' })
+  })
+  return Promise.all(events.map(event => EventResponse(event)))
 }
 
 export async function upcomingEvents(): Promise<IEvent[] | Document> {
@@ -354,7 +359,7 @@ export async function NearByEvents(account: any, since: any, count: any): Promis
               $geometry: {
                 type: 'Point',
                 coordinates: account.lastLocation.coordinates,
-                $minDistance: 100,
+                $minDistance: 0,
                 $maxDistance: 2000
               }
             }

@@ -3,11 +3,11 @@ $accent: #ff5722;
 
 $radius: 2px;
 
-$shade-S: 0 1px 3px transparentize(black, 0.95) !default;
+$shade-S: 0 1px 3px transparentize(black, 0.93) !default;
 $shade-M: 0 2px 7px transparentize(black, 0.97) !default;
 $shade-L: 0 3px 14px transparentize(black, 0.99) !default;
 
-$touch: scale3d(0.99, 0.99, 0.99);
+$touch: scale3d(0.98, 0.98, 0.98);
 $poke: scale3d(1.07, 1.07, 1.07);
 
 @import '~gerami/src/styles/theme';

@@ -6,6 +6,9 @@ import './header.scss'
 import useLocale from '../../../hooks/use-locale/use-locale'
 import { INavigationItem } from './interfaces'
 import wordmark from '../../../../assets/images/wordmark-512.png'
+import logo from '../../../../assets/images/logo-512.png'
+import { useAccountState } from '../../../../app/stores/account/account-provider'
+import AccountPhoto from '../../../pages/account-detail/components/account-photo/account-photo'
 
 export interface IHeaderProps {
   centerNode?: ReactNode | null
@@ -30,6 +33,8 @@ export default function Header({
 
   const [isNavOpen, setIsNavOpen] = useState(false)
 
+  const { account } = useAccountState()
+
   return (
     loading || (
       <header className={`header ${className || ''}`} style={style}>
@@ -38,16 +43,28 @@ export default function Header({
             {overrideLeftNode === null
               ? undefined
               : overrideLeftNode || (
-                  <div>
+                  <div className={'margin-right-normal'}>
                     {leftImage === null
                       ? undefined
                       : leftImage || (
-                          <Image
-                            src={wordmark}
-                            className="header-logo middle"
-                            to="/"
-                            title={t`app-name` + ' | ' + t`Homepage`}
-                          />
+                          <>
+                            <div className={'header-nav-max-view'}>
+                              <Image
+                                src={wordmark}
+                                className="header-logo middle"
+                                to="/"
+                                title={t`app-name` + ' | ' + t`Homepage`}
+                              />
+                            </div>
+                            <div className={'header-nav-min-view'}>
+                              <Image
+                                src={logo}
+                                className="header-logo middle"
+                                to="/"
+                                title={t`app-name` + ' | ' + t`Homepage`}
+                              />
+                            </div>
+                          </>
                         )}
                   </div>
                 )}
@@ -57,7 +74,7 @@ export default function Header({
             {overrideRightNode === null
               ? undefined
               : overrideRightNode || (
-                  <div className="header-nav-max-view">
+                  <div className="header-nav-max-view middle">
                     {navigation &&
                       navigation.map((navRoute, i) => (
                         <Anchor
@@ -78,12 +95,21 @@ export default function Header({
                   </div>
                 )}
 
+            {account && (
+              <AccountPhoto
+                className={'header-account-photo middle'}
+                title={`${t`account:account-settings`}: ${account.displayName}`}
+                readonly
+                buttonPropsOverride={{ to: '/account' }}
+              />
+            )}
+
             {overrideRightNode !== undefined || !navigation || !navigation.length ? (
               undefined
             ) : (
-              <div className="header-nav-min-view">
+              <div className="header-nav-min-view middle">
                 <Button
-                  className="header-nav-btn middle"
+                  className="header-nav-btn middle margin-left-normal"
                   onClick={() => setIsNavOpen(!isNavOpen)}
                 >
                   <FontAwesomeIcon icon="bars" />

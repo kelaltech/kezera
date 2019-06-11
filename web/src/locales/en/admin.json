@@ -12,7 +12,7 @@
   "funds requested": "Funds requested",
   "organ requested": "Organ requested",
   "required": "Required",
-  "requests": "Required",
+  "requests": "Requests",
   "location": "Location",
   "governmental": "Governamental",
   "non-governmental": "Non-governmental",
@@ -26,7 +26,7 @@
   "interested": "Interested",
   "donated": "Donated",
   "name": "Name",
-  "email address": "",
+  "email address": "Email address",
   "phone no.": "Phone no.",
   "temporary password": "temporary password",
   "create": "Create",
@@ -44,5 +44,7 @@
   "search verifiers": "Search verifiers",
   "create verifier": "Create verifier",
   "Are you sure you want to remove this user": "Are you sure you want to remove this user",
-  "verified organizations": "Verified Organizations"
+  "verified organizations": "Verified Organizations",
+  "no verifiers found": "No verifiers found",
+  "remove": "Remove"
 }

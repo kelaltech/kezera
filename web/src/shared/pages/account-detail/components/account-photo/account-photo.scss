@@ -1,5 +1,28 @@
 @import '../../../../../assets/styles/theme';
 
+.account-photo-container {
+  .gerami-anchor {
+    &:active,
+    &:hover,
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .gerami-button {
+    &:hover,
+    &:focus {
+      box-shadow: $shade-L, $shade-S;
+    }
+
+    &:active {
+      box-shadow: none;
+
+      filter: none;
+    }
+  }
+}
+
 .account-photo {
   margin: auto 0;
   padding: 0;

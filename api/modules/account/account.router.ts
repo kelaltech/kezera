@@ -25,6 +25,13 @@ accountRouter.get(
   handle(AccountController, (c, s) => c.search(s))
 )
 
+// GET /api/account/search-verifiers?term=&since={Date.now()}&count={10} *
+accountRouter.get(
+  '/search-verifiers',
+  authorize(['ADMIN']),
+  handle(AccountController, (c, s) => c.searchVerifiers(s))
+)
+
 // PUT /api/account/edit-me *
 accountRouter.put(
   '/edit-me',

@@ -11,14 +11,7 @@ function layoutDefaultNavigation(
   let items: INavigationItem[] = []
 
   if (account) {
-    items = items.concat([
-      {
-        to: '/account',
-        icon: ['far', 'user-circle'],
-        name: account.displayName,
-        shortName: account.displayName
-      }
-    ])
+    items = items.concat([])
   } else {
     items = items.concat([
       {

@@ -34,7 +34,7 @@ function AccountHead({ readonly }: Props) {
     loading || (
       <Content transparent style={{ overflow: 'visible' }}>
         <Flex>
-          <AccountPhoto readonly={readonly} />
+          <AccountPhoto readonly={readonly} className={'account-head-photo'} />
 
           <label className={'account-head-display-name'}>
             <Input

@@ -29,12 +29,6 @@ function layoutOrganizationNavigation(
         icon: 'newspaper',
         name: `Your News`, // todo: translate
         shortName: `News` // todo: translate
-      },
-      {
-        to: '/organization/account',
-        icon: 'user-circle',
-        name: account.displayName,
-        shortName: account.displayName
       }
     ])
   } else {
