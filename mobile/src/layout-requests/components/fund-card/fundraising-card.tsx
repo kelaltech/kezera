@@ -50,7 +50,7 @@ function FundraisingCard({
           onButtonPress={() =>
             navigation.dispatch(
               NavigationActions.navigate({
-                routeName: 'FundrasingDetail',
+                routeName: 'FundMobileDetail',
                 params: {
                   id: request._id
                 }
