@@ -231,6 +231,10 @@ export async function applyForTask(
   requestId: Schema.Types.ObjectId
 ): Promise<any> {
   let request = await get(RequestModel, requestId)
-  request.donations.push({ volunteer: userId, approved: true })
-  request.save()
+  if(request.donations.map(value=>value.volunteer.toString()).includes(userId.toString()))
+    request.donations.splice(request.donations.map(value=>value.volunteer).indexOf(userId),1)
+  else{
+    request.donations.push({ volunteer: userId, approved: true })
+  }
+  await request.save()
 }
