@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  NavigationActions,
-  NavigationInjectedProps,
-  withNavigation
-} from 'react-navigation'
+import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
 import { View, Image, Text, ScrollView, Switch, Button } from 'react-native'
 import { Divider, Icon } from 'react-native-elements'
 import Axios from 'axios'
@@ -13,6 +9,7 @@ import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { Dimensions, StyleSheet } from 'react-native'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import classes from '../../../assets/styles/classes'
+import { baseUrl } from '../../../app/configs/setup-axios'
 const dimension = Dimensions.get('screen')
 
 const primary = '#3f51b5'
@@ -62,13 +59,12 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
       <>
         <ScrollView>
           <Image
-            /*source={{ uri: `${baseUrl}${request.coverUri}` }}*/
-            source={require('../../../assets/images/event.jpg')}
+            source={{ uri: `${baseUrl}${request.coverUri}` }}
             style={fundStyle.requestImage}
           />
           <View style={fundStyle.requestTitle}>
             <Text style={fundStyle.requestTitle}>
-              {/*request.name*/} Fundraising for Orphans
+              {request.name}
             </Text>
           </View>
           <Divider />
@@ -89,23 +85,16 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
           <Divider />
 
-          <View>
+          <View style={fundStyle.inlineBlock}>
             <Text style={fundStyle.byTitle}>Requested By</Text>
-            <Text
-              style={classes.link}
-              onPress={() =>
-                navigation.dispatch(
-                  NavigationActions.navigate({
-                    routeName: 'OrganizationDetail',
-                    params: {
-                      id: request._by._id
-                    }
-                  })
-                )
-              }
-            >
-              {request._by.name}
-            </Text>
+            <Text style={classes.link} onPress={() => navigation.dispatch(
+              NavigationActions.navigate({
+                routeName: 'OrganizationDetail',
+                params: {
+                  id: request._by._id
+                }
+              })
+            )}>{request._by.name}</Text>
           </View>
         </ScrollView>
       </>
@@ -121,6 +110,9 @@ const fundStyle = StyleSheet.create({
   requestImage: {
     width: dimension.width,
     height: 250
+  },
+  button: {
+    alignContent: 'center'
   },
   byTitle: {
     color: '#3f51b5',

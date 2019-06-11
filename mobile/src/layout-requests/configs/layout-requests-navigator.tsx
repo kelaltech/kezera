@@ -13,12 +13,6 @@ import FundMobileDetail from '../screens/fund-mobile-detail/fund-mobile-detail'
 
 const LayoutRequestsNavigator = createMaterialTopTabNavigator(
   {
-    Sample: {
-      screen: FundMobileDetail,
-      navigationOptions: {
-        tabBarLabel: () => <TabBarLabel>{_`task:tasks`}</TabBarLabel>
-      }
-    },
     TaskList: {
       screen: TaskList,
       navigationOptions: {
