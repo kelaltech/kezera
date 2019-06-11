@@ -3,7 +3,7 @@ import { Schema } from 'mongoose'
 
 import { taskPaths } from './task.path'
 
-type ObjectId = Schema.Types.ObjectId
+type ObjectId = Schema.Types.ObjectId | string
 
 export type ITaskType =
   | 'Advocacy & Human Rights '
