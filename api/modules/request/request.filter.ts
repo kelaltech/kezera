@@ -5,10 +5,10 @@ import { RequestModel, IRequest } from '../../models/request/request.model'
 import { organizationDocumentToResponse } from '../organization/organization.filter'
 import { get } from '../../lib/crud'
 import { OrganizationModel } from '../../models/organization/organization.model'
-import { getTask } from '../task/task.controller'
-import { getFundraising } from '../fundraising/fundraising.controller'
-import { getOrgan } from '../organ/organ.controller'
-import { GetMaterial } from '../material/material.controller'
+import { getTaskFromRequest } from '../task/task.controller'
+import { getFundraisingFromRequest } from '../fundraising/fundraising.controller'
+import { getOrganFromRequest } from '../organ/organ.controller'
+import { GetMaterialFromRequest } from '../material/material.controller'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
 import { AccountModel } from '../../models/account/account.model'
@@ -101,16 +101,16 @@ export async function requestDocumentToResponse(
 
   switch (response.type) {
     case 'Fundraising':
-      response.fundraising = await getFundraising(_id)
+      response.fundraising = await getFundraisingFromRequest(_id)
       break
     case 'Material':
-      response.material = (await GetMaterial(_id)) as any // todo: filters?
+      response.material = (await GetMaterialFromRequest(_id)) as any // todo: filters?
       break
     case 'Organ':
-      response.organ = await getOrgan(_id)
+      response.organ = await getOrganFromRequest(_id)
       break
     case 'Task':
-      response.task = await getTask(_id)
+      response.task = await getTaskFromRequest(_id)
       break
   }
 

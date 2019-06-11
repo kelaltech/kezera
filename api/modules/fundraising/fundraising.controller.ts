@@ -17,10 +17,12 @@ export async function ListFunds(): Promise<Document[]> {
   return await list(FundraisingModel)
 }
 
-export async function getFundraising(
+export async function getFundraisingFromRequest(
   request_id: ObjectId
 ): Promise<IFundraisingResponse> {
-  return fundraisingDocumentToResponse(await get(FundraisingModel, request_id, {}))
+  return fundraisingDocumentToResponse(
+    await get(FundraisingModel, null, { conditions: { request: request_id } })
+  )
 }
 
 export async function editFund(
