@@ -5,8 +5,47 @@ import { taskPaths } from './task.path'
 
 type ObjectId = Schema.Types.ObjectId
 
-export type ITaskType = never // todo
-export const taskTypes: ITaskType[] = []
+export type ITaskType =
+  | 'Advocacy & Human Rights '
+  | 'Animal'
+  | 'Art & Culture'
+  | 'Children & Youth'
+  | 'Community'
+  | 'Computer & Technology'
+  | 'Crisis Support'
+  | 'Disaster Relief'
+  | 'Education & Literacy'
+  | 'Hunger'
+  | 'Faith-Based'
+  | 'Environment'
+  | 'Employment'
+  | 'Emergency & Safety'
+  | 'Media & Broadcasting'
+  | 'People with Disability'
+  | 'Politics'
+  | 'Women'
+  | 'Sport & Recreation'
+export const taskTypes: ITaskType[] = [
+  'Advocacy & Human Rights ',
+  'Animal',
+  'Art & Culture',
+  'Children & Youth',
+  'Community',
+  'Computer & Technology',
+  'Crisis Support',
+  'Disaster Relief',
+  'Education & Literacy',
+  'Hunger',
+  'Faith-Based',
+  'Environment',
+  'Employment',
+  'Emergency & Safety',
+  'Media & Broadcasting',
+  'People with Disability',
+  'Politics',
+  'Women',
+  'Sport & Recreation'
+]
 
 export interface ITask {
   _at?: Date | number
