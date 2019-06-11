@@ -23,6 +23,7 @@ import { Dimensions, StyleSheet } from 'react-native'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import classes from '../../../assets/styles/classes'
+
 const dimension = Dimensions.get('screen')
 
 const primary = '#3f51b5'
@@ -77,7 +78,13 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             style={taskStyle.requestImage}
           />
           <View style={taskStyle.inlineBlock}>
+<<<<<<< HEAD
             <Text style={taskStyle.requestTitle}>request.name</Text>
+=======
+            <Text style={taskStyle.requestTitle}>
+              {request.name}{'   '}
+            </Text>
+>>>>>>> 1d75848ec3efc81bff20caf33bd0e58c9bce3df8
             <View>
               <Button title={'participate'} onPress={() => {}}>
                 Participate
@@ -99,6 +106,7 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
 
           <View style={taskStyle.inlineBlock}>
+<<<<<<< HEAD
             <Text style={taskStyle.fundAmountTitle}>{request.task.numberNeeded}</Text>
             <Text style={taskStyle.fundAmount}> Participants needed.</Text>
           </View>
@@ -131,12 +139,30 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             >
               {request._by.name}
             </Text>
+=======
+            <Text style={taskStyle.fundAmountTitle}>Participants needed{' '} </Text>
+            <Text style={taskStyle.fundAmount}>{request.task.numberNeeded}</Text>
+          </View>
+
+          <Divider />
+
+          <View style={taskStyle.inlineBlock}>
+            <Text style={taskStyle.byTitle}>Requested By {' '}</Text>
+            <Text style={classes.link} onPress={() => navigation.dispatch(
+              NavigationActions.navigate({
+                routeName: 'OrganizationDetail',
+                params: {
+                  id: request._by._id
+                }
+              })
+            )}>{request._by.account.displayName}</Text>
+>>>>>>> 1d75848ec3efc81bff20caf33bd0e58c9bce3df8
           </View>
         </ScrollView>
       </>
     ) : (
       <View>
-        <Text>No Detail Available</Text>
+        <Text>No Detail Available!</Text>
       </View>
     ))
   )
@@ -152,6 +178,7 @@ const taskStyle = StyleSheet.create({
     fontSize: 18
   },
   fundAmountTitle: {
+    paddingLeft: 10,
     padding: 5,
     fontSize: 18,
     color: '#3f51b5'
@@ -176,7 +203,12 @@ const taskStyle = StyleSheet.create({
     fontSize: 14,
     padding: 10
   },
+  button: {
+    alignContent: 'center',
+    width: dimension.width/2
+  },
   inlineBlock: {
+    justifyContent: 'space-between',
     flex: 1,
     flexDirection: 'row'
   }
