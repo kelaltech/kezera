@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
-import { View, Image, Text, ScrollView, Switch, Button } from 'react-native'
+import { View, Picker, Image, Text, ScrollView, Switch, Button, PickerItem } from 'react-native'
 import { Divider, Icon } from 'react-native-elements'
 import Axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
@@ -8,8 +8,8 @@ import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 import { Dimensions, StyleSheet } from 'react-native'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
-import classes from '../../../assets/styles/classes'
 import { baseUrl } from '../../../app/configs/setup-axios'
+import classes from '../../../assets/styles/classes'
 const dimension = Dimensions.get('screen')
 
 const primary = '#3f51b5'
@@ -18,7 +18,7 @@ type Params = {
   id?: string
 }
 
-function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
+function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
   let id = navigation.getParam('id')
   const { loading, t } = useLocale(['request'])
   let [request, setRequest] = useState()
@@ -36,6 +36,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
       .then(resp => setRequest(resp.data))
       .catch()
   }
+
   let getRequest = function() {
     Axios.get(`/api/request/${id}`)
       .then(res => {
@@ -60,33 +61,49 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
         <ScrollView>
           <Image
             source={{ uri: `${baseUrl}${request.coverUri}` }}
-            style={fundStyle.requestImage}
+            style={taskStyle.requestImage}
           />
-          <View style={fundStyle.requestTitle}>
-            <Text style={fundStyle.requestTitle}>
-              {request.name}
+          <View style={taskStyle.inlineBlock}>
+            <Text style={taskStyle.requestTitle}>
+              request.name
             </Text>
-          </View>
-          <Divider />
-          <View>
-            <View style={fundStyle.fundDescription}>
-              <Text style={fundStyle.fundDescription}>{request.description}</Text>
+            <View>
+              <Button title={'participate'} onPress={() => {}}>
+                Participate
+              </Button>
             </View>
           </View>
-          <View style={fundStyle.inlineBlock}>
-            <Text style={fundStyle.fundAmountTitle}>Requested Amount: </Text>
-            <Text style={fundStyle.fundAmount}>{request.fundraising.amount} ETB</Text>
+
+          <Divider />
+
+          <View>
+            <View style={taskStyle.fundDescription}>
+              <Text style={taskStyle.fundDescription}>{request.description}</Text>
+            </View>
+          </View>
+
+          <View style={taskStyle.inlineBlock}>
+            <Text style={taskStyle.fundAmountTitle}>Requested Task: </Text>
+            <Text style={taskStyle.fundAmount}>{request.task.type}</Text>
+          </View>
+
+          <View style={taskStyle.inlineBlock}>
+            <Text style={taskStyle.fundAmountTitle}>{request.task.numberNeeded}</Text>
+            <Text style={taskStyle.fundAmount}>{' '} Participants needed.</Text>
           </View>
 
           <View>
-            <Button title={'donate'} onPress={() => {}}>
-              Donate
-            </Button>
+            <Picker
+              selectedValue={false}
+              style={{height: 50, width: 100}}
+              onValueChange={() => {}}>
+              <PickerItem label={'Participate'}/>
+            </Picker>
           </View>
           <Divider />
 
-          <View style={fundStyle.inlineBlock}>
-            <Text style={fundStyle.byTitle}>Requested By</Text>
+          <View style={taskStyle.inlineBlock}>
+            <Text style={taskStyle.byTitle}>Requested By: </Text>
             <Text style={classes.link} onPress={() => navigation.dispatch(
               NavigationActions.navigate({
                 routeName: 'OrganizationDetail',
@@ -106,13 +123,10 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
   )
 }
 
-const fundStyle = StyleSheet.create({
+const taskStyle = StyleSheet.create({
   requestImage: {
     width: dimension.width,
     height: 250
-  },
-  button: {
-    alignContent: 'center'
   },
   byTitle: {
     color: '#3f51b5',
@@ -149,4 +163,4 @@ const fundStyle = StyleSheet.create({
   }
 })
 
-export default withNavigation(FundMobileDetail)
+export default withNavigation(TaskMobileDetail)

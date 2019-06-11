@@ -15,10 +15,27 @@ import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { accountDocumentToPublicResponse } from '../account/account.filter'
 import { requestDocumentToResponse } from './request.filter'
 import * as sharp from 'sharp'
+import { FundraisingModel } from '../../models/fundraising/fundraising.model'
+import { MaterialModel } from '../../models/material/material.model'
+import { TaskModel } from '../../models/task/task.model'
+import { OrganModel } from '../../models/organ/organ.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
 export async function removeRequest(id: Schema.Types.ObjectId | string): Promise<void> {
+  const req = await get(RequestModel, id)
+  if (req.type === 'Fundraising') {
+    await FundraisingModel.findOneAndDelete({ request: req._id })
+  }
+  if (req.type === 'Material') {
+    await MaterialModel.findOneAndDelete({ request: req._id })
+  }
+  if (req.type === 'Organ') {
+    await OrganModel.findOneAndDelete({ request: req._id })
+  }
+  if (req.type === 'Task') {
+    await TaskModel.findOneAndDelete({ request: req._id })
+  }
   await remove(RequestModel, id)
 }
 
@@ -26,9 +43,17 @@ export async function getRequest(request_id: ObjectId): Promise<IRequestResponse
   return requestDocumentToResponse(await get(RequestModel, request_id))
 }
 
-export async function getPicture(_id: ObjectId): Promise<Stream> {
-  const grid = new Grid(serverApp, RequestModel, _id)
+export async function getRequestCover(request_id: ObjectId): Promise<Stream> {
+  const grid = new Grid(serverApp, RequestModel, request_id)
   return grid.get()
+}
+
+export async function getRequestFile(
+  request_id: ObjectId,
+  filename: string
+): Promise<Stream> {
+  const grid = new Grid(serverApp, RequestModel, request_id, 'file')
+  return grid.get(filename)
 }
 
 export async function searchRequest(term: any): Promise<any> {
@@ -42,10 +67,17 @@ export async function listRequests(): Promise<any> {
     (await list(RequestModel)).map(request => requestDocumentToResponse(request))
   )
 }
-
-export async function listRequestByType (type: IRequestType) {
+export async function listMyRequests(id: any): Promise<any> {
   return Promise.all(
-    (await list(RequestModel,{
+    (await list(RequestModel, {
+      preQuery: model => model.find({ _by: id })
+    })).map(request => requestDocumentToResponse(request))
+  )
+}
+
+export async function listRequestByType(type: IRequestType) {
+  return Promise.all(
+    (await list(RequestModel, {
       conditions: {
         type: type
       }
@@ -53,10 +85,9 @@ export async function listRequestByType (type: IRequestType) {
   )
 }
 
-
-export async function listMyRequests(id:any): Promise<any> {
+export async function listMyRequests(id: any): Promise<any> {
   return Promise.all(
-    (await list(RequestModel,{
+    (await list(RequestModel, {
       preQuery: model => model.find({ _by: id })
     })).map(request => requestDocumentToResponse(request))
   )

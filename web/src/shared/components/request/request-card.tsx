@@ -12,103 +12,97 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface IRequestCard {
   request: any
-  type?:string
+  type?: string
 }
 function RequestCard({ request }: IRequestCard) {
- /* switch (request.type) {
-    case 'Fundraising':
-      return <FundCard request={request} />
-    case 'Task':
-      return <TaskCard request={request} />
-    case 'Material':
-      return <TaskCard request={request} />
-    case 'Organ':
-      return <TaskCard request={request} />
-    default:
-      return null
-  }*/
+  let deleteRequest = function(id: string) {
+    axios
+      .delete(`/api/request/${id}`)
+      .then()
+      .catch(console.error)
+  }
+
   const { account } = useAccountState()
-  return(
+  return (
     <Card
       imgSrc={request.coverUri}
       className={'requestCard'}
       children={
         <>
           <Title size={'M'}>
-            <Anchor to={`/request/${request._id}`}>
-              {request.name}
-            </Anchor>
+            <Anchor to={`/request/${request._id}`}>{request.name}</Anchor>
           </Title>
           <span>
-             <FontAwesomeIcon
-               color={'blue'}
-               icon={'donate'}
-               className={'TrashIcon'}
-             />&emsp; {request.type}
-           </span>
-          <br/>
+            <FontAwesomeIcon color={'blue'} icon={'donate'} className={'TrashIcon'} />
+            &emsp; {request.type}
+          </span>
+          <br />
           <span>
-            <FontAwesomeIcon
-              color={'blue'}
-              icon={'calendar'}
-            />&emsp;
+            <FontAwesomeIcon color={'blue'} icon={'calendar'} />
+            &emsp;
             {new Date(request.expires).toDateString()}
-           </span>
-          <br/>
-          {request.type=='Fundraising'?
+          </span>
+          <br />
+          {request.type == 'Fundraising' ? (
             <>
-              <FontAwesomeIcon
-                icon={'money-bill'}
-                color={'green'}
-              />&emsp;
+              <FontAwesomeIcon icon={'money-bill'} color={'green'} />
+              &emsp;
               {request.fundraising.target} birr
             </>
-            :''}
-          {request.type=='Material'?
+          ) : (
+            ''
+          )}
+          {request.type == 'Material' ? (
             <>
-              <FontAwesomeIcon
-                color={'grey'}
-                icon={'tshirt'}
-              />&emsp;
-              10
+              <FontAwesomeIcon color={'grey'} icon={'tshirt'} />
+              &emsp; 10
               {/*{request.material.quantity}*/}
-            </>:''}
-          {request.type=='Task'?
+            </>
+          ) : (
+            ''
+          )}
+          {request.type == 'Task' ? (
             <>
-              <FontAwesomeIcon
-                color={'blue'}
-                icon={'tasks'}
-              />&emsp;
+              <FontAwesomeIcon color={'blue'} icon={'tasks'} />
+              &emsp;
               {request.task.type}
-            </>:''}
-          {request.type=='Organ'?
+            </>
+          ) : (
+            ''
+          )}
+          {request.type == 'Organ' ? (
             <>
-              <FontAwesomeIcon
-                color={'rgb(223,72,61)'}
-                icon={'hand-holding-heart'}
-              />&emsp;
-              2
-              {/*{request.organ.quantity}*/}
-            </>:''}
-          {account && account.role === 'ORGANIZATION' ?
+              <FontAwesomeIcon color={'rgb(223,72,61)'} icon={'hand-holding-heart'} />
+              &emsp; 2{/*{request.organ.quantity}*/}
+            </>
+          ) : (
+            ''
+          )}
+          {account && account.role === 'ORGANIZATION' ? (
             <Block className={'right'}>
-               <span className={'requestDeleteButton'} onClick={()=>alert('Abebe')}>
-                 <FontAwesomeIcon
-                   color={'blue'}
-                   icon={'pencil-alt'}
-                   className={'TrashIcon'}
-                 />
-               </span>
+              <span className={'requestDeleteButton'}>
+                <Anchor to={`/request/${request._id}/edit`}>
+                  <FontAwesomeIcon
+                    color={'blue'}
+                    icon={'pencil-alt'}
+                    className={'TrashIcon'}
+                  />
+                </Anchor>
+              </span>
               &emsp;&emsp;
-              <span className={'requestDeleteButton'} onClick={()=>alert('Abebe')}>
-                 <FontAwesomeIcon
-                   color={'red'}
-                   icon={'trash'}
-                   className={'TrashIcon'}
-                 />
-               </span>
+              <span
+                className={'requestDeleteButton'}
+                onClick={() => {
+                  deleteRequest(request._id),
+                    (window.location.href = '/organization/request/list')
+                }}
+              >
+                <FontAwesomeIcon color={'red'} icon={'trash'} className={'TrashIcon'} />
+              </span>
             </Block>
-            :''}
+          ) : (
+            ''
+          )}
         </>
       }
     />
