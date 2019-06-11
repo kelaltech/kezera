@@ -12,8 +12,7 @@ import {
   listRequestByType,
   getRequestCover,
   getRequestFile,
-  applyForTask
-  getRequestFile,
+  applyForTask,
   addDonnerForMaterial
 } from './request.controller'
 
