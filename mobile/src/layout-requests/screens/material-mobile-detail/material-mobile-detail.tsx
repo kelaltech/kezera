@@ -59,8 +59,8 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
     (request ? (
       <>
         <ScrollView>
-          <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.requestTitle}>
+          <View style={Style.inlineBlock}>
+            <Text style={Style.requestTitle}>
               {request.name}
             </Text>
             <View>
@@ -71,24 +71,24 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
           <Divider />
           <View>
-            <View style={taskStyle.fundDescription}>
-              <Text style={taskStyle.fundDescription}>{request.description}</Text>
+            <View style={Style.description}>
+              <Text style={Style.description}>{request.description}</Text>
             </View>
           </View>
-          <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.fundAmountTitle}>Requested Task: </Text>
-            <Text style={taskStyle.fundAmount}>{request.material.materialType}</Text>
+          <View style={Style.inlineBlock}>
+            <Text style={Style.requestedTitle}>Requested Task: </Text>
+            <Text style={Style.requestedAmount}>{request.material.materialType}</Text>
           </View>
 
-          <View style={taskStyle.button}>
+          <View style={Style.button}>
             <Button title={'donate'} onPress={() => {}}>
               Donate
             </Button>
           </View>
           <Divider />
 
-          <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.byTitle}>Requested By {' '}</Text>
+          <View style={Style.inlineBlock}>
+            <Text style={Style.byTitle}>Requested By {' '}</Text>
             <Text style={classes.link} onPress={() => navigation.dispatch(
               NavigationActions.navigate({
                 routeName: 'OrganizationDetail',
@@ -108,7 +108,7 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
   )
 }
 
-const taskStyle = StyleSheet.create({
+const Style = StyleSheet.create({
   requestImage: {
     width: dimension.width,
     height: 250
@@ -117,12 +117,12 @@ const taskStyle = StyleSheet.create({
     color: '#3f51b5',
     fontSize: 18
   },
-  fundAmountTitle: {
+  requestedTitle: {
     padding: 5,
     fontSize: 18,
     color: '#3f51b5'
   },
-  fundAmount: {
+  requestedAmount: {
     padding: 5,
     fontWeight: 'bold',
     fontSize: 18
@@ -141,7 +141,7 @@ const taskStyle = StyleSheet.create({
     flexDirection: 'row',
     padding: 10
   },
-  fundDescription: {
+  description: {
     fontWeight: '100',
     fontSize: 14,
     padding: 10

@@ -5,7 +5,7 @@ import { Divider, Icon } from 'react-native-elements'
 import Axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
-
+import {Style} from '../detail-style'
 import { Dimensions, StyleSheet } from 'react-native'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import { baseUrl } from '../../../app/configs/setup-axios'
@@ -62,10 +62,10 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
         <ScrollView>
           <Image
             source={{ uri: `${baseUrl}${request.coverUri}` }}
-            style={taskStyle.requestImage}
+            style={Style.requestImage}
           />
-          <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.requestTitle}>
+          <View style={Style.inlineBlock}>
+            <Text style={Style.requestTitle}>
               {request.name}{'   '}
             </Text>
             <View>
@@ -78,25 +78,25 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           <Divider />
 
           <View>
-            <View style={taskStyle.fundDescription}>
-              <Text style={taskStyle.fundDescription}>{request.description}</Text>
+            <View style={Style.description}>
+              <Text style={Style.description}>{request.description}</Text>
             </View>
           </View>
 
-          <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.fundAmountTitle}>Requested Task: </Text>
-            <Text style={taskStyle.fundAmount}>{request.task.type}</Text>
+          <View style={Style.inlineBlock}>
+            <Text style={Style.requestedTitle}>Requested Task: </Text>
+            <Text style={Style.requestedAmount}>{request.task.type}</Text>
           </View>
 
-          <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.fundAmountTitle}>Participants needed{' '} </Text>
-            <Text style={taskStyle.fundAmount}>{request.task.numberNeeded}</Text>
+          <View style={Style.inlineBlock}>
+            <Text style={Style.requestedTitle}>Participants needed{' '} </Text>
+            <Text style={Style.requestedAmount}>{request.task.numberNeeded}</Text>
           </View>
 
           <Divider />
 
-          <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.byTitle}>Requested By {' '}</Text>
+          <View style={Style.inlineBlock}>
+            <Text style={Style.byTitle}>Requested By {' '}</Text>
             <Text style={classes.link} onPress={() => navigation.dispatch(
               NavigationActions.navigate({
                 routeName: 'OrganizationDetail',
@@ -116,50 +116,5 @@ function TaskMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
   )
 }
 
-const taskStyle = StyleSheet.create({
-  requestImage: {
-    width: dimension.width,
-    height: 250
-  },
-  byTitle: {
-    color: '#3f51b5',
-    fontSize: 18
-  },
-  fundAmountTitle: {
-    paddingLeft: 10,
-    padding: 5,
-    fontSize: 18,
-    color: '#3f51b5'
-  },
-  fundAmount: {
-    padding: 5,
-    fontWeight: 'bold',
-    fontSize: 18
-  },
-  requestTitle: {
-    padding: 5,
-    fontSize: 25,
-    color: '#3f51b5'
-  },
-  iconFields: {
-    flex: 1,
-    flexDirection: 'row',
-    padding: 10
-  },
-  fundDescription: {
-    fontWeight: '100',
-    fontSize: 14,
-    padding: 10
-  },
-  button: {
-    alignContent: 'center',
-    width: dimension.width/2
-  },
-  inlineBlock: {
-    justifyContent: 'space-between',
-    flex: 1,
-    flexDirection: 'row'
-  }
-})
 
 export default withNavigation(TaskMobileDetail)
