@@ -1,4 +1,4 @@
-import { RequestModel } from '../../models/request/request.model'
+import { IRequestType, RequestModel } from '../../models/request/request.model'
 import { add, edit, get, list, remove, search } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
 import { IAccount } from '../../models/account/account.model'
@@ -42,6 +42,18 @@ export async function listRequests(): Promise<any> {
     (await list(RequestModel)).map(request => requestDocumentToResponse(request))
   )
 }
+
+export async function listRequestByType (type: IRequestType) {
+  return Promise.all(
+    (await list(RequestModel,{
+      conditions: {
+        type: type
+      }
+    })).map(request => requestDocumentToResponse(request))
+  )
+}
+
+
 export async function listMyRequests(id:any): Promise<any> {
   return Promise.all(
     (await list(RequestModel,{
