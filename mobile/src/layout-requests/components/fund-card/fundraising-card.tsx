@@ -11,12 +11,17 @@ import { baseUrl } from '../../../app/configs/setup-axios'
 import values from '../../../assets/styles/values'
 import { IFundraisingResponse } from '../../../../../api/modules/fundraising/fundraising.apiv'
 import classes from '../../../assets/styles/classes'
+import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
 
 function FundraisingCard({
   request,
   navigation
 }: NavigationInjectedProps & {
-  request: IRequestResponse & { type: 'Fundraising'; fundraising: IFundraisingResponse }
+  request: IRequestResponse & {
+    _by: IOrganizationResponse
+    type: 'Fundraising'
+    fundraising: IFundraisingResponse
+  }
 }) {
   const [raisedMoney, setRaisedMoney] = useState<number>(0)
 
@@ -38,14 +43,14 @@ function FundraisingCard({
           title={`${request.name}`}
           price={`ETB ${request.fundraising.target}`}
           info={[
-            `by ${'request._by.account.displayName'}`,
+            `by ${request._by.account.displayName}`,
             `ETB ${raisedMoney} raised`,
             `${request.description.slice(0, 200)}`
           ]}
           onButtonPress={() =>
             navigation.dispatch(
               NavigationActions.navigate({
-                routeName: 'FundrasingDetail',
+                routeName: 'FundMobileDetail',
                 params: {
                   id: request._id
                 }
@@ -54,7 +59,7 @@ function FundraisingCard({
           }
           button={{
             title: 'Donate',
-            icon: 'donate',
+            icon: 'label',
             buttonStyle: {
               paddingVertical: values.space.normal
             }

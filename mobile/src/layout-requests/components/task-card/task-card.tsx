@@ -25,7 +25,7 @@ function TaskCard({
         onPress={() =>
           navigation.dispatch(
             NavigationActions.navigate({
-              routeName: 'TaskDetail',
+              routeName: 'TaskMobileDetail',
               params: {
                 id: request._id
               }
