@@ -15,7 +15,7 @@ interface IFundProps {
 
 function FundEdit(props: IFundProps) {
   const [fund, setFund] = useState<any>({
-    _id:props.Fund._id,
+    _id: props.Fund._id,
     target: props.Fund.target
   })
 

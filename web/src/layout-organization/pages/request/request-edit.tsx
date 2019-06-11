@@ -42,7 +42,6 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
       .catch(console.error)
   }
 
-
   const handleInputChange = async (): Promise<void> => {
     if (inputRef.current && inputRef.current.files && inputRef.current.files.length) {
       setPicture(inputRef.current.files[0])
@@ -87,7 +86,7 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
     }
     console.log(specific)
     axios
-      .put('/api/request/'+match.params._id, data, { withCredentials: true })
+      .put('/api/request/' + match.params._id, data, { withCredentials: true })
       .then(res => {
         id = res.data
         history.push('/organization/request/list')

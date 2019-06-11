@@ -1,17 +1,6 @@
 import React, { Component, useRef, useState } from 'react'
-import {
-  Block,
-  Content,
-  Input,
-  Title,
-  Yoga
-} from 'gerami'
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select
-} from '@material-ui/core'
+import { Block, Content, Input, Title, Yoga } from 'gerami'
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 interface ITaskProps {
@@ -21,7 +10,7 @@ interface ITaskProps {
 
 export default function TaskEdit(props: ITaskProps) {
   const [task, setTask] = useState<any>({
-    _id:props.Task._id,
+    _id: props.Task._id,
     numberNeeded: props.Task.numberNeeded,
     startDate: props.Task.startDate,
     endDate: props.Task.endDate,

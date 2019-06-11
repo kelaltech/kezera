@@ -123,8 +123,12 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
             <RequestDetailFundraising request={request} />
           )}
           {request.type === 'Material' && <RequestDetailMaterial request={request} />}
-          {request.type === 'Organ' && <RequestDetailOrgan request={request} />}
-          {request.type === 'Task' && <RequestDetailTask request={request} _id={match.params._id}/>}
+          {request.type === 'Organ' && (
+            <RequestDetailOrgan request={request} onUpdate={setRequest} />
+          )}
+          {request.type === 'Task' && (
+            <RequestDetailTask request={request} _id={match.params._id} />
+          )}
         </>
 
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
