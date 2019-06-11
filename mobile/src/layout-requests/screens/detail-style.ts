@@ -30,6 +30,7 @@ export const Style = StyleSheet.create({
     fontSize: 18
   },
   button: {
+    paddingTop: 15,
     alignContent: 'center',
     width: dimension.width / 2
   },

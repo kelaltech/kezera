@@ -1,10 +1,12 @@
 import React from 'react'
-import { Block, Button, Content, Yoga } from 'gerami'
+import { Block, Button, Content, Input, Yoga } from 'gerami'
+import StripeCheckout from 'react-stripe-checkout'
 
 import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IRequestResponse } from '../../../../../apiv/request.apiv'
 import { IFundraisingResponse } from '../../../../../apiv/fundraising.apiv'
 import { useAccountState } from '../../../../../app/stores/account/account-provider'
+import useField from '../../../../hooks/use-field/use-field'
 
 function RequestDetailFundraising({
   request
@@ -19,6 +21,8 @@ function RequestDetailFundraising({
   )
 
   const { account } = useAccountState()
+
+  const amount = useField({ initialValue: '0.00' })
 
   return (
     loading || (
@@ -45,7 +49,25 @@ function RequestDetailFundraising({
               ) : raised >= request.fundraising.target ? (
                 <span className={'fg-primary font-L light'}>Target Achieved!</span>
               ) : (
-                <Button className={'bg-accent fg-white'}>Donate with Card</Button>
+                <>
+                  <div className={'margin-vertical-normal'}>
+                    <Input
+                      type={'number'}
+                      {...amount.inputProps}
+                      placeholder={'Amount'}
+                    />
+                  </div>
+
+                  <div className={'margin-vertical-normal'}>
+                    <StripeCheckout
+                      token={token => alert('Your token is ' + token + '.')}
+                      stripeKey="pk_test_yDsmxN1YjBhNssrxkyVLOtst00qlheQsVE"
+                      amount={Number.parseFloat(amount.value)}
+                    >
+                      <Button className={'bg-accent fg-white'}>Pay with Card</Button>
+                    </StripeCheckout>
+                  </div>
+                </>
               )}
             </Block>
 
