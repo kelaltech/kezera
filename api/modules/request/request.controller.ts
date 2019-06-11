@@ -85,7 +85,6 @@ export async function listRequestByType(type: IRequestType) {
   )
 }
 
-
 export async function addRequestWithPicture(
   data: any,
   account: Document & IAccount,
