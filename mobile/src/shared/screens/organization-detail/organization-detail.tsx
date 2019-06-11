@@ -69,7 +69,7 @@ function OrganizationDetail({ navigation }: NavigationInjectedProps<param>) {
       <ScrollView>
         <Header title={t`organization:organization`} showBack />
         <Image
-          source={{ uri: `${baseUrl}/${organization.logoUri}` }}
+          source={{ uri: `${baseUrl}${organization.logoUri}` }}
           style={{ width: Dimensions.get('screen').width, height: 150 }}
         />
         <View style={style.inline}>

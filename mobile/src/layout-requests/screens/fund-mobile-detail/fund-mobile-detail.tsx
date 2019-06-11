@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
+import {
+  NavigationActions,
+  NavigationInjectedProps,
+  withNavigation
+} from 'react-navigation'
 import { View, Image, Text, ScrollView, Switch, Button } from 'react-native'
 import { Divider, Icon } from 'react-native-elements'
 import { Style } from '../detail-style'
@@ -63,20 +67,20 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             source={{ uri: `${baseUrl}${request.coverUri}` }}
             style={Style.requestImage}
           />
+
           <View style={Style.requestTitle}>
-            <Text style={Style.requestTitle}>
-              {request.name}
-            </Text>
+            <Text style={Style.requestTitle}>{request.name}</Text>
           </View>
+
           <Divider />
+
           <View>
-            <View style={Style.description}>
-              <Text style={Style.description}>{request.description}</Text>
-            </View>
+            <Text style={Style.description}>{request.description}</Text>
           </View>
+
           <View style={Style.inlineBlock}>
             <Text style={Style.requestedTitle}>Requested Amount: </Text>
-            <Text style={Style.requestedAmount}>{request.fundraising.amount}{' '}ETB</Text>
+            <Text style={Style.requestedAmount}>{request.fundraising.amount} ETB</Text>
           </View>
 
           <View style={Style.button}>
@@ -84,9 +88,26 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
               Donate
             </Button>
           </View>
+
           <Divider />
 
           <View style={Style.inlineBlock}>
+            <Text style={Style.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.account.displayName}
+            </Text>
             <Text style={Style.byTitle}>Requested By {' '}</Text>
             <Text style={classes.link} onPress={() => navigation.dispatch(
               NavigationActions.navigate({
@@ -101,7 +122,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
       </>
     ) : (
       <View>
-        <Text>No Detail Available</Text>
+        <Text>No Detail Available!</Text>
       </View>
     ))
   )

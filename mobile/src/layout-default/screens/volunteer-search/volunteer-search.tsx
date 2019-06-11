@@ -300,12 +300,13 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
                   </Text>
                 </View>
                 <ScrollView horizontal>
-                  {voluteer.map((v, k) => (
+                  {voluteer.map((v: any, k) => (
                     <VolunteerCard
                       key={k}
-                      description={'sample description'}
-                      img={{ uri: `http://lorempixel.com/400/200` }}
-                      name={'Biruk Tesfaye'}
+                      email={v.account.email}
+                      name={v.account.displayName}
+                      volunteer_id={v._id}
+                      id={v.account._id}
                     />
                   ))}
                 </ScrollView>
