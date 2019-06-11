@@ -9,7 +9,8 @@ import {
   editRequest,
   toggleRequestVolunteer,
   listRequestVolunteers,
-  listRequestsMe
+  listRequestsMe,
+  listMyRequests
 } from './request.controller'
 
 import * as fs from 'fs'
@@ -20,6 +21,11 @@ export const requestRouter = new Router({ prefix: '/api/request' })
 requestRouter.get('/list', async ctx => {
   ctx.body = await listRequests()
 })
+
+requestRouter.get('/list-mine', async ctx => {
+  ctx.body = await listMyRequests(ctx.state.user._id)
+})
+
 requestRouter.get('/search', async ctx => {
   ctx.body = await searchRequest(ctx.params.term)
 })
@@ -29,8 +35,8 @@ requestRouter.get('/:_id', async ctx => {
   ctx.body = await getRequest(ctx.params._id)
 })
 
-//GET /api/request/picture/:_id
-requestRouter.get('/picture/:_id', async ctx => {
+//GET /api/request/get-cover/:_id
+requestRouter.get('/get-cover/:_id', async ctx => {
   ctx.body = await getPicture(ctx.params._id)
 })
 

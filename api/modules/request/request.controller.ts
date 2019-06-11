@@ -42,6 +42,13 @@ export async function listRequests(): Promise<any> {
     (await list(RequestModel)).map(request => requestDocumentToResponse(request))
   )
 }
+export async function listMyRequests(id:any): Promise<any> {
+  return Promise.all(
+    (await list(RequestModel,{
+      preQuery: model => model.find({ _by: id })
+    })).map(request => requestDocumentToResponse(request))
+  )
+}
 
 export async function addRequestWithPicture(
   data: any,

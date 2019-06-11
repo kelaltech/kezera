@@ -61,7 +61,7 @@ function RequestCard({ request }: IRequestCard) {
                 icon={'money-bill'}
                 color={'green'}
               />&emsp;
-              10,000 etb
+              {request.fundraising.target} birr
             </>
             :''}
           {request.type=='Material'?
@@ -69,8 +69,9 @@ function RequestCard({ request }: IRequestCard) {
               <FontAwesomeIcon
                 color={'grey'}
                 icon={'tshirt'}
-              />&esmp;
+              />&emsp;
               10
+              {/*{request.material.quantity}*/}
             </>:''}
           {request.type=='Task'?
             <>
@@ -78,7 +79,7 @@ function RequestCard({ request }: IRequestCard) {
                 color={'blue'}
                 icon={'tasks'}
               />&emsp;
-              Cleaning
+              {request.task.type}
             </>:''}
           {request.type=='Organ'?
             <>
@@ -87,6 +88,7 @@ function RequestCard({ request }: IRequestCard) {
                 icon={'hand-holding-heart'}
               />&emsp;
               2
+              {/*{request.organ.quantity}*/}
             </>:''}
           {account && account.role === 'ORGANIZATION' ?
             <Block className={'right'}>
