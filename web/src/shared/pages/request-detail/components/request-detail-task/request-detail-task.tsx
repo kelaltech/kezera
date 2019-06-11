@@ -13,14 +13,15 @@ import { useAccountState } from '../../../../../app/stores/account/account-provi
 interface IRequestTask {
   request: IRequestResponse & { type: 'Task'; task: ITaskResponse }
   _id: string
+  refresh: () => void
 }
 
-export default function RequestDetailTask({ request, _id }: IRequestTask) {
+export default function RequestDetailTask({ request, _id, refresh }: IRequestTask) {
   const { loading, t } = useLocale(['request', 'task'])
   const { account } = useAccountState()
   const HandleApply = function() {
     Axios.put(`/api/request/task/${_id}/apply`, null)
-      .then()
+      .then(() => refresh())
       .catch(console.error)
   }
 
@@ -74,18 +75,34 @@ export default function RequestDetailTask({ request, _id }: IRequestTask) {
                 </div>
               </Block>
               <Block>
+                <span className={'font-S fg-blackish light'}>
+                  <FontAwesomeIcon icon={'calendar'} /> &nbsp;{' '}
+                  {new Date(request.task.startDate).toLocaleDateString()} to{' '}
+                  {new Date(request.task.endDate).toLocaleDateString()}
+                </span>
                 {account && account.role === 'VOLUNTEER' ? (
                   <Block first last className={'font-L fg-primary center'}>
-                    {!request.donations
-                      .map(value => value.volunteer)
-                      .includes(account!._id) ? (
-                      <Button primary={true} onClick={() => HandleApply()}>
-                        Apply for task
-                      </Button>
+                    {!(request.donations.length === request.task.numberNeeded) ? (
+                      <>
+                        {!request.donations
+                          .map(value => value.volunteer)
+                          .includes(account!._id) ? (
+                          <Button primary={true} onClick={() => HandleApply()}>
+                            Apply
+                          </Button>
+                        ) : (
+                          <Button
+                            className={'fg-white bg-accent'}
+                            onClick={() => HandleApply()}
+                          >
+                            Cancel
+                          </Button>
+                        )}
+                      </>
                     ) : (
-                      <Button primary={true} disabled>
-                        Already applied
-                      </Button>
+                      <>
+                        <span className={'font-M fg-blackish light'}>Closed</span>
+                      </>
                     )}
                   </Block>
                 ) : (

@@ -88,7 +88,7 @@ function DiscoveryPage() {
   }
   const fetchRequest = () => {
     axios
-      .get('/api/request/recent?count=5')
+      .get('/api/request/list')
       .then((r: any) => {
         setRequest(r.data)
       })
@@ -168,7 +168,7 @@ function DiscoveryPage() {
               </div>
             </div>
             <div className={'result-request'}>
-              <h2>{t`volunteer-discovery:requests`}</h2>
+              <h2>{t`volunteer-discovery:request`}</h2>
               <div className={'dis-slider'}>
                 {request.length === 0 ? (
                   <Block
@@ -178,7 +178,7 @@ function DiscoveryPage() {
                   <Slider {...settings} {...settingsRequest}>
                     {request.map((r: any) => (
                       <div className={'slider-list'}>
-                        <RequestCard {...r} />
+                        <RequestCard request={r} />
                       </div>
                     ))}
                   </Slider>

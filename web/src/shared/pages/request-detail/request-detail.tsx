@@ -27,13 +27,15 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
 
   const request_id = match.params._id
   const [request, setRequest] = useState<IRequestResponse>()
-
-  useEffect(() => {
-    setReady(false)
+  const FetchDetail = function() {
     Axios.get<IRequestResponse>(`/api/request/${request_id}`)
       .then(response => setRequest(response.data))
       .catch(setError)
       .finally(() => setReady(true))
+  }
+  useEffect(() => {
+    setReady(false)
+    FetchDetail()
   }, [request_id])
 
   const { account } = useAccountState()
@@ -152,7 +154,11 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
             <RequestDetailOrgan request={request} onUpdate={setRequest} />
           )}
           {request.type === 'Task' && (
-            <RequestDetailTask request={request} _id={match.params._id} />
+            <RequestDetailTask
+              refresh={() => FetchDetail()}
+              request={request}
+              _id={match.params._id}
+            />
           )}
         </>
 
