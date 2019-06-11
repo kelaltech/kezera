@@ -49,7 +49,7 @@ export type IRequestResponseCommons = {
 
   donations: {
     _at: Date | number
-    volunteer_id: string
+    volunteer: string // volunteer
     approved?: boolean
     data?: string // a number string for .type === 'Fundraising'
   }[]

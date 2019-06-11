@@ -9,6 +9,9 @@ import { getTask } from '../task/task.controller'
 import { getFundraising } from '../fundraising/fundraising.controller'
 import { getOrgan } from '../organ/organ.controller'
 import { GetMaterial } from '../material/material.controller'
+import { Grid } from '../../lib/grid'
+import { serverApp } from '../../index'
+import { AccountModel } from '../../models/account/account.model'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -64,7 +67,9 @@ export async function requestRequestToDocument(
 }
 
 export async function requestDocumentToResponse(
-  document: Document & IRequest
+  document: Document & IRequest,
+  coverUri?: string | null,
+  fileUris?: string[] | null
 ): Promise<IRequestResponse> {
   const { _id, _at, _by, name, description, status, type, expires, donations } = document
 
@@ -84,7 +89,7 @@ export async function requestDocumentToResponse(
 
     donations: (donations as any) as {
       _at: Date | number
-      volunteer_id: string
+      volunteer: string
       approved?: boolean
       data?: string
     }[]
@@ -94,7 +99,6 @@ export async function requestDocumentToResponse(
     await get(OrganizationModel, null, { conditions: { account: _by } })
   )
 
-  // todo: filters
   switch (response.type) {
     case 'Fundraising':
       response.fundraising = await getFundraising(_id)
@@ -108,6 +112,36 @@ export async function requestDocumentToResponse(
     case 'Task':
       response.task = await getTask(_id)
       break
+  }
+
+  if (coverUri !== null) {
+    if (coverUri !== undefined) {
+      response.coverUri = coverUri
+    } else if (response._id) {
+      const has = await new Grid(
+        serverApp,
+        AccountModel,
+        response._id,
+        'cover',
+        false
+      ).has()
+
+      if (has) response.coverUri = `/api/request/get-cover/${response._id}`
+    }
+  }
+
+  if (fileUris !== null) {
+    if (fileUris !== undefined) {
+      response.fileUris = fileUris
+    } else if (response._id) {
+      const grid = new Grid(serverApp, AccountModel, response._id, 'file', false)
+
+      if (await grid.has()) {
+        response.fileUris = (await grid.listFilenames()).map(
+          filename => `/api/request/get-file/${response._id}/${filename}`
+        )
+      }
+    }
   }
 
   return response

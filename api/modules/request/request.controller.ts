@@ -15,6 +15,7 @@ import { IRequestResponse } from './request.apiv'
 import { IVolunteerResponse } from '../volunteer/volunteer.apiv'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { accountDocumentToPublicResponse } from '../account/account.filter'
+import { requestDocumentToResponse } from './request.filter'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -47,39 +48,8 @@ export async function populateRequest(
   return ret
 }
 
-export async function getRequest(_id: ObjectId): Promise<any> {
-  const request = await get(RequestModel, _id, {
-    postQuery: query =>
-      query.populate({ path: 'volunteers', populate: { path: 'account' } })
-  })
-  console.log(JSON.stringify(request.donations))
-
-  const ret = request.toJSON()
-  ret.picture = '/api/request/picture/' + request._id
-
-  switch (ret.type) {
-    case 'Task':
-      ret.task = await getTask(request._id)
-      break
-    case 'Fundraising':
-      ret.fundraising = await getFundraising(request._id)
-      break
-    case 'Organ':
-      ret.organ = await getOrgan(request._id)
-      break
-  }
-
-  ret._by = await organizationDocumentToResponse(
-    await get(OrganizationModel, null, { conditions: { account: request._by } })
-  )
-
-  for (let i = 0; i < request.donations.length; i++) {
-    ;(request.donations[i] as any).account = (await accountDocumentToPublicResponse(
-      (request.donations[i] as any).account
-    )) as any
-  }
-
-  return ret
+export async function getRequest(request_id: ObjectId): Promise<IRequestResponse> {
+  return requestDocumentToResponse(await get(RequestModel, request_id))
 }
 
 export async function getPicture(_id: ObjectId): Promise<Stream> {
