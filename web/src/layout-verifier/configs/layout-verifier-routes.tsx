@@ -28,7 +28,7 @@ const VerifierOrganizations = lazy(() =>
 )
 
 const RequestDetail = lazy(() =>
-  import('../../shared/pages/request-detail/request-information')
+  import('../../shared/pages/request-detail/request-detail')
 )
 const EventDetail = lazy(() => import('../../shared/pages/event-detail/event-detail'))
 const NewsDetail = lazy(() => import('../../shared/pages/news-detail/news-detail'))

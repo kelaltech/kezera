@@ -1,30 +1,12 @@
-import {
-  Anchor,
-  Block,
-  Image,
-  Content,
-  Flex,
-  FlexSpacer,
-  Page,
-  Title,
-  Toggle,
-  Yoga,
-  Button,
-  Input,
-  ImageInput
-} from 'gerami'
+import { Anchor, Block, Flex, FlexSpacer, Input, ImageInput } from 'gerami'
 import { TextField } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Component, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { Switch } from '@material-ui/core'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
 import RichPage from '../../../shared/components/rich-page/rich-page'
-import RequestFundDetail from '../../../shared/pages/request-detail/request-fund/request-fund-detail'
-import RequestDetail from '../../../shared/pages/request-detail/request-information'
-import { editRequest } from '../../../../../api/modules/request/request.controller'
 
 function RequestEdit({ match }: RouteComponentProps<{ _id: string }>) {
   const [request, setRequest] = useState<any>()

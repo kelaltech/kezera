@@ -5,20 +5,18 @@ import {
   searchRequest,
   getRequest,
   addRequestWithPicture,
-  getPicture,
   editRequest,
   toggleRequestVolunteer,
   listRequestsMe,
   listMyRequests,
-  listRequestByType
+  listRequestByType,
+  getRequestCover
 } from './request.controller'
 
 import * as fs from 'fs'
 import { authorize } from '../../lib/middlewares/authorize'
 
 export const requestRouter = new Router({ prefix: '/api/request' })
-
-
 
 requestRouter.get('/list-mine', async ctx => {
   ctx.body = await listMyRequests(ctx.state.user._id)
@@ -28,21 +26,18 @@ requestRouter.get('/search', async ctx => {
   ctx.body = await searchRequest(ctx.params.term)
 })
 
-
 requestRouter.get('/list', async ctx => {
   ctx.body = await listRequests()
 })
 
-//GET /api/request/listbytype?type=type
-requestRouter.get('/list/bytype',async ctx=> {
+//GET /api/request/list/bytype?type=type
+requestRouter.get('/list/bytype', async ctx => {
   ctx.body = await listRequestByType(ctx.query.type)
 })
 
-
-
 //GET /api/request/get-cover/:_id
 requestRouter.get('/get-cover/:_id', async ctx => {
-  ctx.body = await getPicture(ctx.params._id)
+  ctx.body = await getRequestCover(ctx.params._id)
 })
 
 requestRouter.delete('/:_id', async ctx => {
@@ -67,8 +62,6 @@ requestRouter.put('/:_id', async ctx => {
     fs.createReadStream(ctx.request.files!.image.path)
   )
 })
-
-
 
 requestRouter.put(
   '/toggle-request-volunteer/:request_id',

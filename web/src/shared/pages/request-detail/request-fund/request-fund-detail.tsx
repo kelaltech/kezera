@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Anchor, Block, Page, Title, Yoga } from 'gerami'
+import { Anchor, Block, Content, Page, Title, Yoga } from 'gerami'
 
 interface IFundDetail {
   request: any
 }
 export default function RequestFundDetail({ request }: IFundDetail) {
   return (
-    <div>
+    <Content>
       <Title size={'L'} className={'bold center'}>
         {request.type === 'Fundraising' && request.fundraising.amount}{' '}
         {request.type === 'Fundraising' &&
@@ -20,6 +20,6 @@ export default function RequestFundDetail({ request }: IFundDetail) {
             ? '$'
             : null)}
       </Title>
-    </div>
+    </Content>
   )
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Content, Yoga } from 'gerami'
 import axios from 'axios'
 import { RouteComponentProps, withRouter } from 'react-router'
-import RequestCard from '../../../components/request/request-card'
+import RequestCard from '../../../../../components/request/request-card'
 import RequestVolunteers from '../request-volunteers/request-volunteers'
 
 function RequestGoing({ match }: RouteComponentProps<{ _id: string }>) {

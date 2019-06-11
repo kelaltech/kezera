@@ -26,7 +26,7 @@ export async function getRequest(request_id: ObjectId): Promise<IRequestResponse
   return requestDocumentToResponse(await get(RequestModel, request_id))
 }
 
-export async function getPicture(_id: ObjectId): Promise<Stream> {
+export async function getRequestCover(_id: ObjectId): Promise<Stream> {
   const grid = new Grid(serverApp, RequestModel, _id)
   return grid.get()
 }
@@ -43,9 +43,9 @@ export async function listRequests(): Promise<any> {
   )
 }
 
-export async function listRequestByType (type: IRequestType) {
+export async function listRequestByType(type: IRequestType) {
   return Promise.all(
-    (await list(RequestModel,{
+    (await list(RequestModel, {
       conditions: {
         type: type
       }
@@ -53,10 +53,9 @@ export async function listRequestByType (type: IRequestType) {
   )
 }
 
-
-export async function listMyRequests(id:any): Promise<any> {
+export async function listMyRequests(id: any): Promise<any> {
   return Promise.all(
-    (await list(RequestModel,{
+    (await list(RequestModel, {
       preQuery: model => model.find({ _by: id })
     })).map(request => requestDocumentToResponse(request))
   )
