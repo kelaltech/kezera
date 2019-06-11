@@ -1,16 +1,14 @@
-import { IRequest, RequestModel } from '../../models/request/request.model'
+import { RequestModel } from '../../models/request/request.model'
 import { add, edit, get, list, remove, search } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
 import { IAccount } from '../../models/account/account.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
-import { AddTask, getTask } from '../task/task.controller'
-import { AddFund, editFund, getFundraising } from '../fundraising/fundraising.controller'
-import { AddMaterial, GetMaterial, UpdateMaterial } from '../material/material.controller'
-import { organizationDocumentToResponse } from '../organization/organization.filter'
-import { AddOrgan, getOrgan } from '../organ/organ.controller'
-import { OrganizationModel } from '../../models/organization/organization.model'
+import { AddTask } from '../task/task.controller'
+import { AddFund, editFund } from '../fundraising/fundraising.controller'
+import { AddMaterial, UpdateMaterial } from '../material/material.controller'
+import { AddOrgan } from '../organ/organ.controller'
 import { IRequestResponse } from './request.apiv'
 import { IVolunteerResponse } from '../volunteer/volunteer.apiv'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
@@ -23,31 +21,6 @@ export async function removeRequest(id: Schema.Types.ObjectId | string): Promise
   await remove(RequestModel, id)
 }
 
-export async function populateRequest(
-  request: IRequest & Document
-): Promise<IRequestResponse> {
-  const ret = request.toJSON()
-  ret.picture = '/api/request/picture/' + request._id
-
-  switch (ret.type) {
-    case 'Task':
-      ret.task = await getTask(request._id)
-      break
-    case 'Fundraising':
-      ret.fundraising = await getFundraising(request._id)
-      break
-    case 'Organ':
-      ret.organ = await getOrgan(request._id)
-      break
-  }
-
-  ret._by = await organizationDocumentToResponse(
-    await get(OrganizationModel, null, { conditions: { account: request._by } })
-  )
-
-  return ret
-}
-
 export async function getRequest(request_id: ObjectId): Promise<IRequestResponse> {
   return requestDocumentToResponse(await get(RequestModel, request_id))
 }
@@ -58,31 +31,14 @@ export async function getPicture(_id: ObjectId): Promise<Stream> {
 }
 
 export async function searchRequest(term: any): Promise<any> {
-  return await search(RequestModel, term)
+  return Promise.all(
+    (await search(RequestModel, term)).map(request => requestDocumentToResponse(request))
+  )
 }
 
 export async function listRequests(): Promise<any> {
-  const requests = await list(RequestModel)
   return Promise.all(
-    requests.map(async request => {
-      const ret = request.toJSON()
-      ret.picture = '/api/request/picture/' + request._id
-      switch (ret.type) {
-        case 'Task':
-          ret.task = await getTask(request._id)
-          break
-        case 'Fundraising':
-          ret.fundraising = await getFundraising(request._id)
-          break
-        case 'Material':
-          ret.material = await GetMaterial(request._id)
-          break
-        case 'Organ':
-          ret.fundraising = await getOrgan(request._id)
-          break
-      }
-      return ret
-    })
+    (await list(RequestModel)).map(request => requestDocumentToResponse(request))
   )
 }
 
@@ -154,7 +110,7 @@ export async function listRequestVolunteers(
 
 export async function listRequestsMe(account_id: ObjectId): Promise<IRequestResponse[]> {
   let requests = await list(RequestModel, { conditions: { volunteers: account_id } })
-  return Promise.all(requests.map(request => populateRequest(request)))
+  return Promise.all(requests.map(request => requestDocumentToResponse(request)))
 }
 
 export async function toggleRequestVolunteer(
