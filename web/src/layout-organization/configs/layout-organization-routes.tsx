@@ -32,11 +32,13 @@ const RequestList = lazy(() => import('../../shared/components/request/request-l
 const RequestAdd = lazy(() =>
   import('../../layout-organization/pages/request/request-add')
 )
-const RequestInformation = lazy(() =>
-  import('../../shared/pages/request-detail/request-information')
+const RequestDetail = lazy(() =>
+  import('../../shared/pages/request-detail/request-detail')
 )
 const RequestGoing = lazy(() =>
-  import('../../shared/pages/request-detail/request-going/request-going')
+  import(
+    '../../shared/pages/request-detail/request-task/components/request-going/request-going'
+  )
 )
 
 const RequestEdit = lazy(() =>
@@ -79,7 +81,7 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
 
       <Route exact path={`${p}/request/list`} component={RequestList} />
       <Route exact path={`${p}/request/add`} component={RequestAdd} />
-      <Route exact path={`${p}/request/:_id`} component={RequestInformation} />
+      <Route exact path={`${p}/request/:_id`} component={RequestDetail} />
       <Route exact path={`${p}/request/:_id/edit`} component={RequestEdit} />
       <Route exact path={`${p}/request/:_id/going`} component={RequestGoing} />
 
