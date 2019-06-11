@@ -19,6 +19,7 @@ import { FundraisingModel } from '../../models/fundraising/fundraising.model'
 import { MaterialModel } from '../../models/material/material.model'
 import { TaskModel } from '../../models/task/task.model'
 import { OrganModel } from '../../models/organ/organ.model'
+import { randomBytes } from 'crypto'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -179,6 +180,34 @@ export async function listRequestsMe(account_id: ObjectId): Promise<IRequestResp
   return Promise.all(requests.map(request => requestDocumentToResponse(request)))
 }
 
+export async function addDonnerForMaterial(
+  request_id: ObjectId,
+  volunteer_id: ObjectId
+): Promise<any> {
+  const request = await get(RequestModel, request_id)
+
+  if (request.donations.map(i => i.volunteer).includes(volunteer_id)) {
+    return {
+      volunteer:
+        request.donations[request.donations.map(i => i.volunteer).indexOf(volunteer_id)]
+    }
+  } else {
+    const r = randomBytes(4)
+      .toString('base64')
+      .substr(0, 6)
+    const vol = {
+      _at: Date.now(),
+      volunteer: volunteer_id,
+      approved: false,
+      data: r
+    }
+    await request.donations.push(vol)
+    await request.save()
+    return {
+      volunteer: vol
+    }
+  }
+}
 export async function toggleRequestVolunteer(
   request_id: ObjectId,
   account_id: ObjectId
@@ -197,8 +226,11 @@ export async function toggleRequestVolunteer(
   return getRequest(request._id)
 }
 
-export async function applyForTask(userId:Schema.Types.ObjectId,requestId:Schema.Types.ObjectId):Promise<any>{
-  let request=await get(RequestModel,requestId);
-  request.donations.push({volunteer:userId,approved:true})
+export async function applyForTask(
+  userId: Schema.Types.ObjectId,
+  requestId: Schema.Types.ObjectId
+): Promise<any> {
+  let request = await get(RequestModel, requestId)
+  request.donations.push({ volunteer: userId, approved: true })
   request.save()
 }

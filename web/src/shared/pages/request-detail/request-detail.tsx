@@ -84,7 +84,7 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
             </Flex>
 
             <Flex className={'right'}>
-              <Anchor to={`/organization/${request._by._id}`}>
+              <Anchor to={`/o/${request._by._id}`}>
                 {request._by.account.displayName}
               </Anchor>
               <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>

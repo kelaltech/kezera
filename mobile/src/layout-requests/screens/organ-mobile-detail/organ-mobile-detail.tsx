@@ -18,7 +18,7 @@ import { Divider, Icon } from 'react-native-elements'
 import Axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
-import {Style} from '../detail-style'
+import { Style } from '../detail-style'
 import { Dimensions, StyleSheet } from 'react-native'
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import { baseUrl } from '../../../app/configs/setup-axios'
@@ -79,7 +79,8 @@ function OrganMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           />
           <View style={Style.inlineBlock}>
             <Text style={Style.requestTitle}>
-              {request.name}{'   '}
+              {request.name}
+              {'   '}
             </Text>
             <View>
               <Button title={'pledge'} onPress={() => {}}>
@@ -102,22 +103,29 @@ function OrganMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
 
           <View style={Style.inlineBlock}>
-            <Text style={Style.requestedTitle}>Quantity Required{' '} </Text>
+            <Text style={Style.requestedTitle}>Quantity Required </Text>
             <Text style={Style.requestedAmount}>{request.organ.quantity}</Text>
           </View>
 
           <Divider />
 
           <View style={Style.inlineBlock}>
-            <Text style={Style.byTitle}>Requested By {' '}</Text>
-            <Text style={classes.link} onPress={() => navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: request._by._id
-                }
-              })
-            )}>{request._by.account.displayName}</Text>
+            <Text style={Style.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.account.displayName}
+            </Text>
           </View>
         </ScrollView>
       </>
@@ -128,6 +136,5 @@ function OrganMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
     ))
   )
 }
-
 
 export default withNavigation(OrganMobileDetail)
