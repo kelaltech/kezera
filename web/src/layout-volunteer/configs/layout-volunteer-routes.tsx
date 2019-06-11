@@ -21,11 +21,6 @@ const Task = lazy(() => import('../pages/volunteer-task/volunteer-task'))
 const SearchResult = lazy(() =>
   import('../pages/volunteer-search-result/volunteer-search-result')
 )
-const RequestGoing = lazy(() =>
-  import(
-    '../../shared/pages/request-detail/request-task/components/request-going/request-going'
-  )
-)
 const RequestDetail = lazy(() =>
   import('../../shared/pages/request-detail/request-detail')
 )
@@ -56,7 +51,6 @@ export default function LayoutVolunteerRoutes({ prefix: p }: { prefix: string })
       <Route exact path={`${p}/requests`} component={Request} />
       <Route exact path={`${p}/search-result`} component={SearchResult} />
 
-      <Route exact path={`${p}/request/:_id/going`} component={RequestGoing} />
       <Route exact path={`${p}/request/:_id`} component={RequestDetail} />
       <Route exact path={`${p}/event/:_id`} component={EventDetail} />
       <Route exact path={`${p}/news/:_id`} component={NewsDetail} />

@@ -2,22 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { Anchor, Block, Content, Flex, FlexSpacer, Title, Yoga } from 'gerami'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Switch } from '@material-ui/core'
 import Axios from 'axios'
 
 import './request-detail.scss'
+import useLocale from '../../hooks/use-locale/use-locale'
 import RichPage from '../../components/rich-page/rich-page'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import OrganizationCard from '../../components/organization-card/organization-card'
-import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
-import RequestFundDetail from './request-fund/request-fund-detail'
-import RequestTaskDetail from './request-task/request-task-detail'
-import RequestMaterialDetail from './request-material/request-material'
-import RequestOrganDetail from './request-organ/request-organ-detail'
-import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
 import { useVolunteerState } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
-import useLocale from '../../hooks/use-locale/use-locale'
+import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
+import OrganizationCard from '../../components/organization-card/organization-card'
+import SpamReportDrop from '../../components/spam-report-drop/spam-report-drop'
+import RequestDetailFundraising from './components/request-detail-fundraising/request-detail-fundraising'
+import RequestDetailMaterial from './components/request-detail-material/request-detail-material'
+import RequestDetailOrgan from './components/request-detail-organ/request-detail-organ'
+import RequestDetailTask from './components/request-detail-task/request-detail-task'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const { loading, t } = useLocale(['request'])
@@ -226,13 +225,16 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
         <hr className={'margin-bottom-big'} />
 
         <>
-          {request.type === 'Fundraising' && <RequestFundDetail request={request} />}
-          {request.type === 'Task' && <RequestTaskDetail request={request} />}
-          {request.type === 'Material' && <RequestMaterialDetail request={request} />}
-          {request.type === 'Organ' && <RequestOrganDetail request={request} />}
+          {request.type === 'Fundraising' && (
+            <RequestDetailFundraising request={request} />
+          )}
+          {request.type === 'Material' && <RequestDetailMaterial request={request} />}
+          {request.type === 'Organ' && <RequestDetailOrgan request={request} />}
+          {request.type === 'Task' && <RequestDetailTask request={request} />}
         </>
       </RichPage>
     ))
   )
 }
+
 export default withRouter(RequestDetail)

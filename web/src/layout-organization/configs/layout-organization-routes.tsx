@@ -35,11 +35,6 @@ const RequestAdd = lazy(() =>
 const RequestDetail = lazy(() =>
   import('../../shared/pages/request-detail/request-detail')
 )
-const RequestGoing = lazy(() =>
-  import(
-    '../../shared/pages/request-detail/request-task/components/request-going/request-going'
-  )
-)
 
 const RequestEdit = lazy(() =>
   import('../../layout-organization/pages/request/request-edit')
@@ -83,7 +78,6 @@ export default function LayoutOrganizationRoutes({ prefix: p }: { prefix: string
       <Route exact path={`${p}/request/add`} component={RequestAdd} />
       <Route exact path={`${p}/request/:_id`} component={RequestDetail} />
       <Route exact path={`${p}/request/:_id/edit`} component={RequestEdit} />
-      <Route exact path={`${p}/request/:_id/going`} component={RequestGoing} />
 
       <Route exact path={`${p}/v/:_id`} component={VolunteerProfile} />
       <Route exact path={`${p}/o/:_id`} component={OrganizationDetail} />
