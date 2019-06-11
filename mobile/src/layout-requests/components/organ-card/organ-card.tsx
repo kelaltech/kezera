@@ -30,7 +30,7 @@ function OrganCard({
         onPress={() =>
           navigation.dispatch(
             NavigationActions.navigate({
-              routeName: 'TaskMobileDetail',
+              routeName: 'OrganMobileDetail',
               params: {
                 id: request._id
               }

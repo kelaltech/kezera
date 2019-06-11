@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { NavigationActions, NavigationInjectedProps, withNavigation } from 'react-navigation'
-import { View, Picker, Image, Text, ScrollView, Switch, Button, PickerItem } from 'react-native'
+import {
+  NavigationActions,
+  NavigationInjectedProps,
+  withNavigation
+} from 'react-navigation'
+import {
+  View,
+  Picker,
+  Image,
+  Text,
+  ScrollView,
+  Switch,
+  Button,
+  PickerItem
+} from 'react-native'
 import { Divider, Icon } from 'react-native-elements'
 import Axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
