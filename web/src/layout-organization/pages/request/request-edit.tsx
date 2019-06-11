@@ -23,16 +23,17 @@ import FundEdit from '../fundraising/fund-edit'
 import TaskEdit from '../task/task-edit'
 import MaterialEdit from '../../components/material-edit/material-edit'
 import OrganEdit from '../organ/organ-edit'
+import { useMyOrganizationState } from '../../stores/my-organization/my-organization-provider'
 
 function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
   let { loading, t } = useLocale(['material-donation', 'request'])
   let [type, setType] = useState<any>(0)
   let [request, setRequest] = useState()
+  let [specific, setSpecific] = useState()
   let [id, setId] = useState()
   const [picture, setPicture] = useState()
   const [imageSrc, setImageSrc] = useState()
   const inputRef = useRef<HTMLInputElement>(null)
-
   let FetchRequest = function() {
     Axios.get('/api/request/' + match.params._id)
       .then(resp => {
@@ -41,7 +42,6 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
       .catch(console.error)
   }
 
-  let [specific, setSpecific] = useState()
 
   const handleInputChange = async (): Promise<void> => {
     if (inputRef.current && inputRef.current.files && inputRef.current.files.length) {
@@ -69,17 +69,20 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
 
     switch (request.type) {
       case 'Fundraising':
+        setSpecific(request.fundraising)
         data.append('Fundraising', JSON.stringify(specific))
         break
       case 'Task':
+        setSpecific(request.task)
         data.append('Task', JSON.stringify(specific))
         break
       case 'Organ':
+        setSpecific(request.task)
         data.append('Organ', JSON.stringify(specific))
         break
       case 'Material':
+        setSpecific(request.material)
         data.append('Material', JSON.stringify(specific))
-        console.log(data)
         break
     }
     console.log(specific)
