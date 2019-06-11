@@ -157,6 +157,10 @@ const taskStyle = StyleSheet.create({
     fontSize: 14,
     padding: 10
   },
+  button: {
+    alignContent: 'center',
+    width: dimension.width/2
+  },
   inlineBlock: {
     flex: 1,
     flexDirection: 'row'

@@ -78,7 +78,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             <Text style={fundStyle.fundAmount}>{request.fundraising.amount} ETB</Text>
           </View>
 
-          <View>
+          <View style={fundStyle.button}>
             <Button title={'donate'} onPress={() => {}}>
               Donate
             </Button>
@@ -112,7 +112,8 @@ const fundStyle = StyleSheet.create({
     height: 250
   },
   button: {
-    alignContent: 'center'
+    alignContent: 'center',
+    width: dimension.width/2
   },
   byTitle: {
     color: '#3f51b5',
