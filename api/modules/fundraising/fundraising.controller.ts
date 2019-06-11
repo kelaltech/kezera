@@ -8,7 +8,7 @@ import { serverApp } from '../../index'
 type ObjectId = Schema.Types.ObjectId | string
 
 export async function AddFund(body: any, id: Schema.Types.ObjectId): Promise<void> {
-  await add(FundraisingModel, { ...body, requestId: id })
+  await add(FundraisingModel, { ...body, request: id })
 }
 
 export async function ListFunds(): Promise<Document[]> {
