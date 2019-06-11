@@ -14,25 +14,21 @@ function TaskList({  }: NavigationInjectedProps) {
     _by: 'Kelal',
     _id: 'id',
     coverUri: `${require('../../../assets/images/event.jpg')}`,
-    description: 'description for request ',
+    description: 'description for request',
     expires: 1560241773690,
     fileUris: ['file1', 'file2'],
     name: 'title for the request!',
     status: 'OPEN',
-    type: 'Material',
+    type: 'Fundraising',
     donations: [
-      { _at: 1560241773690, volunteer_id: 'id' },
-      { _at: 1560241773690, volunteer_id: 'id' },
-      { _at: 1560241773690, volunteer_id: 'id' }
+      { _at: 1560241773690, volunteer_id: 'id', data: '110000' },
+      { _at: 1560241773690, volunteer_id: 'id', data: '2000000' },
+      { _at: 1560241773690, volunteer_id: 'id', data: '1000' }
     ],
-    material: {
+    fundraising: {
       _id: 'id',
       _at: 1560241733690,
-      endDate: 1560241773690,
-      numberNeeded: 10,
-      request: 'id',
-      startDate: 1560241773690,
-      type: 'Art & Culture' as ITaskType
+      target: 10000000
     }
   }
   return (

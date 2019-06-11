@@ -8,11 +8,11 @@ export async function AddMaterial(body: any, id: Schema.Types.ObjectId): Promise
   await add(MaterialModel, { ...body, requestId: id })
 }
 
-export async function GetMaterial(
-  id: Schema.Types.ObjectId
+export async function GetMaterialFromRequest(
+  request_id: Schema.Types.ObjectId
 ): Promise<IMaterial | IMaterial[]> {
   return await list(MaterialModel, {
-    preQuery: model => model.find({ requestId: id })
+    preQuery: model => model.find({ requestId: request_id })
   })
 }
 export async function DeleteMaterial(

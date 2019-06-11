@@ -3,7 +3,7 @@ import {
   DeleteMaterial,
   UpdateMaterial,
   AddMaterial,
-  GetMaterial,
+  GetMaterialFromRequest,
   ListMaterials
 } from './material.controller'
 // import * as fs from 'fs'
@@ -17,7 +17,7 @@ materialRouter.get('/all', async ctx => {
 
 materialRouter.get('/:_id', async ctx => {
   console.log('Getting specific materials')
-  ctx.body = await GetMaterial(ctx.params._id)
+  ctx.body = await GetMaterialFromRequest(ctx.params._id)
 })
 
 materialRouter.post('/create', async ctx => {

@@ -1,12 +1,66 @@
-import React from 'react'
-import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import React, { useEffect, useState } from 'react'
+import {
+  NavigationActions,
+  NavigationInjectedProps,
+  withNavigation
+} from 'react-navigation'
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
+import { Card, PricingCard } from 'react-native-elements'
+import { baseUrl } from '../../../app/configs/setup-axios'
+import values from '../../../assets/styles/values'
+import { IFundraisingResponse } from '../../../../../api/modules/fundraising/fundraising.apiv'
+import classes from '../../../assets/styles/classes'
 
-function FundraisingCard({  }: NavigationInjectedProps & { request: IRequestResponse }) {
+function FundraisingCard({
+  request,
+  navigation
+}: NavigationInjectedProps & {
+  request: IRequestResponse & { type: 'Fundraising'; fundraising: IFundraisingResponse }
+}) {
+  const [raisedMoney, setRaisedMoney] = useState<number>(0)
+
+  useEffect(() => {
+    evaluateDonation()
+  })
+
+  function evaluateDonation() {
+    let donation_raised: number = 0
+    request.donations.map((d, k) => (donation_raised += Number(d.data)))
+    setRaisedMoney(donation_raised)
+  }
+
   return (
     <>
-      <Text>Fundraising Task</Text>
+      <View>
+        <PricingCard
+          color={`${values.color.primary}`}
+          title={`${request.name}`}
+          price={`ETB ${request.fundraising.target}`}
+          info={[
+            `by ${'request._by.account.displayName'}`,
+            `ETB ${raisedMoney} raised`,
+            `${request.description.slice(0, 200)}`
+          ]}
+          onButtonPress={() =>
+            navigation.dispatch(
+              NavigationActions.navigate({
+                routeName: 'FundrasingDetail',
+                params: {
+                  id: request._id
+                }
+              })
+            )
+          }
+          button={{
+            title: 'Donate',
+            icon: 'donate',
+            buttonStyle: {
+              paddingVertical: values.space.normal
+            }
+          }}
+        />
+      </View>
     </>
   )
 }
