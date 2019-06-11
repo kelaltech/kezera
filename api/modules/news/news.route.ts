@@ -93,7 +93,6 @@ newsRouter.get('/list', async ctx => {
   ctx.body = await getAllNews(Number(ctx.query.since), Number(ctx.query.conunt))
 })
 
-
 newsRouter.get('/:_newsId/likes', async ctx => {
   //return the users profile
 

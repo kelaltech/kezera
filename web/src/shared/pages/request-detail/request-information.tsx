@@ -9,7 +9,8 @@ import {
   Title,
   Toggle,
   Yoga,
-  Button
+  Button,
+  TextArea
 } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component, useEffect, useState } from 'react'
@@ -118,20 +119,15 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           </Flex>
         </div>
         <Title size={'L'}>{t`request:description`}</Title>
-        <Yoga maxCol={2}>
-          <div>
-            {request.description}
-            <Title size={'L'} className={'bold center'}>
-              {request.type === 'Fundraising' && <RequestFundDetail request={request} />}
-              {request.type === 'Task' && <RequestTaskDetail request={request} />}
-              {request.type === 'Material' && <RequestMaterialDetail request={request} />}
-              {request.type === 'Organ' && <RequestOrganDetail request={request} />}
-            </Title>
-          </div>
-          <Content>
-            {/*<img src={request.picture} style={{height: 'inherit', width: '100%'}}/>*/}
-          </Content>
-        </Yoga>
+        <Block>{request.description}</Block>
+        <div>
+          <Title size={'L'} className={'bold center'}>
+            {request.type === 'Fundraising' && <RequestFundDetail request={request} />}
+            {request.type === 'Task' && <RequestTaskDetail request={request} />}
+            {request.type === 'Material' && <RequestMaterialDetail request={request} />}
+            {request.type === 'Organ' && <RequestOrganDetail request={request} />}
+          </Title>
+        </div>
         <Block className={'center'}>
           <label className="flex padding-small">
             <FontAwesomeIcon className={'middle margin-right-big'} icon={'calendar'} />
