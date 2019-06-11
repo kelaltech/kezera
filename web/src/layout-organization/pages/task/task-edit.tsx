@@ -1,18 +1,13 @@
 import React, { Component, useRef, useState } from 'react'
 import {
   Block,
-  Button,
   Content,
-  ImageInput,
   Input,
-  Page,
-  TextArea,
   Title,
   Yoga
 } from 'gerami'
 import {
   FormControl,
-  Input as MatInput,
   InputLabel,
   MenuItem,
   Select
@@ -26,10 +21,11 @@ interface ITaskProps {
 
 export default function TaskEdit(props: ITaskProps) {
   const [task, setTask] = useState<any>({
-    numberNeeded: '',
-    startDate: '',
-    endDate: '',
-    type: ''
+    _id:props.Task._id,
+    numberNeeded: props.Task.numberNeeded,
+    startDate: props.Task.startDate,
+    endDate: props.Task.endDate,
+    type: props.Task.type
   })
   let { t, loading } = useLocale(['task'])
   let emitChange = function(changes: any): void {
@@ -47,7 +43,7 @@ export default function TaskEdit(props: ITaskProps) {
         <Input
           onChange={e => emitChange({ numberNeeded: e.target.value })}
           className={'full-width'}
-          value={props.Task.numberNeeded}
+          defaultValue={props.Task.numberNeeded}
           type={'number'}
           required={true}
           label={'Number of Participants'}
@@ -57,7 +53,7 @@ export default function TaskEdit(props: ITaskProps) {
         <FormControl className={'full-width'}>
           <InputLabel>{t`type`}</InputLabel>
           <Select
-            value={props.Task.type}
+            value={task.type}
             onChange={e => emitChange({ type: e.target.value })}
             inputProps={{
               name: 'Type'
@@ -91,7 +87,7 @@ export default function TaskEdit(props: ITaskProps) {
               className={'full-width'}
               name={'startDate'}
               type={'date'}
-              value={new Date(props.Task.startDate).toISOString().substr(0, 10)}
+              defaultValue={new Date(props.Task.startDate).toISOString().substr(0, 10)}
               required
             />
           </span>
@@ -103,7 +99,7 @@ export default function TaskEdit(props: ITaskProps) {
               className={'full-width'}
               name={'endDate'}
               type={'date'}
-              value={new Date(props.Task.endDate).toISOString().substr(0, 10)}
+              defaultValue={new Date(props.Task.endDate).toISOString().substr(0, 10)}
               required
             />
           </span>

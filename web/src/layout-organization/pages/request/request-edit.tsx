@@ -54,19 +54,20 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
     }
   }
 
-  const addRequest = (form: any) => {
+  const editRequest = (form: any) => {
     console.log(3, specific)
 
     form.preventDefault()
     const data = new FormData()
+    data.append('_id', match.params._id)
     data.append('name', form.target.name.value)
     data.append('description', form.target.description.value)
-    data.append('expires', form.target.endDate.value)
+    data.append('expires', form.target.expires.value)
     data.append('status', 'OPEN')
-    data.append('type', type)
+    data.append('type', request.type)
     data.append('picture', picture)
 
-    switch (type) {
+    switch (request.type) {
       case 'Fundraising':
         data.append('Fundraising', JSON.stringify(specific))
         break
@@ -83,10 +84,10 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
     }
     console.log(specific)
     axios
-      .post('/api/request/add', data, { withCredentials: true })
+      .put('/api/request/'+match.params._id, data, { withCredentials: true })
       .then(res => {
         id = res.data
-        history.push('/organization/request/' + res.data._id)
+        history.push('/organization/request/list')
       })
       .catch(e => {
         console.log(e)
@@ -98,7 +99,7 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
   return request ? (
     <Page>
       <Content size={'L'}>
-        <form onSubmit={e => addRequest(e)} method={'POST'}>
+        <form onSubmit={e => editRequest(e)}>
           <span>
             <div
               className={'request-img-container'}
@@ -124,7 +125,7 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
               className={'full-width'}
               name={'name'}
               type={'text'}
-              value={request.name}
+              defaultValue={request.name}
               label={t`request:title-of-request`}
             />
           </Block>
@@ -134,7 +135,7 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
               required={true}
               className={'full-width'}
               name={'description'}
-              value={request.description}
+              defaultValue={request.description}
               label={t`request:description-of-request`}
             />
           </Block>
@@ -146,9 +147,9 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
 
             <Input
               className={'full-width'}
-              name={'endDate'}
+              name={'expires'}
               type={'date'}
-              value={new Date(request.expires).toISOString().substr(0, 10)}
+              defaultValue={new Date(request.expires).toISOString().substr(0, 10)}
             />
           </Block>
           <hr />

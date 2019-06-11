@@ -14,7 +14,7 @@ import {
   getRequestFile
 } from './request.controller'
 
-import * as fs from 'fs'
+// import * as fs from 'fs'
 import { authorize } from '../../lib/middlewares/authorize'
 
 export const requestRouter = new Router({ prefix: '/api/request' })
@@ -61,12 +61,20 @@ requestRouter.post('/add', async ctx => {
 
 // /api/request/:_id"
 requestRouter.put('/:_id', async ctx => {
-  ctx.body = await editRequest(
-    ctx.request.body,
-    ctx.request.type,
-    ctx.state.user._id,
-    fs.createReadStream(ctx.request.files!.image.path)
-  )
+  console.log("Put request reached")
+  console.log(ctx.request.body)
+  if(ctx.request.files!.picture !== undefined ){
+    ctx.body = await editRequest(
+      ctx.params._id,
+      ctx.request.body,
+      ctx.state.user,
+      ctx.request.files!.picture)
+  }else{
+    ctx.body = await editRequest(
+      ctx.params._id,
+      ctx.request.body,
+      ctx.state.user)
+  }
 })
 
 requestRouter.put(

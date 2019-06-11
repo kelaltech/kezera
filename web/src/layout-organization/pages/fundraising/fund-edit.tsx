@@ -15,7 +15,8 @@ interface IFundProps {
 
 function FundEdit(props: IFundProps) {
   const [fund, setFund] = useState<any>({
-    target: ''
+    _id:props.Fund._id,
+    target: props.Fund.target
   })
 
   let emitChange = function(changes: any): void {
@@ -34,7 +35,7 @@ function FundEdit(props: IFundProps) {
           required={true}
           onChange={e => emitChange({ target: e.target.value })}
           className={'full-width'}
-          value={props.Fund.target}
+          defaultValue={props.Fund.target}
           type={'text'}
           label={'Amount of Money'}
         />

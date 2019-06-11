@@ -1,4 +1,4 @@
-import { add, get, list } from '../../lib/crud'
+import { add, edit, get, list } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
 import { TaskModel } from '../../models/task/task.model'
 import { ITaskResponse } from './task.apiv'
@@ -18,4 +18,18 @@ export async function getTaskFromRequest(request_id: ObjectId): Promise<ITaskRes
   return taskDocumentToResponse(
     await get(TaskModel, null, { conditions: { request: request_id } })
   )
+}
+
+export async function updateTask(
+  body: any
+): Promise<void> {
+  let task = {
+    _id:body._id,
+    type: body.type,
+    startDate:body.startDate,
+    endDate: body.endDate,
+    numberNeeded: body.numberNeeded
+  }
+  let t=await get(TaskModel,task._id)
+  await edit(TaskModel, t._id, task )
 }
