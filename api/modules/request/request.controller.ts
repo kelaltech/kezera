@@ -14,6 +14,7 @@ import { IVolunteerResponse } from '../volunteer/volunteer.apiv'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { accountDocumentToPublicResponse } from '../account/account.filter'
 import { requestDocumentToResponse } from './request.filter'
+import * as sharp from 'sharp'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -45,7 +46,7 @@ export async function listRequests(): Promise<any> {
 export async function addRequestWithPicture(
   data: any,
   account: Document & IAccount,
-  pic: Stream
+  pic: any
 ): Promise<ObjectId> {
   data._by = await account._id
   const request = await add(RequestModel, data)
@@ -66,8 +67,12 @@ export async function addRequestWithPicture(
   }
 
   const grid = new Grid(serverApp, RequestModel, request._id)
+  const compressedPic = sharp(pic.path)
+    .resize(1080, 1080, { fit: 'cover' })
+    .jpeg({ quality: 100 })
 
-  await grid.set(pic)
+  await grid.set(compressedPic, 'image/jpeg')
+  // await grid.set(pic)
 
   return request._id
 }

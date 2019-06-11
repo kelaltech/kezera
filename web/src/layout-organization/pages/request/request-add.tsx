@@ -13,6 +13,7 @@ import {
   Yoga
 } from 'gerami'
 
+import "./request.scss"
 import axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import { match, RouteComponentProps, withRouter } from 'react-router'
@@ -31,15 +32,29 @@ import { Schema } from 'mongoose'
 import MaterialAdd from '../../components/material-add/material-add'
 import OrganAdd from '../organ/organ-add'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
   let { loading, t } = useLocale(['material-donation', 'request'])
   let [type, setType] = useState<any>(0)
   let [id, setId] = useState()
+  const [picture, setPicture] = useState()
+  const [imageSrc, setImageSrc] = useState()
+  const inputRef = useRef<HTMLInputElement>(null)
 
   let [specific, setSpecific] = useState()
 
+  const handleInputChange = async (): Promise<void> => {
+    if (inputRef.current && inputRef.current.files && inputRef.current.files.length) {
+      setPicture(inputRef.current.files[0])
+      let reader = new FileReader()
+      reader.onload = e => {
+        setImageSrc((e.target as any).result)
+      }
+      reader.readAsDataURL(inputRef.current.files[0])
+    }
+  }
   const addRequest = (form: any) => {
     console.log(3, specific)
 
@@ -50,6 +65,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
     data.append('expires', form.target.endDate.value)
     data.append('status', 'OPEN')
     data.append('type', type)
+    data.append('picture',picture)
 
     switch (type) {
       case 'Fundraising':
@@ -67,9 +83,6 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
         break
     }
     console.log(specific)
-    if (uploadRef.current && uploadRef.current.files && uploadRef.current.files.length)
-      data.append('picture', uploadRef.current.files[0])
-
     axios
       .post('/api/request/add', data, { withCredentials: true })
       .then(res => {
@@ -87,10 +100,23 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
     <Page>
       <Content size={'L'}>
         <form onSubmit={e => addRequest(e)} method={'POST'}>
-          <Block>
-            <Title size={'XXL'}>{t`request:make-a-request`}</Title>
-          </Block>
-          <hr />
+          <span>
+            <div
+              className={'request-img-container'}
+              style={{
+                backgroundImage: `url(${imageSrc ? imageSrc : ''})`
+              }}
+              onClick={() => inputRef.current && inputRef.current.click()}
+            >
+              <div style={{ display: 'none' }}>
+                <input type={'file'} ref={inputRef} onChange={handleInputChange} />
+              </div>
+              <div className={'img-add-placeholder fg-blackish'}>
+                <span><FontAwesomeIcon icon={'image'}/> Insert an image</span>
+              </div>
+            </div>
+            {/*<ImageInput name={'picture'} innerRef={uploadRef} />*/}
+          </span>
           <Block>
             <Input
               required={true}
@@ -99,9 +125,6 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
               type={'text'}
               label={t`request:title-of-request`}
             />
-          </Block>
-          <Block>
-            <ImageInput name={'picture'} innerRef={uploadRef} />
           </Block>
 
           <Block>
