@@ -67,15 +67,17 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             source={{ uri: `${baseUrl}${request.coverUri}` }}
             style={Style.requestImage}
           />
+
           <View style={Style.requestTitle}>
             <Text style={Style.requestTitle}>{request.name}</Text>
           </View>
+
           <Divider />
+
           <View>
-            <View style={Style.description}>
-              <Text style={Style.description}>{request.description}</Text>
-            </View>
+            <Text style={Style.description}>{request.description}</Text>
           </View>
+
           <View style={Style.inlineBlock}>
             <Text style={Style.requestedTitle}>Requested Amount: </Text>
             <Text style={Style.requestedAmount}>{request.fundraising.amount} ETB</Text>
@@ -86,6 +88,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
               Donate
             </Button>
           </View>
+
           <Divider />
 
           <View style={Style.inlineBlock}>
@@ -119,7 +122,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
       </>
     ) : (
       <View>
-        <Text>No Detail Available</Text>
+        <Text>No Detail Available!</Text>
       </View>
     ))
   )

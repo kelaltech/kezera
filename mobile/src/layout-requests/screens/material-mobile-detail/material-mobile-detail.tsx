@@ -103,7 +103,7 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
 
           <View style={Style.inlineBlock}>
-            <Text style={Style.requestedTitle}>Participants needed </Text>
+            <Text style={Style.requestedTitle}>Materials needed </Text>
             <Text style={Style.requestedAmount}>{request.material.quantity}</Text>
           </View>
 

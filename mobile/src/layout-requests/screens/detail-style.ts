@@ -30,6 +30,7 @@ export const Style = StyleSheet.create({
     fontSize: 18
   },
   button: {
+    paddingTop: 15,
     alignContent: 'center',
     width: dimension.width / 2
   },
@@ -45,7 +46,6 @@ export const Style = StyleSheet.create({
   },
   inlineBlock: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center'
+    flexDirection: 'row'
   }
 })
