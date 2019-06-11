@@ -1,24 +1,13 @@
-import React from 'react'
+import React from 'React'
+import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
+import { Text } from 'react-native'
 
-import useLocale from '../../../shared/hooks/use-locale/use-locale'
-import { Button, View } from 'react-native'
-import { Card } from 'react-native-elements'
-
-export interface IMaterialProps {
-  request: any
-}
-export default function MaterialMobileCard({ request }: IMaterialProps) {
-  const { loading, t } = useLocale(['request'])
+function MaterialCard({  }: NavigationInjectedProps & { request: IRequestResponse }) {
   return (
-    loading || (
-      <Card title={request.name} image={request.picture}>
-        <Button
-          title={'Attend'}
-          onPress={() => {
-            /* todo */
-          }}
-        >{t`attend`}</Button>
-      </Card>
-    )
+    <>
+      <Text>Material Card</Text>
+    </>
   )
 }
+export default withNavigation(MaterialCard)
