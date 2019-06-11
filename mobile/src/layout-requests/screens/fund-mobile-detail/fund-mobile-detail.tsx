@@ -75,7 +75,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
           <View style={fundStyle.inlineBlock}>
             <Text style={fundStyle.fundAmountTitle}>Requested Amount: </Text>
-            <Text style={fundStyle.fundAmount}>{request.fundraising.amount} ETB</Text>
+            <Text style={fundStyle.fundAmount}>{request.fundraising.amount}{' '}ETB</Text>
           </View>
 
           <View style={fundStyle.button}>
@@ -86,7 +86,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           <Divider />
 
           <View style={fundStyle.inlineBlock}>
-            <Text style={fundStyle.byTitle}>Requested By</Text>
+            <Text style={fundStyle.byTitle}>Requested By {' '}</Text>
             <Text style={classes.link} onPress={() => navigation.dispatch(
               NavigationActions.navigate({
                 routeName: 'OrganizationDetail',
@@ -94,7 +94,7 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
                   id: request._by._id
                 }
               })
-            )}>{request._by.name}</Text>
+            )}>{request._by.acount.displayName}</Text>
           </View>
         </ScrollView>
       </>

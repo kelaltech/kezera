@@ -81,14 +81,14 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
 
           <View style={taskStyle.button}>
-            <Button title={'participate'} onPress={() => {}}>
+            <Button title={'donate'} onPress={() => {}}>
               Donate
             </Button>
           </View>
           <Divider />
 
           <View style={taskStyle.inlineBlock}>
-            <Text style={taskStyle.byTitle}>Requested By</Text>
+            <Text style={taskStyle.byTitle}>Requested By {' '}</Text>
             <Text style={classes.link} onPress={() => navigation.dispatch(
               NavigationActions.navigate({
                 routeName: 'OrganizationDetail',
@@ -96,7 +96,7 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
                   id: request._by._id
                 }
               })
-            )}>{request._by.name}</Text>
+            )}>{request._by.account.displayName}</Text>
           </View>
         </ScrollView>
       </>
