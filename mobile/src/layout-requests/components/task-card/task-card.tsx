@@ -6,7 +6,7 @@ import {
 } from 'react-navigation'
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native'
-import { Button, Card } from 'react-native-elements'
+import { Button, Card, PricingCard } from 'react-native-elements'
 import classes from '../../../assets/styles/classes'
 import { ITaskResponse } from '../../../../../api/modules/task/task.apiv'
 import { taskCardStyle } from './task-card-style'

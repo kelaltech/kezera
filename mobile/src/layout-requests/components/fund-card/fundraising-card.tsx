@@ -5,7 +5,7 @@ import {
   withNavigation
 } from 'react-navigation'
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
-import { Text, View } from 'react-native'
+import { Dimensions, Text, View } from 'react-native'
 import { Card, PricingCard } from 'react-native-elements'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import values from '../../../assets/styles/values'

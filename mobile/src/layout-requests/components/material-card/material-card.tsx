@@ -5,12 +5,13 @@ import {
   withNavigation
 } from 'react-navigation'
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
-import { Text, TouchableOpacity, View } from 'react-native'
-import { Button, Card } from 'react-native-elements'
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
+import { Button, Card, PricingCard } from 'react-native-elements'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import { taskCardStyle } from '../task-card/task-card-style'
 import classes from '../../../assets/styles/classes'
 import { IRequestType } from '../../../../../api/models/request/request.model'
+import values from '../../../assets/styles/values'
 
 function MaterialCard({
   request,
