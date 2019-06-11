@@ -8,12 +8,14 @@ type ObjectId = Schema.Types.ObjectId | string
 export async function taskRequestToLeanDocument(
   request: ITaskRequest,
   request_id: ObjectId, // request
-  _id?: ObjectId
+  _id?: ObjectId,
+  _at: Date | number = Date.now()
 ): Promise<ITask & { _id?: ObjectId }> {
   const { type, startDate, endDate, numberNeeded } = request
 
   const leanDocument: ITask & { _id?: ObjectId } = {
     _id,
+    _at,
 
     request: request_id,
 
@@ -31,9 +33,10 @@ export async function taskRequestToLeanDocument(
 export async function taskRequestToDocument(
   request: ITaskRequest,
   request_id: ObjectId, // request
-  _id?: ObjectId
+  _id?: ObjectId,
+  _at: Date | number = Date.now()
 ): Promise<Document & ITask> {
-  return new TaskModel(await taskRequestToLeanDocument(request, request_id, _id))
+  return new TaskModel(await taskRequestToLeanDocument(request, request_id, _id, _at))
 }
 
 export async function taskDocumentToResponse(

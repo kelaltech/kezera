@@ -1,6 +1,8 @@
-import { add, list } from '../../lib/crud'
+import { add, get, list } from '../../lib/crud'
 import { Document, Schema } from 'mongoose'
 import { TaskModel } from '../../models/task/task.model'
+import { ITaskResponse } from './task.apiv'
+import { taskDocumentToResponse } from './task.filter'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -9,10 +11,9 @@ export async function AddTask(body: any, id: Schema.Types.ObjectId): Promise<voi
 }
 
 export async function ListTasks(): Promise<Document[]> {
-  return await list(TaskModel)
+  return list(TaskModel)
 }
 
-export async function getTask(requestId: ObjectId): Promise<any> {
-  const task = await TaskModel.findOne({ requestId })
-  return task
+export async function getTask(request_id: ObjectId): Promise<ITaskResponse> {
+  return taskDocumentToResponse(await get(TaskModel, request_id, {}))
 }

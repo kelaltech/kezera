@@ -3,7 +3,7 @@ import { Schema } from 'mongoose'
 
 import { requestPaths } from './request.path'
 
-type ObjectId = Schema.Types.ObjectId
+type ObjectId = Schema.Types.ObjectId | string
 
 export type IRequestStatus = 'OPEN' | 'CLOSED'
 export const requestStatuses: IRequestStatus[] = ['OPEN', 'CLOSED']

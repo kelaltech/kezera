@@ -10,7 +10,13 @@ import {
   Title,
   Yoga
 } from 'gerami'
-import { FormControl, Input as MatInput, InputLabel, MenuItem, Select } from '@material-ui/core'
+import {
+  FormControl,
+  Input as MatInput,
+  InputLabel,
+  MenuItem,
+  Select
+} from '@material-ui/core'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 
 interface ITaskProps {
@@ -22,9 +28,9 @@ export default function TaskAdd(props: ITaskProps) {
     numberNeeded: '',
     startDate: '',
     endDate: '',
-    type:''
+    type: ''
   })
-  let {t,loading}=useLocale(['task'])
+  let { t, loading } = useLocale(['task'])
   let emitChange = function(changes: any): void {
     props.onChange({ ...task, ...changes })
     setTask({ ...task, ...changes })
@@ -76,22 +82,26 @@ export default function TaskAdd(props: ITaskProps) {
       <Block>
         <Yoga maxCol={2}>
           <span>
-            <sup> Start date </sup><br/>
+            <sup> Start date </sup>
+            <br />
             <Input
-              onChange={e=>emitChange({startDate:e.target.value})}
+              onChange={e => emitChange({ startDate: e.target.value })}
               className={'full-width'}
               name={'startDate'}
               type={'date'}
-              required/>
+              required
+            />
           </span>
           <span>
-            <sup> End date </sup><br/>
+            <sup> End date </sup>
+            <br />
             <Input
-              onChange={e=>emitChange({endDate:e.target.value})}
+              onChange={e => emitChange({ endDate: e.target.value })}
               className={'full-width'}
-              name={"endDate"}
+              name={'endDate'}
               type={'date'}
-              required/>
+              required
+            />
           </span>
         </Yoga>
       </Block>

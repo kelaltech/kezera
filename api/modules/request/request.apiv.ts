@@ -1,11 +1,9 @@
 import { IRequestStatus, IRequestType } from '../../models/request/request.model'
-import {
-  IFundraisingRequest,
-  IFundraisingResponse
-} from '../fundraising/fundraising.apiv'
 import { IMaterialRequest, IMaterialResponse } from '../material/material.apiv'
 import { IOrganRequest, IOrganResponse } from '../organ/organ.apiv'
 import { ITaskRequest, ITaskResponse } from '../task/task.apiv'
+import { IOrganizationResponse } from '../organization/organization.apiv'
+import { IFundraisingResponse } from '../fundraising/fundraising.apiv'
 
 export type IRequestRequestCommons = {
   name: string
@@ -20,7 +18,7 @@ export type IRequestRequestCommons = {
 export type IRequestRequest =
   | IRequestRequestCommons & {
       type: 'Fundraising'
-      fundraising: IFundraisingRequest
+      fundraising: IFundraisingResponse
     }
   | IRequestRequestCommons & {
       type: 'Material'
@@ -39,7 +37,7 @@ export type IRequestResponseCommons = {
   _id: string
   _at: Date | number
 
-  _by: string
+  _by: IOrganizationResponse // although it holds the account._id, to be fixed todo
 
   name: string
   description: string

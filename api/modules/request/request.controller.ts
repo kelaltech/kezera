@@ -6,7 +6,7 @@ import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
 import { serverApp } from '../../index'
 import { AddTask, getTask } from '../task/task.controller'
-import { AddFund, editFund, getFund } from '../fundraising/fundraising.controller'
+import { AddFund, editFund, getFundraising } from '../fundraising/fundraising.controller'
 import { AddMaterial, GetMaterial, UpdateMaterial } from '../material/material.controller'
 import { organizationDocumentToResponse } from '../organization/organization.filter'
 import { AddOrgan, getOrgan } from '../organ/organ.controller'
@@ -33,7 +33,7 @@ export async function populateRequest(
       ret.task = await getTask(request._id)
       break
     case 'Fundraising':
-      ret.fundraising = await getFund(request._id)
+      ret.fundraising = await getFundraising(request._id)
       break
     case 'Organ':
       ret.organ = await getOrgan(request._id)
@@ -62,7 +62,7 @@ export async function getRequest(_id: ObjectId): Promise<any> {
       ret.task = await getTask(request._id)
       break
     case 'Fundraising':
-      ret.fundraising = await getFund(request._id)
+      ret.fundraising = await getFundraising(request._id)
       break
     case 'Organ':
       ret.organ = await getOrgan(request._id)
@@ -102,7 +102,7 @@ export async function listRequests(): Promise<any> {
           ret.task = await getTask(request._id)
           break
         case 'Fundraising':
-          ret.fundraising = await getFund(request._id)
+          ret.fundraising = await getFundraising(request._id)
           break
         case 'Material':
           ret.material = await GetMaterial(request._id)
