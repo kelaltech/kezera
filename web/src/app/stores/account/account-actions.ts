@@ -46,7 +46,7 @@ export function reloadAccount(
   }
 }
 
-let updateAccountTimeout: NodeJS.Timeout | null = null
+let updateAccountTimeout: NodeJS.Timeout | number | null = null
 let updateAccountCancellation: CancelTokenSource | null = null
 export function updateAccount(
   accountDispatch: (action: Action) => void,
@@ -57,7 +57,7 @@ export function updateAccount(
   onUpdate?: () => void,
   onError?: (e: any) => void
 ): void {
-  if (updateAccountTimeout !== null) clearTimeout(updateAccountTimeout)
+  if (updateAccountTimeout !== null) clearTimeout(updateAccountTimeout as any)
   if (updateAccountCancellation !== null) updateAccountCancellation.cancel()
 
   updateAccountTimeout = setTimeout(async () => {

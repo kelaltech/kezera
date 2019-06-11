@@ -1,21 +1,13 @@
 import React from 'react'
-import { Text } from 'react-native'
-import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import { View, Text } from 'react-native'
 
-import useLocale from '../../hooks/use-locale/use-locale'
-import Header from '../../components/header/header'
-
-function OrganDonationDetail({  }: NavigationInjectedProps<{}>) {
-  const { loading, t } = useLocale([])
-
+interface IOrganProps {
+  request: any
+}
+export default function OrganMobileDetail({ request }: IOrganProps) {
   return (
-    loading || (
-      <>
-        <Header title={t`organ-donation:organ-donation`} showBack />
-        <Text>{t`app-name`}: OrganDonationDetail Screen (in App/shared)</Text>
-      </>
-    )
+    <View>
+      <Text>{request.organ.type}</Text>
+    </View>
   )
 }
-
-export default withNavigation(OrganDonationDetail)

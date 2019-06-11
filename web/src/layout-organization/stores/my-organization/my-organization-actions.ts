@@ -37,14 +37,15 @@ export function reloadMyOrganization(
   }
 }
 
-let updateMyOrganizationTimeout: NodeJS.Timeout | null = null
+let updateMyOrganizationTimeout: NodeJS.Timeout | number | null = null
 let updateMyOrganizationCancellation: CancelTokenSource | null = null
 export function updateMyOrganization(
   myOrganizationDispatch: (action: Action) => void,
   myOrganization: IOrganizationResponse,
   timeout = 0
 ): void {
-  if (updateMyOrganizationTimeout !== null) clearTimeout(updateMyOrganizationTimeout)
+  if (updateMyOrganizationTimeout !== null)
+    clearTimeout(updateMyOrganizationTimeout as any)
   if (updateMyOrganizationCancellation !== null) updateMyOrganizationCancellation.cancel()
 
   updateMyOrganizationTimeout = setTimeout(async () => {

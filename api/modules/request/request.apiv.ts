@@ -1,4 +1,10 @@
 import { IRequestStatus, IRequestType } from '../../models/request/request.model'
+import {
+  IFundraisingRequest,
+  IFundraisingResponse
+} from '../fundraising/fundraising.apiv'
+import { IMaterialRequest, IMaterialResponse } from '../material/material.apiv'
+import { IOrganRequest, IOrganResponse } from '../organ/organ.apiv'
 import { ITaskRequest, ITaskResponse } from '../task/task.apiv'
 
 export type IRequestRequestCommons = {
@@ -14,15 +20,15 @@ export type IRequestRequestCommons = {
 export type IRequestRequest =
   | IRequestRequestCommons & {
       type: 'Fundraising'
-      fundraising: any
+      fundraising: IFundraisingRequest
     }
   | IRequestRequestCommons & {
       type: 'Material'
-      material: any
+      material: IMaterialRequest
     }
   | IRequestRequestCommons & {
       type: 'Organ'
-      organ: any
+      organ: IOrganRequest
     }
   | IRequestRequestCommons & {
       type: 'Task'
@@ -57,15 +63,15 @@ export type IRequestResponseCommons = {
 export type IRequestResponse =
   | IRequestResponseCommons & {
       type: 'Fundraising'
-      fundraising: any
+      fundraising: IFundraisingResponse
     }
   | IRequestResponseCommons & {
       type: 'Material'
-      material: any
+      material: IMaterialResponse
     }
   | IRequestResponseCommons & {
       type: 'Organ'
-      organ: any
+      organ: IOrganResponse
     }
   | IRequestResponseCommons & {
       type: 'Task'

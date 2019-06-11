@@ -5,7 +5,7 @@ import { TaskModel } from '../../models/task/task.model'
 type ObjectId = Schema.Types.ObjectId | string
 
 export async function AddTask(body: any, id: Schema.Types.ObjectId): Promise<void> {
-  await add(TaskModel, { ...body, requestId: id })
+  await add(TaskModel, { ...body, request: id })
 }
 
 export async function ListTasks(): Promise<Document[]> {

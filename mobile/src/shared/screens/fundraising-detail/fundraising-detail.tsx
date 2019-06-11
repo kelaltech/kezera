@@ -1,23 +1,15 @@
 import React from 'react'
-import { Text, View } from 'react-native'
-import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import { View, Text } from 'react-native'
 
-import useLocale from '../../hooks/use-locale/use-locale'
-import Header from '../../components/header/header'
 interface IFundProps {
   request: any
 }
-function FundraisingDetail({  }: NavigationInjectedProps<{}>, { request }: IFundProps) {
-  const { loading, t } = useLocale([])
-
+export default function FundraisingDetail({ request }: IFundProps) {
   return (
-    loading || (
-      <>
-        <Header title={t`fundraising:fundraising`} showBack />
-        {request.fundraising.amountNeeded} {request.fundraising.currency}
-      </>
-    )
+    <View>
+      <Text>
+        {request.fundraising.amount} {request.fundraising.currency}
+      </Text>
+    </View>
   )
 }
-
-export default withNavigation(FundraisingDetail)
