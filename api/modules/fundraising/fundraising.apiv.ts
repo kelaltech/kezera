@@ -5,6 +5,5 @@ export type IFundraisingRequest = {
 export type IFundraisingResponse = {
   _id: string
   _at: Date | number
-
   target: number
 }
