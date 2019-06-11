@@ -19,7 +19,7 @@ import RequestSearchList from '../../shared/screens/request-search-list/request-
 import OrganizationSearchList from '../../shared/screens/organization-search-list/organization-search-list'
 import VolunteerSearchList from '../../shared/screens/volunteer-search-list/volunteer-search-list'
 import CommentList from '../../shared/screens/comment-list/comment-list'
-
+import FundMobileDetail from '../../layout-requests/screens/fund-mobile-detail/fund-mobile-detail'
 const AppNavigator = createStackNavigator(
   {
     Init,
@@ -42,7 +42,8 @@ const AppNavigator = createStackNavigator(
     RequestSearchList,
     OrganizationSearchList,
     VolunteerSearchList,
-    CommentList
+    CommentList,
+    FundMobileDetail
   },
   {
     initialRouteName: 'Init',
