@@ -36,14 +36,14 @@ export async function fundraisingRequestToDocument(
   )
 }
 
-export async function accountDocumentToResponse(
+export async function fundraisingDocumentToResponse(
   document: Document & IFundraising
 ): Promise<IFundraisingResponse> {
-  const { target } = document
+  const { _id, _at, target } = document
 
   const response: IFundraisingResponse = {
-    _at: new Date(document._at!).getTime(),
-    _id: document._id,
+    _id: _id,
+    _at: new Date(_at!).getTime(),
 
     target
   }
