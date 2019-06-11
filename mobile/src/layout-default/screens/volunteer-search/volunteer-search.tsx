@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import {
   NavigationActions,
   NavigationInjectedProps,
@@ -20,6 +20,8 @@ import VolunteerCard from '../../../shared/components/volunteer-card/volunteer-c
 import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
 import values from '../../../assets/styles/values'
+import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
+import RequestCard from '../../../layout-requests/components/request-card/request-card'
 
 function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
   const { loading, t } = useLocale(['volunteer'])
@@ -38,9 +40,20 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
       eventSearch()
       orgniazationSearch()
       volunteerSearch()
+      requestSearch()
     }
   }, [term])
 
+  const requestSearch = () => {
+    Axios.get(`/api/request/search?term=${term}`)
+      .then(data => data.data)
+      .then(news => {
+        setRequest(news)
+      })
+      .catch(e => {
+        setError(e)
+      })
+  }
   const newsSearch = () => {
     Axios.get(`/api/news/search?term=${term}`)
       .then(data => data.data)
@@ -233,6 +246,37 @@ function VolunteerSearch({ navigation }: NavigationInjectedProps<{}>) {
                 <ScrollView horizontal>
                   {event.map((e, k) => (
                     <EventCardSecond event={e} key={k} />
+                  ))}
+                </ScrollView>
+              </View>
+              <View>
+                <View style={searchStyle.displayHeader}>
+                  <Text style={classes.head1}>Requests</Text>
+                  <Text
+                    style={classes.link}
+                    onPress={() =>
+                      navigation.dispatch(
+                        NavigationActions.navigate({
+                          routeName: 'RequestSearchList',
+                          params: {
+                            term: term
+                          }
+                        })
+                      )
+                    }
+                  >
+                    see more
+                  </Text>
+                </View>
+                <ScrollView horizontal>
+                  {request.map((r: IRequestResponse, k) => (
+                    <View
+                      style={{
+                        width: Dimensions.get('screen').width
+                      }}
+                    >
+                      <RequestCard key={k} {...r} />
+                    </View>
                   ))}
                 </ScrollView>
               </View>

@@ -4,6 +4,7 @@ import { ScrollView, View, Text, RefreshControl } from 'react-native'
 import Header from '../../../shared/components/header/header'
 import useLocale from '../../hooks/use-locale/use-locale'
 import Axios from 'axios'
+import RequestCard from '../../../layout-requests/components/request-card/request-card'
 function RequestSearchList({ navigation }: NavigationInjectedProps) {
   const { loading, t } = useLocale(['volunteer'])
   const [request, setRequest] = useState([])
@@ -40,9 +41,7 @@ function RequestSearchList({ navigation }: NavigationInjectedProps) {
           }
         >
           {request.map((r, k) => (
-            <View>
-              <Text>Request card</Text>
-            </View>
+            <RequestCard {...r} key={k} />
           ))}
         </ScrollView>
       </>

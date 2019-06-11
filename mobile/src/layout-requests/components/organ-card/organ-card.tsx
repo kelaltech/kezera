@@ -7,7 +7,7 @@ import {
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
 import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
 import { organStyle } from './organ-card-style'
-import { Button, Card } from 'react-native-elements'
+import { Button, Card, PricingCard } from 'react-native-elements'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import { taskCardStyle } from '../task-card/task-card-style'
 import classes from '../../../assets/styles/classes'
