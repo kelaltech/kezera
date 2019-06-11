@@ -25,7 +25,7 @@ import { RequestModel } from '../../models/request/request.model'
 import { EventModel } from '../../models/event/event.model'
 import { INews, NewsModel } from '../../models/news/news.model'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
-import { populateRequest } from '../request/request.controller'
+import { requestDocumentToResponse } from '../request/request.filter'
 import { IRequestResponse } from '../request/request.apiv'
 import { EventResponse } from '../event/event.filter'
 import { AccountModel } from '../../models/account/account.model'
@@ -218,14 +218,14 @@ export class OrganizationController extends KoaController {
     return {
       requests: {
         total: await RequestModel.find({ _by: account_id }).count(),
-        active: await RequestModel.find({ _by: account_id, status: true }).count(),
+        active: await RequestModel.find({ _by: account_id, status: 'OPEN' }).count(),
 
         tasks: {
           total: await RequestModel.find({ _by: account_id, type: 'Task' }).count(),
           active: await RequestModel.find({
             _by: account_id,
             type: 'Task',
-            status: true
+            status: 'OPEN'
           }).count()
         },
 
@@ -234,7 +234,7 @@ export class OrganizationController extends KoaController {
           active: await RequestModel.find({
             _by: account_id,
             type: 'Material',
-            status: true
+            status: 'OPEN'
           }).count()
         },
 
@@ -246,7 +246,7 @@ export class OrganizationController extends KoaController {
           active: await RequestModel.find({
             _by: account_id,
             type: 'Fundraising',
-            status: true
+            status: 'OPEN'
           }).count()
         },
 
@@ -255,7 +255,7 @@ export class OrganizationController extends KoaController {
           active: await RequestModel.find({
             _by: account_id,
             type: 'Organ',
-            status: true
+            status: 'OPEN'
           }).count()
         }
       },
@@ -434,7 +434,7 @@ export class OrganizationController extends KoaController {
         since,
         count,
         conditions: { _by: organization.account }
-      })).map(request => populateRequest(request))
+      })).map(request => requestDocumentToResponse(request))
     )
   }
 

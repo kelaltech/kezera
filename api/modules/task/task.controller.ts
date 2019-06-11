@@ -14,6 +14,8 @@ export async function ListTasks(): Promise<Document[]> {
   return list(TaskModel)
 }
 
-export async function getTask(request_id: ObjectId): Promise<ITaskResponse> {
-  return taskDocumentToResponse(await get(TaskModel, request_id, {}))
+export async function getTaskFromRequest(request_id: ObjectId): Promise<ITaskResponse> {
+  return taskDocumentToResponse(
+    await get(TaskModel, null, { conditions: { request: request_id } })
+  )
 }
