@@ -1,39 +1,23 @@
-import React, { Component, useEffect, useRef, useState } from 'react'
-import {
-  Block,
-  Button,
-  Content,
-  Flex,
-  FlexSpacer,
-  ImageInput,
-  Input,
-  Page,
-  TextArea,
-  Title,
-  Yoga
-} from 'gerami'
+import React, { useRef, useState } from 'react'
+import { Block, Button, Content, Input, Page, TextArea, Title } from 'gerami'
 
 import './request.scss'
 import axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import { match, RouteComponentProps, withRouter } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 import {
   FormControl,
   Input as MatInput,
   InputLabel,
   MenuItem,
-  RadioGroup,
   Select
 } from '@material-ui/core'
 import TaskAdd from '../task/task-add'
-import { IAccountStatus } from '../../../../../api/models/account/account.model'
 import FundAdd from '../fundraising/fund-add'
-import { Schema } from 'mongoose'
 import MaterialAdd from '../../components/material-add/material-add'
 import OrganAdd from '../organ/organ-add'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Axios from 'axios'
 import { useMyOrganizationState } from '../../stores/my-organization/my-organization-provider'
 
 function RequestAdd({ history }: RouteComponentProps<{}>) {
@@ -44,20 +28,26 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
   let [id, setId] = useState()
   const [picture, setPicture] = useState()
   const [imageSrc, setImageSrc] = useState()
-  const inputRef = useRef<HTMLInputElement>(null)
+  const pictureInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   let [specific, setSpecific] = useState()
 
-  const handleInputChange = async (): Promise<void> => {
-    if (inputRef.current && inputRef.current.files && inputRef.current.files.length) {
-      setPicture(inputRef.current.files[0])
+  const handlePictureInputChange = async (): Promise<void> => {
+    if (
+      pictureInputRef.current &&
+      pictureInputRef.current.files &&
+      pictureInputRef.current.files.length
+    ) {
+      setPicture(pictureInputRef.current.files[0])
       let reader = new FileReader()
       reader.onload = e => {
         setImageSrc((e.target as any).result)
       }
-      reader.readAsDataURL(inputRef.current.files[0])
+      reader.readAsDataURL(pictureInputRef.current.files[0])
     }
   }
+
   const addRequest = (form: any) => {
     console.log(3, specific)
 
@@ -68,7 +58,22 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
     data.append('expires', form.target.expires.value)
     data.append('status', 'OPEN')
     data.append('type', type)
-    data.append('picture', picture)
+
+    if (
+      pictureInputRef.current &&
+      pictureInputRef.current.files &&
+      pictureInputRef.current.files.length
+    ) {
+      data.append('picture', picture)
+    }
+
+    if (
+      fileInputRef.current &&
+      fileInputRef.current.files &&
+      fileInputRef.current.files.length
+    ) {
+      data.append('file', fileInputRef.current.files[0])
+    }
 
     switch (type) {
       case 'Fundraising':
@@ -109,10 +114,14 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
               style={{
                 backgroundImage: `url(${imageSrc ? imageSrc : ''})`
               }}
-              onClick={() => inputRef.current && inputRef.current.click()}
+              onClick={() => pictureInputRef.current && pictureInputRef.current.click()}
             >
               <div style={{ display: 'none' }}>
-                <input type={'file'} ref={inputRef} onChange={handleInputChange} />
+                <input
+                  type={'file'}
+                  ref={pictureInputRef}
+                  onChange={handlePictureInputChange}
+                />
               </div>
               <div className={'img-add-placeholder fg-blackish'}>
                 <span>
@@ -143,11 +152,25 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
 
           <Block>
             <sup>
-              <Title>End Date</Title>
+              <Title>Expires On (Optional)</Title>
             </sup>
 
             <Input className={'full-width'} name={'expires'} type={'date'} />
           </Block>
+
+          <Block>
+            <sup>
+              <Title>Attachment File (Optional)</Title>
+            </sup>
+
+            <Input
+              className={'full-width'}
+              name={'file'}
+              type={'file'}
+              inputRef={fileInputRef}
+            />
+          </Block>
+
           <hr />
           <Block>
             <FormControl className={'full-width'}>
