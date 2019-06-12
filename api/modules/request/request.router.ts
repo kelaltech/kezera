@@ -4,7 +4,7 @@ import {
   listRequests,
   searchRequest,
   getRequest,
-  addRequestWithPicture,
+  addRequestWithPictureAndFile,
   editRequest,
   toggleRequestVolunteer,
   listRequestsMe,
@@ -63,7 +63,7 @@ requestRouter.delete('/:_id', async ctx => {
 
 // POST /api/request/add
 requestRouter.post('/add', async ctx => {
-  ctx.body = await addRequestWithPicture(
+  ctx.body = await addRequestWithPictureAndFile(
     ctx.request.body,
     ctx.state.user,
     ctx.request.files!.picture

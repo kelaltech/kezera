@@ -24,6 +24,7 @@ import { TaskModel } from '../../models/task/task.model'
 import { OrganModel } from '../../models/organ/organ.model'
 import { randomBytes } from 'crypto'
 import { IAccountPublicResponse } from '../account/account.apiv'
+import * as fs from 'fs'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -90,10 +91,11 @@ export async function listRequestByType(type: IRequestType) {
   )
 }
 
-export async function addRequestWithPicture(
+export async function addRequestWithPictureAndFile(
   data: any,
   account: Document & IAccount,
-  pic: any
+  pic: any,
+  file: any
 ): Promise<ObjectId> {
   data._by = await account._id
   const request = await add(RequestModel, data)
@@ -113,13 +115,22 @@ export async function addRequestWithPicture(
       break
   }
 
-  const grid = new Grid(serverApp, RequestModel, request._id)
-  const compressedPic = sharp(pic.path)
-    .resize(1080, 1080, { fit: 'cover' })
-    .jpeg({ quality: 100 })
+  if (pic && pic.path) {
+    const grid = new Grid(serverApp, RequestModel, request._id)
+    const compressedPic = sharp(pic.path)
+      .resize(1080, 1080, { fit: 'cover' })
+      .jpeg({ quality: 100 })
+    await grid.set(compressedPic, 'image/jpeg')
+  }
 
-  await grid.set(compressedPic, 'image/jpeg')
-  // await grid.set(pic)
+  if (file && file.path) {
+    const grid = new Grid(serverApp, RequestModel, request._id, 'file')
+    await grid.add(
+      fs.createReadStream(file.path),
+      `${Math.round(Date.now() * Math.random())}`,
+      file.type
+    )
+  }
 
   return request._id
 }
