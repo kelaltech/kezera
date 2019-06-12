@@ -4,7 +4,7 @@ import {
   listRequests,
   searchRequest,
   getRequest,
-  addRequestWithPicture,
+  addRequestWithPictureAndFile,
   editRequest,
   toggleRequestVolunteer,
   listRequestsMe,
@@ -14,6 +14,7 @@ import {
   getRequestFile,
   applyForTask,
   addDonnerForMaterial,
+  listRequestVolunteers,
   donorApprovalForMaterial
 } from './request.controller'
 
@@ -37,7 +38,7 @@ requestRouter.get('/list', async ctx => {
 })
 
 //GET /api/request/list/bytype?type=type
-requestRouter.get('/list/bytype', async ctx => {
+requestRouter.get('/list/by-type', async ctx => {
   ctx.body = await listRequestByType(ctx.query.type)
 })
 
@@ -70,10 +71,11 @@ requestRouter.delete('/:_id', async ctx => {
 
 // POST /api/request/add
 requestRouter.post('/add', async ctx => {
-  ctx.body = await addRequestWithPicture(
+  ctx.body = await addRequestWithPictureAndFile(
     ctx.request.body,
     ctx.state.user,
-    ctx.request.files!.picture
+    ctx.request.files!.picture,
+    ctx.request.files!.file
   )
 })
 
@@ -127,4 +129,9 @@ requestRouter.put('/task/:_id/apply', async ctx => {
 // POST /api/request/pledge-organ/:request_id *
 requestRouter.post('/pledge-organ/:request_id', authorize(['VOLUNTEER']), async ctx => {
   ctx.body = await transact(s => pledgeOrgan(ctx.params.request_id, ctx.state.user, s))
+})
+
+// GET /api/request/list-donors/:request_id
+requestRouter.get('/list-donors/:request_id', async ctx => {
+  ctx.body = await listRequestVolunteers(ctx.params.request_id)
 })

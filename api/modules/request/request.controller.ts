@@ -14,7 +14,6 @@ import { AddFund, editFund } from '../fundraising/fundraising.controller'
 import { AddMaterial, UpdateMaterial } from '../material/material.controller'
 import { AddOrgan, editOrgan } from '../organ/organ.controller'
 import { IRequestResponse } from './request.apiv'
-import { IVolunteerResponse } from '../volunteer/volunteer.apiv'
 import { VolunteerModel } from '../../models/volunteer/volunteer.model'
 import { accountDocumentToPublicResponse } from '../account/account.filter'
 import { requestDocumentToResponse } from './request.filter'
@@ -24,6 +23,8 @@ import { MaterialModel } from '../../models/material/material.model'
 import { TaskModel } from '../../models/task/task.model'
 import { OrganModel } from '../../models/organ/organ.model'
 import { randomBytes } from 'crypto'
+import { IAccountPublicResponse } from '../account/account.apiv'
+import * as fs from 'fs'
 
 type ObjectId = Schema.Types.ObjectId | string
 
@@ -90,10 +91,11 @@ export async function listRequestByType(type: IRequestType) {
   )
 }
 
-export async function addRequestWithPicture(
+export async function addRequestWithPictureAndFile(
   data: any,
   account: Document & IAccount,
-  pic: any
+  pic: any,
+  file: any
 ): Promise<ObjectId> {
   data._by = await account._id
   const request = await add(RequestModel, data)
@@ -113,13 +115,22 @@ export async function addRequestWithPicture(
       break
   }
 
-  const grid = new Grid(serverApp, RequestModel, request._id)
-  const compressedPic = sharp(pic.path)
-    .resize(1080, 1080, { fit: 'cover' })
-    .jpeg({ quality: 100 })
+  if (pic && pic.path) {
+    const grid = new Grid(serverApp, RequestModel, request._id)
+    const compressedPic = sharp(pic.path)
+      .resize(1080, 1080, { fit: 'cover' })
+      .jpeg({ quality: 100 })
+    await grid.set(compressedPic, 'image/jpeg')
+  }
 
-  await grid.set(compressedPic, 'image/jpeg')
-  // await grid.set(pic)
+  if (file && file.path) {
+    const grid = new Grid(serverApp, RequestModel, request._id, 'file')
+    await grid.add(
+      fs.createReadStream(file.path),
+      `${Math.round(Date.now() * Math.random())}`,
+      file.type
+    )
+  }
 
   return request._id
 }
@@ -166,17 +177,17 @@ export async function editRequest(
 
 export async function listRequestVolunteers(
   request_id: ObjectId
-): Promise<IVolunteerResponse[]> {
+): Promise<IAccountPublicResponse[]> {
   let request = await get(RequestModel, request_id, {
     postQuery: query =>
-      query.populate({ path: 'volunteers', populate: { path: 'account' } })
+      query.populate({ path: 'donations.volunteer', populate: { path: 'account' } })
   })
-  for (let i = 0; i < request.donations.length; i++) {
-    ;(request.donations[i] as any).account = (await accountDocumentToPublicResponse(
-      (request.donations[i] as any).account
-    )) as any
-  }
-  return request.donations as any
+
+  return Promise.all(
+    request.donations
+      .map(d => (d.volunteer as any).account)
+      .map(a => accountDocumentToPublicResponse(a))
+  )
 }
 
 export async function listRequestsMe(account_id: ObjectId): Promise<IRequestResponse[]> {

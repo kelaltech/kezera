@@ -6,7 +6,6 @@ import {
   Flex,
   ImageInput,
   Input,
-  TextArea,
   Yoga,
   Title,
   Anchor
@@ -16,7 +15,6 @@ import { Dialog, TextField } from '@material-ui/core'
 import { useEventDispatch } from '../../stores/events/events.provider'
 import { AddEvents } from '../../stores/events/events.action'
 import useField from '../../../shared/hooks/use-field/use-field'
-import { IOrganizationEventRequest } from '../../../apiv/event.apiv'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import LocationPickerDialog from '../../../shared/components/location-picker-dialog/location-picker-dialog'
 import { LngLat } from 'mapbox-gl'

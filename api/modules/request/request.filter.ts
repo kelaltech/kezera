@@ -135,11 +135,9 @@ export async function requestDocumentToResponse(
     } else if (response._id) {
       const grid = new Grid(serverApp, RequestModel, response._id, 'file', false)
 
-      if (await grid.has()) {
-        response.fileUris = (await grid.listFilenames()).map(
-          filename => `/api/request/get-file/${response._id}/${filename}`
-        )
-      }
+      response.fileUris = (await grid.listFilenames()).map(
+        filename => `/api/request/get-file/${response._id}/${filename}`
+      )
     }
   }
 
