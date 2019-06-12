@@ -5,7 +5,8 @@ import {
   searchVolunteer,
   volunteerInfo,
   editVolunteerInfo,
-  getVolunteer
+  getVolunteer,
+  getTaskTypes
 } from './volunteer.controller'
 import { authorize } from '../../lib/middlewares/authorize'
 import { transact } from '../../lib/transact'
@@ -41,4 +42,9 @@ volunteerRouter.get('/my/organization', async ctx => {
 // GET /api/volunteer/search?term=term
 volunteerRouter.get('/search', async ctx => {
   ctx.body = await searchVolunteer(ctx.query.term)
+})
+
+volunteerRouter.get('/task/search', async ctx => {
+  console.log(ctx.query.term)
+  ctx.body = await getTaskTypes(ctx.query.term)
 })

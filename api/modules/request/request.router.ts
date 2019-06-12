@@ -14,7 +14,8 @@ import {
   getRequestFile,
   applyForTask,
   addDonnerForMaterial,
-  listRequestVolunteers
+  listRequestVolunteers,
+  donorApprovalForMaterial
 } from './request.controller'
 
 // import * as fs from 'fs'
@@ -37,12 +38,19 @@ requestRouter.get('/list', async ctx => {
 })
 
 //GET /api/request/list/bytype?type=type
-requestRouter.get('/list/bytype', async ctx => {
+requestRouter.get('/list/by-type', async ctx => {
   ctx.body = await listRequestByType(ctx.query.type)
 })
 
 requestRouter.put('/material/donation/add', async ctx => {
   ctx.body = await addDonnerForMaterial(
+    ctx.request.body.request_id,
+    ctx.request.body.volunteer_id
+  )
+})
+
+requestRouter.put('/material/donor/approval', async ctx => {
+  ctx.body = await donorApprovalForMaterial(
     ctx.request.body.request_id,
     ctx.request.body.volunteer_id
   )
@@ -66,7 +74,8 @@ requestRouter.post('/add', async ctx => {
   ctx.body = await addRequestWithPictureAndFile(
     ctx.request.body,
     ctx.state.user,
-    ctx.request.files!.picture
+    ctx.request.files!.picture,
+    ctx.request.files!.file
   )
 })
 

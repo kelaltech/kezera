@@ -31,6 +31,8 @@ import { faChevronCircleDown, faChild } from '@fortawesome/free-solid-svg-icons'
 import { Yoga } from 'gerami'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import qs from 'qs'
+
 function VolunteerTask() {
   const { loading, t } = useLocale(['task'])
   const [expanded, setExpanded] = useState(false)
@@ -38,7 +40,7 @@ function VolunteerTask() {
 
   useEffect(() => {
     axios
-      .get('/api/request/list')
+      .get('/api/request/list/by-type?' + qs.stringify({ type: 'Task' }))
       .then(task => {
         setTasks(task.data)
       })
@@ -49,7 +51,7 @@ function VolunteerTask() {
 
   const handleTaskFilter = (name: string) => () => {
     axios
-      .get(`/api/task/search?term=${name}`)
+      .get(`/api/volunteer/task/search?${qs.stringify({ term: name })}`)
       .then(task => {
         setTasks(task.data)
       })

@@ -223,6 +223,26 @@ export async function addDonnerForMaterial(
     }
   }
 }
+
+export async function donorApprovalForMaterial(
+  request_id: ObjectId,
+  volunteer_id: ObjectId
+): Promise<any> {
+  const request = await get(RequestModel, request_id)
+  await (request.donations[
+    request.donations
+      .map(i => i.volunteer)
+      .toString()
+      .indexOf(volunteer_id.toString())
+  ].approved = true)
+  await request.save()
+  return request.donations[
+    request.donations
+      .map(i => i.volunteer)
+      .toString()
+      .indexOf(volunteer_id.toString())
+  ]
+}
 export async function toggleRequestVolunteer(
   request_id: ObjectId,
   account_id: ObjectId
