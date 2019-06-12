@@ -40,7 +40,7 @@ function VolunteerTask() {
 
   useEffect(() => {
     axios
-      .get('/api/request/list/by-type?' + qs.stringify({ type: 'Task' }))
+      .get('/api/request/list/bytype?' + qs.stringify({ type: 'Task' }))
       .then(task => {
         setTasks(task.data)
       })
@@ -69,7 +69,7 @@ function VolunteerTask() {
                 </span>
                 <div className={'header-expand-bar'}>
                   <Yoga maxCol={3}>
-                    <MenuItem onClick={handleTaskFilter('children')}>
+                    <MenuItem onClick={handleTaskFilter('Children & Youth')}>
                       <FontAwesomeIcon icon={faChild} />
                       Children & Youth
                     </MenuItem>

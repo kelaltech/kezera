@@ -38,7 +38,7 @@ requestRouter.get('/list', async ctx => {
 })
 
 //GET /api/request/list/bytype?type=type
-requestRouter.get('/list/by-type', async ctx => {
+requestRouter.get('/list/bytype', async ctx => {
   ctx.body = await listRequestByType(ctx.query.type)
 })
 
