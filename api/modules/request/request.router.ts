@@ -12,7 +12,8 @@ import {
   listRequestByType,
   getRequestCover,
   getRequestFile,
-  addDonnerForMaterial
+  addDonnerForMaterial,
+  donorApprovalForMaterial
 } from './request.controller'
 
 // import * as fs from 'fs'
@@ -39,6 +40,13 @@ requestRouter.get('/list/bytype', async ctx => {
 
 requestRouter.put('/material/donation/add', async ctx => {
   ctx.body = await addDonnerForMaterial(
+    ctx.request.body.request_id,
+    ctx.request.body.volunteer_id
+  )
+})
+
+requestRouter.put('/material/donor/approval', async ctx => {
+  ctx.body = await donorApprovalForMaterial(
     ctx.request.body.request_id,
     ctx.request.body.volunteer_id
   )
