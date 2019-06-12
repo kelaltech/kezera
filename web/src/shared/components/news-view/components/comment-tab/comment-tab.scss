@@ -21,3 +21,44 @@
 .news-comment {
   padding: $padding-S;
 }
+.CommentContainer {
+  // width:auto !important;
+}
+.CommentImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.CommentMessage {
+  padding-left: 5%;
+  font-weight: lighter;
+}
+.CommentHead {
+  width: 100%;
+  padding-top: 5px !important;
+  padding-bottom: 0 !important;
+}
+.CommentName {
+  padding: 0 !important;
+}
+.ReplyButton {
+  padding: 2px 15px;
+}
+.right {
+  float: right !important;
+}
+.ActionButtons {
+  &:hover {
+    box-shadow: none;
+    background-color: transparent;
+    font-weight: bold;
+  }
+  border: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  box-shadow: none;
+}
+.LeftPadding {
+  margin-left: 10% !important;
+}

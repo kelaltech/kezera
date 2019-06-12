@@ -136,7 +136,7 @@ export default function EventEdit(props: IEventEditProps) {
                   className="full-width"
                   label={t`start date`}
                   type="date"
-                  defaultValue={new Date().toLocaleDateString()}
+                  defaultValue={new Date(newEvent.startDate).toISOString().substr(0, 10)}
                   InputLabelProps={{
                     shrink: true
                   }}
@@ -212,7 +212,7 @@ export default function EventEdit(props: IEventEditProps) {
                   className="full-width"
                   label={t`end date`}
                   type="date"
-                  defaultValue={new Date().toLocaleDateString()}
+                  defaultValue={new Date(newEvent.endDate).toISOString().substr(0, 10)}
                   InputLabelProps={{
                     shrink: true
                   }}
