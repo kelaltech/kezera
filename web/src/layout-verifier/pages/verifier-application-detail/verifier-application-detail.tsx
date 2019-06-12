@@ -6,6 +6,7 @@ import Axios from 'axios'
 
 import OrganizationDetail from '../../../shared/pages/organization-detail/organization-detail'
 import { IOrganizationResponse } from '../../../../../api/modules/organization/organization.apiv'
+import { addActivity } from '../../../shared/methods/methods'
 
 type Props = RouteComponentProps<{ _id: string }>
 
@@ -29,7 +30,10 @@ function VerifierApplicationDetail({ history, match }: Props) {
     Axios.post<IOrganizationResponse>(
       `/api/verifier/approve-organization-application/${match.params._id}`
     )
-      .then(() => history.push('/applications'))
+      .then(response => {
+        addActivity('Approved an organization.', `/o/${response.data._id}`)
+        history.push('/applications')
+      })
       .catch(setError)
       .finally(() => setSending(false))
   }

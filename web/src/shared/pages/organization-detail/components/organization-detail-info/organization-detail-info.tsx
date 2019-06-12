@@ -212,19 +212,21 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
             <pre>{organization.bio}</pre>
           </Block>
         </Content>
-        {(account!.role === 'ORGANIZATION' || account!.role === 'VERIFIER') && (
-          <Content className={'top'}>
-            <Block first className={'bold'}>
-              Activity
-            </Block>
 
-            <hr />
+        {(account!.role === 'ORGANIZATION' || account!.role === 'VERIFIER') &&
+          !isApplication && (
+            <Content className={'top margin-top-big'}>
+              <Block first className={'bold'}>
+                Activity
+              </Block>
 
-            <Block last>
-              <Timeline title={'activity'} _id={account!._id} />
-            </Block>
-          </Content>
-        )}
+              <hr />
+
+              <Block last>
+                <Timeline title={'activity'} _id={account!._id} />
+              </Block>
+            </Content>
+          )}
       </Content>
     )
   )
