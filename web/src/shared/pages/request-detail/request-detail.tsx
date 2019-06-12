@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Anchor, Block, Content, Flex, FlexSpacer, Title, Yoga } from 'gerami'
+import { Anchor, Block, Button, Content, Flex, FlexSpacer, Title, Yoga } from 'gerami'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios from 'axios'
@@ -17,6 +17,7 @@ import RequestDetailFundraising from './components/request-detail-fundraising/re
 import RequestDetailMaterial from './components/request-detail-material/request-detail-material'
 import RequestDetailOrgan from './components/request-detail-organ/request-detail-organ'
 import RequestDetailTask from './components/request-detail-task/request-detail-task'
+import IssueCertificateDialog from '../../components/isuue-certificate-dialog/issue-certificate-dialog'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const { loading, t } = useLocale(['request'])
@@ -26,13 +27,15 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
 
   const request_id = match.params._id
   const [request, setRequest] = useState<IRequestResponse>()
-
-  useEffect(() => {
-    setReady(false)
+  const FetchDetail = function() {
     Axios.get<IRequestResponse>(`/api/request/${request_id}`)
       .then(response => setRequest(response.data))
       .catch(setError)
       .finally(() => setReady(true))
+  }
+  useEffect(() => {
+    setReady(false)
+    FetchDetail()
   }, [request_id])
 
   const { account } = useAccountState()
@@ -40,6 +43,7 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const { myOrganization } = useMyOrganizationState()
 
   const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
+  const [issueDialogOpen, setIssueDialogOpen] = useState(false)
 
   return (
     loading ||
@@ -114,6 +118,29 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           <Content className={'fg-white bg-accent'}>
             <Block first last className={'center bold'}>
               This request is has been closed!
+              {account &&
+                account.role === 'ORGANIZATION' &&
+                myOrganization &&
+                myOrganization.account._id === account._id && (
+                  <div>
+                    <Button
+                      className={'margin-top-big font-S light'}
+                      onClick={() => setIssueDialogOpen(!issueDialogOpen)}
+                      primary
+                    >
+                      Issue Certificate for Volunteers Involved Here
+                    </Button>
+
+                    <IssueCertificateDialog
+                      open={issueDialogOpen}
+                      onClose={() => setIssueDialogOpen(!issueDialogOpen)}
+                      purpose={'DONATION'}
+                      issueTo={request.donations
+                        .filter(d => d.approved === true)
+                        .map(d => d.volunteer)}
+                    />
+                  </div>
+                )}
             </Block>
           </Content>
         )}
@@ -123,8 +150,16 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
             <RequestDetailFundraising request={request} />
           )}
           {request.type === 'Material' && <RequestDetailMaterial request={request} />}
-          {request.type === 'Organ' && <RequestDetailOrgan request={request} />}
-          {request.type === 'Task' && <RequestDetailTask request={request} />}
+          {request.type === 'Organ' && (
+            <RequestDetailOrgan request={request} onUpdate={setRequest} />
+          )}
+          {request.type === 'Task' && (
+            <RequestDetailTask
+              refresh={() => FetchDetail()}
+              request={request}
+              _id={match.params._id}
+            />
+          )}
         </>
 
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>

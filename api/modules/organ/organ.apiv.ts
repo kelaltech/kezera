@@ -1,13 +1,17 @@
 import { IOrganType, ObjectId } from '../../models/organ/organ.model'
-import { IRequestResponse } from '../request/request.apiv'
 
 export type IOrganRequest = {
-  type: IOrganType
-  request: ObjectId
+  organType: IOrganType
+  requestId: ObjectId
+
+  quantity: number
 }
 
 export type IOrganResponse = {
-  type: IOrganType
-  request: IRequestResponse
+  organType: IOrganType
+  requestId: ObjectId
+
   pledges: ObjectId[]
+
+  quantity: number
 }

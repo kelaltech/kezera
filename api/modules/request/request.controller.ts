@@ -1,6 +1,10 @@
-import { IRequestType, RequestModel } from '../../models/request/request.model'
+import {
+  IRequestStatus,
+  IRequestType,
+  RequestModel
+} from '../../models/request/request.model'
 import { add, edit, get, list, remove, search } from '../../lib/crud'
-import { Document, Schema } from 'mongoose'
+import { ClientSession, Document, Schema } from 'mongoose'
 import { IAccount } from '../../models/account/account.model'
 import { Stream } from 'stream'
 import { Grid } from '../../lib/grid'
@@ -244,4 +248,52 @@ export async function toggleRequestVolunteer(
   await edit(RequestModel, request._id, request.toJSON())
 
   return getRequest(request._id)
+}
+
+export async function applyForTask(
+  userId: Schema.Types.ObjectId,
+  requestId: Schema.Types.ObjectId
+): Promise<any> {
+  let request = await get(RequestModel, requestId)
+  if (
+    request.donations.map(value => value.volunteer.toString()).includes(userId.toString())
+  )
+    request.donations.splice(
+      request.donations.map(value => value.volunteer).indexOf(userId),
+      1
+    )
+  else {
+    request.donations.push({ volunteer: userId, approved: true })
+  }
+  await request.save()
+}
+
+export async function pledgeOrgan(
+  request_id: string,
+  account: IAccount & Document,
+  session: ClientSession
+): Promise<IRequestResponse> {
+  let request = await get(RequestModel, request_id, { session })
+  const organ = await get(OrganModel, null, {
+    session,
+    conditions: { requestId: request._id }
+  })
+  const volunteer = await get(VolunteerModel, null, {
+    session,
+    conditions: { account: account._id }
+  })
+
+  request.donations.push({
+    _at: Date.now(),
+    volunteer: volunteer._id,
+    approved: true,
+    data: ''
+  })
+
+  if (request.donations.length >= organ.quantity)
+    request.status = 'CLOSED' as IRequestStatus
+
+  await request.save()
+
+  return requestDocumentToResponse(request)
 }
