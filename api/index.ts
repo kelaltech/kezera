@@ -53,3 +53,6 @@ serverApp
     io.on('connection', SocketManager)
   })
   .catch(console.error)
+
+// runners
+import './runners/close-expired-requests'

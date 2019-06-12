@@ -28,6 +28,7 @@
     "no-ssl-start": "cross-env NO_SSL_REDIRECT=true run-s start",
     "local": "cross-env HOSTNAME=0.0.0.0 run-s start",
     "no-ssl-local": "cross-env NO_SSL_REDIRECT=true run-s local",
+    "no-email-no-ssl-local": "cross-env NO_EMAIL=true run-s no-ssl-local",
     "test": "echo \"This script is a no-op, so far.\"",
     "tsc": "tsc",
     "watch": "tsc -w",
