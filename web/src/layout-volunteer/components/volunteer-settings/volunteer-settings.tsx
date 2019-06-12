@@ -45,7 +45,6 @@ const genderTypes = [
 function VolunteerSettings({ readonly }: Props) {
   const { loading, t } = useLocale(['volunteer-setting'])
 
-
   const { account } = useAccountState()
 
   const volunteerDispatch = useVolunteerDispatch()
@@ -367,10 +366,9 @@ function VolunteerSettings({ readonly }: Props) {
         </Content>
 
         <Content style={{ overflow: 'visible' }}>
-          <Block first/>
+          <Block first />
           <Timeline title={t`volunteer-setting:activity-setting`} _id={account!._id} />
         </Content>
-
       </Block>
     )
   )

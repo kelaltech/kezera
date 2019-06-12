@@ -74,6 +74,12 @@ export default function EventCard(props: IEventProps) {
           {' '}
           <Link className="EventTitle" to={`/event/${props.event._id}`}>
             {props.event.title}
+            {new Date(props.event.endDate).getTime() < Date.now() && (
+              <span className={'bold font-S'} style={{ color: 'rgb(220,70,30)' }}>
+                {' '}
+                (PASSED)
+              </span>
+            )}
           </Link>{' '}
         </Title>
       </div>
@@ -150,7 +156,9 @@ export default function EventCard(props: IEventProps) {
           </Link>
         </span>
       </div>
-      {account && account!.role == 'ORGANIZATION' ? (
+      {account &&
+      account!.role == 'ORGANIZATION' &&
+      new Date(props.event.endDate).getTime() >= Date.now() ? (
         <Block last className={'ActionContainer flex'}>
           <Flex className={'full-width '} />
           <Flex className={'full-width '} />

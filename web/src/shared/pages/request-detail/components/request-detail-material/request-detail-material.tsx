@@ -30,7 +30,10 @@ function RequestDetailMaterial({
     Axios.put<any>(`/api/request/material/donation/add`, body, { withCredentials: true })
       .then(() => {
         refresh()
-        addActivity('You are interseted for donating a material', `/request/${request._id}`)
+        addActivity(
+          'You are interseted for donating a material',
+          `/request/${request._id}`
+        )
       })
       .catch(e => alert(e.message))
   }

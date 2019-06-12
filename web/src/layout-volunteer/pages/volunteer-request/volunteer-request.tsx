@@ -58,7 +58,7 @@ function AllRequests() {
       {requests.length !== 0 ? (
         <Yoga maxCol={3}>
           {requests.map(request => (
-            <RequestCard request = {request} />
+            <RequestCard request={request} />
           ))}
         </Yoga>
       ) : (
@@ -73,21 +73,21 @@ function AllRequests() {
 function MaterialRequest() {
   const [material, setMaterial] = useState([])
 
- useEffect(()=>{
-   axios
-     .get('/api/request/list/bytype?type=Material')
-     .then((material: any) => {
-       setMaterial(material.data)
-     })
-     .catch(e => console.log(e))
- },[])
+  useEffect(() => {
+    axios
+      .get('/api/request/list/bytype?type=Material')
+      .then((material: any) => {
+        setMaterial(material.data)
+      })
+      .catch(e => console.log(e))
+  }, [])
 
   return (
     <div>
       {material.length !== 0 ? (
         <Yoga maxCol={3}>
           {material.map(request => (
-            <RequestCard request = {request} />
+            <RequestCard request={request} />
           ))}
         </Yoga>
       ) : (
@@ -99,15 +99,16 @@ function MaterialRequest() {
   )
 }
 
-
-
 function FundraisingRequest() {
   const [fund, setFund] = useState([])
 
   useEffect(() => {
-    axios.get('/api/request/list/bytype?type=Fundraising').then((fund: any) => {
-      setFund(fund.data)
-    }).catch(e => console.log(e))
+    axios
+      .get('/api/request/list/bytype?type=Fundraising')
+      .then((fund: any) => {
+        setFund(fund.data)
+      })
+      .catch(e => console.log(e))
   }, [])
 
   return (
@@ -115,7 +116,7 @@ function FundraisingRequest() {
       {fund.length !== 0 ? (
         <Yoga maxCol={3}>
           {fund.map(request => (
-            <RequestCard request = {request} />
+            <RequestCard request={request} />
           ))}
         </Yoga>
       ) : (
@@ -141,7 +142,7 @@ function OrganRequest() {
       {organ.length !== 0 ? (
         <Yoga maxCol={3}>
           {organ.map(request => (
-            <RequestCard request = {request} />
+            <RequestCard request={request} />
           ))}
         </Yoga>
       ) : (

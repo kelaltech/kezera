@@ -28,7 +28,7 @@ const parseGeo = (lngLat: LngLat): string => {
 function OrganizationDetailInfo({ organization, isApplication }: Props) {
   const { loading, t } = useLocale(['organization'])
 
-  const  { account } =useAccountState()
+  const { account } = useAccountState()
 
   return (
     loading || (
@@ -212,21 +212,19 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
             <pre>{organization.bio}</pre>
           </Block>
         </Content>
-        {
-          ( account!.role === 'ORGANIZATION' || account!.role === 'VERIFIER')  && (
-            <Content className={'top'}>
-              <Block first className={'bold'}>
-                Activity
-              </Block>
+        {(account!.role === 'ORGANIZATION' || account!.role === 'VERIFIER') && (
+          <Content className={'top'}>
+            <Block first className={'bold'}>
+              Activity
+            </Block>
 
-              <hr />
+            <hr />
 
-              <Block last>
-                <Timeline title={'activity'} _id={account!._id}/>
-              </Block>
-            </Content>
-          )
-        }
+            <Block last>
+              <Timeline title={'activity'} _id={account!._id} />
+            </Block>
+          </Content>
+        )}
       </Content>
     )
   )

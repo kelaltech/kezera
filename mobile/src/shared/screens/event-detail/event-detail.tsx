@@ -93,13 +93,15 @@ function EventDetail({ navigation }: NavigationInjectedProps<Params>) {
               <Text style={eventDetailStyle.eventTitle}> {event.title}</Text>
               <View style={eventDetailStyle.eventAttendSwitch}>
                 <Text style={eventDetailStyle.eventAttendText}>{t`event:going`}</Text>
-                <Switch
-                  value={going}
-                  onValueChange={() => {
-                    setGoing(!going)
-                    HandleGoing(id!.toString())
-                  }}
-                />
+                {new Date(event.endDate).getTime() >= Date.now() && (
+                  <Switch
+                    value={going}
+                    onValueChange={() => {
+                      setGoing(!going)
+                      HandleGoing(id!.toString())
+                    }}
+                  />
+                )}
               </View>
             </View>
             <View>

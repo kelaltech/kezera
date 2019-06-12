@@ -19,7 +19,7 @@ function RequestCard({ request }: IRequestCard) {
   let deleteRequest = function(id: string) {
     axios
       .delete(`/api/request/${id}`)
-      .then(()=>{
+      .then(() => {
         addActivity('You deleted a request', `/request/${id}`)
       })
       .catch(console.error)

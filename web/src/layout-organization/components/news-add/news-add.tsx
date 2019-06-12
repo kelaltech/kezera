@@ -85,7 +85,7 @@ function NewsAdd({
             history.push({
               pathname: `/news/${data._id}`
             })
-            addActivity('News added',`/news/${data._id}`)
+            addActivity('News added', `/news/${data._id}`)
           })
           .catch(e =>
             axios
@@ -134,9 +134,9 @@ function NewsAdd({
     axios
       .put(`/api/news/${match.params._id}`, publication)
       .then(data => data)
-      .then((data:any) => {
+      .then((data: any) => {
         setSubmitting(false)
-        addActivity('News edited',`/news/${data._id}`)
+        addActivity('News edited', `/news/${data._id}`)
         /*      const formData = new FormData()
         formData.append('picture', picture)
         axios

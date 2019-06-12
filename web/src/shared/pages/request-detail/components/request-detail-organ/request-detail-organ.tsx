@@ -27,7 +27,10 @@ function RequestDetailOrgan({
     })
       .then(response => {
         onUpdate && onUpdate(response.data)
-        addActivity('You are interseted for pledging  an organ', `/request/${request._id}`)
+        addActivity(
+          'You are interseted for pledging  an organ',
+          `/request/${request._id}`
+        )
       })
       .catch(e => alert(e.message))
   }
