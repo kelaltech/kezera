@@ -13,7 +13,8 @@ import {
   getRequestCover,
   getRequestFile,
   applyForTask,
-  addDonnerForMaterial
+  addDonnerForMaterial,
+  listRequestVolunteers
 } from './request.controller'
 
 // import * as fs from 'fs'
@@ -119,4 +120,9 @@ requestRouter.put('/task/:_id/apply', async ctx => {
 // POST /api/request/pledge-organ/:request_id *
 requestRouter.post('/pledge-organ/:request_id', authorize(['VOLUNTEER']), async ctx => {
   ctx.body = await transact(s => pledgeOrgan(ctx.params.request_id, ctx.state.user, s))
+})
+
+// GET /api/request/list-donors/:request_id
+requestRouter.get('/list-donors/:request_id', async ctx => {
+  ctx.body = await listRequestVolunteers(ctx.params.request_id)
 })

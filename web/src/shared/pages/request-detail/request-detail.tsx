@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Anchor, Block, Button, Content, Flex, FlexSpacer, Title, Yoga } from 'gerami'
+import { Anchor, Block, Button, Content, Flex, Yoga } from 'gerami'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios from 'axios'
@@ -8,7 +8,6 @@ import './request-detail.scss'
 import useLocale from '../../hooks/use-locale/use-locale'
 import RichPage from '../../components/rich-page/rich-page'
 import { useAccountState } from '../../../app/stores/account/account-provider'
-import { useVolunteerState } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
 import { useMyOrganizationState } from '../../../layout-organization/stores/my-organization/my-organization-provider'
 import { IRequestResponse } from '../../../../../api/modules/request/request.apiv'
 import OrganizationCard from '../../components/organization-card/organization-card'
@@ -18,32 +17,44 @@ import RequestDetailMaterial from './components/request-detail-material/request-
 import RequestDetailOrgan from './components/request-detail-organ/request-detail-organ'
 import RequestDetailTask from './components/request-detail-task/request-detail-task'
 import IssueCertificateDialog from '../../components/isuue-certificate-dialog/issue-certificate-dialog'
+import { IVolunteerResponse } from '../../../../../api/modules/volunteer/volunteer.apiv'
+import {
+  IAccountPublicResponse,
+  IAccountResponse
+} from '../../../../../api/modules/account/account.apiv'
+import AccountChip from '../../components/account-chip/account-chip'
 
 function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
   const { loading, t } = useLocale(['request'])
 
   const [error, setError] = useState()
-  const [ready, setReady] = useState(false)
 
   const request_id = match.params._id
   const [request, setRequest] = useState<IRequestResponse>()
+
   const FetchDetail = function() {
     Axios.get<IRequestResponse>(`/api/request/${request_id}`)
       .then(response => setRequest(response.data))
       .catch(setError)
-      .finally(() => setReady(true))
   }
   useEffect(() => {
-    setReady(false)
     FetchDetail()
   }, [request_id])
 
   const { account } = useAccountState()
-  const { volunteer } = useVolunteerState()
   const { myOrganization } = useMyOrganizationState()
 
   const [isSpamReportDropOpen, setIsSpamReportDropOpen] = useState(false)
   const [issueDialogOpen, setIssueDialogOpen] = useState(false)
+
+  const [requestVolunteerAccounts, setRequestVolunteerAccounts] = useState<
+    IAccountPublicResponse[]
+  >([])
+  useEffect(() => {
+    Axios.get<IAccountPublicResponse[]>(`/api/request/list-donors/${request_id}`)
+      .then(response => setRequestVolunteerAccounts(response.data))
+      .catch(setError)
+  }, [])
 
   return (
     loading ||
@@ -162,14 +173,39 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           )}
         </>
 
+        {account &&
+          account.role === 'ORGANIZATION' &&
+          myOrganization &&
+          myOrganization.account._id === account._id && (
+            <Content className={'margin-top-big'}>
+              <Block first className={'bold'}>
+                Volunteers for This Request
+              </Block>
+              <hr />
+              <Block last>
+                {!requestVolunteerAccounts.length ? (
+                  <span className={'font-S fg-blackish'}>No volunteers yet.</span>
+                ) : (
+                  <Yoga maxCol={4} className={'yoga-in-rich-page'}>
+                    {requestVolunteerAccounts.map(account => (
+                      <AccountChip account={account} />
+                    ))}
+                  </Yoga>
+                )}
+              </Block>
+            </Content>
+          )}
+
         <Yoga maxCol={2} className={'yoga-in-rich-page'}>
           <>
             <Content className={'margin-bottom-big top'}>
               <Block first className={'bold'}>
-                <pre>{t`request:description`}</pre>
+                {t`request:description`}
               </Block>
               <hr />
-              <Block last>{request.description}</Block>
+              <Block last>
+                <pre>{request.description}</pre>
+              </Block>
             </Content>
 
             <Content className={'margin-bottom-big top'}>
