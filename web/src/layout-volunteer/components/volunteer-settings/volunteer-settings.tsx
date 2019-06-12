@@ -23,6 +23,8 @@ import {
 } from '../../stores/volunteer/volunteer-provider'
 import { updateSetting } from '../../stores/volunteer/volunteer-actions'
 import { MenuItem, TextField } from '@material-ui/core'
+import { useAccountState } from '../../../app/stores/account/account-provider'
+import { Timeline } from '../../../shared/components/timeline/timeline'
 interface Props {
   /**
    * @default false
@@ -42,6 +44,9 @@ const genderTypes = [
 ]
 function VolunteerSettings({ readonly }: Props) {
   const { loading, t } = useLocale(['volunteer-setting'])
+
+
+  const { account } = useAccountState()
 
   const volunteerDispatch = useVolunteerDispatch()
   const { volunteer } = useVolunteerState()
@@ -360,6 +365,12 @@ function VolunteerSettings({ readonly }: Props) {
             <hr style={{ opacity: 0.5 }} />
           </div>
         </Content>
+
+        <Content style={{ overflow: 'visible' }}>
+          <Block first/>
+          <Timeline title={t`volunteer-setting:activity-setting`} _id={account!._id} />
+        </Content>
+
       </Block>
     )
   )

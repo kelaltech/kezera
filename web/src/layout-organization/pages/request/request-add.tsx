@@ -19,6 +19,7 @@ import OrganAdd from '../organ/organ-add'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMyOrganizationState } from '../../stores/my-organization/my-organization-provider'
+import { addActivity } from '../../../shared/methods/methods'
 
 function RequestAdd({ history }: RouteComponentProps<{}>) {
   const { account } = useAccountState()
@@ -96,6 +97,7 @@ function RequestAdd({ history }: RouteComponentProps<{}>) {
       .then(res => {
         id = res.data
         history.push('/organization/request/list')
+        addActivity('request createrd', `/request/${res.data._id}`)
       })
       .catch(e => {
         console.log(e)

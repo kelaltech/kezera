@@ -10,6 +10,7 @@ import { withRouter } from 'react-router'
 import { useMyOrganizationState } from '../../stores/my-organization/my-organization-provider'
 import RichPage from '../../../shared/components/rich-page/rich-page'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { addActivity } from '../../../shared/methods/methods'
 
 interface INewsAddProps {
   edit: boolean
@@ -84,6 +85,7 @@ function NewsAdd({
             history.push({
               pathname: `/news/${data._id}`
             })
+            addActivity('News added',`/news/${data._id}`)
           })
           .catch(e =>
             axios
@@ -132,8 +134,9 @@ function NewsAdd({
     axios
       .put(`/api/news/${match.params._id}`, publication)
       .then(data => data)
-      .then(data => {
+      .then((data:any) => {
         setSubmitting(false)
+        addActivity('News edited',`/news/${data._id}`)
         /*      const formData = new FormData()
         formData.append('picture', picture)
         axios

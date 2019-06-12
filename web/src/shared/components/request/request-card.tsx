@@ -9,6 +9,7 @@ import { useAccountState } from '../../../app/stores/account/account-provider'
 import useLocale from '../../hooks/use-locale/use-locale'
 import { Anchor, Block, Button, Card, Content, Flex, FlexSpacer, Title } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { addActivity } from '../../methods/methods'
 
 interface IRequestCard {
   request: any
@@ -18,7 +19,9 @@ function RequestCard({ request }: IRequestCard) {
   let deleteRequest = function(id: string) {
     axios
       .delete(`/api/request/${id}`)
-      .then()
+      .then(()=>{
+        addActivity('You deleted a request', `/request/${id}`)
+      })
       .catch(console.error)
   }
 

@@ -7,6 +7,7 @@ import { IRequestResponse } from '../../../../../apiv/request.apiv'
 import { IMaterialResponse } from '../../../../../../../api/modules/material/material.apiv'
 import { useAccountState } from '../../../../../app/stores/account/account-provider'
 import { useVolunteerState } from '../../../../../layout-volunteer/stores/volunteer/volunteer-provider'
+import { addActivity } from '../../../../methods/methods'
 
 function RequestDetailMaterial({
   request,
@@ -27,7 +28,10 @@ function RequestDetailMaterial({
     }
 
     Axios.put<any>(`/api/request/material/donation/add`, body, { withCredentials: true })
-      .then(() => refresh())
+      .then(() => {
+        refresh()
+        addActivity('You are interseted for donating a material', `/request/${request._id}`)
+      })
       .catch(e => alert(e.message))
   }
 

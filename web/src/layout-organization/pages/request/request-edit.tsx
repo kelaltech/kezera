@@ -24,6 +24,7 @@ import TaskEdit from '../task/task-edit'
 import MaterialEdit from '../../components/material-edit/material-edit'
 import OrganEdit from '../organ/organ-edit'
 import { useMyOrganizationState } from '../../stores/my-organization/my-organization-provider'
+import { addActivity } from '../../../shared/methods/methods'
 
 function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
   let { loading, t } = useLocale(['material-donation', 'request'])
@@ -90,6 +91,7 @@ function RequestEdit({ history, match }: RouteComponentProps<{ _id: string }>) {
       .then(res => {
         id = res.data
         history.push('/organization/request/list')
+        addActivity('request edited ', `/request/${res.data._id}`)
       })
       .catch(e => {
         console.log(e)

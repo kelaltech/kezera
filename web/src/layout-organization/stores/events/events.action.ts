@@ -36,6 +36,7 @@ export function HandleInterested(id: string, dispatch: (action: Action) => void)
   Axios.put(`/api/event/${id}/interest`)
     .then(resp => {
       dispatch({ type: 'ADD_INTERESTED', event: resp.data })
+      addActivity('You are interested to an event', `/event/${id}`)
     })
     .catch()
 }
@@ -44,6 +45,7 @@ export function HandleLike(id: string, dispatch: (action: Action) => void) {
   Axios.put('/api/event/' + id + '/like')
     .then(resp => {
       dispatch({ type: 'ADD_LIKE', event: resp.data })
+      addActivity('You reacted to an event', `/event/${id}`)
     })
     .catch()
 }
@@ -58,6 +60,7 @@ export function DeleteEvent(id: string, dispatch: (action: Action) => void) {
   Axios.delete(`/api/event/${id}`)
     .then(() => {
       dispatch({ type: 'DELETE_EVENT', _id: id })
+      addActivity('You deleted an event', `/event/${id}`)
     })
     .catch()
 }

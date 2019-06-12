@@ -5,6 +5,7 @@ import './volunteer-request.scss'
 import { Tabs } from '@material-ui/core'
 import Tab from '@material-ui/core/es/Tab'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
+import { Yoga } from 'gerami'
 function VolunteerRequest() {
   const { loading, t } = useLocale(['request'])
   const [value, setValue] = useState(0)
@@ -47,9 +48,7 @@ function AllRequests() {
     axios
       .get('/api/request/list')
       .then(request => {
-        /*console.log(request.data)
-        setRequest(request.data)*/
-        setRequest([]) //todo uncomment the above
+        setRequest(request.data)
       })
       .catch(e => console.log(e))
   }, [])
@@ -57,11 +56,11 @@ function AllRequests() {
   return (
     <div>
       {requests.length !== 0 ? (
-        <div>
+        <Yoga maxCol={3}>
           {requests.map(request => (
-            <RequestCard {...request} />
+            <RequestCard request = {request} />
           ))}
-        </div>
+        </Yoga>
       ) : (
         <div>
           <h4>No request !!</h4>
@@ -74,21 +73,23 @@ function AllRequests() {
 function MaterialRequest() {
   const [material, setMaterial] = useState([])
 
-  useEffect(() => {
-    axios.get('/api/request/material/list').then((material: any) => {
-      // setMaterial(material.data)
-      setMaterial([]) //todo uncomment the above
-    })
-  }, [])
+ useEffect(()=>{
+   axios
+     .get('/api/request/list/bytype?type=Material')
+     .then((material: any) => {
+       setMaterial(material.data)
+     })
+     .catch(e => console.log(e))
+ },[])
 
   return (
     <div>
       {material.length !== 0 ? (
-        <div>
+        <Yoga maxCol={3}>
           {material.map(request => (
-            <RequestCard {...request} />
+            <RequestCard request = {request} />
           ))}
-        </div>
+        </Yoga>
       ) : (
         <div>
           <h4>No material request yet !!</h4>
@@ -98,24 +99,25 @@ function MaterialRequest() {
   )
 }
 
+
+
 function FundraisingRequest() {
   const [fund, setFund] = useState([])
 
   useEffect(() => {
-    axios.get('/api/request/fundraising/list').then((fund: any) => {
-      // setMaterial(material.data)
-      setFund([]) //todo uncomment the above
-    })
+    axios.get('/api/request/list/bytype?type=Fundraising').then((fund: any) => {
+      setFund(fund.data)
+    }).catch(e => console.log(e))
   }, [])
 
   return (
     <div>
       {fund.length !== 0 ? (
-        <div>
+        <Yoga maxCol={3}>
           {fund.map(request => (
-            <RequestCard {...request} />
+            <RequestCard request = {request} />
           ))}
-        </div>
+        </Yoga>
       ) : (
         <div>
           <h4>No Fundraising request !!</h4>
@@ -129,20 +131,19 @@ function OrganRequest() {
   const [organ, setOrgan] = useState([])
 
   useEffect(() => {
-    axios.get('/api/request/organ/list').then((organ: any) => {
-      // setMaterial(material.data)
-      setOrgan([]) //todo uncomment the above
+    axios.get('/api/request/list/bytype?type=Organ').then((organ: any) => {
+      setOrgan(organ.data)
     })
   }, [])
 
   return (
     <div>
       {organ.length !== 0 ? (
-        <div>
+        <Yoga maxCol={3}>
           {organ.map(request => (
-            <RequestCard {...request} />
+            <RequestCard request = {request} />
           ))}
-        </div>
+        </Yoga>
       ) : (
         <div>
           <h4>No Organ request !!</h4>

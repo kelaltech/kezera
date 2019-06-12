@@ -5,6 +5,7 @@ import { Anchor, Content } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import ShareListDialog from '../share-list-dialog/share-list-dialog'
+import { addActivity } from '../../methods/methods'
 
 export interface INewsCardProps {
   title: string
@@ -31,6 +32,7 @@ function NewsCard(props: INewsCardProps) {
       .then(news => news.data)
       .then(data => {
         setShareClicked(data.share)
+        addActivity('You shared a news', `/news/${_id}`)
       })
       .catch(e => {
         console.log(e) //todo handle error properly
@@ -42,6 +44,7 @@ function NewsCard(props: INewsCardProps) {
       .put(`/api/news/${_id}/like`)
       .then(data => {
         setLikeClicked(data.data.likes)
+        addActivity('You liked a news', `/news/${_id}`)
       })
       .catch(e => {
         console.log(e)
