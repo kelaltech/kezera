@@ -9,6 +9,7 @@ import Axios from 'axios'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { IOrganResponse } from '../../../../../../../api/modules/organ/organ.apiv'
 import { useAccountState } from '../../../../../app/stores/account/account-provider'
+import { addActivity } from '../../../../methods/methods'
 
 interface IRequestTask {
   request: IRequestResponse & { type: 'Task'; task: ITaskResponse }
@@ -21,7 +22,10 @@ export default function RequestDetailTask({ request, _id, refresh }: IRequestTas
   const { account } = useAccountState()
   const HandleApply = function() {
     Axios.put(`/api/request/task/${_id}/apply`, null)
-      .then(() => refresh())
+      .then(() => {
+        refresh()
+        addActivity('You are interseted in participating for a task', `/request/${_id}`)
+      })
       .catch(console.error)
   }
 

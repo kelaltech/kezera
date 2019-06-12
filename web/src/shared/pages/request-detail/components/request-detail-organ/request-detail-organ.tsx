@@ -7,6 +7,7 @@ import { IRequestResponse } from '../../../../../apiv/request.apiv'
 import { IOrganResponse } from '../../../../../../../api/modules/organ/organ.apiv'
 import { useAccountState } from '../../../../../app/stores/account/account-provider'
 import { useVolunteerState } from '../../../../../layout-volunteer/stores/volunteer/volunteer-provider'
+import { addActivity } from '../../../../methods/methods'
 
 function RequestDetailOrgan({
   request,
@@ -24,7 +25,10 @@ function RequestDetailOrgan({
     Axios.post<IRequestResponse>(`/api/request/pledge-organ/${request._id}`, {
       withCredentials: true
     })
-      .then(response => onUpdate && onUpdate(response.data))
+      .then(response => {
+        onUpdate && onUpdate(response.data)
+        addActivity('You are interseted for pledging  an organ', `/request/${request._id}`)
+      })
       .catch(e => alert(e.message))
   }
 
