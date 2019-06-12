@@ -56,6 +56,7 @@ export async function getOrganizationEvents(
   for (let i = 0; i < events.length; i++) {
     response[i] = await EventResponse(events[i])
   }
+  console.log(response)
   return response
 }
 
