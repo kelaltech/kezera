@@ -16,6 +16,8 @@ export interface IOrgan extends Document {
   requestId: ObjectId
   organType: IOrganType
   type: ObjectId
+
+  quantity: number
 }
 
 export const OrganModelFactory = new ModelFactory<IOrgan>({

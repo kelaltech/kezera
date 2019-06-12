@@ -16,7 +16,7 @@ interface IOrganProps {
 
 function OrganEdit(props: IOrganProps) {
   const [organ, setOrgan] = useState<any>({
-    _id:props.Organ._id,
+    _id: props.Organ._id,
     organType: props.Organ.organType,
     quantity: props.Organ.quantity
   })

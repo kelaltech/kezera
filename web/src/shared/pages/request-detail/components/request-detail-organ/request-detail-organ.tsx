@@ -1,5 +1,6 @@
 import React from 'react'
 import { Block, Button, Content, Yoga } from 'gerami'
+import Axios from 'axios'
 
 import useLocale from '../../../../hooks/use-locale/use-locale'
 import { IRequestResponse } from '../../../../../apiv/request.apiv'
@@ -8,9 +9,11 @@ import { useAccountState } from '../../../../../app/stores/account/account-provi
 import { useVolunteerState } from '../../../../../layout-volunteer/stores/volunteer/volunteer-provider'
 
 function RequestDetailOrgan({
-  request
+  request,
+  onUpdate
 }: {
   request: IRequestResponse & { type: 'Organ'; organ: IOrganResponse }
+  onUpdate: (request: IRequestResponse) => void
 }) {
   const { loading, t } = useLocale(['request', 'organ-donation'])
 
@@ -18,7 +21,11 @@ function RequestDetailOrgan({
   const { volunteer } = useVolunteerState()
 
   const handlePledge = () => {
-    // todo
+    Axios.post<IRequestResponse>(`/api/request/pledge-organ/${request._id}`, {
+      withCredentials: true
+    })
+      .then(response => onUpdate && onUpdate(response.data))
+      .catch(e => alert(e.message))
   }
 
   return (
@@ -27,7 +34,7 @@ function RequestDetailOrgan({
         {request.status === 'CLOSED' ? (
           <Block first last className={'font-L fg-primary center'}>
             {request.donations.length} (
-            {request.organ.organType.replace(/_/g, ' ').toLowerCase()}) ORGANS PLEDGED!
+            {request.organ.organType.replace(/_/g, ' ').toLowerCase()}) organs pledged!
           </Block>
         ) : (
           <Yoga maxCol={3}>

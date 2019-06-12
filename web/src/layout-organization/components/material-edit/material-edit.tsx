@@ -12,7 +12,12 @@ interface IMaterialEditProps {
   Material: any
 }
 export default function MaterialEdit(props: IMaterialEditProps) {
-  let [material, setMaterial] = useState({ _id:props.Material._id,status: props.Material.status, quantity: props.Material.quantity, materialType: props.Material.materialType })
+  let [material, setMaterial] = useState({
+    _id: props.Material._id,
+    status: props.Material.status,
+    quantity: props.Material.quantity,
+    materialType: props.Material.materialType
+  })
   let { t } = useLocale(['material-donation'])
   let emitChange = function(changes: any): void {
     props.onChange({ ...material, ...changes })

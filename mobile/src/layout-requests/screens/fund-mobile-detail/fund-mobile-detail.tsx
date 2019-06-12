@@ -108,15 +108,22 @@ function FundMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             >
               {request._by.account.displayName}
             </Text>
-            <Text style={Style.byTitle}>Requested By {' '}</Text>
-            <Text style={classes.link} onPress={() => navigation.dispatch(
-              NavigationActions.navigate({
-                routeName: 'OrganizationDetail',
-                params: {
-                  id: request._by._id
-                }
-              })
-            )}>{request._by.account.displayName}</Text>
+            <Text style={Style.byTitle}>Requested By </Text>
+            <Text
+              style={classes.link}
+              onPress={() =>
+                navigation.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'OrganizationDetail',
+                    params: {
+                      id: request._by._id
+                    }
+                  })
+                )
+              }
+            >
+              {request._by.account.displayName}
+            </Text>
           </View>
         </ScrollView>
       </>

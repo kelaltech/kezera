@@ -11,63 +11,91 @@ import {
   Text,
   ScrollView,
   Switch,
-  Button,
-  PickerItem
+  PickerItem,
+  Alert
 } from 'react-native'
-import { Divider, Icon } from 'react-native-elements'
+import { Divider, Button, Overlay, Input, Icon } from 'react-native-elements'
 import Axios from 'axios'
 import { useAccountState } from '../../../app/stores/account/account-provider'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { Style } from '../detail-style'
-import { Dimensions, StyleSheet } from 'react-native'
-import OrganizationCard from '../../../shared/components/organization-card/organization-card'
+import { Dimensions } from 'react-native'
 import { baseUrl } from '../../../app/configs/setup-axios'
 import classes from '../../../assets/styles/classes'
+import values from '../../../assets/styles/values'
+import { useVolunteerState } from '../../../app/stores/volunteer/volunteer-provider'
 
-const dimension = Dimensions.get('screen')
-
-const primary = '#3f51b5'
-
-type Params = {
-  id?: string
-}
-
-function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
+function MaterialMobileDetail({ navigation }: NavigationInjectedProps) {
   let id = navigation.getParam('id')
   const { loading, t } = useLocale(['request'])
   let [request, setRequest] = useState()
-  let [volunteers, setVolunteers] = useState()
-  let { account } = useAccountState()
+  const { volunteer } = useVolunteerState()
+  const [doner, setDoner] = useState()
+  const [overlay, setOverlay] = useState(false)
+  const [key, setKey] = useState()
 
-  let getGoing = function() {
-    Axios.get(`/api/request/list-request-volunteers/${id}`)
-      .then((resp: any) => setVolunteers(resp.data))
-      .catch(console.error)
-  }
-
-  let isGoing = function() {
-    Axios.put(`/api/request/toggle-request-volunteer/${id}`)
-      .then(resp => setRequest(resp.data))
-      .catch()
-  }
+  useEffect(() => {
+    getRequest()
+  }, [])
 
   let getRequest = function() {
     Axios.get(`/api/request/${id}`)
       .then(res => {
+        setDoner(
+          res.data.donations[
+            res.data.donations
+              .map((i: any) => i.volunteer)
+              .toString()
+              .indexOf(volunteer!._id.toString())
+          ]
+        )
         setRequest(res.data)
-        console.log('successfully retrieved')
-        console.log(res.data)
       })
       .catch(e => {
         console.log(e)
       })
   }
 
-  useEffect(() => {
-    getRequest()
-    getGoing()
-  }, [])
+  const handleDonate = () => {
+    Axios.put(`api/request/material/donation/add`, {
+      request_id: request.id,
+      volunteer_id: volunteer!._id
+    })
+      .then(data => setDoner(data.data))
+      .catch(e => console.log(e))
+  }
 
+  const handleChange = (e: any) => {
+    setKey(e)
+  }
+  const handleConfirmation = () => {
+    if (
+      key ===
+      (doner
+        ? doner.data
+        : request.donations[
+            request.donations.map((i: any) => i.volunteer).indexOf(volunteer!._id)
+          ].data)
+    ) {
+      Axios.put('/api/request/material/donor/approval', {
+        request_id: request._id,
+        volunteer_id: volunteer!._id
+      })
+        .then(data => data.data)
+        .then((vol: any) => {
+          setDoner(vol)
+          if (vol.approved) {
+            setOverlay(false)
+            Alert.alert('Info', 'Successfuly Confirmed')
+          } else {
+            Alert.alert('Error', 'Icorrect code')
+          }
+        })
+        .catch(e => {
+          Alert.alert('Error', `${e.message}`)
+        })
+    }
+  }
   return (
     loading ||
     (request ? (
@@ -77,16 +105,67 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
             source={{ uri: `${baseUrl}${request.coverUri}` }}
             style={Style.requestImage}
           />
-          <View style={Style.inlineBlock}>
-            <Text style={Style.requestTitle}>
-              {request.name}
-              {'   '}
-            </Text>
-            <View>
-              <Button title={'donate'} onPress={() => {}}>
-                Donate
-              </Button>
-            </View>
+          <View>
+            <Text style={Style.requestTitle}>{request.name}</Text>
+          </View>
+          <View>
+            {request.donations.map((i: any) => i.volunteer).includes(volunteer!._id) ? (
+              <Button
+                containerStyle={{
+                  marginHorizontal: values.space.normal
+                }}
+                disabled={doner ? doner.approved : false}
+                title={'Confirm pickup'}
+                onPress={() => setOverlay(true)}
+              />
+            ) : (
+              <Button
+                containerStyle={{
+                  marginHorizontal: values.space.normal
+                }}
+                onPress={handleDonate}
+                title={'donate'}
+              />
+            )}
+            <Overlay
+              isVisible={overlay}
+              animated
+              animationType={'fade'}
+              onBackdropPress={() => setOverlay(false)}
+              overlayStyle={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: Dimensions.get('screen').height / 2
+              }}
+            >
+              <View
+                style={{
+                  alignSelf: 'center'
+                }}
+              >
+                <Text style={{ ...classes.head2, textAlign: 'center' }}>
+                  To confirm pickup ask the pickup guy to to give you a 6 digit code
+                </Text>
+                <View style={{ flexDirection: 'row', ...classes.marginVerticalSmall }}>
+                  <Input
+                    onChangeText={e => handleChange(e)}
+                    leftIcon={
+                      <Icon name="lock" size={24} color={`${values.color.blackish}`} />
+                    }
+                    shake
+                    inputContainerStyle={{ flexGrow: 1 }}
+                    placeholder={'confirmation key'}
+                  />
+                </View>
+                <View style={{ flexDirection: 'row', ...classes.marginVerticalSmall }}>
+                  <Button
+                    containerStyle={{ flexGrow: 1 }}
+                    onPress={handleConfirmation}
+                    title={'Confirm'}
+                  />
+                </View>
+              </View>
+            </Overlay>
           </View>
 
           <Divider />
@@ -98,13 +177,13 @@ function MaterialMobileDetail({ navigation }: NavigationInjectedProps<Params>) {
           </View>
 
           <View style={Style.inlineBlock}>
-            <Text style={Style.requestedTitle}>Requested Material: </Text>
-            <Text style={Style.requestedAmount}>{request.material.materialType}</Text>
+            <Text style={classes.label}>Requested Material: </Text>
+            <Text style={classes.label}>{request.material[0].materialType}</Text>
           </View>
 
           <View style={Style.inlineBlock}>
-            <Text style={Style.requestedTitle}>Materials needed </Text>
-            <Text style={Style.requestedAmount}>{request.material.quantity}</Text>
+            <Text style={classes.label}>Materials needed </Text>
+            <Text style={classes.label}>{request.material[0].quantity}</Text>
           </View>
 
           <Divider />

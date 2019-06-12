@@ -13,11 +13,14 @@ import {
   getRequestCover,
   getRequestFile,
   applyForTask,
-  addDonnerForMaterial
+  addDonnerForMaterial,
+  donorApprovalForMaterial
 } from './request.controller'
 
 // import * as fs from 'fs'
 import { authorize } from '../../lib/middlewares/authorize'
+import { transact } from '../../lib/transact'
+import { pledgeOrgan } from './request.controller'
 
 export const requestRouter = new Router({ prefix: '/api/request' })
 
@@ -40,6 +43,13 @@ requestRouter.get('/list/by-type', async ctx => {
 
 requestRouter.put('/material/donation/add', async ctx => {
   ctx.body = await addDonnerForMaterial(
+    ctx.request.body.request_id,
+    ctx.request.body.volunteer_id
+  )
+})
+
+requestRouter.put('/material/donor/approval', async ctx => {
+  ctx.body = await donorApprovalForMaterial(
     ctx.request.body.request_id,
     ctx.request.body.volunteer_id
   )
@@ -110,6 +120,11 @@ requestRouter.get('/requests/me', authorize(['VOLUNTEER']), async ctx => {
   ctx.body = await listRequestsMe(ctx.state.user._id)
 })
 
-requestRouter.put('/task/:_id/apply',async ctx=>{
-  ctx.body=await applyForTask(ctx.state.user._id,ctx.params._id);
+requestRouter.put('/task/:_id/apply', async ctx => {
+  ctx.body = await applyForTask(ctx.state.user._id, ctx.params._id)
+})
+
+// POST /api/request/pledge-organ/:request_id *
+requestRouter.post('/pledge-organ/:request_id', authorize(['VOLUNTEER']), async ctx => {
+  ctx.body = await transact(s => pledgeOrgan(ctx.params.request_id, ctx.state.user, s))
 })
