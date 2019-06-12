@@ -25,7 +25,7 @@ function RequestCard({ request }: IRequestCard) {
   const { account } = useAccountState()
   return (
     <Card
-      imgSrc={request.coverUri}
+      imgSrc={request.coverUri || '/'}
       className={'requestCard'}
       children={
         <>

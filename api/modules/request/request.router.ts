@@ -42,6 +42,7 @@ requestRouter.get('/list/by-type', async ctx => {
   ctx.body = await listRequestByType(ctx.query.type)
 })
 
+// PUT /api/request/material/donation/add
 requestRouter.put('/material/donation/add', async ctx => {
   ctx.body = await addDonnerForMaterial(
     ctx.request.body.request_id,

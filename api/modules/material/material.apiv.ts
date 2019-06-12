@@ -1,13 +1,13 @@
 import { Schema } from 'mongoose'
 
 export type IMaterialRequest = {
-  type: Number
-  quantity: Number
-  orgainzationId: Schema.Types.ObjectId
+  type: string
+  quantity: number
+  organizationId: Schema.Types.ObjectId
 }
 
 export type IMaterialResponse = {
-  type: Number
-  quantity: Number
-  orgainzationId: Schema.Types.ObjectId
+  materialType: string
+  quantity: number
+  organizationId: Schema.Types.ObjectId
 }

@@ -160,7 +160,12 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           {request.type === 'Fundraising' && (
             <RequestDetailFundraising request={request} />
           )}
-          {request.type === 'Material' && <RequestDetailMaterial request={request} />}
+          {request.type === 'Material' && (
+            <RequestDetailMaterial
+              request={request as any}
+              refresh={() => FetchDetail() as any}
+            />
+          )}
           {request.type === 'Organ' && (
             <RequestDetailOrgan request={request} onUpdate={setRequest} />
           )}
