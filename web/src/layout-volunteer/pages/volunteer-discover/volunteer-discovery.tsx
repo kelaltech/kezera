@@ -158,11 +158,11 @@ function DiscoveryPage() {
                   >{t`volunteer-discovery:no-organizations`}</Block>
                 ) : (
                   <Slider {...settings} {...settingsOrganization}>
-                    <div className={'slider-list'}>
-                      {organization.map((o: any) => (
-                        <OrganizationCard organization={o} />
-                      ))}
-                    </div>
+                    {organization.map((o: any) => (
+                      <div className={'slider-list'}>
+                        <OrganizationCard className={'block'} organization={o} />
+                      </div>
+                    ))}
                   </Slider>
                 )}
               </div>

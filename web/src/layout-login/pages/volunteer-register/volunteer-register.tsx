@@ -34,7 +34,7 @@ function VolunteerRegister({ history }: RouteComponentProps) {
 
     axios
       .post('/api/volunteer/register', account)
-      .then(() => history.push('/volunteer/account'))
+      .then(() => history.push('/login'))
       .catch(setError)
   }
 
