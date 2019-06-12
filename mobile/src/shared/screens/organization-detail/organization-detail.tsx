@@ -107,11 +107,11 @@ function NewEvents({ navigation }: NavigationInjectedProps<param>) {
     Axios.get('/api/event/organization/' + navigation.getParam('id'))
       .then(resp => {
         setEvents(resp.data)
-        console.log(resp.data)
+        console.log('events: ',resp.data)
       })
       .catch(console.error)
   }, [])
-  return events.length != 0 ? (
+  return events.length > 0 ? (
     <>
       <View style={eventStyle.sectionTitle}>
         <Text style={eventStyle.sections}> {t`events`} </Text>
