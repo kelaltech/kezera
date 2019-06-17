@@ -86,7 +86,7 @@ function VerifierApplications() {
           </Block>
         ) : (
           <>
-            <Yoga maxCol={3} className={'yoga-in-rich-page'}>
+            <Yoga maxCol={3}>
               {applications.map((application, i) => (
                 <OrganizationCard
                   key={i}

@@ -50,7 +50,7 @@ function OrganizationDetailInfo({ organization, isApplication }: Props) {
 
         {!isApplication && <OrganizationDetailStats organization={organization} />}
 
-        <Yoga maxCol={2} className={'yoga-in-rich-page'}>
+        <Yoga maxCol={2}>
           <Content className={'top'}>
             <Block first className={'bold'}>
               Funding

@@ -73,7 +73,7 @@ function SeekHelp({ match, history }: RouteComponentProps<{ organization_id: str
           'This form may be used by you to submit a help request to this request. The help seeker may be yourself or someone else in need (including those who do not have access to such technology to make a help request). Please provide an appropriate and detailed contact information and description message of the problem. The organization may or may not respond to your request (using the contact information provided here), after reviewing the problem description.'
         }
       >
-        <Yoga maxCol={2} className={'yoga-in-rich-page'}>
+        <Yoga maxCol={2}>
           <>
             <label
               htmlFor={'contact-input'}

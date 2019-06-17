@@ -82,7 +82,7 @@ function VerifierOrganizations() {
           </Block>
         ) : (
           <>
-            <Yoga maxCol={3} className={'yoga-in-rich-page'}>
+            <Yoga maxCol={3}>
               {organizations.map((organization, i) => (
                 <OrganizationCard key={i} organization={organization} />
               ))}

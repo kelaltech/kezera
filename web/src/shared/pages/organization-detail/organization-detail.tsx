@@ -173,7 +173,7 @@ function OrganizationDetail({
         (!organization.motto && !organization.website ? (
           undefined
         ) : (
-          <Yoga maxCol={2} className={'yoga-in-rich-page'}>
+          <Yoga maxCol={2}>
             <Flex>
               {!organization ? null : (
                 <>

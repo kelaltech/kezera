@@ -87,7 +87,7 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
           []
         }
         description={
-          <Yoga maxCol={2} className={'yoga-in-rich-page'}>
+          <Yoga maxCol={2}>
             <Flex>
               <span>{request.type}</span>
               <span className={'padding-horizontal-normal'} style={{ opacity: 0.14 }}>
@@ -191,7 +191,7 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
                 {!requestVolunteerAccounts.length ? (
                   <span className={'font-S fg-blackish'}>No volunteers yet.</span>
                 ) : (
-                  <Yoga maxCol={4} className={'yoga-in-rich-page'}>
+                  <Yoga maxCol={4}>
                     {requestVolunteerAccounts.map(account => (
                       <AccountChip account={account} />
                     ))}
@@ -201,7 +201,7 @@ function RequestDetail({ match }: RouteComponentProps<{ _id: string }>) {
             </Content>
           )}
 
-        <Yoga maxCol={2} className={'yoga-in-rich-page'}>
+        <Yoga maxCol={2}>
           <>
             <Content className={'margin-bottom-big top'}>
               <Block first className={'bold'}>

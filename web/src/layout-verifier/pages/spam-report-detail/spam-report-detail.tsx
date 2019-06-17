@@ -149,7 +149,7 @@ function SpamReportDetail({ history, match }: RouteComponentProps<{ _id: string 
         ]}
       >
         {spamReport && (
-          <Yoga maxCol={2} className={'yoga-in-rich-page'}>
+          <Yoga maxCol={2}>
             <Content className={'top'}>
               <Block first>
                 <h3>Item Description</h3>

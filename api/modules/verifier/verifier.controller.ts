@@ -122,9 +122,7 @@ export class VerifierController extends KoaController {
     const allowedRoles: IAccountRole[] = ['VERIFIER', 'ADMIN']
     if (!allowedRoles.includes(verifier_account.role))
       throw new KoaError(
-        `Role "${
-          verifier_account.role
-        }" is not allowed to approve Organization application requests.`,
+        `Role "${verifier_account.role}" is not allowed to approve Organization application requests.`,
         500,
         'ACCOUNT_ROLE_NOT_ALLOWED'
       )
@@ -191,9 +189,7 @@ export class VerifierController extends KoaController {
     const allowedRoles: IAccountRole[] = ['VERIFIER', 'ADMIN']
     if (!allowedRoles.includes(verifier_account.role))
       throw new KoaError(
-        `Role "${
-          verifier_account.role
-        }" is not allowed to approve Organization application requests.`,
+        `Role "${verifier_account.role}" is not allowed to approve Organization application requests.`,
         500,
         'ACCOUNT_ROLE_NOT_ALLOWED'
       )

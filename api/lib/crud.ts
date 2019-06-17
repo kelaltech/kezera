@@ -196,9 +196,7 @@ export async function edit<T extends Document>(
     doc = await preUpdate(doc, session || null)
     if (!doc)
       throw new KoaError(
-        `No "${
-          model.modelName
-        }" document by _id '${_id}' and the provided pre-update-query.`,
+        `No "${model.modelName}" document by _id '${_id}' and the provided pre-update-query.`,
         404,
         'DOCUMENT_NOT_FOUND'
       )
@@ -250,9 +248,7 @@ export async function remove<T extends Document>(
     doc = await preRemove(doc, session || null)
     if (!doc)
       throw new KoaError(
-        `No "${
-          model.modelName
-        }" document by _id '${_id}' and the provided pre-remove-query.`,
+        `No "${model.modelName}" document by _id '${_id}' and the provided pre-remove-query.`,
         404,
         'DOCUMENT_NOT_FOUND'
       )

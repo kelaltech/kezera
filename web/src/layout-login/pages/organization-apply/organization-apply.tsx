@@ -154,7 +154,7 @@ function OrganizationApply() {
         </>
       ) : (
         <>
-          <Yoga maxCol={2} className={'yoga-in-rich-page'}>
+          <Yoga maxCol={2}>
             <div className={'top'}>
               <AccountRegister account={organization.account} setAccount={setAccount} />
 
