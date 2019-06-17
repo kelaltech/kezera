@@ -35,7 +35,6 @@
     "postinstall": "cd web && yarn install && yarn prod"
   },
   "dependencies": {
-    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^3.0.0",
     "@types/deep-extend": "^0.4.31",
     "@types/dotenv": "^6.1.1",
@@ -53,12 +52,10 @@
     "cross-env": "^5.2.0",
     "deep-extend": "^0.6.0",
     "dotenv": "^8.0.0",
-    "husky": "^2.3.0",
     "i18next": "^15.0.6",
     "koa-passport": "^4.1.1",
-    "meseret": "^1.7.12",
+    "meseret": "^1.8.3",
     "nodemailer": "^5.1.1",
-    "npm-run-all": "^4.1.5",
     "passport-local": "^1.0.0",
     "qs": "^6.6.0",
     "request": "^2.88.0",

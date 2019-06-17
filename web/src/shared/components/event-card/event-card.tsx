@@ -106,9 +106,7 @@ export default function EventCard(props: IEventProps) {
         <FontAwesomeIcon icon={'map-marker'} size={'sm'} /> &nbsp;{' '}
         <span>
           <Anchor
-            href={`https://www.google.com/maps?q=${
-              props.event.location.geo.coordinates[1]
-            },${props.event.location.geo.coordinates[0]}`}
+            href={`https://www.google.com/maps?q=${props.event.location.geo.coordinates[1]},${props.event.location.geo.coordinates[0]}`}
             target={'_blank'}
             rel={'noopener'}
           >

@@ -144,7 +144,7 @@ function RichPage({
                         key={i}
                         className={'rich-page-action-vaults margin-vertical-auto'}
                       >
-                        <Button {...action as any}>
+                        <Button {...(action as any)}>
                           {action.value || action.children}
                         </Button>
                       </span>

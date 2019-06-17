@@ -176,7 +176,7 @@ function SpamReportDetail({ history, match }: RouteComponentProps<{ _id: string 
                 ) : spamReport.type === 'EVENT' ? (
                   <EventCard event={event!} />
                 ) : spamReport.type === 'NEWS' ? (
-                  <NewsCard {...news as any} />
+                  <NewsCard {...(news as any)} />
                 ) : (
                   'Unknown Item Type'
                 )}

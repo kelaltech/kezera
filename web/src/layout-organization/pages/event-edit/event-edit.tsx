@@ -165,9 +165,7 @@ export default function EventEdit(props: IEventEditProps) {
                     ) : (
                       <div>
                         <Anchor
-                          href={`https://www.google.com/maps?q=${
-                            newEvent.location.geo.coordinates[1]
-                          },${newEvent.location.geo.coordinates[0]}`}
+                          href={`https://www.google.com/maps?q=${newEvent.location.geo.coordinates[1]},${newEvent.location.geo.coordinates[0]}`}
                           target={'_blank'}
                           rel={'noopener'}
                         >

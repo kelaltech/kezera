@@ -63,9 +63,7 @@ function RequestDetailFundraising({
                       token={token => alert('Your token is ' + token + '.')}
                       stripeKey="pk_test_yDsmxN1YjBhNssrxkyVLOtst00qlheQsVE"
                       amount={Number.parseFloat(amount.value)}
-                    >
-                      <Button className={'bg-accent fg-white'}>Pay with Card</Button>
-                    </StripeCheckout>
+                    />
                   </div>
                 </>
               )}

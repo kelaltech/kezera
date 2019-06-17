@@ -51,7 +51,7 @@ function useLocale(
       ? null
       : loading || <Loading delay={1000} />,
     ...ut
-  }
+  } as UseLocaleResponse
 }
 
 export default useLocale

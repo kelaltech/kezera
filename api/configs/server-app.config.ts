@@ -81,6 +81,9 @@ export const serverAppConfig: IServerAppConfig = {
 
   publicDirs: [path.join(process.cwd(), 'web', 'build')],
   spaFileRelativePath: path.join('web', 'build', 'index.html'),
+  cacheFiles: {
+    '/service-worker.js': { cacheControl: 'no-cache', maxAge: 0 }
+  },
 
   bodyParserMultipart: true,
   keys: ['WE ARE THE COOKIE KEYS', 'CHANGE US', 'USE .env'], // ...todo

@@ -209,9 +209,7 @@ export default function EventAdd(props: IEventAddProps) {
                     ) : (
                       <div>
                         <Anchor
-                          href={`https://www.google.com/maps?q=${
-                            event.location.geo.coordinates[1]
-                          },${event.location.geo.coordinates[0]}`}
+                          href={`https://www.google.com/maps?q=${event.location.geo.coordinates[1]},${event.location.geo.coordinates[0]}`}
                           target={'_blank'}
                           rel={'noopener'}
                         >

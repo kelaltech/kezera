@@ -3,7 +3,7 @@ import { RequestModel } from '../models/request/request.model'
 import { transact } from '../lib/transact'
 
 setInterval(async () => {
-  console.log(`Running 'close-expired-requests' runner.`)
+  console.log(`Running 'close-expired-requests' runner...`)
   await transact(session =>
     edit(
       RequestModel,

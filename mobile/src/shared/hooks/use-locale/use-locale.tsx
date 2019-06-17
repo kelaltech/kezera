@@ -49,7 +49,7 @@ function useLocale(
     loaded,
     loading: loaded ? null : loading === null ? null : loading || <Loading />,
     ...ut
-  }
+  } as UseLocaleResponse
 }
 
 export default useLocale

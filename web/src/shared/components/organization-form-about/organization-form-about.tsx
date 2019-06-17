@@ -131,9 +131,7 @@ function OrganizationFormAbout({ organization, setOrganization }: Props) {
                 ) : (
                   <div>
                     <Anchor
-                      href={`https://www.google.com/maps?q=${
-                        organization.locations[0].geo.coordinates[1]
-                      },${organization.locations[0].geo.coordinates[0]}`}
+                      href={`https://www.google.com/maps?q=${organization.locations[0].geo.coordinates[1]},${organization.locations[0].geo.coordinates[0]}`}
                       target={'_blank'}
                       rel={'noopener'}
                     >
