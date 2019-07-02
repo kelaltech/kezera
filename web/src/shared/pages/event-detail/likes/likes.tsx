@@ -3,12 +3,11 @@ import { Content, Image, Title } from 'gerami'
 import './likes.scss'
 import Chip from '@material-ui/core/Chip'
 import { Avatar } from '@material-ui/core'
-import { Schema } from 'mongoose'
 import axios from 'axios'
 
 export default function Likes(props: any) {
   let [user, setUser] = useState([])
-  let FetchLikes = function(id: Schema.Types.ObjectId) {
+  let FetchLikes = function(id: string) {
     axios
       .get(`/api/event/${id}/likes`)
       .then(resp => setUser(resp.data))

@@ -99,7 +99,6 @@ import {
 } from 'gerami'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Axios from 'axios'
-import { Schema } from 'mongoose'
 // import { Menu } from '@material-ui/core'
 import userIcon from '../../../assets/userIcon/userIcon.png'
 import useLocale from '../../../../hooks/use-locale/use-locale'
@@ -109,9 +108,9 @@ import { useAccountState } from '../../../../../app/stores/account/account-provi
 import SpamReportDrop from '../../../spam-report-drop/spam-report-drop'
 
 interface ICommentProps {
-  ParentId: Schema.Types.ObjectId
+  ParentId: string
   Type: String
-  TypeId: String | Schema.Types.ObjectId
+  TypeId: String | string
   comment: ICommentRequest // Change these any
   fetch: () => void
 }
@@ -259,7 +258,7 @@ function Comment(props: ICommentProps) {
       .catch(console.error)
   }
 
-  let handleDelete = function(id: Schema.Types.ObjectId) {
+  let handleDelete = function(id: string) {
     Axios.delete(
       `/api/comment/${id}/${props.Type}/${props.TypeId}/${
         props.ParentId ? props.ParentId : `NULL`
@@ -273,7 +272,7 @@ function Comment(props: ICommentProps) {
       .catch()
   }
 
-  let handleEdit = function(e: any, id: Schema.Types.ObjectId) {
+  let handleEdit = function(e: any, id: string) {
     e.preventDefault()
     setEdit(false)
     let formData = new FormData()
@@ -287,7 +286,7 @@ function Comment(props: ICommentProps) {
       .catch(console.error)
   }
 
-  let FetchReplies = function(id: Schema.Types.ObjectId) {
+  let FetchReplies = function(id: string) {
     Axios.get(`/api/comment/${id}/replies`)
       .then(resp => {
         setReplies(resp.data)
