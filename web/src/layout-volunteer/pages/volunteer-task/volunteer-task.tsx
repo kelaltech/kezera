@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './volunteer-task.scss'
-import { url } from 'koa-router'
 import RequestCard from '../../../shared/components/request/request-card'
 import { Collapse, MenuItem } from '@material-ui/core'
 
