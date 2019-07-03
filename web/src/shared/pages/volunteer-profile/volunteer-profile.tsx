@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Anchor, Block, Card, Content, Loading, Warning, Yoga } from 'gerami'
+import { Anchor, Block, Content, Loading, Warning, Yoga } from 'gerami'
 import { RouteComponentProps } from 'react-router'
 
 import './volunteer-profile.scss'
-import { useAccountState } from '../../../app/stores/account/account-provider'
 import { useVolunteerState } from '../../../layout-volunteer/stores/volunteer/volunteer-provider'
 import {
   List,
@@ -23,18 +22,11 @@ import {
   faToolbox,
   faHandHoldingUsd,
   faTasks,
-  faHandHoldingHeart,
-  faChevronRight,
-  faChevronLeft
+  faHandHoldingHeart
 } from '@fortawesome/free-solid-svg-icons'
-import OrganizationCard from '../../../shared/components/organization-card/organization-card'
 import axios from 'axios'
 import EventCard from '../../../shared/components/event-card/event-card'
 import CertificateCard from '../../../shared/components/certificate-card/certificate-card'
-import {
-  ICertificatePrivacy,
-  ICertificatePurpose
-} from '../../../../../api/models/certificate/certificate.model'
 import { ICertificateResponse } from '../../../apiv/certificate.apiv'
 import useLocale from '../../../shared/hooks/use-locale/use-locale'
 import { IVolunteerResponse } from '../../../../../api/modules/volunteer/volunteer.apiv'
@@ -156,20 +148,20 @@ function VolunteerProfile({ match }: RouteComponentProps<{ _id: string }>) {
       <div className={'profile-container'}>
         <Block first />
         <Content className={'general-profile'}>
-          <div>
+          <div className={'pro-acc-pic-back-container'}>
             <div
               style={{
                 backgroundImage: `url(${volunteer.account.photoUri})`
               }}
               className={'pro-acc-pic-back'}
             />
-            <div
-              style={{
-                backgroundImage: `url(${volunteer.account.photoUri})`
-              }}
-              className={'pro-acc-pic'}
-            />
           </div>
+          <div
+            style={{
+              backgroundImage: `url(${volunteer.account.photoUri})`
+            }}
+            className={'pro-acc-pic'}
+          />
 
           <div>
             <div className={'account-head-display-name'}>

@@ -2,6 +2,7 @@
 
 .organization-card {
   box-shadow: $shade-L !important;
+  overflow: hidden;
 
   .gerami-card-img {
     height: $space * 8;

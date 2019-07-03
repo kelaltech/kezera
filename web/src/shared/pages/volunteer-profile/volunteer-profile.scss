@@ -1,5 +1,6 @@
 @import '../../../assets/styles/theme';
 @import '../../../assets/styles/react-slick-slider';
+
 .profile-container {
   width: 80%;
   margin: 0 auto;
@@ -11,21 +12,33 @@
 
   .general-profile {
     width: 100%;
-    padding: $padding-M $padding-M $space;
+    padding: $space ($space * 2);
+    overflow: hidden;
+
+    .pro-acc-pic-back-container {
+      overflow: hidden;
+      padding: $space ($space * 2);
+      margin: -$space (-$space * 2) 0;
+      background-color: transparentize($accent, 0.84);
+    }
     .pro-acc-pic-back {
       width: 100%;
-      background-position: center center;
+      height: $space * 8;
+      background-attachment: fixed;
+      background-position: top center;
       background-size: cover;
-      background-repeat: no-repeat;
-      height: $space * 5;
-      filter: blur($space + 10);
-      opacity: 0.56;
+      filter: blur($space * 2);
+      opacity: 0.7;
       transform: scale3d(1.14, 1.14, 1);
     }
     .pro-acc-pic {
-      margin-top: -$space * 4;
-      width: 200px;
-      height: 200px;
+      position: relative;
+      z-index: 2;
+      box-shadow: $shade-S, $shade-M, $shade-L;
+      margin-top: -$space * 8;
+      margin-bottom: $space;
+      width: $space * 10;
+      height: $space * 10;
       background-position: center center;
       background-size: cover;
     }
@@ -34,9 +47,8 @@
 .account-head-display-name {
   margin: $space/2 auto;
   flex-grow: 1;
-  font-size: $space * 2.4;
+  font-size: $font-L * 2;
   font-weight: bold;
-  line-height: 1;
 
   @media (max-width: $mobile) {
     margin: auto ($space / 2);
