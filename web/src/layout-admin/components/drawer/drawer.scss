@@ -1,9 +1,10 @@
 @import '../../../assets/styles/theme';
+
 .AdminDrawer {
   background-color: #fff;
   width: 250px !important;
   float: left;
-  filter: drop-shadow($shade-S);
+  filter: drop-shadow($text-shade-S);
 }
 
 .AdminDrawerContent {
