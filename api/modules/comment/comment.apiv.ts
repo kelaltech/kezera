@@ -1,16 +1,15 @@
-import { Document, Schema } from 'mongoose'
-
-type ObjectId = Schema.Types.ObjectId
-
-export interface ICommentResponse extends Document {
-  _by: ObjectId
+export interface ICommentResponse {
+  _id: string
+  _by: string
   body: string
-  replies: ObjectId[]
+  replies: string[]
 }
-export interface ICommentRequest extends Document {
+
+export interface ICommentRequest {
+  _id: string
   _at: Date
-  _by: ObjectId
+  _by: string
   body: string
   displayName: String
-  replies: ObjectId[]
+  replies: string[]
 }

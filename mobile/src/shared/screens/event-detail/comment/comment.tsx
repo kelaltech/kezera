@@ -1,16 +1,12 @@
 import { TextInput, View, Text, Image } from 'react-native'
 import Axios from 'axios'
 import { useEffect, useState } from 'react'
-import {
-  ICommentRequest,
-  ICommentResponse
-} from '../../../../../../api/modules/comment/comment.apiv'
+import { ICommentRequest } from '../../../../../../api/modules/comment/comment.apiv'
 import { style } from './comment-style'
 import { Button, Divider, Icon, ListItem, Overlay } from 'react-native-elements'
 import values from '../../../../assets/styles/values'
 import React from 'react'
 import { useAccountState } from '../../../../app/stores/account/account-provider'
-import { Schema } from 'mongoose'
 import useLocale from '../../../hooks/use-locale/use-locale'
 
 interface ICommentProps {
@@ -125,7 +121,7 @@ function CommentCard(props: {
       .catch(console.error)
   }
 
-  let handleDelete = function(id: Schema.Types.ObjectId) {
+  let handleDelete = function(id: string) {
     Axios.delete(
       `/api/comment/${id}/${'EVENT'}/${props.id}/${
         props.parentId ? props.parentId : `NULL`
